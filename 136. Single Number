@@ -1,0 +1,42 @@
+Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+
+Note:
+
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Example 1:
+
+Input: [2,2,1]
+Output: 1
+Example 2:
+
+Input: [4,1,2,1,2]
+Output: 4
+
+Solution:
+class Solution(object):
+    def singleNumber(self, nums):
+        res = 0
+        for num in nums:
+            res = res^num
+            '''
+            Here "^" means XOR operator instead of ** (power)
+            XOR operator satisfies the Exchange Law and Combination Law, so a^b^c = a^c^b = a^(b^c)
+            In XOR operator:
+            Input 1   Input 2   Result
+              0          0        0
+              0          1        1
+              1          0        1
+              1          1        1
+             Case analyst:
+             Input array is [2,1,2]
+             So, res = 0^2^1^2 = 0^(2^2)^1 = 0^0^1 = 0^1 = 1 which is exactly the only sigle number in the array!
+             Another example:
+             Input array is [4, 2, 3, 3, 2]
+             res = 0^4^2^3^2^3 = 0^4^(2^2)^(3^3) = 0^4^0^0 = 4
+             '''
+        return res
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
