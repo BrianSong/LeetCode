@@ -1,0 +1,83 @@
+Given a binary tree, find its maximum depth.
+
+The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+Note: A leaf is a node with no children.
+
+Example:
+
+Given binary tree [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its depth = 3.
+
+Two solutions:
+1. Recursion:
+class Solution(object):
+    def maxDepth(self, root):
+        if root is None:
+            return 0 # Base case for exiting recursion
+        else:
+            left_depth = self.maxDepth(root.left) # It will return the greatest depth of the left brunch for the root node
+            right_depth = self.maxDepth(root.right) # It can be processed only the previous left_depth is finished(including all of its inner recursion functions) and return a value
+            return max(left_depth, right_depth) + 1 # The reason to add 1 here is because the base case return 0, and the depth should increase 1 for each level of the tree
+Case analyst:
+3 is None： False
+left_depth = f(9) 
+------------------------------
+9 is None: False 
+left_depth = f(None)
+------------------------------
+None is None：True --- return 0 
+------------------------------
+right_depth = f(None)
+None is None：True --- return 0 
+---------------------------------------
+left_depth = f(9) is max(0,0) + 1 = 1 
+----------------------------------------
+right_depth = f(20)
+---------------------
+20 is None: False
+left_depth = f(15)
+-------------------
+15 is None: False
+left_depth = f(None) -----return 0
+right_depth = f(None) -----return 0
+f(15) = max(0,0) + 1 = 1
+-----------------------------------
+right_depth = f(7)
+---------------------
+7 is None: False
+left_depth = f(None) -----return 0
+right_depth = f(None) -----return 0
+f(7) = max(0,0) + 1 = 1
+-----------------------------
+f(20) = max(1,1) + 1 = 2
+----------------------------
+f(3) = max(1,2) + 1 = 3
+
+
+Second Solution: DFS
+class Solution(object):
+    def maxDepth(self, root):
+        depth = 0
+        if root:
+            depth_list = [root]
+        else:
+            depth_list = []
+        while depth_list: # Existing Condition
+            depth += 1  # Must be "+=" INSTEAD OF "+" here
+            temper_list = [] # Very important to clear temper_list every time in the while loop to avoid repeating
+            for value in depth_list:
+                if value.left:
+                    temper_list.append(value.left)
+                if value.right:
+                    temper_list.append(value.right)
+                ''' if running to the end, all node in that level of the tree will have no child, so temper_list can append nothing and the existing condition will be satisfied
+            depth_list = temper_list
+        return depth
+
