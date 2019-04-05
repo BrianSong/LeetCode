@@ -14,7 +14,7 @@ Output: [1,3,2]
 Solution:
 class Solution(object):
     def inorderTraversal(self, root):
-        res = []
+        res = [] # res means result here
         self.helper(root, res) # Create a DFS help function to do the trick for me
         return res
     
