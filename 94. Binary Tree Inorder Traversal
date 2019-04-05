@@ -15,7 +15,7 @@ Solution:
 class Solution(object):
     def inorderTraversal(self, root):
         res = []
-        self.helper(root, res)
+        self.helper(root, res) # Create a DFS help function to do the trick for me
         return res
     
     def helper(self, root, res):
@@ -29,3 +29,25 @@ class Solution(object):
         :type root: TreeNode
         :rtype: List[int]
         """
+'''
+Case analyse:
+      1
+     / \
+    2   5
+   / \
+  3   4
+Inorder traversal: Only all the left child of the node is marked down or left child node is None, can the node be marked down
+Let's analyse this inorder traversal:
+At each level of the binary tree,
+there are 3 things to be done, so obviously this is a recursion case
+1. Continued jump into the leftest node
+2. Marked down the root node in the center
+3. Jumped into the right branch
+We can convert this 3 operations into python code:
+   self.helper(root.left)
+   res.append(root)
+   self.helper(root.right)
+Whenever we encounter a recursion case, we must add one existing condition to exit
+Here, let's look at the graph, The 3 operations is not applicable for the last level of the tree where root.left is None and must return
+So, the existing condition is if root is None: return
+'''
