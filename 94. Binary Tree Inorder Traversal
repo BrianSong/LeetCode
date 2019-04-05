@@ -51,3 +51,14 @@ Whenever we encounter a recursion case, we must add one existing condition to ex
 Here, let's look at the graph, The 3 operations is not applicable for the last level of the tree where root.left is None and must return
 So, the existing condition is if root is None: return
 '''
+'''
+This principle also applies to preorder and postorder:
+In preoder:
+   res.append(root)
+   self.helper(root.left)
+   self.helper(root.right)
+In postorder:
+   self.helper(root.left)
+   self.helper(root.right)
+   res.append(root)
+'''
