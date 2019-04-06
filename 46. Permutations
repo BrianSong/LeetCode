@@ -1,0 +1,60 @@
+Given a collection of distinct integers, return all possible permutations.
+
+Example:
+
+Input: [1,2,3]
+Output:
+[
+  [1,2,3],
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
+]
+
+Solution:
+class Solution(object):
+    def permute(self, nums):
+        clist = []
+        res = []
+        self.help(nums, clist, res)
+        return res
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        
+    def help(self, nums, clist, res):
+        if len(clist) == len(nums):
+            res.append(clist[:])
+            '''
+            Important!!!!!
+            If change the clist[:] to simply just clist, it does not work!!!!
+            When I append clist to res, 
+            I insert a reference to it. 
+            So, now clist and res[0] both refer to the same object. 
+            Then, I append it again, and all of: res[1], res[2]... refer to the same object. 
+            Therefore, when I edit clist, the items in the res list also change. 
+            Because all refer to the same object... 
+            To put it another way, using res.append(clist) does not make a copy of clist.
+            So, I use the notation clist[:] creates a copy of the clist. 
+            Technically, I am creating a slice of the whole list.
+            Source:
+            https://stackoverflow.com/questions/5280799/list-append-changing-all-elements-to-the-appended-item
+            Here, what i am doing is to append a changing list instead of a constant value as before! So this is totally different!
+            '''
+            else:
+            for item in nums:
+                if not item in clist:
+                    clist.append(item)
+                    self.help(nums, clist, res)
+                    clist.remove(item) # remove this item and finish this loop
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
