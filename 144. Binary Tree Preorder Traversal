@@ -23,9 +23,7 @@ class Solution(object):
         :rtype: List[int]
         """
     def traver_help(self, res, root):
-        if root is None:
-            return
-        else:
+         if not root is None:
             res.append(root.val)
             self.traver_help(res, root.left)
             self.traver_help(res, root.right)
