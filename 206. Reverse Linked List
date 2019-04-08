@@ -1,0 +1,53 @@
+Reverse a singly linked list.
+
+Example:
+
+Input: 1->2->3->4->5->NULL
+Output: 5->4->3->2->1->NULL
+
+Iteratively solution:
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseList(self, head):
+        prev = None
+        current = head
+        while current:
+            next = current.next     # first store other linked list information  
+            current.next = prev     # let current's next equal to prev e.x. orginially 1.next = 2, here we let 1.next = None
+            prev = current          # Since prev will be use in the assignment so it need to be updated every loop, this loop's current is 
+                                    # next loop's current
+            current = next          # Of course, current need to be updated to next in order to jump off the while loop in the future
+            '''
+            After changing, 
+            1.next = None,
+            2.next = 1
+            3.next = 2
+            4.next = 3
+            5.next = 4
+            So, 5-4-3-2-1
+            '''
+        return prev
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+Recursive solution:
+class Solution(object):
+    def reverseList(self, head):
+        prev = None
+        current = head
+        return self.rever_help(prev, current) # Return CANNOT BE FORGOT!!!!
+        
+    def rever_help(self, prev, current):
+        if current is None:
+            return prev
+        else:
+            nextele = current.next
+            current.next = prev
+            return self.rever_help(current, nextele) # There must be a return here because of syntax: this function is used to return
+                                                     # something so, if and else must both have a "return"
