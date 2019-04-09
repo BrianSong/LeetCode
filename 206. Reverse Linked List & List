@@ -51,3 +51,18 @@ class Solution(object):
             current.next = prev
             return self.rever_help(current, nextele) # There must be a return here because of syntax: this function is used to return
                                                      # something so, if and else must both have a "return"
+
+
+
+Reverse List:
+def reverse(nums):
+  for i in range(len(nums)/2 - 1):
+    nums[i], nums[len(nums)- 1 - i] = nums[len(nums)- 1 - i], nums[i],
+  return nums
+nums = [1, 2, 3, 4, 5, 6]
+res = reverse(nums)
+print res
+
+
+
+
