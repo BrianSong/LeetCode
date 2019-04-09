@@ -44,7 +44,7 @@ class Solution(object):
             https://stackoverflow.com/questions/5280799/list-append-changing-all-elements-to-the-appended-item
             Here, what i am doing is to append a changing list instead of a constant value as before! So this is totally different!
             '''
-            else:
+        else:
             for item in nums:
                 if not item in clist:
                     clist.append(item)
