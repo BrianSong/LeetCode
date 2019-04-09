@@ -41,3 +41,14 @@ class Solution(object):
         :rtype: bool
         """
 
+Solution 3: Hashtable
+class Solution(object):
+    def containsDuplicate(self, nums):
+        hashtable = {}
+        for item in nums:
+            if not item in hashtable:
+                hashtable[item] = 1
+            else:
+                return True
+        return False
+
