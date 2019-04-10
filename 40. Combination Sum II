@@ -1,0 +1,58 @@
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note:
+
+All numbers (including target) will be positive integers.
+The solution set must not contain duplicate combinations.
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8,
+A solution set is:
+[
+  [1, 7],
+  [1, 2, 5],
+  [2, 6],
+  [1, 1, 6]
+]
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5,
+A solution set is:
+[
+  [1,2,2],
+  [5]
+]
+
+Solution:
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        res = []
+        clist = []
+        self.comb_help(sorted(candidates), target, clist, res) 
+        res = sorted(res)                                                             # Solved the duplicated problem
+                                                                                      # [2,5,2,1,2] three 2 inside the candidate
+        final_res = [res[i] for i in range(len(res)) if i == 0 or res[i-1] != res[i]] # Maybe a smarter way to do inside comb_help()
+                                                                                      # Maybe followed up in the future
+        return final_res
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+    def comb_help(self, candidates, target, clist, res):
+        for idex, item in enumerate(candidates):
+            if item > target:
+                break
+            clist.append(item)
+            if item == target:
+                res.append(clist[:])
+                clist.pop()
+                break
+            if item < target:
+                curridex = candidates.index(item)
+                prev = item
+                self.comb_help(candidates[curridex+1:], target-item, clist, res) # curridex+1 make sure :Each number in candidates 
+                                                                                 # may only be used once in the combination.
+                clist.pop()
