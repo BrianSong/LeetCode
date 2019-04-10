@@ -51,7 +51,9 @@ class Solution(object):
                 clist.pop()
                 break
             if item < target:
-                curridex = candidates.index(item)
+                curridex = candidates.index(item) # Not a start way to find index for a list contains duplicate elements,
+                                                 # For example, [1, 1, 2], index(1) will only return 0 even this 1 is actually second 1
+                                                 # So i use a little slow way to fix this problem above in line 36
                 prev = item
                 self.comb_help(candidates[curridex+1:], target-item, clist, res) # curridex+1 make sure :Each number in candidates 
                                                                                  # may only be used once in the combination.
