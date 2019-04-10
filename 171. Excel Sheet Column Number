@@ -1,0 +1,82 @@
+Given a column title as appear in an Excel sheet, return its corresponding column number.
+
+For example:
+
+    A -> 1
+    B -> 2
+    C -> 3
+    ...
+    Z -> 26
+    AA -> 27
+    AB -> 28 
+    ...
+Example 1:
+
+Input: "A"
+Output: 1
+Example 2:
+
+Input: "AB"
+Output: 28
+Example 3:
+
+Input: "ZY"
+Output: 701
+
+Solution no.1(my own):
+class Solution(object):
+    def titleToNumber(self, s):
+        res = 0
+        dic = {
+            "A": 1,
+            "B": 2,
+            "C": 3,
+            "D": 4,
+            "E": 5,
+            "F": 6,
+            "G": 7,
+            "H": 8,
+            "I": 9,
+            "J": 10,
+            "K": 11,
+            "L": 12,
+            "M": 13,
+            "N": 14,
+            "O": 15,
+            "P": 16,
+            "Q": 17,
+            "R": 18,
+            "S": 19,
+            "T": 20,
+            "U": 21,
+            "V": 22,
+            "W": 23,
+            "X": 24,
+            "Y": 25,
+            "Z": 26
+        }
+        for i in range(len(s)):
+            res += dic[s[len(s)-i-1]] * (26**i)
+            print res
+        return res
+        """
+        :type s: str
+        :rtype: int
+        """
+        
+
+Solution no.2: - ord() 
+'''
+ord() 函数是 chr() 函数（对于8位的ASCII字符串）或 unichr() 函数（对于Unicode对象）的配对函数，它以一个字符（长度为1的字符串）作为参数，
+返回对应的 ASCII 数值，或者 Unicode 数值，如果所给的 Unicode 字符超出了你的 Python 定义范围，则会引发一个 TypeError 的异常。
+'''
+class Solution(object):
+    def titleToNumber(self, s):
+        res = 0
+        for i in range(len(s)):
+            res += (ord(s[len(s)-i-1])-64) * (26**i) # ord("A") = 65, ord("B") = 66....
+        return res
+        """
+        :type s: str
+        :rtype: int
+        """
