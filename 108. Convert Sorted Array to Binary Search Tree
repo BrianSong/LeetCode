@@ -1,0 +1,49 @@
+Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+
+For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+
+Example:
+
+Given the sorted array: [-10,-3,0,5,9],
+
+One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
+
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+ 
+ Solution:
+ # Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        return self.to_bst_help(nums, 0, len(nums)-1)
+        """
+        :type nums: List[int]
+        :rtype: TreeNode                                     # It requires us to return a node
+        """
+    def to_bst_help(self, nums, start, end):
+        if start > end:                                      # This condition used very often, need to be remembered
+            return None
+        mid = (start + end) / 2                              # '/' in python 2 is '//'
+        node = TreeNode(nums[mid])                           # Can define a node using its build-in class
+        node.left = self.to_bst_help(nums, start, mid - 1)   # Since the function need to return a node, we should use assignment here
+        node.right = self.to_bst_help(nums, mid + 1, end)     
+        '''
+        node.left = nums[mid - 1]                            # Why cannot do like this?
+                                                             # mid may be zero  e.x.: (0 + 1)/ 2 = 0
+                                                             # and node.left should be None in the end as in the line 34
+                                                             # So, use the recursion function for assignment
+                                                             # THINK LIKE A PROGRAMMER!
+        node.right = nums[end]
+        self.to_bst_help(nums, start, mid - 1)
+        self.to_bst_help(nums, mid + 1, end)           
+        '''
+        return node                                          # As the question required 
