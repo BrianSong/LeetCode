@@ -1,0 +1,68 @@
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+push(x) -- Push element x onto stack.
+pop() -- Removes the element on top of the stack.
+top() -- Get the top element.
+getMin() -- Retrieve the minimum element in the stack.
+Example:
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> Returns -3.
+minStack.pop();
+minStack.top();      --> Returns 0.
+minStack.getMin();   --> Returns -2.
+
+Solution: EVERY FUNCTION WE DESIGN SHOULD RUN IN CONSTANT TIME!!!!!!!!!!!!!!!!!!O(1)!!!!!!
+class MinStack(object):
+
+    def __init__(self):
+        self.stack = []
+        """
+        initialize your data structure here.
+        """
+        
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        currmin = self.getMin()
+        if currmin is None or x < currmin:
+            currmin = x
+        self.stack.append((x, currmin))              # Design a tuple to store the current value and current minimum number
+                                                     # In this way, we can get a O(1) instead of O(n) in the getMin()
+                                                     # Since we may need to go over all element in the stack to find the minimum
+        
+    def pop(self):
+        """
+        :rtype: None
+        """
+        self.stack.pop()
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        if self.stack == []: 
+            return None
+        else:
+            return self.stack[-1][0]
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        if self.stack == []: 
+            return None
+        else:
+            return self.stack[-1][1]
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
