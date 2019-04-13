@@ -1,0 +1,82 @@
+Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+
+Calling next() will return the next smallest number in the BST.
+
+Example:              7
+                    /   \
+                   3    15
+                       /  \
+                      9    20
+
+BSTIterator iterator = new BSTIterator(root);
+iterator.next();    // return 3
+iterator.next();    // return 7
+iterator.hasNext(); // return true
+iterator.next();    // return 9
+iterator.hasNext(); // return true
+iterator.next();    // return 15
+iterator.hasNext(); // return true
+iterator.next();    // return 20
+iterator.hasNext(); // return false
+ 
+
+Note:
+
+next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+You may assume that next() call will always be valid, that is, 
+there will be at least a next smallest number in the BST when next() is called.
+
+Solution:
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class BSTIterator(object):
+
+    def __init__(self, root):
+        self.stack = []                                  # Stack : First In, Last Out
+                                                         # Can be implemented in python using append() and pop()
+        self.help(root)
+        
+        
+        """
+        :type root: TreeNode
+        """
+        
+    def hasNext(self):
+        if self.stack == []:                            
+            return False
+        else:
+            return True
+        """
+        @return whether we have a next smallest number
+        :rtype: bool
+        """  
+
+    def next(self):
+        
+        n = self.stack.pop()                             # return the smallest node in the BST
+        self.help(n.right)                               # Then, append the second smallest node into the stack if it is not None
+                                                         # Even if it is None, as designed in the help(), stack will not append anything
+                                                         # Then, the second smallest node:
+                                                         # the mother node will be the one that be pop()
+        return n.val
+        
+        """
+        @return the next smallest number
+        :rtype: int
+        """
+        
+    def help(self, root):
+        while not root is None:
+            self.stack.append(root)                      # Append itself into the s
+            root = root.left                             # Append the one which is "the most" smaller to itself and repeated
+                                                         # So, after the initialation, stack.pop() will return the smallest node
+
+# Your BSTIterator object will be instantiated and called as such:
+# obj = BSTIterator(root)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()
