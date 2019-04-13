@@ -27,8 +27,8 @@ Example 5:
 Input: "{[]}"
 Output: true
 
-Solution:
-class Solution(object):
+Solution: ---------------------------------------------------------------------------Stack
+class Solution(object):                                                          
     def isValid(self, s):
         stack = []
         for i in s:
