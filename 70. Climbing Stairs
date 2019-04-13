@@ -1,0 +1,43 @@
+You are climbing a stair case. It takes n steps to reach to the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Note: Given n will be a positive integer.
+
+Example 1:
+
+Input: 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+Example 2:
+
+Input: 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+
+Solution: 一道非常典型的动态规划题
+class Solution(object):
+    def climbStairs(self, n):
+        nums = [0] * (n + 1)                     # Step 1
+        nums[0], nums[1] = 1, 1                  # Step 2
+        '''
+        Very classic DP question:
+        The question gives a hint: "Each time you can either climb 1 or 2 steps." 
+        and we can use this to build the relationship between current status variable with the previous status variable!!!!!!!!!!!!!!!!!
+        The status for this moment must come from the status from a step before or two step before
+        So, nums[i] = nums[i-1] + nums[i-2]
+        '''
+        for i in range(2, n+1):
+            nums[i] = nums[i-1] + nums[i-2]
+        return nums[n]
+            
+        """
+        :type n: int
+        :rtype: int
+        """
+        
