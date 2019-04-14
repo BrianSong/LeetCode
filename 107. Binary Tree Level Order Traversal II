@@ -48,7 +48,8 @@ class Solution(object):
 Solution no.2:
 class Solution(object):
     def levelOrderBottom(self, root):
-        queue, res = collections.deque([(root, 0)]), []      # Introduce a level to record the current level in the Binary Tree
+        queue, res = collections.deque([(root, 0)]), [] # Introduce a level to record the current level in the Binary Tree
+                                                       # collections.deque() is a build-in function which can popleft() and appendleft()
         print queue
         while queue:
             node, level = queue.popleft()
