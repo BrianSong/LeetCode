@@ -14,7 +14,7 @@ But the following [1,2,2,null,3,null,3] is not:
    \   \
    3    3
    
-Solution: ----------------------------------------------------------- Divide and Conquer
+Solution: ----------------------------------------------------------- Divide and Conquer ----- https://www.youtube.com/watch?v=hL4sXXZ1K1Y
 class Solution(object):
     def isSymmetric(self, root):
         if root is None:
