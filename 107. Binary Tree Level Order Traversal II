@@ -1,0 +1,61 @@
+Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its bottom-up level order traversal as:
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+
+Solution no.1(my own):--------------------------------- almost the same as Q.102
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def levelOrderBottom(self, root):
+        if root is None:
+            return[]
+        queue = []
+        res = []
+        queue.append(root)
+        while queue != []:
+            currlist = []
+            size = len(queue)
+            for i in range(size):
+                pop_element = queue.pop(0)
+                currlist.append(pop_element.val)
+                if not pop_element.left is None:
+                    queue.append(pop_element.left)
+                if not pop_element.right is None:
+                    queue.append(pop_element.right)
+            res.insert(0, currlist)                         # Since the question wants reverse, just change append() into insert()
+        return res
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+Solution no.2:
+class Solution(object):
+    def levelOrderBottom(self, root):
+        queue, res = collections.deque([(root, 0)]), []      # Introduce a level to record the current level in the Binary Tree
+        print queue
+        while queue:
+            node, level = queue.popleft()
+            if node:
+                if len(res) < level+1:
+                    res.insert(0, [])
+                res[-(level+1)].append(node.val)             # 相同level的将被加入同一个[]
+                queue.append((node.left, level+1))
+                queue.append((node.right, level+1))
+        return res
