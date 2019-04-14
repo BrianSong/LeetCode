@@ -1,0 +1,73 @@
+Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+Example:
+
+Input: [1,2,3,null,5,null,4]
+Output: [1, 3, 4]
+Explanation:
+
+   1            <---
+ /   \
+2     3         <---
+ \     \
+  5     4       <---
+  
+  
+Solution no.1: ------------------------------ DFS -------------------------- https://www.youtube.com/watch?v=f72I2qz9K7k
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def rightSideView(self, root):
+        if root is None:
+            return []
+        res = []
+        self.dfs_help(root, 0, res)
+        return res
+        
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+    def dfs_help(self, root, currlevel, res):          
+        if not root is None:
+            if currlevel == len(res):                       # Record a level: Each time we reach a new level, we add the 
+                res.append(root.val)                        # current visiting node into our solution
+            self.dfs_help(root.right, currlevel + 1, res)   # DFS visiting order: self -> right -> left
+            self.dfs_help(root.left, currlevel + 1, res)    # Since the question is "Right Side View"
+                                                            # If "Left Side View", then self -> left -> right
+
+Solution no.2: ---------------------------- BFS -------------------------------- https://www.youtube.com/watch?v=f72I2qz9K7k
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def rightSideView(self, root):
+        if root is None:
+            return []
+        queue, res = [], []
+        queue.append(root)
+        while len(queue) > 0:
+            size = len(queue)
+            for i in range(1, size + 1):
+                pop_element = queue.pop(0)
+                if i == size:
+                    res.append(pop_element.val)
+                if not pop_element.left is None:
+                    queue.append(pop_element.left)
+                if not pop_element.right is None:
+                    queue.append(pop_element.right)
+        return res
+                    
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
