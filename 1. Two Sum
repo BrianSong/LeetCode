@@ -1,0 +1,43 @@
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+
+Solution no.1: ok for normal case, but failed because of "Time Limit Exceeded" : 运算时间太长，需要优化
+This code's time complexity is o(n^2), as you know, N will bigger than 16000, so this complexity is unacceptable
+class Solution(object):
+    def twoSum(self, nums, target):
+        res = []
+        currlist = []
+        curridex = 0
+        self.twoSum_help(nums, target, res, currlist, curridex)
+        return res
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+    def twoSum_help(self, nums, target, res, currlist, curridex):
+        if len(currlist) == 2 and target == 0:
+            res.extend(currlist[:])
+        if len(currlist) < 2:
+            for i in range(curridex, len(nums)):
+                currlist.append(i)
+                self.twoSum_help(nums, target - nums[i], res, currlist, i + 1)
+                currlist.pop()
+
+Solution no.2: -------------------------------- Hashtable 
+class Solution(object):
+    def twoSum(self, nums, target):
+        dic = {}                         # Create a dictionary that record the value and its index
+        for i, n in enumerate(nums):     # for example: dic = {0:2, 1:7, 2:11, 3:15}, key:value
+            if n in dic:                 # value in dic not key in dic
+                return(dic[n], i)        # dic[value] -> key
+            else:
+                dic[target - n] = i
