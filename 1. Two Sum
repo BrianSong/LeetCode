@@ -38,6 +38,6 @@ class Solution(object):
         dic = {}                         # Create a dictionary that record the value and its index
         for i, n in enumerate(nums):     # for example: dic = {0:2, 1:7, 2:11, 3:15}, key:value
             if n in dic:                 # value in dic not key in dic
-                return(dic[n], i)        # dic[value] -> key
+                return(dic[n], i)        # dic[key] -> value. key is like a special index
             else:
                 dic[target - n] = i
