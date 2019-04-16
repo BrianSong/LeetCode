@@ -21,6 +21,7 @@ class Solution(object):
                                                     # append() or += or -= operators
         for item in strs:
             hashmap[str(sorted(item))].append(item) # key can only be integer, string or tuple
+                                                    # sort() is a very useful tool for "Anagrams" problems
         return hashmap.values()                     # dictionary.values() return all its values
         """
         :type strs: List[str]
