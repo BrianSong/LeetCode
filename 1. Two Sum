@@ -35,9 +35,10 @@ class Solution(object):
 Solution no.2: -------------------------------- Hashtable 
 class Solution(object):
     def twoSum(self, nums, target):
-        dic = {}                         # Create a dictionary that record the value and its index
-        for i, n in enumerate(nums):     # for example: dic = {0:2, 1:7, 2:11, 3:15}, key:value
-            if n in dic:                 # value in dic not key in dic
+        dic = {}                         # Create a dictionary that record the key:value pair
+        for i, n in enumerate(nums):     # for example: dic = {2:0, 7:1, 11:2, 15:3}, key:value
+            if n in dic:                 # "key in dic" instead of  "value in dic"; can only if key in dic, if value in dic: error
+                                         # value in dic can only be assess by dic[key]
                 return(dic[n], i)        # dic[key] -> value. key is like a special index
             else:
                 dic[target - n] = i
