@@ -1,0 +1,40 @@
+Given a positive integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
+
+Example:
+
+Input: 3
+Output:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+
+Solution: -------------------------------------------- https://www.youtube.com/watch?v=dfGhf-Ko0L4
+class Solution(object):
+    def generateMatrix(self, n):
+        res = [[0 for x in range(n)] for y in range(n)]
+        top, buttom, left, right, number = 0, n-1, 0, n-1, 1 # Defining four variables is very common in 2-D matrix 
+                                                             # to track the current location
+        while left < right and top < buttom:
+            for i in range(left, right):
+                res[top][i] +=  number
+                number += 1
+            for i in range(top, buttom):
+                res[i][right] += number
+                number += 1
+            for i in range(right, left, -1):
+                res[buttom][i] += number
+                number += 1
+            for i in range(buttom, top, -1):
+                res[i][left] += number
+                number += 1
+            top += 1
+            buttom -= 1
+            left += 1
+            right -= 1
+
+        if top == buttom and right == left:     # Only one Special case: leave one element
+            res[top][right] += number
+
+        return res
