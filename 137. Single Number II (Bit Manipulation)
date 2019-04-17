@@ -24,6 +24,14 @@ Input: [0,1,0,1,0,1,99]
 Output: 99
 
 Solution:------------------------------------------- https://www.youtube.com/watch?v=puXcQpwgcD0
+'''
+& : and
+| : or
+^ : XOR, same -> 0, different -> 1
+~ : 0 -> 1, 1 -> 0
+<<: 左移
+>>: 右移
+'''
 class Solution(object):
     def singleNumber(self, nums):
         res = 0
