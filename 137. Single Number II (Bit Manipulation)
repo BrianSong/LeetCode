@@ -1,0 +1,45 @@
+137. Single Number II
+Medium
+
+751
+
+244
+
+Favorite
+
+Share
+Given a non-empty array of integers, every element appears three times except for one, which appears exactly once. Find that single one.
+
+Note:
+
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Example 1:
+
+Input: [2,2,3,2]
+Output: 3
+Example 2:
+
+Input: [0,1,0,1,0,1,99]
+Output: 99
+
+Solution:------------------------------------------- https://www.youtube.com/watch?v=puXcQpwgcD0
+class Solution(object):
+    def singleNumber(self, nums):
+        res = 0
+        for i in range(32):
+            counter = 0
+            for num in nums:
+                counter += (num >> i) & 1     # >> : 右移动运算符：把">>"左边的运算数的各二进位全部右移若干位，>> 右边的数字指定了移动的位数
+                                              # num >> i is an integer, we use & 1 to get the binary_representation[i]
+            rem = counter % 3                 # take the remainder with 3 because every element appears three times except for one
+                                              # So, if every element appears five times except for one, we use % 5
+            if i == 31 and rem:               # Must handle the negative case
+                res -= 1 << 31                # 1 << 31 = 2147483648
+            else:
+                res |= rem << i               # use |= to update the res in binary form everytime
+        return res
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
