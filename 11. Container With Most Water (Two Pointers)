@@ -1,0 +1,40 @@
+Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+
+Note: You may not slant the container and n is at least 2.
+
+ 
+
+
+
+The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+
+ 
+
+Example:
+
+Input: [1,8,6,2,5,4,8,3,7]
+Output: 49
+
+Solution: -------------------------------------------------------- https://www.youtube.com/watch?v=pdKz9TvIjS8
+class Solution(object):
+    def maxArea(self, height):
+        left, right = 0, len(height) - 1           # Define this two pointers
+        currvolume = 0                             # Also define a current volume and update it in every iteration
+        while left < right:                        # Very classic exiting condition for two-pointers
+            currvolume = max(currvolume, (right - left) * (min(height[left], height[right])))
+            if height[left] > height[right]:       # We only need to move the smaller side because it is the 瓶颈
+                                                   # If we move the larger side, the volumn will only be smaller because 
+                                                   # the width decreases and the maximum height is controlled by the smaller side
+                right -= 1
+            elif height[left] < height[right]:
+                left += 1
+            else:                                  # If the two side is the same, we should move them together since
+                                                   # they are both the "smaller" side under this situation
+                left += 1
+                right -= 1
+        return currvolume
+            
+        """
+        :type height: List[int]
+        :rtype: int
+        """
