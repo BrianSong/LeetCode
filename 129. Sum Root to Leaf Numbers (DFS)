@@ -1,0 +1,84 @@
+Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
+
+An example is the root-to-leaf path 1->2->3 which represents the number 123.
+
+Find the total sum of all root-to-leaf numbers.
+
+Note: A leaf is a node with no children.
+
+Example:
+
+Input: [1,2,3]
+    1
+   / \
+  2   3
+Output: 25
+Explanation:
+The root-to-leaf path 1->2 represents the number 12.
+The root-to-leaf path 1->3 represents the number 13.
+Therefore, sum = 12 + 13 = 25.
+Example 2:
+
+Input: [4,9,0,5,1]
+    4
+   / \
+  9   0
+ / \
+5   1
+Output: 1026
+Explanation:
+The root-to-leaf path 4->9->5 represents the number 495.
+The root-to-leaf path 4->9->1 represents the number 491.
+The root-to-leaf path 4->0 represents the number 40.
+Therefore, sum = 495 + 491 + 40 = 1026.
+
+Solution no.1(my own):
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def sumNumbers(self, root):
+        if root is None:
+            return 0
+        currlist, res = [], []
+        self.dfs(root, currlist, res)
+        string, sum = "", 0
+        for item in res:
+            for i in range(len(item)):
+                string += str(item[i])
+            sum += int(string)
+            string = ""                                # Remember to RESET the string!!!!!!!!!
+        return sum
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+    def dfs(self, root, currlist, res):
+        if root is None:
+            return
+        currlist.append(root.val)
+        if root.left is None and root.right is None:
+            res.append(currlist[:])
+            currlist.pop()                            # Remember to RESET the currlist!!!!!!!!!
+            return
+        self.dfs(root.left, currlist, res)
+        self.dfs(root.right, currlist, res)
+        currlist.pop()                                # Remember to RESET the currlist!!!!!!!!!
+        
+Solution no.2: ----------- Much more concise one
+class Solution(object):
+    def sumNumbers(self, root):
+        self.res = 0
+        self.dfs(root, 0)
+        return self.res
+
+    def dfs(self, root, value):
+        if root:                                      # Classic boundary condition for dfs
+            self.dfs(root.left, value*10+root.val)    # Go left, "* 10" here is very clever
+            self.dfs(root.right, value*10+root.val)   # Go right
+            if not root.left and not root.right:      # Encounter the leaf node, time to add the result
+                self.res += value*10 + root.val
