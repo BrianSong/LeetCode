@@ -37,7 +37,8 @@ class Solution(object):
         left, right = 0, len(nums) - 1       # Set two pointer for binary search
         # handle condition 3
         while left < right:
-            mid = (left + right) / 2
+            mid = (left + right) / 2                                    # We can make sure that every element will be reviewed 
+                                                                        # because of "/"
             if nums[mid] > nums[mid + 1] and nums[mid] > nums[mid - 1]: # Case 1: find the peak right away
                 return mid
             elif nums[mid] > nums[mid + 1]:                             # Case 2: Descending, we do not need the right part
