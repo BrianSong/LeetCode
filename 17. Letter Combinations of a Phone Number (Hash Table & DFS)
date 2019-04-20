@@ -44,4 +44,4 @@ class Solution(object):
                                                                             # 一开始是2, 2对应的是['a', 'b', 'c']
                                                                             # 故在['a', 'b', 'c']中先选择 'a'这条路，继续往下递归
             self.dfs_help(currstr + letter, index + 1, digits, res, dic)    # update currstr(最终走完这条路后会加入答案中) 
-                                                                            # and index(让这条路继续往下走到下一个分岔口----"3"对应的选择谁)      
+                                                                           # and index(让这条路继续往下走到下一个分岔口----"3"对应的选择谁)      
