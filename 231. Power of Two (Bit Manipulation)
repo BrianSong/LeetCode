@@ -1,0 +1,30 @@
+Given an integer, write a function to determine if it is a power of two.
+
+Example 1:
+
+Input: 1
+Output: true 
+Explanation: 20 = 1
+Example 2:
+
+Input: 16
+Output: true
+Explanation: 24 = 16
+Example 3:
+
+Input: 218
+Output: false
+
+Solution no.1:
+class Solution(object):
+    def isPowerOfTwo(self, n):
+        counter = 0
+        for i in range(32):
+            counter += (n >> i) & 1                # n >> i, n转换为二进制后右移i位的最右位
+        return n > 0 and counter == 1
+        
+Solution no.2:
+class Solution(object):
+    def isPowerOfTwo(self, n):
+        return n > 0 and bin(n).count('1') == 1    # bin() 返回一个整数 int 或者长整数 long int 的二进制表示 
+                                                   # bin() return a string with build-in function count()
