@@ -1,0 +1,49 @@
+Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right, then right to left for the next level and alternate between).
+
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its zigzag level order traversal as:
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+
+Solution: ------------------------------------------------------- https://www.youtube.com/watch?v=U77m7wWWhV0
+class Solution(object):
+    def zigzagLevelOrder(self, root):
+        if root is None:
+            return None
+        size, level, deque, currlist, res = 0, 0, collections.deque(), [], []   # Introduce a new data type: collections.deque()
+                                                                         # Build-in functions: pop(), popleft(), append(), appendleft()
+        deque.append(root)
+        while len(deque) != 0:
+            size = len(deque)
+            for i in range(size):
+                if level % 2 == 0:                           # Case 1: we should popleft() and append(left) and append(right)
+                    pop_element = deque.popleft()     
+                    currlist.append(pop_element.val)
+                    if pop_element.left:
+                        deque.append(pop_element.left)
+                    if pop_element.right:
+                        deque.append(pop_element.right)
+                else:                                        # Case 2: we should pop() and appendleft(right) and appendleft(left)
+                    pop_element = deque.pop()
+                    currlist.append(pop_element.val)
+                    if pop_element.right:
+                        deque.appendleft(pop_element.right)
+                    if pop_element.left:
+                        deque.appendleft(pop_element.left)
+            res.append(currlist[:])
+            currlist = []
+            level += 1
+        return res
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
