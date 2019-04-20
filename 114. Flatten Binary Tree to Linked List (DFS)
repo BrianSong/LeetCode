@@ -1,0 +1,46 @@
+Given a binary tree, flatten it to a linked list in-place. ---------------------------- in place: we cannot create another linked list
+
+For example, given the following tree:
+
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+The flattened tree should look like:
+
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+          
+Solution: -------------------------------------------------- https://www.youtube.com/watch?v=LfKRZ_qCmYQ
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def flatten(self, root):
+        self.prevnode = None              # Global variable to store the previous node
+        self.dfs_help(root)
+        """
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+    def dfs_help(self, root):
+        if root:
+            self.dfs_help(root.right)     # Reverse preorder traversal to get the rightest node
+            self.dfs_help(root.left)
+            root.right = self.prevnode    # Connect the stored previous node to the current rightest node that has not been processed
+            root.left = None              # Let the left node to be NONE as required by the question
+            self.prevnode = root          # Update the global variable to store the current node
