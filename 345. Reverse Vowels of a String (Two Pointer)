@@ -1,0 +1,47 @@
+Write a function that takes a string as input and reverse only the vowels of a string.
+
+Example 1:
+
+Input: "hello"
+Output: "holle"
+Example 2:
+
+Input: "leetcode"
+Output: "leotcede"
+Note:
+The vowels does not include the letter "y".
+
+Solution: ---------------------------------------------------------------------------------------- Two Pointer
+class Solution(object):
+    def reverseVowels(self, s):
+        if s is None or len(s) == 0:
+            return ""
+        slist = list(s)                                                     # Must convert the string into list, otherwise
+                                                                            # we cannot assign value to s[n] since it is unicode
+        vowels = set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'])
+        left, right = 0, len(s) - 1                                         # REMEMBER TO ADD "-1" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        while left < right:
+            if slist[left] in vowels and slist[right] in vowels:
+                slist[left], slist[right] = slist[right], slist[left]
+                left += 1
+                right -= 1
+            elif slist[left] in vowels and not slist[right] in vowels:
+                right -= 1
+            elif not slist[left] in vowels and slist[right] in vowels:
+                left += 1
+            else:
+                left += 1
+                right -= 1
+        return ''.join(slist)
+        '''
+        Python join() 方法用于将序列中的元素以指定的字符连接生成一个新的字符串
+        str.join(sequence) ------------ sequence -- 要连接的元素序列
+        str = "-";
+        seq = ["a", "b", "c"] # 字符串序列
+        print str.join(seq)
+        >>>>>>>> a-b-c
+        '''
+        """
+        :type s: str
+        :rtype: str
+        """
