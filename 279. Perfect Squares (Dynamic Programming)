@@ -1,0 +1,36 @@
+Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+
+Example 1:
+
+Input: n = 12
+Output: 3 
+Explanation: 12 = 4 + 4 + 4.
+Example 2:
+
+Input: n = 13
+Output: 2
+Explanation: 13 = 4 + 9.
+
+Solution:
+class Solution(object):
+    def numSquares(self, n):
+        if n <= 0:                                               # Pointless when n is not positive
+            return None
+        dp = [0] * (n + 1)                                       # Create a dynamic programming list for storing answer and 
+                                                                 # make connection between past and present: characteristic for DP
+        for i in range(1, n + 1):
+            local_res = float('inf')
+            j = 1
+            while i - j * j >= 0:                                # Try every possible perfect square number 
+                local_res = min(local_res, dp[i - j * j] + 1)    # Update local_res and find its minimum as required by the question
+                '''
+                why dp[i - j * j] + 1 ?
+                i and i - j * j 差的就是这一个perfect square number j * j, so in dp[], they only differ by 1
+                '''
+                j += 1
+            dp[i] = local_res
+        return dp[n]
+        """
+        :type n: int
+        :rtype: int
+        """
