@@ -18,6 +18,14 @@ class Solution(object):
             return None
         dp = [0] * (n + 1)                                       # Create a dynamic programming list for storing answer and 
                                                                  # make connection between past and present: characteristic for DP
+                                                                 # When we initialize the list with a certain value,
+                                                                 # we cannot write "dp = [] * 10", in this case,
+                                                                 # dp[1] will return wrong, so we must write [0] * 10 or [None] * 10
+                                                                 # and it is very important to think about what initial value we should
+                                                                 # take to initilize the list. Here [None] * 10 is wrong since we use
+                                                                 # min() later, this function cannot compare between None and int.
+                                                                 # Also, [1] * 10 is also wrong, since we demand dp[0] should be 0 
+                                                                 # for later dp[i - j * j] + 1, if dp[0] == 1, dp[1] will be 2 - wrong
         for i in range(1, n + 1):
             local_res = float('inf')
             j = 1
