@@ -66,4 +66,4 @@ class Solution(object):
             DO IT ONCE BY A TIME SO THAT THE COMPUTER WILL NOT GET CONFUSED BETWEEN CALLING THE FUNCTIONS AND DO OR LOGIC DECISION!!!!
             '''
             else:
-                return max(depth_left, depth_right) + 1
+                return max(depth_left, depth_right) + 1    # "+ 1" is the key in this algorithm that connecting inside the recursion
