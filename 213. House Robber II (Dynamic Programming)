@@ -36,7 +36,7 @@ class Solution(object):
     def rob(self, nums):
         if nums is None or len(nums) == 0:
             return 0
-        if len(nums) == 1:
+        if len(nums) == 1:                                       # len(nums) == 1 也要考虑，because we eliminate r_rf[n]
             return nums[0]
         r_rf, nr_rf, r_nrf, nr_nrf = [0] * len(nums), [0] * len(nums), [0] * len(nums), [0] * len(nums)
         r_rf[0], nr_rf[0], r_nrf[0], nr_nrf[0] = nums[0], 0, 0, 0
