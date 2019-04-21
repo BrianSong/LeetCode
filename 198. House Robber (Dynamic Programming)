@@ -1,0 +1,53 @@
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, 
+the only constraint stopping you from robbing each of them is that adjacent houses have security system connected 
+and it will automatically contact the police if two adjacent houses were broken into on the same night.
+
+Given a list of non-negative integers representing the amount of money of each house, 
+determine the maximum amount of money you can rob tonight without alerting the police.
+
+Example 1:
+
+Input: [1,2,3,1]
+Output: 4
+Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
+             Total amount you can rob = 1 + 3 = 4.
+Example 2:
+
+Input: [2,7,9,3,1]
+Output: 12
+Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1).
+             Total amount you can rob = 2 + 9 + 1 = 12.
+             
+Solution: ----------------------------------------------------------- https://www.youtube.com/watch?v=-i2BFAU25Zk
+'''
+4 steps for DP problem:--------- 当前状态是与之前的状态有关的，或者是由之前的状态直接得到的！！！！！！
+1. Status variable: for each house, we have 2 choices: rob or not rob,
+                    so, we define two status variable: two list:
+                    if we rob the current house, the maximum money we can get: r[n]
+                    if we do not rob the current house , the maximum money we can get: nr[n]
+2. Init: r[0] = nums[0], nr[0] = 0
+3. Transformation: r[i] = nr[i - 1] + nums[i], since if we want to rob this house, we cannot rob the previous house,
+                   and the nr[i - 1] by definition, is the maximum money that we do no rob the previous house,
+                   so, we just add them up.
+                   nr[i] = max(r[i - 1], nr[i - 1]), as for nr[i], things are a little more tricky,
+                   since we can choose to rob the previous house and  we can choose not to rob the previous house,
+                   so, we just take their maximum, the larger one.
+                   As for the r[i], it has no choices like this, since, if we choose to rob the current house,
+                   there is no way for us to define robbing the previous house as a option, 
+                   we have only one choice: not rob the previous house, which is nr[i - 1]
+4. Return: return the larger value out of r[n] and nr[n]
+'''
+class Solution(object):
+    def rob(self, nums):
+        if nums is None or len(nums) == 0:
+            return 0
+        r , nr = [0] * len(nums), [0] * len(nums)
+        r[0], nr[0] = nums[0], 0
+        for i in range(1, len(nums)):
+            r[i] = nr[i - 1] + nums[i]
+            nr[i] = max(nr[i - 1], r[i - 1])
+        return max(r[len(nums) - 1], nr[len(nums) - 1])
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
