@@ -45,7 +45,8 @@ class Solution(object):
             nr_rf[i] = max(nr_rf[i - 1], r_rf[i - 1])
             r_nrf[i] = nr_nrf[i - 1] + nums[i]
             nr_nrf[i] = max(nr_nrf[i - 1], r_nrf[i - 1])
-        return max(nr_rf[len(nums) - 1], r_nrf[len(nums) - 1], nr_nrf[len(nums) - 1])
+        return max(nr_rf[len(nums) - 1], r_nrf[len(nums) - 1])  # We do not need to compare nr_nrf[n] because it must be smaller or
+                                                                # equal to nr_rf[n]
         """
         :type nums: List[int]
         :rtype: int
