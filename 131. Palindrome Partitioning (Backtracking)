@@ -1,0 +1,45 @@
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return all possible palindrome partitioning of s.
+
+Example:
+
+Input: "aab"
+Output:
+[
+  ["aa","b"],
+  ["a","a","b"]
+]
+
+Solution: ------------------------------- https://www.youtube.com/watch?v=UFdSC_ml4TQ -----------------------------Backtracking
+class Solution(object):                                        # This question asks us to find all possible answer,
+                                                               # and backtracking is a very common solution for this kind of question
+    def partition(self, s):
+        self.res = []
+        self.backtracking_help(s, [])
+        return self.res
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+    def backtracking_help(self, s, currlist):
+        if not s:
+            self.res.append(currlist[:])
+            return
+        for i in range(1, len(s) + 1):                        # Why here is len(s) + 1 instead of len(s) as usual
+                                                              # Because, later, s[:i] is called and i is not included
+                                                              # also i need to be out of the index range in order to let s -> None
+            '''
+            How to come up with this algorithm:
+            create a i to loop over the s is the first step,
+            for each section, we will check if this is a palindrome, if yes, we will call the recursion function to dig deeper,
+            but now, we are not interested in s[:i] since it is already been investigated, so, we pass s[i:] into the next recursion
+            and so on and so on
+            '''
+            if self.isPali(s[:i]):                            
+                currlist.append(s[:i])
+                self.backtracking_help(s[i:], currlist)
+                currlist.pop()                                # currlist always need to be pop() in backtracking problem
+        
+    def isPali(self, s):
+        return s == s[::-1]
