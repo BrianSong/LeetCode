@@ -1,0 +1,46 @@
+Given an integer (signed 32 bits), write a function to check whether it is a power of 4.
+
+Example 1:
+
+Input: 16
+Output: true
+Example 2:
+
+Input: 5
+Output: false
+Follow up: Could you solve it without loops/recursion?
+
+Solution no.1(my own):
+class Solution(object):
+    def isPowerOfFour(self, num):
+        if num == 0:
+            return False
+        while num % 4 == 0:                            # 4^k, 4^k-1, 4^k-2, ....4^1 will always meet this requirment
+            num = num / 4.0                            # until 4^0 = 1
+        return num == 1                                # so, if num == 1, it will be the power of four   
+        """
+        :type num: int
+        :rtype: bool
+        """
+        
+Solution no.2: -------------------------------------- Bit Manipulation
+'''
+There are 2 criteria for a number to be power of 4:
+1. If num is the power of 4, there is only one 1 bit in the binary expression ------------------------------- n&(n-1) == 0
+   Why? because in binary expression, if n has only one 1 bit in the binary expression, 
+   then n and n - 1 will be totally opposite in every bit, if n: 1 then n-1:0 and vice versa.
+   So, n & n - 1 will all be 0
+2. 1 bit must be at the bit standing for the power of 4, i.e. 4, 16, 64. 
+   Those bits occur every two bits --> their location is shown below: 10101010101010100
+   Thus it follows that the length of the binary expression is odd.---------------------------------- len(bin(num)[2:]) % 2 == 1
+   Why? bin(num), for example, bin(4) -> 0b100, so bin(4)[2:] is 100, and we ask length of the binary expression is odd,
+   so len(bin(num)[2:]) % 2 == 1 -> odd
+   
+'''
+class Solution(object):
+    def isPowerOfFour(self, num):
+        return bool (num > 0 and not num & (num - 1) and (len(bin(num)[2:]) % 2 == 1))
+        """
+        :type num: int
+        :rtype: bool
+        """
