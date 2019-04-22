@@ -16,7 +16,7 @@ One possible answer is: [0,-3,9,-10,null,5], which represents the following heig
    /   /
  -10  5
  
- Solution: ------------------------------------ Same as Q.108, just convert the linked list into an array
+ Solution: ------------------------------------ Same as Q.108, just convert the linked list into an array as line 37-40
  # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -48,6 +48,11 @@ class Solution(object):
             return None
         mid = (start + end) / 2
         node = TreeNode(array[mid])
-        node.left = self.to_bst_help(array, start, mid - 1)
+        node.left = self.to_bst_help(array, start, mid - 1)   # VERY VERY IMPORTANT, THE KEY TO RECURSION!!!!!
+                                                              # In a BST, the left subtree is also a tree as we deal with in the start
+                                                              # So, we can do what we did as in the beginning and pass on
+                                                              # This is the key for recursion, in every level of recursion,
+                                                              # we basically do the same thing until we hit the exiting condition
+                                                              # And that's why we always use recursion to deal with tree data structure
         node.right = self.to_bst_help(array, mid + 1, end)
         return node
