@@ -1,0 +1,48 @@
+Given preorder and inorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+
+For example, given
+
+preorder = [3,9,20,15,7]
+inorder = [9,3,15,20,7]
+Return the following binary tree:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+   
+Solution: ------------------------------------------- https://www.youtube.com/watch?v=S1wNG5hx-30
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        if preorder is None or inorder is None or len(preorder) == 0 or len(inorder) == 0 or len(preorder) != len(inorder):
+            return None
+        return self.recursion_helper(preorder, inorder, 0, 0, len(inorder) - 1)
+        """
+        :type preorder: List[int]
+        :type inorder: List[int]
+        :rtype: TreeNode
+        """
+    '''
+    Since there are two lists, so we shoud create four pointer, but pre_end is useless,
+    so, only 3 pointers: pre_start, in_start, in_end will be passed around
+    By the characteristic of inorder and preorder traverse, we can come up with the modification to these arguments below
+    '''
+    def recursion_helper(self, preorder, inorder, pre_start, in_start, in_end):
+        if pre_start >= len(preorder) or in_start > in_end:
+            return None
+        currnode = TreeNode(preorder[pre_start])
+        idx = inorder.index(preorder[pre_start])
+        currnode.left = self.recursion_helper(preorder, inorder, pre_start + 1, in_start, idx - 1)
+        currnode.right = self.recursion_helper(preorder, inorder, pre_start + (idx - in_start + 1), idx + 1, in_end)
+        return currnode
