@@ -20,8 +20,10 @@ class Solution(object):
     def threeSum(self, nums):
         nums.sort()
         res, currlist = [], []
-        for i in range(len(nums) - 2):
-            if i > 0 and nums[i] == nums[i - 1]:             # Make sure the base pointer will not repeat and create duplicate triplets
+        for i in range(len(nums) - 2):                       # we let i in range(len(nums) - 2), we do not need to worry 
+                                                             # out of index and len(nums) == 0 or 1 or 2 problem
+            if i > 0 and nums[i] == nums[i - 1]:             # i > 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! and nums[i] == nums[i - 1]      
+                                                             # Make sure the base pointer will not repeat and create duplicate triplets
                 continue                                     # "continue" means finish the current loop immediately and 
                                                              # jump into the next one
             left, right, currsum = i + 1, len(nums) - 1, 0
@@ -30,15 +32,21 @@ class Solution(object):
                 currlist = [nums[i], nums[left], nums[right]]
                 if currsum == 0:
                     res.append(currlist[:])
-                    while left < right and nums[left] == nums[left + 1]:   # Make sure the left pointer will not repeat
+                    while left < right and nums[left] == nums[left + 1]:   # IMPORTANT!!!!!!!!!!!!!!
+                                                                           # MUST BE left < right and nums[left] == nums[left + 1]
+                                                                           # INSTEAD OF nums[left] == nums[left + 1] and left < right!!
+                                                                           # because the computer will run nums[left + 1] in this,
+                                                                           # and return ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                           # Make sure the left pointer will not repeat
                                                                            # and create duplicate triplets
                         left += 1
                     while left < right and nums[right] == nums[right - 1]: # Make sure the right pointer will not repeat
                                                                            # and create duplicate triplets
                         right -= 1
                     left += 1                                              # Remember to  move left pointer and right pointer 
-                    right -= 1                                             # after appending the res list
-                elif currsum > 0:
+                    right -= 1                                             # expecially after appending the res list
+                elif currsum > 0:                                          # If currsum != 0, we do not need to worry duplicate problem
+                                                                           # because it will not be append to res anyway
                     right -= 1
                 else:
                     left += 1
