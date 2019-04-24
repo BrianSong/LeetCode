@@ -39,9 +39,9 @@ class Solution(object):
         num = num - I_number * 1
         
         s = "M" * M_number + "D" * D_number + "C" * C_number +"L" * L_number +"X" * X_number +"V" * V_number + "I" * I_number
-        s = s.replace("DCCCC", "CM")
+        s = s.replace("DCCCC", "CM")                
         s = s.replace("CCCC", "CD")
-        s = s.replace("LXXXX", "XC")
+        s = s.replace("LXXXX", "XC")                       # s.replace(a, b): replace a in a string using b
         s = s.replace("XXXX", "XL")
         s = s.replace("VIIII", "IX")
         s = s.replace("IIII", "IV")
