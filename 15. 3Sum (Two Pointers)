@@ -29,7 +29,8 @@ class Solution(object):
             left, right, currsum = i + 1, len(nums) - 1, 0
             while(left < right):
                 currsum = nums[i] + nums[left] + nums[right]
-                currlist = [nums[i], nums[left], nums[right]]
+                currlist = [nums[i], nums[left], nums[right]]              # Since "currlist =" insteand of "currlist.append"
+                                                                           # we do not need to currlist.pop() later
                 if currsum == 0:
                     res.append(currlist[:])
                     while left < right and nums[left] == nums[left + 1]:   # IMPORTANT!!!!!!!!!!!!!!
