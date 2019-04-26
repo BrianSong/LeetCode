@@ -1,4 +1,5 @@
-Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input would have exactly one solution.
+Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. 
+Return the sum of the three integers. You may assume that each input would have exactly one solution.
 
 Example:
 
@@ -13,12 +14,13 @@ class Solution(object):
             return target
         nums.sort()                                                   # sort() is a very useful tool in two pointer problem
         delta = nums[0] + nums[1] + nums[2] - target
-        for i in range(len(nums) - 1):                                # We actually use three pointer here to copy with this 3 sum problem
+        for i in range(len(nums) - 2):                                 # Should be len(nums) - 2  
+                                                                   # We actually use three pointer here to copy with this 3 sum problem
                                                                       # base: transverse through the whole nums
                                                                       # start and end
             start = i + 1
             end = len(nums) - 1
-            while start < end:
+            while start < end:                                               # WHILE !!!!! NOT IF!!!!!!!
                 newdelta = nums[i] + nums[start] + nums[end] - target
                 if newdelta == 0:
                     return target
