@@ -28,7 +28,7 @@ class Solution(object):
             '8': ['t', 'u', 'v'],
             '9': ['w', 'x', 'y', 'z']            
         }
-        currstr, index = "", 0                                              # Very classic two passing argument in DFS - curr and index
+        currstr, index = "", 0                                             # Very classic two passing argument in DFS - curr and index
         self.dfs_help(currstr, index, digits, res, dic)
         return res
         """
@@ -36,7 +36,7 @@ class Solution(object):
         :rtype: List[str]
         """
     def dfs_help(self, currstr, index, digits, res, dic):
-        if index == len(digits):                                            # Exiting Condition
+        if index == len(digits):                                            # Base Case
             res.append(currstr[:])
             return
         for letter in dic[digits[index]]:                                   # 在这些所有可能选择的选择中，先走一条路-----------DFS
@@ -44,4 +44,5 @@ class Solution(object):
                                                                             # 一开始是2, 2对应的是['a', 'b', 'c']
                                                                             # 故在['a', 'b', 'c']中先选择 'a'这条路，继续往下递归
             self.dfs_help(currstr + letter, index + 1, digits, res, dic)    # update currstr(最终走完这条路后会加入答案中) 
-                                                                           # and index(让这条路继续往下走到下一个分岔口----"3"对应的选择谁)      
+                                                                          # and index(让这条路继续往下走到下一个分岔口----"3"对应的选择谁)
+                                                             # and by passing currstr + letter, we do not need to use currstr.pop()
