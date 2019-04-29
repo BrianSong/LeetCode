@@ -38,9 +38,9 @@ class Solution(object):
                 if stack == []:
                     return False
                 curr_pop = stack.pop()
-                if curr_pop + i != "()" and curr_pop + i != "[]" and curr_pop + i != "{}":
+                if curr_pop + i != "()" and curr_pop + i != "[]" and curr_pop + i != "{}":    # 'and' not 'or'
                     return False
-        if stack != []:
+        if stack != []:                                                                       # For the case when s == '('
             return False
         return True
         """
