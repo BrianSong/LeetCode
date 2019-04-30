@@ -21,7 +21,7 @@ class Solution(object):
         currnode = dummynode                                                      # Create a current node to push forward the process
         while (not currnode.next is None and not currnode.next.next is None):     # for ending [1,2,3,4] or for the case [1,2,3]
             self.swap_help(currnode)                                              # Each swap will get three nodes into involve
-            currnode = currnode.next.next
+            currnode = currnode.next.next                                         # 跳两个node！！！！！！！！！！！
         return dummynode.next
         """
         :type head: ListNode
