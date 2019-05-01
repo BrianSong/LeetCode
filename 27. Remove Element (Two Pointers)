@@ -41,7 +41,7 @@ Solution: Two pointer
 class Solution(object):
     def removeElement(self, nums, val):
         start, end = 0, len(nums) - 1   # cannot use sorted() here because the question demand us to keep O(1) space com
-        while start <= end:                                     # When the start == end, there is one last element need to be considered
+        while start <= end:                                    # When the start == end, there is one last element need to be considered
             if nums[start] == val:                              # When the start element is the same as the target value,
                                                                 # we swap it with the last element in the nums
                                                                 # and we reduce the end by 1 since we know the last element now is 
