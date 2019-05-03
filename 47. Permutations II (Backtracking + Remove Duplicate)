@@ -1,0 +1,48 @@
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+Example:
+
+Input: [1,1,2]
+Output:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+
+Solution:
+class Solution(object):
+    def permuteUnique(self, nums):
+        nums.sort()
+        res, visited = [], [False] * len(nums)                                    # Introduce a "visited" list to record whether this
+                                                                                  # element has been visited
+        self.permu_help(nums, [], res, visited)
+        return res
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+    def permu_help(self, nums, path, res, visited):
+        if len(path) == len(nums):
+            res.append(path[:])                                                   
+            return
+        for i in range(len(nums)):                                             # range(len(nums)) not range(len(nums) - 1)
+            if not visited[i]:                                                 # First of all, check whether this element has been used
+                if i > 0 and nums[i] == nums[i - 1] and not visited[i - 1]:
+                    continue
+                '''
+                IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                i > 0 is for nums[i - 1]
+            nums[i] == nums[i - 1] and not visited[i - 1] means in the last level of loop, it has already been gone over this situation
+                for example: [1, 1, 2]
+                when the first level of loop is over,
+                jump into the second for loop where the second 1 will be choose as the first element of the path,
+                however, if we do this, duplicate path will appear,
+                moreover, if the nums[i - 1] is visited, we do not need to worry about it because we can use two 1 in the path
+                SO, nums[i] == nums[i - 1] and not visited[i - 1]
+                continue -> jump into the next for loop
+                '''
+                visited[i] = True                                                # visited[i] = True, not visited[i] == True
+                self.permu_help(nums, path + [nums[i]], res, visited)            # Use path is a better way compared to currlist,
+                                                                                 # since it does not need currlist.pop()
+                visited[i] = False
