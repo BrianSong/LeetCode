@@ -46,7 +46,8 @@ class Solution(object):
             '''
         else:
             for item in nums:
-                if not item in clist:
+                if not item in clist:                                           # I can do this because there are no duplicate elements
+                                                                                # in the nums input list
                     clist.append(item)
                     self.help(nums, clist, res)
                     clist.remove(item) # remove this item and finish this loop
