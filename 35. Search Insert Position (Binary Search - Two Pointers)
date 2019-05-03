@@ -73,3 +73,22 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
+'''
+Why left <= right and return left?????????????????????????????????
+第二次悟出了
+if target is not in nums,
+there will be 3 cases
+1.                                 left    target    right
+                                nums[middle] == nums[left] < target
+                                         left = left + 1
+                                         return left -> correct
+                                         
+2.                                        target    nums
+                                     nums[middle] == nums[0] == nums[left] > target
+                                          return left --- 0 -> correct
+                                            
+3.                                         nums     target
+                                     nums[middle] == nums[left] == nums[len(nums) - 2] < target
+                                           left = left + 1
+                                          return left --- len(nums) - 1 -> correct
+'''
