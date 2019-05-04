@@ -56,7 +56,6 @@ class Solution(object):
                 clist.pop()           # Formal standard for backtracking problem, have a currlist and curridex and pop() after the 
                                       # recursion function
                                       
-Solution: More concise version
 class Solution(object):
     def combinationSum(self, candidates, target):
         candidates.sort()
@@ -69,15 +68,17 @@ class Solution(object):
         :rtype: List[List[int]]
         """
     def backtracking_help(self, candidates, target, path, res):
-        
+        if target < 0:                                                # Better to move this two if statement outof the for loop,
+                                                                      # because it has nothing to do with i or candidates
+                                                                      # these two are the exiting conditions
+                                                                      # the first thing inside a recursion function should be to check
+                                                                      # the base cases - exiting conditions instead of doing a for loop
+            return
+        if target == 0:
+            res.append(path[:])
+            return
         for i, candidate in enumerate(candidates):
-            if target < 0:
-                break
-            elif target == 0:
-                res.append(path[:])
-                break
-            else:
-                self.backtracking_help(candidates[i:], target - candidate, path + [candidate], res)
+            self.backtracking_help(candidates[i:], target - candidate, path + [candidate], res)
                 
                 
              
