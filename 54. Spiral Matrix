@@ -24,8 +24,8 @@ class Solution(object):
     def spiralOrder(self, matrix):
         if matrix == []:
             return []
-        m, n, res = len(matrix[0]), len(matrix), []
-        top, buttom, left, right = 0, n-1, 0, m-1   # Defining four variables is very common in 2-D matrix to track the current location
+        top, bot, left, right, res = 0, len(matrix) - 1, 0, len(matrix[0]) - 1, []  # len(matrix) - 1 and len(matrix[0]) - 1!!!!!!!!!!! 
+                                                    # Defining four variables is very common in 2-D matrix to track the current location
         while left < right and top < buttom:
             for i in range(left, right):
                 res.append(matrix[top][i])
@@ -35,12 +35,12 @@ class Solution(object):
                 res.append(matrix[buttom][i])
             for i in range(buttom, top, -1):
                 res.append(matrix[i][left])
-            top += 1
+            top += 1                            # IMPORTANT!!!!!!!!!!!!!Always to remember update the arguments!!!!!!!!!!!!!!!!!!!!
             buttom -= 1
             left += 1
             right -= 1
         if top == buttom and right > left:      # Special case 1: leave one row
-            for i in range(left, right + 1):
+            for i in range(left, right + 1):    # (left, right + 1) now since we need to include every one last elements
                 res.append(matrix[top][i])
         if top == buttom and right == left:     # Special case 2: leave one element
             res.append(matrix[top][right])
