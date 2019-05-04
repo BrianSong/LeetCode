@@ -1,4 +1,5 @@
-Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), 
+find all unique combinations in candidates where the candidate numbers sums to target.
 
 The same repeated number may be chosen from candidates unlimited number of times.
 
@@ -54,6 +55,29 @@ class Solution(object):
                 self.comb_help(candidates[curridex:], target-item, clist, res)
                 clist.pop()           # Formal standard for backtracking problem, have a currlist and curridex and pop() after the 
                                       # recursion function
+                                      
+Solution: More concise version
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        candidates.sort()
+        res = []
+        self.backtracking_help(candidates, target, [], res)
+        return res
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+    def backtracking_help(self, candidates, target, path, res):
+        
+        for i, candidate in enumerate(candidates):
+            if target < 0:
+                break
+            elif target == 0:
+                res.append(path[:])
+                break
+            else:
+                self.backtracking_help(candidates[i:], target - candidate, path + [candidate], res)
                 
                 
              
