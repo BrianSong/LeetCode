@@ -32,7 +32,9 @@ class Solution(object):
         The status for this moment must come from the status from a step before or two step before
         So, nums[i] = nums[i-1] + nums[i-2]
         '''
-        for i in range(2, n+1):
+        for i in range(2, n+1):                   # ANOTHER IMPORTANT KEY POINT IN DP PROBLEM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                  # when we do the transformation function, remember not to include the initial cases,
+                                                  # For exmaple, i in range(2, n + 1) insteand of i in range(n + 1)
             nums[i] = nums[i-1] + nums[i-2]
         return nums[n]
             
