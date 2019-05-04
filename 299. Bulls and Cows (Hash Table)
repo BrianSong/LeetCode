@@ -1,0 +1,77 @@
+You are playing the following Bulls and Cows game with your friend: 
+You write down a number and ask your friend to guess what the number is. 
+Each time your friend makes a guess, 
+you provide a hint that indicates how many digits in said guess match your secret number exactly in both digit and position 
+(called "bulls") and how many digits match the secret number but locate in the wrong position (called "cows"). 
+Your friend will use successive guesses and hints to eventually derive the secret number.
+
+Write a function to return a hint according to the secret number and friend's guess, 
+use A to indicate the bulls and B to indicate the cows. 
+
+Please note that both secret number and friend's guess may contain duplicate digits.
+
+Example 1:
+
+Input: secret = "1807", guess = "7810"
+
+Output: "1A3B"
+
+Explanation: 1 bull and 3 cows. The bull is 8, the cows are 0, 1 and 7.
+Example 2:
+
+Input: secret = "1123", guess = "0111"
+
+Output: "1A1B"
+
+Explanation: The 1st 1 in friend's guess is a bull, the 2nd or 3rd 1 is a cow.
+Note: You may assume that the secret number and your friend's guess only contain digits, and their lengths are always equal.
+
+Solution no.1 (my own):
+class Solution(object):
+    def getHint(self, secret, guess):
+        bulls_num, cows_num = 0, 0
+        for i in range(len(secret)):
+            if secret[i] == guess[i]:
+                bulls_num += 1
+        for w in guess:
+            if w in secret:
+                cows_num += 1
+                secret = secret.replace(w, "", 1)           # How to remove or replace words inside a string
+                                                            # 1 means occurance, otherwise, all will be replace
+        cows_num -= bulls_num   
+        return str(bulls_num) + "A" + str(cows_num) + "B"
+        """
+        :type secret: str
+        :type guess: str
+        :rtype: str
+        """
+        
+Solution no.2: ---------------------------------------------- Hash Table
+'''
+First, creat two dictionary counting the guess and secret array.
+Second, go through the guess array and find the matches, in this way, we can easily get 'A' number.
+Third, if there's a match, minus 1 of the number in both counter dictionary, 
+that means we used one number in guess and mapped one number in secret.
+Fourth, if the guess number do not match anyone in the secret, just delete the number in the guess dictionary.
+After all, we calculate B by adding the common number occurence time.
+'''
+class Solution(object):
+    def getHint(self, secret, guess):
+        secret_counter = collections.Counter(secret)
+        guess_counter = collections.Counter(guess)
+        A, B = 0, 0
+        for i in range(len(guess)):
+            if secret[i] == guess[i]:
+                A += 1
+                secret_counter[secret[i]] -= 1
+                guess_counter[secret[i]] -= 1
+            elif guess[i] not in secret_counter:    # not neccessary
+                guess_counter[guess[i]] = 0
+        for key, value in guess_counter.items():    # key, value in dictionary.items() not dictionary.item()
+            B += min(secret_counter[key], value)
+        return str(A) + "A" + str(B) + "B"
+        """
+        :type secret: str
+        :type guess: str
+        :rtype: str
+        """
