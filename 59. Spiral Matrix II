@@ -34,7 +34,7 @@ class Solution(object):
             left += 1
             right -= 1
 
-        if top == buttom and right == left:     # Only one Special case: leave one element
+        if top == buttom and right == left:     # Only one Special case: leave one element because it is a n*n matrix
             res[top][right] += number
 
         return res
