@@ -57,22 +57,22 @@ class Solution(object):
                     return False
                 if not board[i][j] == ".":
                     HashTable[board[i][j]] = 1
-            HashTable = {}
+            HashTable = {}                      # IMPORTANT!! WHERE TO UPDATE HASHTBALE? Update the HashTable after the first for loop
         for j in range(9):                                                               # Check the columns
             for i in range(9):
                 if board[i][j] in HashTable:
                     return False
                 if not board[i][j] == ".":
                     HashTable[board[i][j]] = 1
-            HashTable = {}
+            HashTable = {}                     # IMPORTANT!! WHERE TO UPDATE HASHTBALE? Update the HashTable after the first for loop
         for box in range(9):                                                             # Check the 9 3x3 sub-boxes
             for i in range(3): 
                 for j in range(3):
-                    if board[i + 3 * (box / 3)][j + 3 * (box % 3)] in HashTable:         # Very clever to ultilize the box variable here
+                    if board[i + 3 * (box / 3)][j + 3 * (box % 3)] in HashTable:        # Very clever to ultilize the box variable here
                         return False
                     if not board[i + 3 * (box / 3)][j + 3 * (box % 3)] == ".":
                         HashTable[board[i + 3 * (box / 3)][j + 3 * (box % 3)]] = 1 
-            HashTable = {}
+            HashTable = {}                    # IMPORTANT!! WHERE TO UPDATE HASHTBALE? Update the HashTable after the first for loop
         return True
         """
         :type board: List[List[str]]
