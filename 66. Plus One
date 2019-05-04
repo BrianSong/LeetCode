@@ -1,6 +1,7 @@
 Given a non-empty array of digits representing a non-negative integer, plus one to the integer.
 
-The digits are stored such that the most significant digit is at the head of the list, and each element in the array contain a single digit.
+The digits are stored such that the most significant digit is at the head of the list, 
+and each element in the array contain a single digit.
 
 You may assume the integer does not contain any leading zero, except the number 0 itself.
 
@@ -25,10 +26,10 @@ The last step is to add 1 to num, convert it to a list and return that list.
 '''
 class Solution(object):
     def plusOne(self, digits):
-        num = 0
-        for index, digit in enumerate(digits):
-            num += digit * pow(10, (len(digits) - index - 1))
-        return [int(i) for i in str(num + 1)]
+        number = 0
+        for i, digit in enumerate(digits):
+            number += digit * 10 **(len(digits) - i - 1)
+        return [int(i) for i in str(number + 1)]            # [int(i) for i in str(number + 1)] how to use for statement to build a list
         """
         :type digits: List[int]
         :rtype: List[int]
