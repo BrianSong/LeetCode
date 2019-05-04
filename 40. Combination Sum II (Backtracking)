@@ -1,4 +1,5 @@
-Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+Given a collection of candidate numbers (candidates) and a target number (target), 
+find all unique combinations in candidates where the candidate numbers sums to target.
 
 Each number in candidates may only be used once in the combination.
 
@@ -58,3 +59,39 @@ class Solution(object):
                 self.comb_help(candidates[curridex+1:], target-item, clist, res) # curridex+1 make sure :Each number in candidates 
                                                                                  # may only be used once in the combination.
                 clist.pop()
+                
+New Solution: Way more better and concise version:
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        candidates.sort()                                          # Need to sort the list first
+        res = []
+        self.backtracking_help(candidates, target, [], res)
+        return res
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+    def backtracking_help(self, candidates, target, path, res):
+        if target < 0:
+            return
+        if target == 0:
+            res.append(path[:])
+            return
+        for i, candidate in enumerate(candidates):
+            if i > 0 and candidates[i] == candidates[i - 1]:      # Solve the duplicate choose of the element
+                continue
+            else:
+                self.backtracking_help(candidates[i+1:], target - candidate, path + [candidate], res)   # Solve the choose from itself
+        
+        '''
+        IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!
+        IF WE PUT THESE TWO IF STATEMENT INTO THE FOR LOOP, IT WILL FAIL.
+        Because we use candidates[i+1:]
+        For example, [2,5,2,1,2]   5
+        if we put this two if statment inside the for loop, res.append(path[:]), here path is [5] will not be executed,
+        because in the next for loop, it will not be executed, since candidates is None now,
+        so, we must put these two for loop statment outside this unexecuted for loop, so that our res will append [5]
+        '''
+        
+        
