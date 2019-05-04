@@ -9,7 +9,7 @@ Follow up:
 
 If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
 
-Solution no.1: DP
+Solution no.1: DP --------------------------------------------------- 求最大，求最小 -> Dynamic Programming
 class Solution(object):
     def maxSubArray(self, nums):
         if max(nums) < 0:
@@ -17,6 +17,12 @@ class Solution(object):
         local_max, global_max = 0, 0
         for num in nums:
             local_max = max(0, local_max + num)         # Keep updating  只要大于零，就是值得保留的
+                                                        # Why compare to 0?
+                                                        # if local_max + num < 0, even there is a very large number later,
+                                                        # the previous number will still be useless,
+                                                        # because we can start from this very large number instead.
+                                                        # As long as local_max + num > 0, it is still valuable,
+                                                        # because it can make contribution to the later addition
             global_max = max(local_max, global_max)     # Keep updating  在所有大于零的subset中选出最大的作为result
         return global_max
         """
@@ -59,7 +65,7 @@ class Solution(object):
                 left_max = currmax
             
         currmax , right_max = 0, -float('inf')
-        for i in range(middle + 1, right + 1, 1):
+        for i in range(middle + 1, right + 1, 1):  # IMPORTANT!!!!!!!!!!! "middle + 1" instead of "middle", otherwise -> repeat!!!!!
             currmax += nums[i]
             if currmax > right_max:
                 right_max = currmax
@@ -71,4 +77,4 @@ class Solution(object):
             return nums[left]
         middle = (left + right) / 2
         return max(self.maxSubArrayhelp(nums, left, middle), self.maxSubArrayhelp(nums, middle + 1, right), self.maxSubArrayCrossing(nums, middle, left, right))
-        
+        # "middle + 1" for self.maxSubArrayhelp(nums, middle + 1, right) is for avoiding repeating
