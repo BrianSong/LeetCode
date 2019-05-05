@@ -1,0 +1,79 @@
+Given a collection of integers that might contain duplicates, nums, return all possible subsets (the power set).
+
+Note: The solution set must not contain duplicate subsets.
+
+Example:
+
+Input: [1,2,2]
+Output:
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+
+Solution: ------------------------------------------------ https://www.youtube.com/watch?v=rtFHxiQAICA&t=411s
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        if nums is None or len(nums) == 0:                          # Extreme case analyse
+            return []
+        nums.sort()                                                 # Better sort the nums first
+        res = []
+        self.helper(nums, 0, True, res, [])
+        return res
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+    def helper(self, nums, curridx, taken, res, currlist):          # In order to eliminate the duplicate case,
+                                                                    # we introduce a taken argument
+        if curridx == len(nums):
+            res.append(currlist[:])
+        else:
+            self.helper(nums, curridx + 1, False, res, currlist)    # Situation 1: not taken
+            '''
+            Duplicate cases happen when the previous "same" number is not taken and current "same" number is taken
+            '''
+            if taken or nums[curridx] != nums[curridx - 1]:
+                currlist.append(nums[curridx])
+                self.helper(nums, curridx + 1, True, res, currlist) # Situation 2: taken
+                currlist.pop()
+                
+                
+Solution: -------------------------- a much more better and concise new solution!!!!!!!!!!!!!!!!11
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        if nums is None or len(nums) == 0:
+            return None
+        res = []
+        self.backtracking(sorted(nums), 0, [], res)
+        return res
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+    def backtracking(self, nums, idx, path, res):
+        res.append(path[:])
+        for i in range(idx, len(nums)):
+            if i > idx and nums[i] == nums[i - 1]:              # IMPORTANT!!!!!!!!!!!!!!!!!!!!! HERE IS THE MAGIC HAPPENES!!!!!!!!!!!!
+                                                                # Why "i > idx and nums[i] == nums[i - 1]"?
+                                                                # When i = idx, it will always be ok, because it is the first time
+                                                                # we use a duplicate element, 
+                                                                # of course there will be not duplicate subsets.
+                                                                # However, if i > idx and nums[i] == nums[i - 1], it will cause problems
+                                                                # For example, [1, 2, 2, 3]
+                                                                # after coming up with [], [1], [1,2], [1,2,2], [1,2,2,3] -> i = idx
+                                                                # the algorithm will continue to search for new result
+                                                                # [1,2,2,3] -> nothing
+                                                                # [1,2,2] -> nothing
+                                                                # [1,2] -> [1,2,3] -> nothing
+                                                                # [1] -> NOW if we do not add the i > idx and nums[i] == nums[i - 1]
+                                                                # it will lead to [1,2] where the "2" is the second 2 in the nums list
+                                                                # and here it causes duplicate subsets where idx = 1, i = 2
+                                                                # so, that's the reason why we use "i > idx and nums[i] == nums[i - 1]"
+                                                                
+                continue
+            self.backtracking(nums, i + 1, path + [nums[i]], res)
