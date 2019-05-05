@@ -11,7 +11,7 @@ Input: [1,null,2,3]
 
 Output: [1,3,2]
 
-Solution:
+Solution no.1: ---------------------------------------------------------------- DFS
 class Solution(object):
     def inorderTraversal(self, root):
         res = [] # res means result here
@@ -62,3 +62,25 @@ In postorder:
    self.helper(root.right)
    res.append(root)
 '''
+
+
+Solutino no.2: --------------------------------------------------------- Stack
+class Solution(object):
+    def inorderTraversal(self, root):
+        res, stack = [], []
+        while root or stack:                    # 两个条件满足一个都可以继续进行iteration
+            if root:                            # As long as root is not None, continue to append itself and its left node
+                stack.append(root)
+                root = root.left
+            else:                               # If the root is None, it means all leftest node has been add into the stack,
+                                                # now, we can deal with the first element pop out of the stack (leftest element)
+                                                # and append it into the res,
+                                                # After this, we need to check its right node
+                node = stack.pop()
+                res.append(node.val)
+                root = node.right
+        return res
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
