@@ -34,15 +34,17 @@ class Solution(object):
         :rtype: TreeNode
         """
     '''
-    Since there are two lists, so we shoud create four pointer, but pre_end is useless,
+    Since there are two lists, so we shoud create four pointer, but pre_end is useless because it can be replaced by in_end due to equal
+    length of preorder and inorder.
     so, only 3 pointers: pre_start, in_start, in_end will be passed around
     By the characteristic of inorder and preorder traverse, we can come up with the modification to these arguments below
     '''
     def recursion_helper(self, preorder, inorder, pre_start, in_start, in_end):
-        if pre_start >= len(preorder) or in_start > in_end:
+        if pre_start >= len(preorder) or in_start > in_end:                     # Exiting conditions: according to the three arguments
             return None
         currnode = TreeNode(preorder[pre_start])
         idx = inorder.index(preorder[pre_start])
         currnode.left = self.recursion_helper(preorder, inorder, pre_start + 1, in_start, idx - 1)
         currnode.right = self.recursion_helper(preorder, inorder, pre_start + (idx - in_start + 1), idx + 1, in_end)
+        # IMPORTANT!!!!!!!!!!!!!!!!!!!!! pre_start + (idx - in_start + 1) not pre_start + (idx + 1)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return currnode
