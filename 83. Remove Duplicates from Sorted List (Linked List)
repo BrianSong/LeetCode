@@ -21,11 +21,14 @@ class Solution(object):
         if head is None:                              # Always remember to consider extreme cases, especially during the interview!!!!!
             return None
         currnode = head
-        while currnode.next != None:
+        while currnode.next != None:                  # Why we do not examine whether currnode.next.next is None?
+                                                      # Because we only use currnode.next.val in the following code
+                                                      # even if currnode.next.next is None, it does not matter
             if currnode.val != currnode.next.val:
-                currnode = currnode.next
+                currnode = currnode.next              # Everything is fine, continue
             else:
-                currnode.next = currnode.next.next
+                currnode.next = currnode.next.next    # duplicate element appears, remove currnode.next and continue, 
+                                                      # currnode does not change, even the currnode.next.next is None is totally fine
         return head
         """
         :type head: ListNode
