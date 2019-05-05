@@ -49,7 +49,25 @@ class Solution(object):
             clist.pop()                               # STEP 4
         
         
-       
+More concise version:
+class Solution(object):
+    def subsets(self, nums):
+        if nums is None or len(nums) == 0:
+            return []
+        res = []
+        self.backtracking(sorted(nums), 0, [], res)                # Not necessary to sort the list
+        return res
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+    def backtracking(self, nums, idx, path, res):
+        res.append(path[:])
+        for i in range(idx, len(nums)):  # is a better way compare to for num in nums, also"(idx, len(nums))" not "(idx, len(nums) - 1)"
+                                                                   # because here we can have the index of the nums[i] very easy
+                                                                   # and also very convenient to use the value nums[i]
+            self.backtracking(nums, i + 1, path + [nums[i]], res)  # we do not need to change nums list here
+                                                              # because "for i in range()" and "idx" can do the selection section for us
                 
                 
   
