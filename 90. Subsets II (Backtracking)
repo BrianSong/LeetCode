@@ -43,7 +43,7 @@ class Solution(object):
                 currlist.pop()
                 
                 
-Solution: -------------------------- a much more better and concise new solution!!!!!!!!!!!!!!!!11
+Solution: -------------------------- a much more better and concise new solution!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class Solution(object):
     def subsetsWithDup(self, nums):
         if nums is None or len(nums) == 0:
