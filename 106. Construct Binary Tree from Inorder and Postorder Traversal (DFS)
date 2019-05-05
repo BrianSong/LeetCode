@@ -1,0 +1,43 @@
+Given inorder and postorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+
+For example, given
+
+inorder = [9,3,15,20,7]
+postorder = [9,15,7,20,3]
+Return the following binary tree:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+   
+Solution:
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object): --------------------------------- 与 Q.105 Construct Binary Tree from Preorder and Inorder Traversal 换汤不换药
+    def buildTree(self, inorder, postorder):
+        if postorder is None or inorder is None or len(postorder) == 0 or len(inorder) == 0 or len(postorder) != len(inorder):
+            return None
+        return self.dfs(inorder, postorder, len(postorder) - 1, 0, len(postorder) - 1)
+        """
+        :type inorder: List[int]
+        :type postorder: List[int]
+        :rtype: TreeNode
+        """
+    def dfs(self, inorder, postorder, post_end, in_start, in_end):
+        if post_end < 0 or in_start > in_end:
+            return None
+        currnode = TreeNode(postorder[post_end])
+        idx = inorder.index(postorder[post_end])
+        currnode.left = self.dfs(inorder, postorder, post_end - 1 - (in_end - idx), in_start, idx - 1)
+        currnode.right = self.dfs(inorder, postorder, post_end - 1 , idx + 1, in_end)
+        return currnode
