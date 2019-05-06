@@ -42,7 +42,7 @@ class Solution(object):
     def isSameTree(self, p, q):
         if p is None and q is None:          # 都走到了尽头
             return True
-        if p and q:
+        elif p and q:
             return (p.val == q.val) and self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right) # 三者同时为True才为True
         else:
             return False
