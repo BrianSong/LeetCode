@@ -11,11 +11,37 @@ Example 2:
 Input: a = "1010", b = "1011"
 Output: "10101"
 
-Solution:
+Solution no.1:
 class Solution(object):
     def addBinary(self, a, b):
-        return bin(int(a, 2) + int(b, 2))[2:]       # int -> bin: int(a, 2)
-                                                    # bin -> int in string form: bin(a)[2:]
+        return bin(int(a, 2) + int(b, 2))[2:]           # int -> bin: int(a, 2)
+                                                        # bin -> int in string form: bin(a)[2:]
+        """
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+        
+Solution no.2:
+class Solution(object):
+    def addBinary(self, a, b):
+        a = a[::-1]
+        b = b[::-1]
+        res = ""
+        carry = 0                                      # Using "carry"
+        while len(a) < len(b):
+            a, b = b, a
+        for i in range(len(b)):
+            sumnum = carry + int(a[i]) + int(b[i])
+            res += str(sumnum % 2)
+            carry = sumnum / 2
+        for i in range(len(b), len(a)):
+            sumnum = carry + int(a[i])
+            res += str(sumnum % 2)
+            carry = sumnum / 2
+        if carry:
+            res += str(carry)
+        return res[::-1]
         """
         :type a: str
         :type b: str
