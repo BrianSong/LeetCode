@@ -21,9 +21,9 @@ Dynamic Programming should be considered immediately!!!!!!!!!!!!!!!!!!!!
 
 class Solution(object):
     def numTrees(self, n):
-        nums = [0] * (n + 1)                      # Step 1: Status variable num[], num[n] record the number of 
+        dp = [0] * (n + 1)                      # Step 1: Status variable dp[], dp[n] record the number of 
         # n + 1 since there is one 0              # how many structurally unique BST's (binary search trees) that store values 1 ... n
-        nums[0], nums[1] = 1, 1                   # Step 2: Initialization
+        dp[0], dp[1] = 1, 1                   # Step 2: Initialization
         '''
         How to come up with this transformation function:
         For n = 0 and 1, we know num[n] = 1(we assume num[0] = 1 for later's sake)
@@ -51,10 +51,10 @@ class Solution(object):
                           n-1    0       j = n-1 
                           So, the transformation function is Σ(j=0~n-1) [j]*[n-1-j]
         '''
-        for i in range(2, len(nums)):
+        for i in range(2, n + 1):
             for j in range(i):
-                nums[i] += nums[j]*nums[i-j-1]    # Step 3
-        return nums[n]                            # Step 4
+                dp[i] += dp[j]*dp[i-j-1]    # Step 3
+        return dp[n]                            # Step 4
                 
         """
         :type n: int
