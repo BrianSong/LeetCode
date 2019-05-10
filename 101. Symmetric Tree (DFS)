@@ -14,7 +14,7 @@ But the following [1,2,2,null,3,null,3] is not:
    \   \
    3    3
    
-Solution: ----------------------------------------------------------- Divide and Conquer ----- https://www.youtube.com/watch?v=hL4sXXZ1K1Y
+Solution: -------------------------------------------------- DFS ---------------------------- https://www.youtube.com/watch?v=hL4sXXZ1K1Y
 class Solution(object):
     def isSymmetric(self, root):
         if root is None:
@@ -25,9 +25,9 @@ class Solution(object):
         :rtype: bool
         """
     def helper(self, left, right):
-        if left is None and right is None:        # Boundary Condition 1: Both come to an end and still symmetric
+        if left is None and right is None:       # Boundary Condition 1: Both come to an end and still symmetric
             return True
-        if left is None or right is None:         # Boundary Condition 2: One end come to the end but the other does not, so not symmetric
+        if left is None or right is None:        # Boundary Condition 2: One end come to the end but the other does not, so not symmetric
             return False
         return left.val == right.val and self.helper(left.left, right.right) and self.helper(left.right, right.left)
-        # Divide and Conquer: Divide the big problem into smaller ones 
+        # left tree and right tree is the same structure so DFS 
