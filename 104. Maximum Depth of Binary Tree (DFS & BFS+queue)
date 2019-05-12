@@ -15,16 +15,19 @@ Given binary tree [3,9,20,null,null,15,7],
    15   7
 return its depth = 3.
 
-Two solutions:
-1. Recursion:
+Two solutions: ---------------------------------------------------------------- DFS
 class Solution(object):
     def maxDepth(self, root):
         if root is None:
             return 0 # Base case for exiting recursion
         else:
-            left_depth = self.maxDepth(root.left) # It will return the greatest depth of the left brunch for the root node
-            right_depth = self.maxDepth(root.right) # It can be processed only the previous left_depth is finished(including all of its inner recursion functions) and return a value
-            return max(left_depth, right_depth) + 1 # The reason to add 1 here is because the base case return 0, and the depth should increase 1 for each level of the tree
+            left_depth = self.maxDepth(root.left) 
+            # It will return the greatest depth of the left brunch for the root node
+            right_depth = self.maxDepth(root.right) 
+            # It can be processed only the previous left_depth is finished(including all of its inner recursion functions) 
+            # and return a value
+            return max(left_depth, right_depth) + 1 
+            # The reason to add 1 here is because the base case return 0, and the depth should increase 1 for each level of the tree
 Case analyst:
 3 is None： False
 left_depth = f(9) 
@@ -60,24 +63,27 @@ f(20) = max(1,1) + 1 = 2
 ----------------------------
 f(3) = max(1,2) + 1 = 3
 
+Solution no.2: --------------------------------------------------------- BFS & Queue
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
 
-Second Solution: DFS
 class Solution(object):
     def maxDepth(self, root):
-        depth = 0
-        if root:
-            depth_list = [root]
-        else:
-            depth_list = []
-        while depth_list: # Existing Condition
-            depth += 1  # Must be "+=" INSTEAD OF "+" here
-            temper_list = [] # Very important to clear temper_list every time in the while loop to avoid repeating
-            for value in depth_list:
-                if value.left:
-                    temper_list.append(value.left)
-                if value.right:
-                    temper_list.append(value.right)
-                ''' if running to the end, all node in that level of the tree will have no child, so temper_list can append nothing and the existing condition will be satisfied
-            depth_list = temper_list
+        if root is None:
+            return 0
+        queue, depth = [root], 0
+        while queue != []:
+            depth += 1
+            for i in range(len(queue)):
+                pop_element = queue.pop(0)
+                if not pop_element.left is None: queue.append(pop_element.left)
+                if not pop_element.right is None: queue.append(pop_element.right)
         return depth
-
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
