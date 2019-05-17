@@ -32,7 +32,7 @@ class Solution(object):
         """
     def to_bst_help(self, nums, start, end):
         if start > end:                                      # This condition used very often, need to be remembered
-            return None
+            return None                                      # "return None" or "return" are all OK !!!!!!!!!!!!!!!!!!!!!!!!
         mid = (start + end) / 2                              # '/' in python 2 is '//'
         node = TreeNode(nums[mid])                           # Can define a node using its build-in class
         node.left = self.to_bst_help(nums, start, mid - 1)   # Since the function need to return a node, we should use assignment here
