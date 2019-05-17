@@ -1,0 +1,53 @@
+There are a total of n courses you have to take, labeled from 0 to n-1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+Example 1:
+
+Input: 2, [[1,0]] 
+Output: true
+Explanation: There are a total of 2 courses to take. 
+             To take course 1 you should have finished course 0. So it is possible.
+Example 2:
+
+Input: 2, [[1,0],[0,1]]
+Output: false
+Explanation: There are a total of 2 courses to take. 
+             To take course 1 you should have finished course 0, and to take course 0 you should
+             also have finished course 1. So it is impossible.
+Note:
+
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+You may assume that there are no duplicate edges in the input prerequisites.
+
+Solution: ---------------------------------------------------------- https://www.youtube.com/watch?v=zkTOIVUdW-I
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        Hashtable = collections.defaultdict(list)   # Step no.1: Create a Hashtable for transforming prerequisites into something useful
+        for item in prerequisites:
+            Hashtable[item[1]].append(item[0])
+        indegree = [0] * numCourses                 # Step no.2: Create a indegree list for storing indegree variables
+        for value in Hashtable.values():
+            for item in value:
+                indegree[item] += 1
+        queue = []                                  # Step no.3: Use BFS + Queue
+        for idx, value in enumerate(indegree):
+            if value == 0:
+                queue.append(idx)
+        while queue != []:
+            pop_element = queue.pop(0)
+            for item in Hashtable[pop_element]:
+                indegree[item] -= 1
+                if indegree[item] == 0:
+                    queue.append(item)
+        for item in indegree:                      # Step no.4: Check the result
+            if item != 0:
+                return False
+        return True
