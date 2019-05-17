@@ -1,0 +1,50 @@
+You are given a perfect binary tree where all leaves are on the same level, and every parent has two children. 
+The binary tree has the following definition:
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+Initially, all next pointers are set to NULL.
+
+ 
+
+
+
+Note:
+
+You may only use constant extra space.
+Recursive approach is fine, implicit stack space does not count as extra space for this problem.
+
+Solution:
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, left, right, next):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+class Solution(object):
+    def connect(self, root):
+        dummy_node = Node()                              # Create to return the answer
+        dummy_node.next = root
+        while root and root.left:                        # Check if there is need to go down one more level
+            next_level_root = root.left                  # Create a pointer that point to next level
+            while root:                                  # Check if there is need to go further right in the current level
+                root.left.next = root.right
+                if root.next:                            # Check root.next -> same architecture in each level 
+                    root.right.next = root.next.left
+                root = root.next                         # Point to further right
+            root = next_level_root                       # Point to deeper level
+        return dummy_node.next
+            
+        """
+        :type root: Node
+        :rtype: Node
+        """
