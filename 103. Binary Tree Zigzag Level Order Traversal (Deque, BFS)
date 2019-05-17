@@ -25,6 +25,7 @@ class Solution(object):
                                                                          # THERE IS NO pop(0) for collections.deque() but popleft() !!!!
         deque.append(root)
         while len(deque) != 0:                               # IMPORTANT!!! CANNOT deque != [] -> RunTime Error
+                                                             # this works for queue != [], but not for deque
             size = len(deque)
             for i in range(size):
                 if level % 2 == 0:                           # Case 1: we should popleft() and append(left) and append(right)
