@@ -22,6 +22,7 @@ class Solution(object):
             return None
         size, level, deque, currlist, res = 0, 0, collections.deque(), [], []   # Introduce a new data type: collections.deque()
                                                                          # Build-in functions: pop(), popleft(), append(), appendleft()
+                                                                         # THERE IS NO pop(0) for collections.deque() but popleft() !!!!
         deque.append(root)
         while len(deque) != 0:                               # IMPORTANT!!! CANNOT deque != [] -> RunTime Error
             size = len(deque)
