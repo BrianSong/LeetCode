@@ -51,3 +51,5 @@ class Solution(object):
             if item != 0:
                 return False
         return True
+        
+# 解题思路照片在文件传输助手 2019.05.17
