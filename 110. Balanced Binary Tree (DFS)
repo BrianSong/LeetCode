@@ -67,3 +67,29 @@ class Solution(object):
             '''
             else:
                 return max(depth_left, depth_right) + 1    # "+ 1" is the key in this algorithm that connecting inside the recursion
+                
+Solution no.2: ---------------------------------------------- create a global variable to indicate the result
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def isBalanced(self, root):
+        self.res = None
+        self.dfs(root)
+        return self.res != -1
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+    def dfs(self, root):
+        if not root:
+            return 0
+        left_depth = self.dfs(root.left)
+        right_depth = self.dfs(root.right)
+        if left_depth == -1 or right_depth == -1 or abs(left_depth - right_depth) > 1:
+            self.res = -1
+        return max(left_depth, right_depth) + 1
