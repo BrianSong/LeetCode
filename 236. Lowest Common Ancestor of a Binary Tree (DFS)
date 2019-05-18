@@ -53,7 +53,7 @@ Solution:
 
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
-        self.res = None
+        self.res = None                                # Introduce a global variable to record the result
         self.dfs(root, p, q)
         return self.res
         """
