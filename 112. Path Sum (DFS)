@@ -36,8 +36,13 @@ class Solution(object):
         """
     def dfs_help(self, root, sum):
         if not root:
-            return None
+            return
         if not root.left and not root.right and sum == root.val:        # The reason why I failed in the first time:
                                                                         # we must make sure the current root is the leaf as required
+                                                                        # IMPORTANT!!!!!!!!!!!!!!!!!!!!!!! ALSO!!!!!!!!!!!!!!!!!!!!!!
+                                                                        # the correct one should be sum == root.val not sum == 0:
+                                                                        # sum will be zero only in the next level of leaf node
+                                                                        # where the function has ended in the "if not root: " already 
+                                                                        # So, in this way, this line of code will never be executed.
             return True
         return self.dfs_help(root.left, sum - root.val) or self.dfs_help(root.right, sum - root.val)
