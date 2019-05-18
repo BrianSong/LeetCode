@@ -49,3 +49,24 @@ class Solution(object):
         self.dfs_helper(root.left, sum - root.val, currlist)
         self.dfs_helper(root.right, sum - root.val, currlist)
         currlist.pop()
+        
+New solution: --------------------------------------------------- A more concise one, using path instead of currlist
+class Solution(object):
+    def pathSum(self, root, sum):
+        """
+        :type root: TreeNode
+        :type sum: int
+        :rtype: List[List[int]]
+        """
+        if root is None:
+            return []
+        res = []
+        self.dfs(root, sum, [], res)
+        return res   
+    def dfs(self, root, sum, path, res):
+        if not root:
+            return
+        if not root.left and not root.right and sum == root.val:
+            res.append(path + [root.val])
+        self.dfs(root.left, sum - root.val, path + [root.val], res)
+        self.dfs(root.right, sum - root.val, path + [root.val], res)
