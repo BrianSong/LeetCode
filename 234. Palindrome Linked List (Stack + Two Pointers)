@@ -1,0 +1,72 @@
+Given a singly linked list, determine if it is a palindrome.
+
+Example 1:
+
+Input: 1->2
+Output: false
+Example 2:
+
+Input: 1->2->2->1
+Output: true
+Follow up:
+Could you do it in O(n) time and O(1) space?
+
+
+Solution no.1:  ------------------------------------- Stack + Two Pointers --------------- https://www.youtube.com/watch?v=teJIpKD1MuQ
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def isPalindrome(self, head):
+        slow = head
+        fast = head
+        stack = []
+        while fast and fast.next:                 # Use fast = fast.next.next and slow = slow.next 
+                                                  # to let slow pointer be the middle of linked list
+            stack.append(slow)
+            slow = slow.next
+            fast = fast.next.next
+        if fast:                                  # Special case
+            slow = slow.next
+        while slow:
+            if not slow.val == stack.pop().val:
+                return False
+            slow = slow.next
+        return True
+            
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        
+        
+Solution no.2: -------------------------------------------------------- Operate on the nodes directly without using a stack
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def isPalindrome(self, head):
+        fast = slow = head
+        # find the mid node
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+        # reverse the second half
+        node = None
+        while slow:
+            nxt = slow.next
+            slow.next = node
+            node = slow
+            slow = nxt
+        # compare the first and second half nodes
+        while node: # while node and head:
+            if node.val != head.val:
+                return False
+            node = node.next
+            head = head.next
+        return True
