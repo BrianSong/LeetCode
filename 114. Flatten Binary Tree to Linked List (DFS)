@@ -40,7 +40,7 @@ class Solution(object):
     def dfs_help(self, root):
         if root:
             self.dfs_help(root.right)     # Reverse preorder traversal to get the rightest node
-            self.dfs_help(root.left)
+            self.dfs_help(root.left)      # or the only children node(left node) of the rightest node as needed
             root.right = self.prevnode    # Connect the stored previous node to the current rightest node that has not been processed
             root.left = None              # Let the left node to be NONE as required by the question
             self.prevnode = root          # Update the global variable to store the current node
