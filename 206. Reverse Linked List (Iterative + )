@@ -19,7 +19,7 @@ class Solution(object):
         while current:
             next = current.next     # first store other linked list information  
             current.next = prev     # let current's next equal to prev e.x. orginially 1.next = 2, here we let 1.next = None
-            prev = current          # Since prev will be use in the assignment so it need to be updated every loop, this loop's current is 
+            prev = current          # Since prev will be use in the assignment so it need to be updated every loop, this loop's prev is 
                                     # next loop's current
             current = next          # Of course, current need to be updated to next in order to jump off the while loop in the future
             '''
