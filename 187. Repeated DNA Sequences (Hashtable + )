@@ -1,0 +1,39 @@
+All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG". 
+When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.
+
+Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.
+
+Example:
+
+Input: s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+
+Output: ["AAAAACCCCC", "CCCCCAAAAA"]
+
+Solution no.1: ------------------- my own ------------------------------------------------- Hashtable
+class Solution(object):
+    def findRepeatedDnaSequences(self, s):
+        Hashtable, res = {}, []
+        for idx, w in enumerate(s):
+            if idx + 9 <= len(s) - 1:                                              # <= !!!!!!!!!!!!!!!!!! not < !!!!!!!!!!!!!!
+                if s[idx:idx + 10] in Hashtable and not s[idx:idx + 10] in res:    # also remember to add not s[idx:idx + 10] in res
+                                                                                   # we do not want duplicate string in our result
+                    res.append(s[idx:idx + 10])
+                Hashtable[s[idx:idx + 10]] = 1
+        return res
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        
+Solution no.2: A more concise one
+class Solution(object):
+    def findRepeatedDnaSequences(self, s):
+        Hashtable = collections.defaultdict(int)                             # For latter "+= 1"
+        for idx in range(len(s)):
+            Hashtable[s[idx:idx + 10]] += 1                                  # No need to worry about idx for splicing operation
+        return [key for key, value in Hashtable.iteritems() if value > 1]    # pythonic way cool !!!!!!!!!!!!!!!!
+                                                                             # iteritems() for dictionary
+        """
+        :type s: str
+        :rtype: List[str]
+        """
