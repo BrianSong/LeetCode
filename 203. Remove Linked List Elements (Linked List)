@@ -1,0 +1,61 @@
+Remove all elements from a linked list of integers that have value val.
+
+Example:
+
+Input:  1->2->6->3->4->5->6, val = 6
+Output: 1->2->3->4->5
+
+Solution no.1: ------------------------------------------------------------------------ My own
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution(object):
+    def removeElements(self, head, val):
+        """
+        :type head: ListNode
+        :type val: int
+        :rtype: ListNode
+        """
+        dummynode, dummynode.next = ListNode(0), head
+        while head and head.val == val:                    # To remove the first satisfied node
+                                                           # while head must be added because NoneType has no next attribute
+            dummynode.next = head.next
+            head = head.next
+        if head is None:                                   # Check if head is None, no need to proceed
+            return None
+        prevnode, currnode = head, head.next
+        while currnode:
+            if currnode.val == val:
+                prevnode.next = currnode.next
+                currnode = prevnode.next
+            else:
+                currnode = currnode.next
+                prevnode = prevnode.next
+        return dummynode.next
+        
+Solution no.2: ------------------------------------------------------------------------- More concise
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def removeElements(self, head, val):
+        """
+        :type head: ListNode
+        :type val: int
+        :rtype: ListNode
+        """
+        while head and head.val == val:
+            head = head.next
+        currnode = head
+        while currnode:
+            if currnode.next and currnode.next.val == val:
+                currnode.next = currnode.next.next
+            else:
+                currnode = currnode.next
+        return head
+        
