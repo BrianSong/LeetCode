@@ -12,7 +12,7 @@ Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
-
+--------------------------------------------------------------- Bad question !!!!!!!!!! not even given a head ?????????????????????????
 class Solution(object):
     def deleteNode(self, node):
         if node.next: # As mentioned in the statement, "EXCEPT THE TAIL"
