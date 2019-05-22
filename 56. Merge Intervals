@@ -31,3 +31,28 @@ class Solution(object):
             else:
                 idx += 1
         return intervals
+       
+Solution no.2: ---------------------------- faster ---------------------------------- https://www.youtube.com/watch?v=0aaCHSYzSVs
+class Solution(object):
+    def merge(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if len(intervals) == 0:
+            return None
+        res, start, end, i = [], [], [], 0
+        for interval in intervals:
+            start.append(interval[0])
+            end.append(interval[1])
+        start.sort()
+        end.sort()
+        while i < len(intervals):
+            st = start[i]
+            while i + 1 <= len(intervals) - 1 and end[i] >= start[i + 1]:
+                i += 1
+            ed = end[i]
+            new = [st, ed]
+            res.append(new)
+            i += 1
+        return res
