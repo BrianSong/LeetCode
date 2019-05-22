@@ -37,7 +37,7 @@ class Solution(object):
         return self.backtracking(1, n)
     def backtracking(self, min, max):
         res = []
-        if min > max:
+        if min > max:                                         # Exiting Condition
             return None
         for rt in range(min, max + 1):                        # Step no.1: create root -> every root inside [min, max]
             leftnodelist = self.backtracking(min, rt - 1)     # Step no.2: use helper function to get list of left and list of right
