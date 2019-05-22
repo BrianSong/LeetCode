@@ -1,0 +1,56 @@
+Given a binary tree, find its minimum depth.
+
+The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+
+Note: A leaf is a node with no children.
+
+Example:
+
+Given binary tree [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its minimum depth = 2.
+
+Solution: ----------------------------------------------- BFS
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def minDepth(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        return self.bfs(root)
+    
+    def bfs(self, root):
+        if not root:
+            return 0
+        if None in [root.left, root.right]:
+            return max(self.bfs(root.left), self.bfs(root.right)) + 1
+            '''
+            why max() here?
+            because the question requires that it must be counted from the leaf
+            for example, 
+                  1
+                 /
+                2
+            if we do not add this max(), it will return 1 which counted from 1 but 1 is not a leaf
+            so, we need to add this max() for the situations where one of children of this node is None,
+            we need to calculate the part which follows the tree to the leaf, so, we use max() to take this part out,
+            max(what we want, 0) = what we want
+            '''
+        else:
+            return min(self.bfs(root.left), self.bfs(root.right)) + 1
+            '''
+            as for both the childrens are not None,
+            we keep the principle to find the "minimum" depth
+            '''
