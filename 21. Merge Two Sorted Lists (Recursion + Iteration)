@@ -1,4 +1,5 @@
-Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+Merge two sorted linked lists and return it as a new list. 
+The new list should be made by splicing together the nodes of the first two lists.
 
 Example:
 
@@ -12,7 +13,7 @@ Solution(my own):
 #         self.val = x
 #         self.next = None
 
-class Solution(object):-------------------------------- https://www.youtube.com/watch?v=DA2pmdr7MTE
+class Solution(object):-------------------------- Recursion ------------------------- https://www.youtube.com/watch?v=DA2pmdr7MTE
     def mergeTwoLists(self, l1, l2):
         donimate_node = ListNode(0)                                   # The key to this problem: create a donimate node
         self.mergeList_help(donimate_node, l1, l2)
@@ -42,3 +43,30 @@ class Solution(object):-------------------------------- https://www.youtube.com/
         elif l1 == None and l2 != None:
             donimate_node.next = l2
             return
+Solution: --------------------------------------------- More concise Iteration solution
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        dummynode = ListNode(0)
+        currnode = dummynode
+        while l1 and l2:
+            if l1.val > l2.val:
+                l1, l2 = l2, l1
+            currnode.next = l1
+            l1 = l1.next
+            currnode = currnode.next
+        if l1:
+            currnode.next = l1
+        if l2:
+            currnode.next = l2
+        return dummynode.next
