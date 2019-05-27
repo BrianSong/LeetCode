@@ -1,0 +1,61 @@
+There are a total of n courses you have to take, labeled from 0 to n-1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, 
+return the ordering of courses you should take to finish all courses.
+
+There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, 
+return an empty array.
+
+Example 1:
+
+Input: 2, [[1,0]] 
+Output: [0,1]
+Explanation: There are a total of 2 courses to take. To take course 1 you should have finished   
+             course 0. So the correct course order is [0,1] .
+Example 2:
+
+Input: 4, [[1,0],[2,0],[3,1],[3,2]]
+Output: [0,1,2,3] or [0,2,1,3]
+Explanation: There are a total of 4 courses to take. To take course 3 you should have finished both     
+             courses 1 and 2. Both courses 1 and 2 should be taken after you finished course 0. 
+             So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3] .
+Note:
+
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+You may assume that there are no duplicate edges in the input prerequisites.
+
+Solution: --------------------------------------- nearly the same as 207. Course Schedule
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        res = []
+        Hashtable = collections.defaultdict(list)   # Step no.1: Create a Hashtable for transforming prerequisites into something useful
+        for item in prerequisites:
+            Hashtable[item[1]].append(item[0])
+        indegree = [0] * numCourses                 # Step no.2: Create a indegree list for storing indegree variables
+        for value in Hashtable.values():
+            for item in value:
+                indegree[item] += 1
+        queue = []                                  # Step no.3: Use BFS + Queue
+        for idx, value in enumerate(indegree):
+            if value == 0:
+                queue.append(idx)
+        while queue != []:
+            pop_element = queue.pop(0)
+            res.append(pop_element)                # The only difference: append the courses into the result 
+            for item in Hashtable[pop_element]:
+                indegree[item] -= 1
+                if indegree[item] == 0:
+                    queue.append(item)
+        for item in indegree:                      # Step no.4: Check the result
+            if item != 0:
+                return []                          # If it is impossible to finish all courses, return an empty array.
+        return res
+        
+# 解题思路照片在文件传输助手 2019.05.17
