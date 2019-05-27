@@ -35,10 +35,10 @@ class Solution(object):
         dummynode = Node()
         dummynode.next = root
         childhead, child = None, None
-        while root:
+        while root:                                       # Use two while loops for traversing right and down
             while root:
                 if root.left:
-                    if not childhead:
+                    if not childhead:                     # Two if statments since it is only a binary tree, not "perfect"
                         childhead = root.left
                         child = root.left
                     else:
@@ -51,8 +51,8 @@ class Solution(object):
                     else:
                         child.next = root.right
                         child = child.next
-                root = root.next
-            root = childhead
+                root = root.next                          # Going right
+            root = childhead                              # Going down
             child = None
             childhead = None
         return dummynode.next
