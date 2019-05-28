@@ -63,7 +63,7 @@ class Solution(object):
                 return i
         return -1
         
-Solution no.2: ---------------------------------------- Greedy
+Solution no.2: ------------ Greedy ------------------------- Make locally optimal choices with the hope to obtain global optimal case
 '''
 The heuristic is that if sum(gas) >= sum(cost), there must exists a starting station that enable the circular travel.
 Suppose our circular route stations are {0,...,n} and sum(gas) >= sum(cost). 
