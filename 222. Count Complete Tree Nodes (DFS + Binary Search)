@@ -1,0 +1,72 @@
+Given a complete binary tree, count the number of nodes.
+
+Note:
+
+Definition of a complete binary tree from Wikipedia:
+In a complete binary tree every level, except possibly the last, is completely filled, 
+and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+
+Example:
+
+Input: 
+    1
+   / \
+  2   3
+ / \  /
+4  5 6
+
+Output: 6
+
+Solution no.1: my own ------------------------------------------------------------------------------ DFS
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def countNodes(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root: return 0
+        return self.dfs(root)
+    def dfs(self, root):
+        if not root:
+            return 0
+        return self.dfs(root.left) + self.dfs(root.right) + 1
+        
+        
+Solution no.2: -------------------------------------------------------------- Binary Search
+'''
+compare the depth between left sub tree and right sub tree.
+A, If it is equal, it means the left sub tree is a full binary tree (at this moment, leftsubtree's depth is the same as the whole tree)
+B, It it is not , it means the right sub tree is a full binary tree (here, rightsubtree's depth is one less than the whole tree)
+'''
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def countNodes(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:                                                                                   # Remember to check None cases
+            return 0
+        LeftSubDepth, RightSubDepth = self.getLeftestDepth(root.left), self.getLeftestDepth(root.right)
+        if LeftSubDepth == RightSubDepth:
+            return pow(2, LeftSubDepth) + self.countNodes(root.right)
+        else:
+            return pow(2, RightSubDepth) + self.countNodes(root.left)
+        
+    def getLeftestDepth(self, root):
+        if not root:
+            return 0
+        return 1 + self.getLeftestDepth(root.left)
