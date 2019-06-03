@@ -42,3 +42,33 @@ class Solution(object):
         if nums.count(candidate) >= (len(nums) / 2):
             return candidate
         return None
+        
+        
+        
+--------------------------------------------------------------- C++ --------------------------------------------------------------
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int candidate = 0, count = 0;
+        for (auto& num: nums){
+            if (num == candidate){
+                count += 1;
+            }else if (count == 0){
+                candidate = num;
+                count = 1;
+            }else {
+                count -= 1;
+            }
+        }
+        count = 0;
+        for (auto& num: nums){
+            if (num == candidate){
+                count += 1;
+            }
+        }
+        if (count > nums.size() / 3){
+            return candidate;
+        }
+        return 0;
+    }
+};
