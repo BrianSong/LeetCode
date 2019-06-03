@@ -39,4 +39,6 @@ class Solution(object):
                 count += 1
             else:
                 count -= 1
-        return candidate
+        if nums.count(candidate) >= (len(nums) / 2):
+            return candidate
+        return None
