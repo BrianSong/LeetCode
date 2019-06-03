@@ -23,3 +23,20 @@ class Solution(object):
 '''
 Bit Operation and Divide and Conqueror method will be extended later on.
 '''
+
+Updated Solution: -------------- Boyer-Moore Algorithm -------- https://gregable.com/2013/10/majority-vote-algorithm-find-majority.html
+class Solution(object):
+    def majorityElement(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        candidate, count = 0, 0
+        for num in nums:
+            if count == 0:
+                candidate = num
+            if candidate == num:
+                count += 1
+            else:
+                count -= 1
+        return candidate
