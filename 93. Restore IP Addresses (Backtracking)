@@ -1,0 +1,28 @@
+Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+
+Example:
+
+Input: "25525511135"
+Output: ["255.255.11.135", "255.255.111.35"]
+
+Solution: ------------------------------ Backtracking ------------------------------------ https://www.youtube.com/watch?v=nxBMEvLqDzY
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        res = []
+        self.dfs(s, "", 0, res)
+        return res
+    def dfs(self, s, path, field, res):
+        if field == 4 and len(s) == 0:
+            res.append(path[1:])
+        elif field == 4 or len(s) == 0:
+            return
+        else:
+            self.dfs(s[1:], path + "." + s[0], field + 1, res)
+            if s[0] != '0' and len(s) > 1:
+                self.dfs(s[2:], path + "." + s[0:2], field + 1, res)
+            if s[0] != '0' and len(s) > 2 and int(s[0:3]) <= 255:
+                self.dfs(s[3:], path + "." + s[0:3], field + 1, res)
