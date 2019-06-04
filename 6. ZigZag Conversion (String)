@@ -32,7 +32,8 @@ class Solution(object):
         :type numRows: int
         :rtype: str
         """
-        stringbuilder, i, res = [[] for i in range(numRows)], 0, ""
+        stringbuilder, i, res = [[] for i in range(numRows)], 0, ""   # How to create a 2D list in python ???????????????????
+                                                                      # [[] for i in range(numRows)] instead of [] * numRows
         while i < len(s):
             index = 0
             while index <= numRows - 1 and i < len(s):
