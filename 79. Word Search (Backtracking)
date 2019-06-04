@@ -50,4 +50,6 @@ class Solution(object):
             return True
         visited[row][col] = False                                             # If all not satisfied, erase the trace and return False
                                                                               # Only when all is False, this cell is False
+                                                                              # The True or False of this cell will be utilized by
+                                                                              # the if statement in the upper recursion level
         return False
