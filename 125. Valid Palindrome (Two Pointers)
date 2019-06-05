@@ -1,0 +1,36 @@
+Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+Note: For the purpose of this problem, we define empty string as valid palindrome.
+
+Example 1:
+
+Input: "A man, a plan, a canal: Panama"
+Output: true
+Example 2:
+
+Input: "race a car"
+Output: false
+
+Solution: ------------------------------------------- Two Pointers
+class Solution(object):
+    def isPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        left, right = 0, len(s) - 1
+        while left < right:                                   # Must be "left < right" instead of "left <= right"
+                                                              # Why? Because we do not need to check the centered element,
+                                                              # it must be same as itself
+                                                              # Moreover, as for cases like " " where space is not alphanumeric character
+                                                              # left += 1 -> left is 1 now and s[left] will bring index out of range error
+            while left < right and not s[left].isalnum():     # isalnum() function check if the char is alphanumeric characters 
+                left += 1
+            while left < right and not s[right].isalnum():
+                right -= 1
+            if s[left].lower() != s[right].lower():           # .lower() function is for "A man, a plan, a canal: Panama"
+                                                              # where there is Upper P and lower p which should be considered the same
+                return False
+            left += 1
+            right -= 1
+        return True
