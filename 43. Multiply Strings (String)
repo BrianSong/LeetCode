@@ -1,0 +1,56 @@
+Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+
+Example 1:
+
+Input: num1 = "2", num2 = "3"
+Output: "6"
+Example 2:
+
+Input: num1 = "123", num2 = "456"
+Output: "56088"
+Note:
+
+The length of both num1 and num2 is < 110.
+Both num1 and num2 contain only digits 0-9.
+Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+
+Solution no.1: ------------------------------------------------ my own
+class Solution(object):
+    def multiply(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        int1, int2 = 0, 0
+        for i, w in enumerate(num1):
+            int1 += int(w) * (10 **(len(num1) - i - 1))
+        for i, w in enumerate(num2):
+            int2 += int(w) * (10 **(len(num2) - i - 1))
+        res = int1 * int2
+        return str(res)
+        
+Solution no.2: -------------------------------------------------------- https://www.youtube.com/watch?v=Z_xGMYUSEJ8
+class Solution(object):
+    def multiply(self, nums1, nums2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        sumnum, reslist, res = 0, [0 for i in range(len(nums1) + len(nums2))], ""
+        for i in range(len(nums1) - 1, -1, -1):
+            for j in range(len(nums2) - 1, -1, -1):
+                sumnum = int(nums1[i]) * int(nums2[j])
+                poslow = i + j + 1
+                poshigh = i + j
+                sumnum += reslist[poslow]
+                reslist[poslow] = sumnum % 10
+                print reslist[poslow]
+                reslist[poshigh] += sumnum / 10
+        for num in reslist:
+            if not (len(res) == 0 and num == 0):
+                res += str(num)
+        return '0' if len(res) == 0 else res
