@@ -1,0 +1,48 @@
+Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+You may not modify the values in the list's nodes, only nodes itself may be changed.
+
+Example 1:
+
+Given 1->2->3->4, reorder it to 1->4->2->3.
+Example 2:
+
+Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
+
+Solution: ---------------------------------------------------------- Linked List
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reorderList(self, head):
+        """
+        :type head: ListNode
+        :rtype: None Do not return anything, modify head in-place instead.
+        """
+        if not head:
+            return None
+        slow, fast = head, head
+        while fast and fast.next:           # Step no.1: Cut the linked list into half, make sure the size of the first half is larger
+            slow = slow.next                # e.x.: 1 -> 2-> 3-> 4-> 5 => 1 -> 2-> 3 and 4-> 5
+            fast = fast.next.next
+        mid = slow.next
+        slow.next = None
+        prevnode = None
+        while mid:                          # Step no.2: Reverse the second half linked list
+                                            # e.x.: 4-> 5 => 5-> 4
+            nextnode = mid.next             # IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                            # In linked list question, the first step is always to store the next node !!!!!!!!!!!!!!!!!
+            mid.next = prevnode
+            prevnode = mid
+            mid = nextnode
+        first, second = head, prevnode
+        while first and second:             # Step no.3: Merge the two half part linked list
+            nextnodeFirst = first.next      # 1 -> 2-> 3 and 5-> 4 into 1 -> 5-> 2-> 4-> 3
+            nextnodeSecond = second.next
+            first.next = second
+            second.next = nextnodeFirst
+            first, second = nextnodeFirst, nextnodeSecond
