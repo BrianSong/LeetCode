@@ -1,0 +1,77 @@
+Design a data structure that supports the following two operations:
+
+void addWord(word)
+bool search(word)
+search(word) can search a literal word or a regular expression string containing only letters a-z or .. A 
+. means it can represent any one letter.
+
+Example:
+
+addWord("bad")
+addWord("dad")
+addWord("mad")
+search("pad") -> false
+search("bad") -> true
+search(".ad") -> true
+search("b..") -> true
+Note:
+You may assume that all words are consist of lowercase letters a-z.
+
+
+Solution: --------------------------------------------------------------- Trie + Backtracking
+class TrieNode(object):
+    def __init__(self):
+        self.children = collections.defaultdict(TrieNode)
+        self.isEndofWrod = False
+
+class WordDictionary(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root = TrieNode()
+        
+
+    def addWord(self, word):
+        """
+        Adds a word into the data structure.
+        :type word: str
+        :rtype: None
+        """
+        currnode = self.root
+        for char in word:
+            currnode = currnode.children[char]
+        currnode.isEndofWrod = True
+        
+
+    def search(self, word):
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        :type word: str
+        :rtype: bool
+        """
+        self.res = False
+        currnode = self.root
+        self.backtracking(currnode, word)
+        return self.res
+    
+    
+    def backtracking(self, currnode, word):
+        if len(word) == 0:
+            if currnode.isEndofWrod:
+                self.res = True                                # Only for the cases that proceed to the end and fulfill all requirements
+            return                                             # return directly to end the current function
+        if word[0] == ".":
+            for node in currnode.children.values():            # Check every children node for proceeding
+                self.backtracking(node, word[1:])
+        else:
+            node = currnode.children.get(word[0])
+            if node:                                           # Only proceed when the requirement is satisfied
+                self.backtracking(node, word[1:])
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
