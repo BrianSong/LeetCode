@@ -1,0 +1,38 @@
+Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.
+
+Example 1:
+
+Input: [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+Example 2:
+
+Input: [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+
+
+Solution: ------------------------------------ Dynamic Programming ----------------------- https://www.youtube.com/watch?v=AtzfZHb35YI
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums or len(nums) == 0:
+            return 0
+        currmax, currmin, res = nums[0], nums[0], nums[0]         # Very similar to 53. Maximum Subarray
+                                                                  # Only difference is that, the product may become greater if - * -
+                                                                  # So, in here, we introduce another variable "currmin"
+        for i in range(1, len(nums)):
+            currmax, currmin = max(currmax * nums[i], currmin * nums[i], nums[i]), min(currmax * nums[i], currmin * nums[i], nums[i])
+            '''
+            IMPORTANT  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Why we cannot divide it into two lines like:
+            currmax, currmin = max(currmax * nums[i], currmin * nums[i], nums[i])
+            currmin = min(currmax * nums[i], currmin * nums[i], nums[i]) ?????????????????????????????????????
+            Because for the second line, the currmax has already been updated to the new currmax,
+            but what we want is the currmax in the previous iteration
+            '''
+            res = max(res, max(currmax, currmin))
+        return res
