@@ -1,0 +1,72 @@
+Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+
+For example:
+
+    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+    ...
+Example 1:
+
+Input: 1
+Output: "A"
+Example 2:
+
+Input: 28
+Output: "AB"
+Example 3:
+
+Input: 701
+Output: "ZY"
+
+'''
+Let's see the relationship between the Excel sheet column title and the number:
+
+A   1     AA    26+ 1     BA  2×26+ 1     ...     ZA  26×26+ 1     AAA  1×26²+1×26+ 1
+B   2     AB    26+ 2     BB  2×26+ 2     ...     ZB  26×26+ 2     AAB  1×26²+1×26+ 2
+.   .     ..    .....     ..  .......     ...     ..  ........     ...  .............   
+.   .     ..    .....     ..  .......     ...     ..  ........     ...  .............
+.   .     ..    .....     ..  .......     ...     ..  ........     ...  .............
+Z  26     AZ    26+26     BZ  2×26+26     ...     ZZ  26×26+26     AAZ  1×26²+1×26+26
+
+这就像一个26进制的数:
+ABCD＝A×26³＋B×26²＋C×26¹＋D
+    ＝1×26³＋2×26²＋3×26¹＋4
+10进制:
+1234＝1×10³＋2×10²＋3×10¹＋4
+'''
+
+Solution:
+class Solution(object):
+    def convertToTitle(self, n):
+        """
+        :type n: int
+        :rtype: str
+        """
+        capitals = [chr(x) for x in range(ord('A'), ord('Z') + 1)]  # chr()函数用一个范围在range（256）内的（就是0～255）整数作参数，
+                                                                    # 返回一个对应的字符。E.X: chr(65) => 'A'
+                                                                    # ord('A') => 65
+        self.res = ""
+        self.helper(n, capitals)
+        return self.res[::-1]
+    
+    def helper(self, n, capitals):
+        if n <= 26:
+            self.res += capitals[n - 1]                             # We can't simply use the n % 26 method 
+                                                                    # instead we should use (n-1) % 26, 
+                                                                    # then we get a number range from 0 to 25.
+                                                                    # capitals list's index is from 0 to 25.
+        else:
+            self.res += capitals[(n - 1) % 26]                      
+            self.helper((n - 1) /26, capitals)
+        '''
+        IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        1×26³＋2×26²＋3×26¹＋4
+        AFTER % 26 => 4 (everything that is a muliple of 26 is eliminated)
+        AFTER / 26 => 1×26^2＋2×26＋3 (everything that is not a muliple of 26 is eliminated
+                                       as for everything that is a muliple of 26, its 26^ will be reduced by 1)
+        '''
