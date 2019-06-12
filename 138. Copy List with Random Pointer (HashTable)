@@ -21,7 +21,7 @@ Note:
 You must return the copy of the given head as a reference to the cloned list.
 
 
-Solution: ---------------------------------------------------- HashTable
+Solution: ------------------------------------------------------------------------------ HashTable
 """
 # Definition for a Node.
 class Node(object):
