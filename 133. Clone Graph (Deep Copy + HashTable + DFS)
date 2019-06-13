@@ -1,0 +1,64 @@
+Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. 
+Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
+
+ 
+
+Example:
+
+
+
+Input:
+{"$id":"1","neighbors":[{"$id":"2","neighbors":[{"$ref":"1"},{"$id":"3","neighbors":[{"$ref":"2"},{"$id":"4","neighbors":[{"$ref":"3"},
+{"$ref":"1"}],"val":4}],"val":3}],"val":2},{"$ref":"4"}],"val":1}
+
+Explanation:
+Node 1's value is 1, and it has two neighbors: Node 2 and 4.
+Node 2's value is 2, and it has two neighbors: Node 1 and 3.
+Node 3's value is 3, and it has two neighbors: Node 2 and 4.
+Node 4's value is 4, and it has two neighbors: Node 1 and 3.
+ 
+
+Note:
+
+The number of nodes will be between 1 and 100.
+The undirected graph is a simple graph, which means no repeated edges and no self-loops in the graph.
+Since the graph is undirected, if node p has node q as neighbor, then node q must have node p as neighbor too.
+You must return the copy of the given node as a reference to the cloned graph.
+
+
+Solution: -------------------------------------------------- Deep Copy + HashTable + DFS
+'''
+#0: "NodeTable" is the hashtable for looking up nodes which have already been created, key is currnode.val, 
+    and value is currnode itself.
+#1: In dfs(currnode) function, "currnode" always represents the node(with existing neighbors) in the exisiting complete graph, 
+    which is the input node.
+#2: If we have already created the node, just return the current node even though we probably haven't fill the neighbors for it.
+#3: Create new node which will be returned in the end, sadly, it has no neighbors in the beginning.
+#4: Add it to hashtable, even though it has no neighbors, we will fill its neighbors later, through recursion :)
+#5: Note that we always get neighbors from nodes in existing complete graph, thus we iterate from node.neighbors 
+    instead of copynode.neighbors.
+'''
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, neighbors):
+        self.val = val
+        self.neighbors = neighbors
+"""
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        self.NodeTable = {}                      #0
+        return self.dfs(node)
+        
+    def dfs(self, currnode):                     #1
+        if currnode.val in self.NodeTable:       #2
+            return self.NodeTable[currnode.val]
+        copynode = Node(currnode.val, [])        #3
+        self.NodeTable[copynode.val] = copynode  #4
+        for neigbnode in currnode.neighbors:     #5
+            copynode.neighbors.append(self.dfs(neigbnode)) 
+        return copynode
