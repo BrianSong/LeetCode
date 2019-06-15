@@ -1,0 +1,105 @@
+Given a list of non negative integers, arrange them such that they form the largest number.
+
+Example 1:
+
+Input: [10,2]
+Output: "210"
+Example 2:
+
+Input: [3,30,34,5,9]
+Output: "9534330"
+Note: The result may be very large, so you need to return a string instead of an integer.
+
+'''
+Bubble Sort + Merge Sort + Quick Sort: --------- https://classroom.udacity.com/courses/ud513/lessons/7123524086/concepts/71226940110923
+'''
+
+Solution no.1 : ---------------------------------------------------------------- Bubble Sort
+class Solution(object):
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        if not nums or len(nums) == 0:
+            return None
+        for i in range(len(nums) - 1, -1, -1):
+            for j in range(i):
+                if self.compare(nums[j], nums[j + 1]):
+                    nums[j], nums[j + 1] = nums[j + 1], nums[j]
+        
+        return str(int("".join(map(str, nums))))                   # map(function, iterable)
+                                                                   # map(square, [1,2,3,4,5]) >>>>>>>>>>>>>>> [1, 4, 9, 16, 25]
+                                                                   # Why str(int("".join(map(str, nums)))) (seemed unnecessarily)
+                                                                   # instead of "".join(map(str, nums)) ??????????
+                                                                   # Because for the cases like : [0, 0] => return "00" instead of "0"
+                
+    def compare(self, n1, n2):
+        return str(n1) + str(n2) < str(n2) + str(n1)
+        
+Solution no.2: ---------------------------------------------------------------- Merge Sort
+class Solution(object):
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        nums = self.mergeSort(nums, 0, len(nums) - 1)
+        return str(int("".join(map(str, nums))))
+    
+    def mergeSort(self, nums, l, r):
+        if l > r:
+            return
+        if l == r:
+            return [nums[l]]                                      # return [nums[l]] instead of nums[l], here we want to return a list
+        mid = (l + r) / 2
+        left = self.mergeSort(nums, l, mid)
+        right = self.mergeSort(nums, mid + 1, r)
+        return self.Merge(left, right)
+    
+    def Merge(self, l1, l2):
+        res, i1, i2 = [], 0, 0
+        while i1 < len(l1) and i2 < len(l2):
+            if self.compare(l1[i1], l2[i2]):
+                res.append(l2[i2])
+                i2 += 1
+            else:
+                res.append(l1[i1])
+                i1 += 1
+        res.extend(l1[i1:] or l2[i2:])
+        return res
+    
+    def compare(self, n1, n2):
+        return str(n1) + str(n2) < str(n2) + str(n1)
+        
+Solution no.3: ---------------------------------------------------------------- Quick Sort
+class Solution(object):
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        self.quickSort(nums, 0, len(nums) - 1)
+        return str(int("".join(map(str, nums))))
+    
+    def quickSort(self, nums, l, r):
+        if l >= r:                                              # l == r => still return, no need to do anything as in merge sort
+                                                                # because quick sort is in-place
+            return
+        pos = self.partition(nums, l, r)
+        self.quickSort(nums, l, pos - 1)
+        self.quickSort(nums, pos + 1, r)
+        
+    def partition(self, nums, l, r):
+        pos = r
+        while l < pos and pos != 0:
+            if self.compare(nums[l], nums[pos]):
+                nums[pos - 1], nums[l] = nums[l], nums[pos - 1]
+                nums[pos], nums[pos - 1] = nums[pos - 1], nums[pos]
+                pos -= 1
+            else:
+                l += 1
+        return pos
+                
+    def compare(self, n1, n2):
+        return str(n1) + str(n2) < str(n2) + str(n1)
