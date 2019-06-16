@@ -1,0 +1,77 @@
+Given a binary tree, determine if it is a valid binary search tree (BST).
+
+Assume a BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+ 
+
+Example 1:
+
+    2
+   / \
+  1   3
+
+Input: [2,1,3]
+Output: true
+Example 2:
+
+    5
+   / \
+  1   4
+     / \
+    3   6
+
+Input: [5,1,4,null,null,3,6]
+Output: false
+Explanation: The root node's value is 5 but its right child's value is 4.
+
+
+Solution: --------------------------------------------------------------------- BST + DFS
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+'''
+On the first sight, the problem is trivial. 
+Let's traverse the tree and check at each step if node.right.val > node.val and node.left.val < node.val. 
+This approach would even work for some trees compute
+HOWEVER, 
+The problem is this approach will not work for all cases. 
+Not only the right child should be larger than the node but all the elements in the right subtree
+FOR EXMAPLE:
+             10
+            /  \
+           5   15
+              /  \
+             6   20    is NOT a BST because, 6 should be bigger than 10 !!!!!!!!!!!!!!!!!!!
+So,  we should keep both upper and lower limits for each node while traversing the tree, 
+and compare the node value not with children values but with these limits.
+NOT compare with children has also one extra advantage: we do not need to worry when children node is None where children.val => error 
+'''
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if not root:
+            return True
+        return self.bfs(root, -float('inf'), float('inf'))
+    
+    def bfs(self, root, lowerlimit, upperlimit):
+        if not root:
+            return True
+        if root.val <= lowerlimit:                                         # Not < but <= 
+            return False  
+        if root.val >= upperlimit:                                         # Not > but >=  
+            return False
+        if not (self.bfs(root.left, lowerlimit, root.val)):
+            return False
+        if not (self.bfs(root.right, root.val, upperlimit)):               # Here, when root is node 6, it has a lowerlimit == node 10
+                                                                           # so, it will return False
+            return False
+        return True                                                        # If pass all cases, then return True
