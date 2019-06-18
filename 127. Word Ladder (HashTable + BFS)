@@ -1,0 +1,68 @@
+Given two words (beginWord and endWord), and a dictionary's word list, 
+find the length of shortest transformation sequence from beginWord to endWord, such that:
+
+Only one letter can be changed at a time.
+Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+Note:
+
+Return 0 if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+You may assume no duplicates in the word list.
+You may assume beginWord and endWord are non-empty and are not the same.
+Example 1:
+
+Input:
+beginWord = "hit",
+endWord = "cog",
+wordList = ["hot","dot","dog","lot","log","cog"]
+
+Output: 5
+
+Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+return its length 5.
+Example 2:
+
+Input:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+
+Output: 0
+
+Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
+
+
+Solution: --------------------------------- HashTable + BFS ------------------- https://www.youtube.com/watch?v=mgICIVXu2sQ&t=457s
+'''
+具体答案解析见题目自带答案
+最少步骤，最短路径 => BFS : 每次走一步，直到有一步满足条件，即可结束
+'''
+class Solution(object):
+    def ladderLength(self, beginWord, endWord, wordList):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: int
+        """
+        if not endWord in wordList or not beginWord or not endWord or not wordList:
+            return 0
+        all_combo_dict = collections.defaultdict(list)
+        for word in wordList:
+            for i in range(len(word)):
+                all_combo_dict[word[:i] + "*" + word[i + 1:]].append(word)
+        queue, visited = [(beginWord, 1)], {beginWord : True}
+        while len(queue) > 0:
+            size = len(queue)
+            for i in range(size):
+                currword, currlevel = queue.pop(0)
+                for i in range(len(currword)):
+                    intermediate_word = currword[:i] + "*" + currword[i + 1:]
+                    for next_word in all_combo_dict[intermediate_word]:
+                        if next_word == endWord:
+                            return currlevel + 1 
+                        if not next_word in visited:
+                            queue.append((next_word, currlevel + 1))
+                            visited[next_word] = True
+        return 0
