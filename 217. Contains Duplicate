@@ -1,6 +1,7 @@
 Given an array of integers, find if the array contains any duplicates.
 
-Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
+Your function should return true if any value appears at least twice in the array, 
+and it should return false if every element is distinct.
 
 Example 1:
 
@@ -23,7 +24,7 @@ class Solution(object):
             return False
         for number in nums:
             dic[number] = dic.get(number, 0) + 1
-        for key, value in dic.iteritems(): # iteritems() traverse over the dictionary, like enumerate() for list
+        for key, value in dic.iteritems():              # iteritems() traverse over the dictionary, like enumerate() for list
             if value != 1:
                 return True
         return False
