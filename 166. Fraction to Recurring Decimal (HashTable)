@@ -1,0 +1,60 @@
+Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+
+If the fractional part is repeating, enclose the repeating part in parentheses.
+
+Example 1:
+
+Input: numerator = 1, denominator = 2
+Output: "0.5"
+Example 2:
+
+Input: numerator = 2, denominator = 1
+Output: "2"
+Example 3:
+
+Input: numerator = 2, denominator = 3
+Output: "0.(6)"
+
+Solution: --------------------------------- my own ------------------------------------------- HashTable
+class Solution(object):
+    def fractionToDecimal(self, num, deno):
+        """
+        :type numerator: int
+        :type denominator: int
+        :rtype: str
+        """
+        if deno == 0:
+            return None
+        HashTable, res = {}, ""
+        numerator, denominator = abs(num), abs(deno)
+        res += str(numerator / denominator)
+        reminder = numerator % denominator
+        if reminder:
+            res += '.'
+        idx = 0
+        HashTable[reminder] = idx
+        idx += 1
+        reminder *= 10
+        while reminder:
+            if reminder < denominator:
+                res += '0'
+                HashTable[reminder] = idx
+                idx += 1
+                reminder *= 10
+            else:
+                res += str(reminder / denominator)
+                reminder = reminder % denominator
+                if reminder in HashTable:
+                    insert_position = HashTable[reminder]
+                    break
+                HashTable[reminder] = idx
+                idx += 1
+                reminder *= 10
+        if reminder:
+            res += ')'
+            for idx, item in enumerate(res):
+                if item == '.':
+                    res = res[:idx + 1 + insert_position] + '(' + res[idx + 1 + insert_position :]
+        if (num < 0 and deno > 0) or (num > 0 and deno < 0):
+            res = '-' + res
+        return res
