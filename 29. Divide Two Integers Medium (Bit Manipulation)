@@ -20,7 +20,7 @@ Assume we are dealing with an environment which could only store integers within
 For the purpose of this problem, assume that your function returns 231 − 1 when the division result overflows.
 
 
-Solution: ------------------------- Bits Manipulation -------------------------- https://www.youtube.com/watch?v=uD1Cw1JbD8E
+Solution: ------------------------------------- Bit Manipulation -------------------------- https://www.youtube.com/watch?v=uD1Cw1JbD8E
 class Solution(object):
     def divide(self, dividend, divisor):
         """
