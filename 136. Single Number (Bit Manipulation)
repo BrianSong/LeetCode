@@ -27,7 +27,7 @@ class Solution(object):
               0          0        0
               0          1        1
               1          0        1
-              1          1        1
+              1          1        0
              Case analyst:
              Input array is [2,1,2]
              So, res = 0^2^1^2 = 0^(2^2)^1 = 0^0^1 = 0^1 = 1 which is exactly the only sigle number in the array!
