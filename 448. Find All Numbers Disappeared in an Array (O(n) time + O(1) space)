@@ -1,0 +1,36 @@
+Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+
+Find all the elements of [1, n] inclusive that do not appear in this array.
+
+Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
+
+Example:
+
+Input:
+[4,3,2,7,8,2,3,1]
+
+Output:
+[5,6]
+
+
+Solution: ----------------------------------------------- O(n) time + O(1) space
+'''
+The basic idea is that we iterate through the input array and mark elements as negative using nums[nums[i] -1] = - nums[nums[i]-1]. 
+In this way all the numbers that we have seen will be marked as negative with certain indexes
+In the second iteration, if a value is not marked as negative, it implies we have never seen that index before, 
+so just add it to the return list.
+'''
+class Solution(object):
+    def findDisappearedNumbers(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        res = []
+        for num in nums:
+            if nums[abs(num) - 1] > 0:
+                nums[abs(num) - 1] = - nums[abs(num) - 1]
+        for i, num in enumerate(nums):
+            if num > 0:
+                res.append(i + 1)
+        return res
