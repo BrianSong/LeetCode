@@ -1,0 +1,35 @@
+Given a List of words, 
+return the words that can be typed using letters of alphabet on only one row's of American keyboard like the image below.
+
+ 
+
+
+
+ 
+Example:
+
+Input: ["Hello", "Alaska", "Dad", "Peace"]
+Output: ["Alaska", "Dad"]
+ 
+
+Note:
+
+You may use one character in the keyboard more than once.
+You may assume the input string will only contain letters of alphabet.
+
+
+Solution: ---------------------------------------------------------- set() + issubset() + lower()
+class Solution(object):
+    def findWords(self, words):
+        """
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        Row_1 = set('qwertyuiop')
+        Row_2 = set('asdfghjkl')
+        Row_3 = set('zxcvbnm')
+        res = []
+        for word in words:
+            if set(word.lower()).issubset(Row_1) or set(word.lower()).issubset(Row_2) or set(word.lower()).issubset(Row_3):
+                res.append(word)
+        return res
