@@ -1,0 +1,45 @@
+Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k), 
+where h is the height of the person and k is the number of people in front of this person who have a height greater than or equal to h. 
+Write an algorithm to reconstruct the queue.
+
+Note:
+The number of people is less than 1,100.
+
+
+Example
+
+Input:
+[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+Output:
+[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+
+
+Solution: ---------------------------------------------- sorted(iterative, key = lambda x:(- x[0], x[1]))
+'''
+Pick out tallest group of people. Since there's no other groups of people taller than them, 
+therefore each guy's index will be just as same as his k value.
+For 2nd tallest group (and the rest), insert each one of them into res by k value. So on and so forth.
+E.g.
+input: [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+subarray after step 1: [[7,0], [7,1]]
+subarray after step 2: [[7,0], [6,1], [7,1]]
+'''
+class Solution(object):
+    def reconstructQueue(self, people):
+        """
+        :type people: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        res = []
+        for people in sorted(people, key = lambda x:(- x[0], x[1])):    # Here we use sorted(iterative, key = lambda...)
+                                                                        # lambda 用于匿名函数，可以免去命名函数的麻烦 (inline function)
+                                                                        # why key = lambda x:(- x[0], x[1]) ?
+                                                                        # First assign x[0] to -x[0], so that 7 in the first dimension
+                                                                        # will become smallest and be in the first of the array
+                                                                        # Second, sort the array based on x[1],
+                                                                        # so that [7, 0] will be ahead of [7, 1]
+                                                                        # So, sorted(people, key = lambda x:(- x[0], x[1])) will become:
+                                                                        # [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+            res.insert(people[1], people)
+        return res
