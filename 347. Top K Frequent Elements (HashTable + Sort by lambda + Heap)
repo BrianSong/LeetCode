@@ -1,0 +1,56 @@
+Given a non-empty array of integers, return the k most frequent elements.
+
+Example 1:
+
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+Example 2:
+
+Input: nums = [1], k = 1
+Output: [1]
+Note:
+
+You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
+Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+
+
+Solution no.1: my own ------------------------------------------- HashTable + Sort by lambda
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        if not nums or k > len(nums):
+            return None
+        HashTable = collections.defaultdict(int)
+        for num in nums:
+            HashTable[num] += 1
+        reslist, res = [], []
+        for key in HashTable:
+            reslist.append((key, HashTable[key]))
+        reslist = sorted(reslist, key = lambda x: - x[1])
+        for i in range(k):
+            res.append(reslist[i][0])
+        return res
+        
+Solution no.2: --------------------------------- Heap(priority queue) ----------------------- collections.Counter + heapq.nlargest()
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        count = collections.Counter(nums)                            # when nums = [1,1,1,2,2,3] => count = Counter({1: 3, 2: 2, 3: 1})
+        return heapq.nlargest(k, count.keys(), key = count.get)      # In Python there is a method nlargest in heapq library: 
+                                                                     # heapq.nlargest(n, iterable[, key]):
+                                                                     # Return a list with the n largest elements from the dataset 
+                                                                     # defined by iterable. 
+                                                                     # key, if provided, specifies a function of one argument 
+                                                                     # that is used to extract a comparison key from each element 
+                                                                     # in the iterable
+                                                                     # So, here, key = count.get is actually a function used to call
+                                                                     # upon the iterable count.keys()
+                                                                     # We want the k elements with the largest count.get((count.keys()))
