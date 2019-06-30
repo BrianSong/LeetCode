@@ -1,0 +1,68 @@
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, 
+not the kth distinct element.
+
+Example 1:
+
+Input: [3,2,1,5,6,4] and k = 2
+Output: 5
+Example 2:
+
+Input: [3,2,3,1,2,4,5,5,6] and k = 4
+Output: 4
+
+Solution no.1: ---------------------------- O(nlogn)
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        return sorted(nums)[-k]
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        
+Solutiono no.2: ------------------------------------- Heap ------------------- https://www.youtube.com/watch?v=zyskis1Gw0c
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        heap = []
+        for num in nums:
+            heapq.heappush(heap, num)
+            if len(heap) > k:
+                heapq.heappop(heap)
+        return heap[0]
+        
+Solution no.3: ------------------------------------------------- QuickSort ------ https://www.youtube.com/watch?v=zyskis1Gw0c
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        return self.quickSort(nums, len(nums) - k)
+    
+    def quickSort(self, nums, k):
+        if nums:
+            povit = self.partition(nums, 0, len(nums) - 1)
+            if povit > k:
+                return self.quickSort(nums[0:povit], k)
+            elif povit < k:
+                return self.quickSort(nums[povit+1:], k - povit - 1)     # Here is k - povit - 1 instead of k - povit because
+                                                                         # the new nums starts from povit + 1 instead of povit
+            else:
+                return nums[povit]
+            
+    def partition(self, nums, l, r):
+        povit = r
+        while l < povit and povit > 0:
+            if nums[povit] >= nums[l]:
+                l += 1
+            else:
+                nums[povit - 1], nums[l] = nums[l], nums[povit - 1]
+                nums[povit], nums[povit - 1] = nums[povit - 1], nums[povit]
+                povit -= 1
+        return povit
