@@ -1,0 +1,56 @@
+The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+
+
+Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+
+Example:
+
+Input: 4
+Output: 2
+Explanation: There are two distinct solutions to the 4-queens puzzle as shown below.
+[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+
+
+Solution: -------------------------------------- Backtracking --------------------- https://www.youtube.com/watch?v=wGbuCyNpxIg
+'''
+The idea here is quite similar to N-Queens while we don't need to record the path, 
+and as the return value is a number not a list, it's better to use a global variable to record the result.
+'''
+class Solution(object):
+    def totalNQueens(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        self.res = 0
+        self.backtracking(n, 0, [])
+        return self.res
+        
+    def backtracking(self, n, currRow, colPlacement):
+        if currRow == n:
+            self.res += 1
+            return
+        else:
+            for i in range(n):
+                colPlacement.append(i)
+                if self.validPlacement(colPlacement, i):
+                    self.backtracking(n, currRow + 1, colPlacement)
+                colPlacement.pop()
+    
+    def validPlacement(self, colPlacement, currCol):
+        for i in range(len(colPlacement) - 1):
+            diff = abs(colPlacement[i] - currCol)
+            if diff == 0 or diff == len(colPlacement) - 1 - i:
+                return False
+        return True
