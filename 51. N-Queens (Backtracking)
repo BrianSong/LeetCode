@@ -1,0 +1,71 @@
+The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, 
+where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+Example:
+
+Input: 4
+Output: [
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above.
+
+
+Solution: ------------------------------ Backtracking --------------------------- https://www.youtube.com/watch?v=wGbuCyNpxIg
+'''
+The key point of this question is to place "n" queens in a n * n chessboard !
+Which means the queens must be 1 row per each, that can be easily traverse for us.
+'''
+class Solution(object):
+    def solveNQueens(self, n):
+        """
+        :type n: int
+        :rtype: List[List[str]]
+        """
+        res = []
+        self.backtracking(n, 0, [], res)
+        return [['.' * i + 'Q' + '.' * (n - 1 - i) for i in sol] for sol in res]     # How to do it in a pythonic way
+        # resstr = []
+        # for eachRes in res:
+        #     currstr = []
+        #     for item in eachRes:
+        #         str = ""
+        #         for i in range(n):
+        #             if i == item:
+        #                 str += 'Q'
+        #             else:
+        #                 str += '.'
+        #         currstr.append(str)
+        #     resstr.append(currstr)
+        # return resstr
+        
+    def backtracking(self, n, currRow, colPlacement, res):
+        if currRow == n:
+            res.append(colPlacement[:])
+            return
+        else:
+            for i in range(n):
+                colPlacement.append(i)
+                if self.validPlacement(colPlacement, i):
+                    self.backtracking(n, currRow + 1, colPlacement, res)
+                colPlacement.pop()
+    
+    def validPlacement(self, colPlacement, currCol):
+        for i in range(len(colPlacement) - 1):
+            diff = abs(colPlacement[i] - currCol)
+            if diff == 0 or diff == len(colPlacement) - 1 - i:
+                return False
+        return True
