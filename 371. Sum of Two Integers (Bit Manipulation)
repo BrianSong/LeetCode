@@ -146,6 +146,10 @@ class Solution(object):
        
         if a > 2**31:                       # if a is negative, get a's 32 bits complement positive first
                                             # then get 32-bit positive's Python complement negative
+                                            # For exampel, if a == -4
+                                            # bin(a) => 0b11111111111111111111111111111100
+                                            # bin(a^mask) => 0b11
+                                            # bin(~(a^mask)) => -0b100  (~ operator just change 0b to -0b and add 1 to the latter bits)
             return ~(a^mask)
         
         else:
