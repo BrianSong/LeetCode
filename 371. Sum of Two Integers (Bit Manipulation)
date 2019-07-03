@@ -25,6 +25,24 @@ Then, we shift carry one position left and assign it to b, b = 0010.
 
 Iterate until there is no carry (or b == 0)
 
+IDEALY,
+let's try for a = 46, b = -14
+
+46 = 101110
+14 = 001110
+-14 = 1's complement of (14) + 1 ( 1's complement = invert all bits)
+so -14 = 110001
+1 (+)
+110010
+
+so now all we have to do is add 46 and -14
+
+46 = 101110
+-14 = 110010 (+)
+we get 100000 (which is 32 )
+
+Note : we don't have to do the two's complement, the negative number will be already represented in two's complement.
+
 HOWEVER, In python: the recursion will not end given input a=1, b=-1, as a and b just keeping increasing. => TLE ERROR
 The issue is due to the way python performs left shift on negative numbers. 
 See: https://stackoverflow.com/questions/39113479/infinite-loop-while-adding-two-integers-using-bitwise-operations-in-python-3
