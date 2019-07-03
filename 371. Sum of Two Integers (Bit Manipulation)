@@ -1,0 +1,50 @@
+Calculate the sum of two integers a and b, but you are not allowed to use the operator + and -.
+
+Example 1:
+
+Input: a = 1, b = 2
+Output: 3
+Example 2:
+
+Input: a = -2, b = 3
+Output: 1
+
+Solution: --------------------- https://www.youtube.com/watch?time_continue=139&v=qq64FrA2UXQ (works for both positive)
+'''
+For this, problem, for example, we have a = 1, b = 3,
+
+In bit representation, a = 0001, b = 0011,
+
+First, we can use "and"("&") operation between a and b to find a carry.
+
+carry = a & b, then carry = 0001
+
+Second, we can use "xor" ("^") operation between a and b to find the different bit, and assign it to a,
+
+Then, we shift carry one position left and assign it to b, b = 0010.
+
+Iterate until there is no carry (or b == 0)
+
+HOWEVER, In python: the recursion will not end given input a=1, b=-1, as a and b just keeping increasing. => TLE ERROR
+The issue is due to the way python performs left shift on negative numbers. 
+See: https://stackoverflow.com/questions/39113479/infinite-loop-while-adding-two-integers-using-bitwise-operations-in-python-3
+'''
+class Solution(object):
+    def getSum(self, a, b):
+        """
+        :type a: int
+        :type b: int
+        :rtype: int
+        """
+        mask = 0xFFFFFFFF
+        
+        while not b == 0:
+            carry = a & b
+            a = (a^b) & mask
+            b = (carry << 1) & mask
+        
+        if a > 2**31:
+            return ~(a^mask)
+        
+        else:
+            return a
