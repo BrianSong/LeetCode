@@ -1,0 +1,41 @@
+Given a non-empty array of numbers, a0, a1, a2, … , an-1, where 0 ≤ ai < 231.
+
+Find the maximum result of ai XOR aj, where 0 ≤ i, j < n.
+
+Could you do this in O(n) runtime?
+
+Example:
+
+Input: [3, 10, 5, 25, 2, 8]
+
+Output: 28
+
+Explanation: The maximum result is 5 ^ 25 = 28.
+
+
+Solution: --------------------------------------------------------- Bit Manipulation
+'''
+General form of solution is to find two numbers which have the highest bits complementing each other (0 and 1). 
+Then store that max, look at the next less significant bit and see if another two numbers complement each other 
+(which includes the bits sets from the previous max). 
+If so, this number will be greater than the previous maximum. 
+'''
+class Solution(object):
+    def findMaximumXOR(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        res = 0
+        for i in range(31, -1, -1):
+            prefixes = set([num >> i for num in nums])
+            res <<= 1
+            candidate = res + 1                            # Find the new possible maximum by setting the next bit to 1 
+                                                           # on the current maximum
+            for p in prefixes:
+                if p ^ candidate in prefixes:              # Critical part: If a ^ b = c, then a ^ c = b and c ^ b = a.
+                    res = candidate                        # If we find this candidate, we assign res to it and break
+                    break
+                                                           # if we do not find anything combination in prefixes that can form candidate,
+                                                           # we jump into the next level of for i in range(31, -1, -1):
+        return res
