@@ -1,0 +1,52 @@
+Given a string of numbers and operators, 
+return all possible results from computing all the different possible ways to group numbers and operators. 
+The valid operators are +, - and *.
+
+Example 1:
+
+Input: "2-1-1"
+Output: [0, 2]
+Explanation: 
+((2-1)-1) = 0 
+(2-(1-1)) = 2
+Example 2:
+
+Input: "2*3-4*5"
+Output: [-34, -14, -10, -10, 10]
+Explanation: 
+(2*(3-(4*5))) = -34 
+((2*3)-(4*5)) = -14 
+((2*(3-4))*5) = -10 
+(2*((3-4)*5)) = -10 
+(((2*3)-4)*5) = 10
+
+
+Solution: ------------------------------------------------------ Divide and Conquer
+class Solution(object):
+    def diffWaysToCompute(self, input):
+        """
+        :type input: str
+        :rtype: List[int]
+        """
+        if input.isdigit():                                                   # Base cases: when input only combined by digits
+            return [int(input)]
+        res = []
+        for i in range(len(input)):                                           # Else Traverse through this input
+            if input[i] in  "+-*":
+                leftposs = self.diffWaysToCompute(input[:i])                  # Classic Divide and Conquer routine
+                                                                              # Divide the current big problem into small ones
+                                                                              # Decompose the input into leftpart and rightpart
+                                                                              # and continue to decompose until hit the base cases
+                rightposs = self.diffWaysToCompute(input[i+1:])
+                for left in leftposs:                                         # Iterate all possible combinations
+                    for right in rightposs:
+                        res.append(self.compute(left, right, input[i]))
+        return res                                                            # Remember to return the reslist to the upper level
+    
+    def compute(self, num1, num2, operator):                                  # helper function to compute one possible result
+        if operator == "*":
+            return num1 * num2
+        elif operator == "+":
+            return num1 + num2
+        else:
+            return num1 - num2
