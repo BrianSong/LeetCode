@@ -1,0 +1,46 @@
+Given a singly linked list, group all odd nodes together followed by the even nodes. 
+Please note here we are talking about the node number and not the value in the nodes.
+
+You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time complexity.
+
+Example 1:
+
+Input: 1->2->3->4->5->NULL
+Output: 1->3->5->2->4->NULL
+Example 2:
+
+Input: 2->1->3->5->6->4->7->NULL
+Output: 2->3->6->7->1->5->4->NULL
+Note:
+
+The relative order inside both the even and odd groups should remain as it was in the input.
+The first node is considered odd, the second node even and so on ...
+
+
+Solution: ------------------------------------------------- Linked List
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def oddEvenList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head: return None
+        odd, evenhead, even = head, head.next, head.next        # Put the odd nodes in a linked list and the even nodes in another. 
+        while even and even.next:                               # The key point of this question
+                                                                # while even and even.next: why?
+                                                                # if even is None, which means the linked list ends at odd node
+                                                                # if even is not None but even.next is None, ends at even node
+                                                                # In either way, the problem is solved.
+            odd.next = even.next
+            even.next = even.next.next
+            odd = odd.next
+            even = even.next
+        odd.next = evenhead                                     # Then link the evenList to the tail of the oddList.
+ 
+        return head
