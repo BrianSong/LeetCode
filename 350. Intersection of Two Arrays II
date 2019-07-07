@@ -1,0 +1,96 @@
+Given two arrays, write a function to compute their intersection.
+
+Example 1:
+
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+Example 2:
+
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]
+Note:
+
+Each element in the result should appear as many times as it shows in both arrays.
+The result can be in any order.
+Follow up:
+
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+
+
+Solution no.1: ------------------------------------------------ my own O(n^2) time complexity
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        if not nums1 or not nums2:
+            return None
+        res = []
+        #if len(nums1) > len(nums2):            NO NEED TO DO THIS SWAP!!!
+        #    nums1, nums2 = nums2, nums1
+        for num in nums1:                       # O(n) for traversing
+            if num in nums2:                    # Another O(n) for "in" operator
+                res.append(num)
+                nums2.remove(num)               # The KEY !!!!!!!! Once we find one intersection,
+                                                # we need to remove it from the longer list,
+                                                # Otherwise: Input:
+                                                             [3,1,2]
+                                                             [1,1]
+                                                             Output:
+                                                             [1,1]
+                                                             Expected:
+                                                             [1]
+        return res
+        
+        
+Solution no.2: ------------------------------------------------- Two pointers O(nlgn) time complexity
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        nums1, nums2 = sorted(nums1), sorted(nums2)
+        p1, p2 = 0, 0
+        res = []
+        while True:
+            try:                                              # THE KEY !!!!!!!!!!!!
+                                                              # try:
+                                                              #     ...
+                                                              # except IndexError:
+                                                              #     break
+                if nums1[p1] < nums2[p2]:
+                    p1 += 1
+                elif nums1[p1] > nums2[p2]:
+                    p2 += 1
+                else:
+                    res.append(nums1[p1])
+                    p1 += 1
+                    p2 += 1
+            except IndexError:
+                break
+        return res
+        
+
+Solution no.3: ------------------------------------ HashTable O(n) time complexity but O(n) space complexity
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        HashTable, res = {}, []
+        for num in nums1:
+            HashTable[num] = HashTable.get(num, 0) + 1
+        for num in nums2:
+            if num in HashTable and HashTable[num] > 0:
+                res.append(num)
+                HashTable[num] -= 1                               # The KEY !!!!!!!!!!!!!!
+                                                                  # JUST Like nums2.remove(num) in Solution no.1
+        return res
