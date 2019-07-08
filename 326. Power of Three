@@ -1,0 +1,41 @@
+Given an integer, write a function to determine if it is a power of three.
+
+Example 1:
+
+Input: 27
+Output: true
+Example 2:
+
+Input: 0
+Output: false
+Example 3:
+
+Input: 9
+Output: true
+Example 4:
+
+Input: 45
+Output: false
+Follow up:
+Could you do it without using any loop / recursion?
+
+
+Solution no.1: ------------------------------------------------------------------ Loop
+'''
+If a number n is a power of a number b, we can write
+n = b^x
+n = b * b * b * b * ... * b + 0 ---------------------------------------------- (0 is the remainder here)
+Hence it should be possible to divide n by x times, every time with a remainder of 0 and the end result to be 1.
+'''
+class Solution(object):
+    def isPowerOfThree(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        if n < 1: return False
+        while n % 3 == 0:
+            n /= 3
+        return n == 1
+        
+More math solutions may be followed up in the future.
