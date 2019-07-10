@@ -1,0 +1,88 @@
+Given an integer matrix, find the length of the longest increasing path.
+
+From each cell, you can either move to four directions: left, right, up or down. 
+You may NOT move diagonally or move outside of the boundary (i.e. wrap-around is not allowed).
+
+Example 1:
+
+Input: nums = 
+[
+  [9,9,4],
+  [6,6,8],
+  [2,1,1]
+] 
+Output: 4 
+Explanation: The longest increasing path is [1, 2, 6, 9].
+Example 2:
+
+Input: nums = 
+[
+  [3,4,5],
+  [3,2,6],
+  [2,2,1]
+] 
+Output: 4 
+Explanation: The longest increasing path is [3, 4, 5, 6]. Moving diagonally is not allowed.
+
+
+Solution no.1: ---------------------------------------------------- my own pass 135/138 BUT TLE ERROR
+class Solution(object):
+    def longestIncreasingPath(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
+            return 0
+        self.res = 1
+        self.dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        visited = [[False for j in range(len(matrix[0]))] for i in range(len(matrix))]      # Actually, we do not need visited here
+                                                                                        # because  matrix[new_i][new_j] <= matrix[i][j]
+                                                                                     # will ensure that we will not fall into dead cycle
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                self.dfs(matrix, i, j, 1, visited)
+        return self.res
+    
+    def dfs(self, matrix, i, j, currlen, visited):
+        visited[i][j] = True
+        for dire in self.dirs:
+            new_i = i + dire[0]
+            new_j = j + dire[1]
+            if new_i < 0 or new_i >= len(matrix) or new_j < 0 or new_j >= len(matrix[0]) 
+            or visited[new_i][new_j] or matrix[new_i][new_j] <= matrix[i][j]:
+                continue
+            else:
+                self.res = max(self.res, currlen + 1)
+                self.dfs(matrix, new_i, new_j, currlen + 1, visited)
+        visited[i][j] = False
+        
+        
+Solution no.2: ------------------------------ DFS + DP
+'''
+We can find longest decreasing path instead, the result will be the same. 
+Use dp to record previous results and choose the max dp value of smaller neighbors.
+
+Using DP, a lot of repetitive steps has been removed, so No TLE will occur.
+'''
+class Solution(object):
+    def longestIncreasingPath(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        def dfs(i, j):
+            if not dp[i][j]:                                                        # Same functionality as visited matrix
+                                                                                    # Remove this will bring TLE
+                val = matrix[i][j]
+                dp[i][j] = 1 + max(
+                    dfs(i - 1, j) if i and val > matrix[i - 1][j] else 0,
+                    dfs(i + 1, j) if i < M - 1 and val > matrix[i + 1][j] else 0,
+                    dfs(i, j - 1) if j and val > matrix[i][j - 1] else 0,
+                    dfs(i, j + 1) if j < N - 1 and val > matrix[i][j + 1] else 0)
+            return dp[i][j]
+
+        if not matrix or not matrix[0]: return 0
+        M, N = len(matrix), len(matrix[0])
+        dp = [[0] * N for i in range(M)]
+        return max(dfs(x, y) for x in range(M) for y in range(N))
