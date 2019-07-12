@@ -1,0 +1,45 @@
+Find the length of the longest substring T of a given string (consists of lowercase letters only) 
+such that every character in T appears no less than k times.
+
+Example 1:
+
+Input:
+s = "aaabb", k = 3
+
+Output:
+3
+
+The longest substring is "aaa", as 'a' is repeated 3 times.
+Example 2:
+
+Input:
+s = "ababbc", k = 2
+
+Output:
+5
+
+The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated 3 times.
+
+
+Solution: --------------------------------------- Divide and Conquer
+class Solution(object):
+    def longestSubstring(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        if len(s) < k:                                                        # Base case
+            return 0
+        c = min(set(s), key = s.count)                                        # Find out the least appear character
+        if s.count(c) >= k:                                                   # if the least appear character appears more than k times
+                                                                              # then the whole string is ok
+            return len(s)
+        else:
+            return max(self.longestSubstring(t, k) for t in s.split(c))       # Switch your mindset
+                                                                              # the question asks us to find the at least appear k times
+                                                                              # But actually, the length depends on
+                                                                              # the characters appear less than k times,
+                                                                              # We need to use it as the pivot to splict the string
+                                                                              # because it will always be too infrequent 
+                                                                              # and thus can't be part of any ok substring
