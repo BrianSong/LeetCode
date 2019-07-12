@@ -1,0 +1,36 @@
+Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
+
+Formally the function should:
+
+Return true if there exists i, j, k 
+such that arr[i] < arr[j] < arr[k] given 0 ≤ i < j < k ≤ n-1 else return false.
+Note: Your algorithm should run in O(n) time complexity and O(1) space complexity.
+
+Example 1:
+
+Input: [1,2,3,4,5]
+Output: true
+Example 2:
+
+Input: [5,4,3,2,1]
+Output: false
+
+
+Solution:
+class Solution(object):
+    def increasingTriplet(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        first, second = float('inf'), float('inf')          # First set the first and second num in the increasing triplet subsequence
+        for num in nums:
+            if num <= first:                                # if num <= first, update first
+                first = num
+            elif num <= second:                             # elif num <= second, update second
+                                                            # RMEMEBER ! MUST be <= instead of < !!!!!!!!!!!!!!!!!
+                                                            # else 5 5 5 will satisfy
+                second = num
+            else:                                           # else the increasing triplet subsequence has been found
+                return True
+        return False
