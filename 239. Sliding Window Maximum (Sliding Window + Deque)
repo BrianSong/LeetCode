@@ -41,7 +41,7 @@ class Solution(object):
         return res
         
         
-Solution no.2: ---------------------------------------- O(n) deque
+Solution no.2: ------------------------------ O(n) deque ---------- A good visulation: https://www.youtube.com/watch?v=ShbRCjvB_yQ
 class Solution(object):
     def maxSlidingWindow(self, nums, k):
         """
