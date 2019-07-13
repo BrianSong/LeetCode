@@ -1,0 +1,69 @@
+You are given an integer array nums and you have to return a new counts array. 
+The counts array has the property where counts[i] is the number of smaller elements to the right of nums[i].
+
+Example:
+
+Input: [5,2,6,1]
+Output: [2,1,1,0] 
+Explanation:
+To the right of 5 there are 2 smaller elements (2 and 1).
+To the right of 2 there is only 1 smaller element (1).
+To the right of 6 there is 1 smaller element (1).
+To the right of 1 there is 0 smaller element.
+
+
+Solution: ------------------------------------------------------- MergeSort
+'''
+The smaller numbers on the right of a number are exactly those that jump from its right to its left during a stable merge sort. 
+So I do mergesort with added tracking of those right-to-left jumps.
+'''
+class Solution(object):
+    def countSmaller(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        self.res = [0 for i in range(len(nums))]
+        self.mergeSort(list(enumerate(nums)))                                          # For example, nums = [5,2,6,1]
+                                                                                       # list(enumerate(nums)): 
+                                                                                       # [(0, 5), (1, 2), (2, 6), (3, 1)]
+        return self.res
+    
+    def mergeSort(self, enum):
+            half = len(enum) / 2
+            if half:                                                                   # Use half to decide whether hit the base case:
+                                                                                       # len(enum) == 1 or 0 => just return enum
+                                                                                       # No need to do mergeSort
+                left, right = self.mergeSort(enum[:half]), self.mergeSort(enum[half:]) # use left and right sublist => typical mergesort
+                                                                                       # After this step,
+                                                                                       # left and right has already been sorted
+                for i in range(len(enum))[::-1]:
+                    if not right or left and left[-1][1] > right[-1][1]:               # 4 cases:
+                                                                                       # 1. left and right: continue to compare
+                                                                                       # 2. not left and not right: impossible because
+                                                                                       #    "for i in range(len(enum))[::-1]:"
+                                                                                       # 3. left and not right: no need to compare,
+                                                                                       #    because not right has already satisfied
+                                                                                       #    and "not right or" has already been true
+                                                                                       #    so, self.res[left[-1][0]] += 0 and
+                                                                                       #    enum[i] = left.pop()
+                                                                                       # 4. not left and right: False, jump into "else"
+                                                                                       
+                                                                                       
+                        '''
+                        IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        How to deal with "and"/"or" in python?
+                        if a statement is followed by a "or", as long as it is true, the whole condition will be true
+                        and the further statment behind "or" will not be processed.
+                        elif a statement is followed by a "and", as long as it is false, whole will be false, no need further processing
+                        else, we will process the further statements.
+                        '''
+                        
+                        
+                        self.res[left[-1][0]] += len(right)   # Since the right has already been sorted, as long as the leftest(biggest)
+                                                              # is smaller, the whole right array is smaller, so we can add
+                                                              # len(right) to the according res's index position
+                        enum[i] = left.pop()
+                    else:
+                        enum[i] = right.pop()
+            return enum                                       # Return the sorted list to upper level
