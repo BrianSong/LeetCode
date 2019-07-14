@@ -1,0 +1,47 @@
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+Example:
+
+Input:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+Output: 1->1->2->3->4->4->5->6
+
+
+Solution: -------------- Heap (time: O(Nlogk): N is the number of total Node, k is the length of that specific heap when heappush)
+          -------------- https://www.youtube.com/watch?v=Jq6QWstM66s
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+from heapq import *
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        if not lists or len(lists) == 0:
+            return None
+        dummynode = ListNode(0)
+        currnode = dummynode
+        pq = []
+        for headnode in lists:
+            if headnode:                                                  # EVERYTIME, we want to access a node.val,
+                                                                          # it must be make sure that it is not None
+                heapq.heappush(pq, (headnode.val, headnode))              # We cannot only heappush headnode with its value
+                                                                          # because heap is not built for automatically
+                                                                          # detect the value of every nodes and sort them automatically
+                                                                          # In order to sort them, we must push the node's value as well
+        while pq:
+            pop_element = heapq.heappop(pq)[1]
+            currnode.next = pop_element
+            currnode = currnode.next
+            if pop_element.next:
+                heapq.heappush(pq, (pop_element.next.val, pop_element.next))
+        return dummynode.next
