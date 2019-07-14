@@ -1,0 +1,136 @@
+Median is the middle value in an ordered integer list. If the size of the list is even, 
+there is no middle value. So the median is the mean of the two middle value.
+
+For example,
+[2,3,4], the median is 3
+
+[2,3], the median is (2 + 3) / 2 = 2.5
+
+Design a data structure that supports the following two operations:
+
+void addNum(int num) - Add a integer number from the data stream to the data structure.
+double findMedian() - Return the median of all elements so far.
+ 
+
+Example:
+
+addNum(1)
+addNum(2)
+findMedian() -> 1.5
+addNum(3) 
+findMedian() -> 2
+ 
+
+Follow up:
+
+If all integer numbers from the stream are between 0 and 100, how would you optimize it?
+If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?
+
+
+Solution no.1: ------------------------- my own ------------------------------ pass 16/18 but TLE Error (O(1) add + O(nlogn) find)
+class MedianFinder(object):
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.list = []
+        
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+        self.list.append(num)        
+        
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+        start, end = 0, len(self.list) - 1
+        self.list = sorted(self.list)
+        while start < end:
+            start += 1
+            end -= 1
+        if start == end:
+            return self.list[start]
+        else:
+            return float(self.list[start] + self.list[end]) / 2
+        
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
+
+
+Solution no.2: -------------------------------------------- Heap => O(log n) add, O(1) find
+'''
+Heaps are binary trees for which every parent node has a value less than or equal to any of its children. 
+This implementation uses arrays for which heap[k] <= heap[2*k+1] and heap[k] <= heap[2*k+2] for all k, counting elements from zero.
+
+heapq.heappush(heap, item):
+Push the value item onto the heap, maintaining the heap invariant.
+heapq.heappop(heap):
+Pop and return the smallest item from the heap, maintaining the heap invariant. 
+heapq.heappushpop(heap, item):
+Push item on the heap, then pop and return the smallest item from the heap. 
+The combined action runs more efficiently than heappush() followed by a separate call to heappop().
+'''
+from heapq import *
+class MedianFinder(object):
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.small = []                               # two heaps, small and large, each represent half of the current list. 
+                                                      # The length of smaller half is kept to be n / 2 at all time 
+        self.large = []                               # and the length of the larger half is either n / 2 or (n / 2) + 1
+                                                      # small: max heap (invert min-heap), large: min heap
+                                                      # Note that the heapq in python is a min heap, 
+                                                      # thus we need to 取反 the values in the smaller half to mimic a "max heap".
+        
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+        if len(self.small) == len(self.large):                                  # Any time before we add a new number, 
+                                                                                # there are two scenarios:
+                                                                                # 1. length of (small, large) == (k, k)
+                                                                                # 2. length of (small, large) == (k, k + 1)
+            heapq.heappush(self.large, -heapq.heappushpop(self.small, -num))
+            '''
+            Here we take the first scenario for example, we know the large will gain one more item and small will remain the same size, 
+            but we cannot just push the item into large. 
+            What we should do is we push the new number into small and pop the maximum item from small then push it into large.
+            (all the pop and push here are heappop and heappush). 
+            But here, what we should heappush into the self.small should be the -num instead of num because
+            small is set to be max heap (invert min-heap), for example, small may be [-5, -3, -1] where heappop will return -5
+            Here, 5 what we want from the small heap, so we 取反 what we heappushpop from the small and push it into the large heap 
+            '''
+        else:
+            heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
+        
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+        if len(self.small) == len(self.large):
+            return float(self.large[0] - self.small[0]) / 2            # Here is "-" because all elements in small
+                                                                       # is negative to its original value
+        else:
+            return self.large[0]                                 
+        
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
