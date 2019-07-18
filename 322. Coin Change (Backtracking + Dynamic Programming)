@@ -1,0 +1,61 @@
+You are given coins of different denominations and a total amount of money amount. 
+Write a function to compute the fewest number of coins that you need to make up that amount. 
+If that amount of money cannot be made up by any combination of the coins, return -1.
+
+Example 1:
+
+Input: coins = [1, 2, 5], amount = 11
+Output: 3 
+Explanation: 11 = 5 + 5 + 1
+Example 2:
+
+Input: coins = [2], amount = 3
+Output: -1
+Note:
+You may assume that you have an infinite number of each kind of coin.
+
+
+Solution no.1: my own -------------------------------------------------------- Backtracking : TLE ERROR
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        coins.sort()
+        self.res = float('inf')
+        self.backtracking(coins, amount, [])
+        if self.res == float('inf'):
+            return -1
+        return self.res
+        
+    def backtracking(self, coins, amount, currcomb):
+        if amount == 0:
+            self.res = min(self.res, len(currcomb))
+            return
+        elif amount < 0:
+            return
+        else:
+            for i in range(len(coins))[::-1]:
+                print coins[i]
+                currcomb.append(coins[i])
+                self.backtracking(coins, amount - coins[i], currcomb)
+                currcomb.pop()
+                
+                
+Solution no.2: ------------------------------------------------------------- Dynamic programming - Bottom up
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        dp = [0] + [float('inf')] * amount                  # dp[i] here records the fewest number of coins for adding up to amount i
+        for i in range(1, amount + 1):
+            for c in coins:                                 # Iterate through each coin
+                if i >= c:                                  # if i < c: do not need to continue because the one coin denomination
+                                                            # is bigger than the total amount
+                    dp[i] = min(dp[i], dp[i - c] + 1)       # Find the minimum number of previous possible combination and add 1
+        return dp[-1] if dp[-1] != float('inf') else -1
