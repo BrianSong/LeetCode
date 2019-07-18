@@ -1,0 +1,52 @@
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+Example:
+
+Input: S = "ADOBECODEBANC", T = "ABC"
+Output: "BANC"
+Note:
+
+If there is no such window in S that covers all characters in T, return the empty string "".
+If there is such window, you are guaranteed that there will always be only one unique minimum window in S.
+
+
+Solution: ---------------------------------- Sliding Window ------------------------ https://www.youtube.com/watch?v=63i802XLgOM
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        sHash, tHash = collections.defaultdict(int), collections.defaultdict(int)  # Create two HashTable to record the appear times
+                                                                                   # of each characters of t in s
+        for w in t:
+            tHash[w] += 1
+        left = self.findNextStrIdx(0, s, t)                                        # Start with the first matching character
+        if left == len(s):
+            return ""
+        right = left
+        count = 0
+        res = ""
+        while right < len(s):                                                      # Start with this left pointer, We keep expanding
+                                                                                   # the window by moving the right pointer
+            if tHash[s[right]] > sHash[s[right]]:
+                count += 1
+            sHash[s[right]] += 1
+            while left < len(s) and count == len(t):                               # When the window has all the desired characters, 
+                                                                                   # we contract (if possible) 
+                                                                                   # and save the smallest window till now
+                if len(res) == 0 or len(res) > right - left + 1:
+                    res = s[left:right + 1]
+                if tHash[s[left]] >= sHash[s[left]]:
+                    count -= 1
+                sHash[s[left]] -= 1
+                left = self.findNextStrIdx(left + 1, s, t)
+                
+            right = self.findNextStrIdx(right + 1, s, t)
+        return res
+        
+    def findNextStrIdx(self, i, s, t):
+        while i < len(s) and not s[i] in t:
+            i += 1
+        return i
