@@ -1,0 +1,41 @@
+Given an unsorted integer array, find the smallest missing positive integer.
+
+Example 1:
+
+Input: [1,2,0]
+Output: 3
+Example 2:
+
+Input: [3,4,-1,1]
+Output: 2
+Example 3:
+
+Input: [7,8,9,11,12]
+Output: 1
+Note:
+
+Your algorithm should run in O(n) time and uses constant extra space.  # Constant extra space : in-place => only modify the input list
+
+
+Solution: -------------------- Using the num's value as index ---------------- https://www.youtube.com/watch?v=8DqewGsVNkI&pbjreload=10
+class Solution(object):
+    def firstMissingPositive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        ""
+        for i in range(len(nums)):                                     # Step no.1: modify all the 0 and negative num (we do not care)
+                                                                       # in to + MAX
+            if nums[i] <= 0:
+                nums[i] = float('inf')
+        for i in range(len(nums)):                                     # Step no.2: modify the orginal input list (in-place O(1) space):
+                                                                       # take the value of nums[i] and use it as index
+            if abs(nums[i]) <= len(nums):                              # First role out MAX
+                nums[abs(nums[i]) - 1] = - abs(nums[abs(nums[i]) - 1]) # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                       # USE abs() wherever needed and not *= -1
+                                                                       # but turn it constantly into negative value (in case duplicate)
+        for i in range(len(nums)):                                     # Step no.3: loop over the list again, find the first no-negative
+                                                                       # its index will indicate the first missing positive
+            if nums[i] > 0:
+                return i + 1
+        return len(nums) + 1
