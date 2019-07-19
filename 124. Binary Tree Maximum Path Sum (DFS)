@@ -1,0 +1,59 @@
+Given a non-empty binary tree, find the maximum path sum.
+
+For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree 
+along the parent-child connections. The path must contain at least one node and does not need to go through the root.
+
+Example 1:
+
+Input: [1,2,3]
+
+       1
+      / \
+     2   3
+
+Output: 6
+Example 2:
+
+Input: [-10,9,20,null,null,15,7]
+
+   -10
+   / \
+  9  20
+    /  \
+   15   7
+
+Output: 42
+
+
+Solution: ----------------------------------- DFS ----------------------- https://www.youtube.com/watch?v=9ZNky1wqNUw
+# Definition for a binary tree node.                     # For a tree, certainly we need to use recursion(DFS or BFS)
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def maxPathSum(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:
+            return 0
+        self.res = -float('inf')
+        self.dfs(root)                                    
+        return self.res
+    
+    def dfs(self, currnode):
+        if not currnode:
+            return 0
+        leftsum = max(0, self.dfs(currnode.left))        # Classic DFS.
+                                                         # IMPORTANT !!!!! We must compare the value with 0 and take the bigger one
+                                                         # Because if the leftsum is smaller than 0, we rather not take it into the path
+        rightsum = max(0, self.dfs(currnode.right))
+        currsum = leftsum + rightsum + currnode.val      # The time complexity is O(n) because we just take every node for consideration
+                                                         # The current maximum can take both the left and right substree value (闭环)
+        self.res = max(self.res, currsum)
+        return currnode.val + max(leftsum, rightsum)     # However, for passing the value to upper recursion,
+                                                         # we can only take the larger one of the left or right substree value
