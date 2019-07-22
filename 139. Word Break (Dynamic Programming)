@@ -34,7 +34,8 @@ class Solution(object):
         dp[0] = True                         # Step no.2
         for i in range(1, len(dp)):          # Step no.3: 用i先遍历整个s
             for j in range(i, 0, -1):
-                if s[j-1:i] in wordDict:
+                if s[j-1:i] in wordDict:     # Why s[j - 1 : i] instead of s[j:i + 1] ??? because now we are dealing with string starts
+                                             # from index 0 !!!!! not dp start from index 1 !!!! (assmue dp[0] is true)
                     if dp[j - 1] == True:    # 多设置了一个j变量用来从后往前看，如果从后往前看时，再wordDict中，只要前面的状态是True，
                                              # 此时的状态也是True
                         dp[i] = True
