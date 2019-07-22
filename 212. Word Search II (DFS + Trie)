@@ -1,0 +1,118 @@
+Given a 2D board and a list of words from the dictionary, find all words in the board.
+
+Each word must be constructed from letters of sequentially adjacent cell, 
+where "adjacent" cells are those horizontally or vertically neighboring. 
+The same letter cell may not be used more than once in a word.
+
+ 
+
+Example:
+
+Input: 
+board = [
+  ['o','a','a','n'],
+  ['e','t','a','e'],
+  ['i','h','k','r'],
+  ['i','f','l','v']
+]
+words = ["oath","pea","eat","rain"]
+
+Output: ["eat","oath"]
+ 
+
+Note:
+
+All inputs are consist of lowercase letters a-z.
+The values of words are distinct.
+
+
+Solution no.1: ------------------------------------- DFS as in Leetcode no.79. Word Search ---- Pass 34/36 but TLE error
+class Solution(object):
+    def findWords(self, board, words):
+        """
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
+        res = []
+        for word in words:
+            for i in range(len(board)):
+                for j in range(len(board[0])):
+                    self.dfs(board, word, visited, res, "", 0, i, j)
+        return res
+    
+    
+    def dfs(self, board, word, visited, res, currpath, idx, row, col):
+        if idx == len(word) and not currpath in res:
+            res.append(currpath[:])
+            return
+        if idx == len(word):
+            return
+        if row < 0 or row >= len(board) or col < 0  or col >= len(board[0]) or visited[row][col] or board[row][col] != word[idx]:
+            return
+        visited[row][col] = True
+        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row + 1, col)
+        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row, col + 1)
+        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row - 1, col)
+        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row, col - 1)
+        visited[row][col] = False
+        
+
+Solution no.2: --------------------------------------------------- Trie
+'''
+Simple backtracking cannot pass the larger test. We must stop backtracking earlier.
+If the current candidate does not exist in all words' prefix, we could stop backtracking immediately. => Trie
+'''
+class TrieNode():
+    def __init__(self):
+        self.children = collections.defaultdict(TrieNode)   # Here (TrieNode) instead of (TrieNode())
+        self.isWord = False
+    
+class Trie():
+    def __init__(self):
+        self.root = TrieNode()                              # Here self.root = TrieNode() instead of self.root = TrieNode
+    
+    def insert(self, word):
+        node = self.root
+        for w in word:
+            node = node.children[w]
+        node.isWord = True
+    
+    def search(self, word):                                 # Actually search() is not necessary here
+        node = self.root
+        for w in word:
+            node = node.children.get(w)
+            if not node:
+                return False
+        return node.isWord
+    
+class Solution(object):
+    def findWords(self, board, words):
+        res = []
+        trie = Trie()                                       # Create a trie data structure
+        node = trie.root                                    # node here is kind of like a dummynode in linked list
+        for w in words:
+            trie.insert(w)
+        for i in xrange(len(board)):
+            for j in xrange(len(board[0])):
+                self.dfs(board, node, i, j, "", res)
+        return res
+    
+    def dfs(self, board, node, i, j, path, res):
+        if node.isWord:
+            res.append(path)
+            node.isWord = False                             # Set node.isWord to false is to de-duplicate
+                                                            # and pass cases like [aaa, aaab]
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
+            return 
+        tmp = board[i][j]
+        node = node.children.get(tmp)
+        if not node:
+            return 
+        board[i][j] = "#"                                   # Set board[i][j] to '#' serves as a visited purpose
+        self.dfs(board, node, i+1, j, path+tmp, res)
+        self.dfs(board, node, i-1, j, path+tmp, res)
+        self.dfs(board, node, i, j-1, path+tmp, res)
+        self.dfs(board, node, i, j+1, path+tmp, res)
+        board[i][j] = tmp
