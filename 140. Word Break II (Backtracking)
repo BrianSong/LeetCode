@@ -42,25 +42,30 @@ class Solution(object):
     def wordBreak(self, s, wordDict):
         """
         :type s: str
-        :type wordDict: Set[str]
+        :type wordDict: List[str]
         :rtype: List[str]
         """
-        return self.helper(s, wordDict, {})
-
-    def helper(self, s, wordDict, memo):
-        if s in memo: return memo[s]
-        if not s: return []
-
-        res = []
+        return self.backtracking(s, wordDict, {})
+    
+    def backtracking(self, s, wordDict, memo):
+        if s in memo:                                                   # memo here is to optimize the algorithm:
+                                                                        # if we solve this situation before, do not need to do it again
+            return memo[s]
+                                                                        # if not s:          WE DO NOT NEED THIS !!!!!!                 
+                                                                        #    return None
+        
+        currres = []
         for word in wordDict:
             if not s.startswith(word):
                 continue
-            if len(word) == len(s):
-                res.append(word)
+            if len(s) == len(word):
+                currres.append(word)                                    # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!
+                                                                        # DO NOT APPEND TO THE RES except these two cases !!!!!
+                                                                        # 1. len(s) == len(word) => we reach the end of the string
+                                                                        # 2. resultOfRest returns something back (not None)
             else:
-                resultOfTheRest = self.helper(s[len(word):], wordDict, memo)
-                for item in resultOfTheRest:
-                    item = word + ' ' + item
-                    res.append(item)
-        memo[s] = res
-        return res
+                resultOfRest = self.backtracking(s[len(word):], wordDict, memo)
+                for item in resultOfRest:
+                    currres.append(word + " " + item)
+        memo[s] = currres
+        return currres
