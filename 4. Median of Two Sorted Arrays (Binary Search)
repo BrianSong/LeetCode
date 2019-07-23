@@ -1,0 +1,63 @@
+There are two sorted arrays nums1 and nums2 of size m and n respectively.
+
+Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+You may assume nums1 and nums2 cannot be both empty.
+
+Example 1:
+
+nums1 = [1, 3]
+nums2 = [2]
+
+The median is 2.0
+Example 2:
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+The median is (2 + 3)/2 = 2.5
+
+'''
+To solve this problem, we need to understand "What is the use of median". 
+In statistics, the median is used for dividing a set into two equal length subsets, that one subset is always greater than the other. 
+If we understand the use of median for dividing, we are very close to the answer.
+'''
+
+Solution: ----------------------------------------------------- Binary Search 
+-------------- https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn)))-solution-with-explanation
+-------------- https://www.youtube.com/watch?time_continue=26&v=LPFhl65R7ww
+class Solution(object):
+    def findMedianSortedArrays(self, A, B):
+        """
+        :type A: List[int]
+        :type B: List[int]
+        :rtype: float
+        """
+        m, n = len(A), len(B)
+        if m > n:
+            A, B, m, n = B, A, n, m
+        i_min, i_max, half_len = 0, m, (m + n + 1) / 2          # this m + n + "1" is to ensure that the left partition elements number
+                                                                # must be equal or greater than the right's
+        while i_min <= i_max:
+            i = (i_min + i_max) / 2
+            j = half_len - i
+            if i < m and j > 0 and B[j - 1] > A[i]:
+                i_min = i + 1                                   # i is too small, must increase it
+            elif i > 0 and j < n and A[i - 1] > B[j]:
+                i_max = i - 1                                   # i is too big, must decrease it
+            else:                                               # i is perfect
+                if i == 0: 
+                    max_of_left = B[j - 1]
+                elif j == 0:
+                    max_of_left = A[i - 1]
+                else:
+                    max_of_left = max(A[i - 1], B[j - 1])
+                if (m + n) % 2 == 1:                            # If the total 数量 is odd, just take the max_of_left
+                    return max_of_left
+                if i == m:
+                    min_of_right = B[j]
+                elif j == n:
+                    min_of_right = A[i]
+                else:                                     
+                    min_of_right = min(A[i], B[j])
+                return (max_of_left + min_of_right) / 2.0       # Otherwise, for even cases, take (max_of_left + min_of_right) / 2.0
