@@ -1,0 +1,69 @@
+Given an input string (s) and a pattern (p), implement regular expression matching with support for '.' and '*'.
+
+'.' Matches any single character.
+'*' Matches zero or more of the preceding element.
+The matching should cover the entire input string (not partial).
+
+Note:
+
+s could be empty and contains only lowercase letters a-z.
+p could be empty and contains only lowercase letters a-z, and characters like . or *.
+Example 1:
+
+Input:
+s = "aa"
+p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".
+Example 2:
+
+Input:
+s = "aa"
+p = "a*"
+Output: true
+Explanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes "aa".
+Example 3:
+
+Input:
+s = "ab"
+p = ".*"
+Output: true
+Explanation: ".*" means "zero or more (*) of any character (.)".
+Example 4:
+
+Input:
+s = "aab"
+p = "c*a*b"
+Output: true
+Explanation: c can be repeated 0 times, a can be repeated 1 time. Therefore, it matches "aab".
+Example 5:
+
+Input:
+s = "mississippi"
+p = "mis*is*p*."
+Output: false
+
+
+Solution: ------------ Dynamic Programming ----------- https://www.youtube.com/watch?v=DqhPJ8MzDKM&t=8s (看讲题思路不要看代码，代码是反的)
+class Solution(object):
+    def isMatch(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: bool
+        """
+        match = [[False for i in range(len(s) + 1)] for j in range(len(p) + 1)]
+        match[0][0] = True
+        for i in range(1, len(p) + 1):
+            if p[i - 1] == '*':
+                match[i][0] = match[i - 2][0]
+        for i in range(1, len(p) + 1):
+            for j in range(1, len(s) + 1):
+                if s[j - 1] == p[i - 1] or p[i - 1] == '.':
+                    match[i][j] = match[i - 1][j - 1]
+                elif p[i - 1] == '*':
+                    if s[j - 1] == p[i - 2] or p[i - 2] == '.':
+                        match[i][j] = match[i][j - 1] or match[i - 2][j]
+                    else:
+                        match[i][j] = match[i - 2][j]
+        return match[-1][-1]
