@@ -52,12 +52,12 @@ class Solution(object):
         :type p: str
         :rtype: bool
         """
-        match = [[False for i in range(len(s) + 1)] for j in range(len(p) + 1)]
-        match[0][0] = True
-        for i in range(1, len(p) + 1):
+        match = [[False for i in range(len(s) + 1)] for j in range(len(p) + 1)]     # Step no.1: state
+        match[0][0] = True                                                          # Step no.2: init
+        for i in range(1, len(p) + 1):                                                         
             if p[i - 1] == '*':
                 match[i][0] = match[i - 2][0]
-        for i in range(1, len(p) + 1):
+        for i in range(1, len(p) + 1):                                              # Step no.3: transform function
             for j in range(1, len(s) + 1):
                 if s[j - 1] == p[i - 1] or p[i - 1] == '.':
                     match[i][j] = match[i - 1][j - 1]
@@ -66,4 +66,4 @@ class Solution(object):
                         match[i][j] = match[i][j - 1] or match[i - 2][j]
                     else:
                         match[i][j] = match[i - 2][j]
-        return match[-1][-1]
+        return match[-1][-1]                                                        # Step no.4: return
