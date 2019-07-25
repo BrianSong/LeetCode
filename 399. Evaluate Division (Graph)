@@ -1,0 +1,71 @@
+Equations are given in the format A / B = k, where A and B are variables represented as strings, 
+and k is a real number (floating point number). Given some queries, return the answers. If the answer does not exist, return -1.0.
+
+Example:
+Given a / b = 2.0, b / c = 3.0.
+queries are: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ? .
+return [6.0, 0.5, -1.0, 1.0, -1.0 ].
+
+The input is: vector<pair<string, string>> equations, vector<double>& values, vector<pair<string, string>> queries , 
+where equations.size() == values.size(), and the values are positive. This represents the equations. Return vector<double>.
+
+According to the example above:
+
+equations = [ ["a", "b"], ["b", "c"] ],
+values = [2.0, 3.0],
+queries = [ ["a", "c"], ["b", "a"], ["a", "e"], ["a", "a"], ["x", "x"] ]. 
+ 
+
+The input is always valid. You may assume that evaluating the queries will result in no division by zero and there is no contradiction.
+
+
+
+Solution: ----------------------------------------------------------- Graph
+------------------------ https://leetcode.com/problems/evaluate-division/discuss/88275/Python-fast-BFS-solution-with-detailed-explantion
+class Solution(object):
+    def calcEquation(self, equations, values, queries):
+
+        graph = {}                                                # In Python, we use dictionary to implement graph
+                                                                  # {start_vertice_1: [(end_vertice_1, edge_value_1), 
+                                                                                       (end_vertice_2, edge_value_2)], 
+                                                                     ....
+                                                                     ....
+                                                                     ....}
+        
+        def build_graph(equations, values):
+            def add_edge(f, t, value):                            # f, t => from, to
+                if f in graph:
+                    graph[f].append((t, value))                   # IMPORTANT !!!! only the list [] can be appended! not tuple ()
+                else:
+                    graph[f] = [(t, value)]
+            
+            for vertices, value in zip(equations, values):        # zip() can combine two lists with the same length 
+                                                                  # then, we can destruct them together
+                f, t = vertices
+                add_edge(f, t, value)
+                add_edge(t, f, 1/value)                           # Why just 1/value but not float(1)/value ?
+                                                                  # because values are given as [2.0, 3.0] not [2, 3]
+        
+        def find_path(query):
+            b, e = query                                          # b, e => begin, end
+            
+            if b not in graph or e not in graph:
+                return -1.0
+                
+            q = collections.deque([(b, 1.0)])                     # IMPORTANT !!! deque([()]) totally 3 pairs of brackets
+                                                                  # many tuple() inside one single list[] which can be poped
+            visited = set()                                       # set(): we can operate on the set by add() and remove()
+            
+            while q:
+                front, cur_product = q.popleft()
+                if front == e:
+                    return cur_product
+                visited.add(front)
+                for neighbor, value in graph[front]:
+                    if neighbor not in visited:                   # Without this line of code, will bring TLE error
+                        q.append((neighbor, cur_product*value))   # Need to update the cur_product in every loop of search
+            
+            return -1.0
+        
+        build_graph(equations, values)
+        return [find_path(q) for q in queries]
