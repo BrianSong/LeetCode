@@ -1,0 +1,42 @@
+Given n balloons, indexed from 0 to n-1. Each balloon is painted with a number on it represented by array nums. 
+You are asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] * nums[right] coins. 
+Here left and right are adjacent indices of i. After the burst, the left and right then becomes adjacent.
+
+Find the maximum coins you can collect by bursting the balloons wisely.
+
+Note:
+
+You may imagine nums[-1] = nums[n] = 1. They are not real therefore you can not burst them.
+0 ≤ n ≤ 500, 0 ≤ nums[i] ≤ 100
+Example:
+
+Input: [3,1,5,8]
+Output: 167 
+Explanation: nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
+             coins =  3*1*5      +  3*5*8    +  1*3*8      + 1*8*1   = 167
+             
+             
+             
+Solution: ------------------------------- Dynamic Programming ------------------------- https://www.youtube.com/watch?v=Ci39lcoLbyw
+class Solution(object):
+    def maxCoins(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        coins = [1]
+        for num in nums:                                        # Pre-processing: eliminate all '0' and add two '1' to the head and tail
+            if num != 0:
+                coins.append(num)
+        coins.append(1)
+        n = len(coins)
+        dp = [[0 for i in range(n)] for j in range(n)]          # Step.no.1 and 2: State and init (do not need)
+        for dist in range(2, n):
+            for left in range(0, n - dist):
+                right = left + dist
+                for i in range(left + 1, right):                # Loop over all i between left and right and try to find the maximum
+                                                                # Remember, left and right will not be bursted,
+                                                                # dp[left][right] records the maximum coins we can get by shooting
+                                                                # all balloons between left and right and i here is the last one shooted
+                    dp[left][right] = max(dp[left][right], coins[i]*coins[left]*coins[right] + dp[left][i] + dp[i][right])  # Step no.3
+        return dp[0][n-1]                                       # Step no.4
