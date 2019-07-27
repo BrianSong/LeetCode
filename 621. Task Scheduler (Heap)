@@ -1,0 +1,72 @@
+Given a char array representing tasks CPU need to do. It contains capital letters A to Z where different letters 
+represent different tasks. Tasks could be done without original order. Each task could be done in one interval. 
+For each interval, CPU could finish one task or just be idle.
+
+However, there is a non-negative cooling interval n that means between two same tasks, 
+there must be at least n intervals that CPU are doing different tasks or just be idle.
+
+You need to return the least number of intervals the CPU will take to finish all the given tasks.
+
+ 
+
+Example:
+
+Input: tasks = ["A","A","A","B","B","B"], n = 2
+Output: 8
+Explanation: A -> B -> idle -> A -> B -> idle -> A -> B.
+ 
+
+Note:
+
+The number of tasks is in the range [1, 10000].
+The integer n is in the range [0, 100].
+
+
+Solution: ----------------------------------------------- Heap
+'''
+Algorithm:
+
+1. This is an extremely tricky problem.
+2. The main idea is to schedule the most frequent tasks as frequently as possible. 
+   Begin with scheduling the most frequent task. Then cool-off for n, 
+   and in that cool-off period schedule tasks in order of frequency,
+   or if no tasks are available, then be idle.
+   Exampe: Say we have the following tasks: [A,A,A,B,C,D,E] with n =2
+   Now if we schedule using the idea of scheduling all unique tasks once and then calculating if a cool-off is required or not, 
+   then we have: A,B,C,D,E,A,idle,dile,A i.e. 2 idle slots.
+   But if we schedule using most frequent first, then we have:
+   2.1: A,idle,idle,A,idle,idle,A
+   2.2: A,B,C,A,D,E,A i.e. no idle slots. This is the general intuition of this problem.
+3. The idea in two can be implemented using a heap and temp list. This is illustrated in the code below.
+4. Time complexity is O(N * n) where N is the number of tasks and n is the cool-off period.
+5. Space complexity is O(1) - will not be more than O(26).
+'''
+from heapq import heappop, heappush                                   # Import heappush and heappop from heapq library in Python
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        """
+        :type tasks: List[str]
+        :type n: int
+        :rtype: int
+        """
+        res, heap = 0, []
+        for task, times in collections.Counter(tasks).items():        # Remember to add .items() to unpack the Counter object
+            heappush(heap, (-1*times, task))                          # add '*-1' to use a min heap(default in Python) as a max heap
+        while heap:
+            i, temp = 0, []
+            while i <= n:                                         
+                res += 1
+                if heap:                                              # Must check heap for idle-exist cases ([A,A,A,B,B,B])
+                    negatimes, task = heappop(heap)
+                    if negatimes != -1:                               # if != -1, we append it to temp for now 
+                                                                      # and append to the heap after this cool-down period pass (i <= n)
+                        temp.append((negatimes + 1, task))
+                if not heap and not temp:
+                    break
+                else:
+                    i += 1
+            for item in temp:                                         # After the cool-down finished, we append all not-once item
+                                                                      # in the temp to heap again for next iteration
+                heappush(heap, item)
+        return res
+
