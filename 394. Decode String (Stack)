@@ -1,0 +1,60 @@
+Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. 
+Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+
+Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. 
+For example, there won't be input like 3a or 2[4].
+
+Examples:
+
+s = "3[a]2[bc]", return "aaabcbc".
+s = "3[a2[c]]", return "accaccacc".
+s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+
+
+
+Solution: -------------------------------------------------------- Stack
+'''
+The solution is a simple stack based one which evalutes the innermost brackets first. 
+You iterate through the string, and push everything to a stack until you've found a right bracket. 
+Once you've found a right bracket, you use that and pop from the stack to evaluate the innermost expression in the string. 
+For example, if you have 2[a3[b]], your stack would be [ 2, "[", "a", 3, "[", "b" ] when it reaches the first right bracket. 
+Once it reaches the first right bracket, it attempts to evaluate everything in the innermost bracket 
+by popping from the stack to form the entire string you need to multiply, and finding the number you need to multiply by. 
+After this, the stack will look like: [2, "[", "a", "bbb" ]. The innermost expression of 3, "[", "b" was turned into bbb 
+and put back into the stack. At the next right bracket, we will similarily evaluate the innermost bracket, 
+so that the stack turns into ["abbbabbb"]. If there are multiple sets of enclosed brackets in the expression, 
+our stack will end up with multiple strings in the end. Simply join them for the result.
+'''
+class Solution(object):
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        stack = []
+        for c in s:
+            if c == ']':
+                currstr = ''
+                while stack:                           # Everytime we need to do stack.pop(), the stack must not be empty
+                                                       # So, it is very common to use "while stack" as the exiting condition,
+                                                       # and break whenever the requirment is meet.
+                    val = stack.pop()
+                    if val == '[':
+                        break
+                    currstr = val + currstr            # IMPORTANT!!!!!!, "currstr = val + currstr" instead of "currstr += val"
+                                                       # Since we are read the string in a reverse order, if we use "currstr += val"
+                                                       # for example, the "3[a]2[bc]" will turn into aaacbcb instead of aaabcbc!
+                currk = ''
+                while stack and stack[-1].isdigit():    
+                    currk = stack.pop() + currk        # IMPORTANT!!!!!!, we do not need to turn the currk into integer yet,
+                                                       # we can do it after we get all the number ahead of the '[',
+                                                       # Also, "currk = stack.pop() + currk" instead of "currk += stack.pop()"
+                                                       # for the same reason as above
+                stack.append(int(currk) * currstr)
+            else:
+                stack.append(c)
+        return ''.join(stack)
