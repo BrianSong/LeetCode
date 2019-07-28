@@ -47,7 +47,7 @@ class Solution(object):
         :type k: int
         :rtype: int
         """
-        presum, currsum, res = {0:1}, 0, 0
+        presum, currsum, res = {0:1}, 0, 0                 # {0:1} means there are one(frequency) presum whose value is 1
         for num in nums:
             currsum += num
             res += presum.get(currsum - k, 0)
