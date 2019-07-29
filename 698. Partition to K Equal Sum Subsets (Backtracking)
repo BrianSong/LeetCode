@@ -1,0 +1,51 @@
+Given an array of integers nums and a positive integer k, 
+find whether it's possible to divide this array into k non-empty subsets whose sums are all equal.
+
+ 
+
+Example 1:
+
+Input: nums = [4, 3, 2, 3, 5, 2, 1], k = 4
+Output: True
+Explanation: It's possible to divide it into 4 subsets (5), (1, 4), (2,3), (2,3) with equal sums.
+ 
+
+Note:
+
+1 <= k <= len(nums) <= 16.
+0 < nums[i] < 10000.
+
+
+
+Solution: ---------------------------------------------------- Backtracking
+class Solution(object):
+    def canPartitionKSubsets(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        if not nums or not k or sum(nums) % k != 0:
+            return False
+        seen = [False] * len(nums)                                                   # Create a seen to avoid duplicate use
+        return self.backtracking(nums, k, seen, 0, 0, sum(nums) / k)
+    
+    def backtracking(self, nums, k, seen, currsum, startidx, target):                # IMPORTANT !!!!!!!!
+                                                                                     # We should include startidx for optimization !!!!!
+        if currsum > target:                                                         # Since all num in nums are positive
+            return False
+        if k == 1:                                                                   # instead of k == 0, we can return true when k == 1
+            return True
+        if currsum == target:                                                        # Clear out and jump into next Subsets finding
+            return self.backtracking(nums, k - 1, seen, 0, 0, target)
+        for i in range(startidx, len(nums)):
+            if not seen[i]:                          
+                seen[i] = True
+                if self.backtracking(nums, k, seen, currsum + nums[i], i + 1, target): # VERY VERY VERY VERY VERY IMPORTANT !!!!!!!!!!!
+                                                                                       # We update startidx by i + 1 !!!!!!!!!!!!!!!!!!
+                                                                                       # INSTEAD OF startidx + 1 !!!!!!!!!!!!!!!!!!!!!!
+                                                                                       # THIS ERROR TAKES ME HALF AN HOUR TO FIND !!!!!
+                                                                                       # IF startidx + 1 => TLE ERROR !!!!!!!!!!!!!!!!!
+                    return True
+                seen[i] = False
+        return False
