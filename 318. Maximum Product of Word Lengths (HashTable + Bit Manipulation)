@@ -1,0 +1,39 @@
+Given a string array words, find the maximum value of length(word[i]) * length(word[j]) 
+where the two words do not share common letters. 
+You may assume that each word will contain only lower case letters. If no such two words exist, return 0.
+
+Example 1:
+
+Input: ["abcw","baz","foo","bar","xtfn","abcdef"]
+Output: 16 
+Explanation: The two words can be "abcw", "xtfn".
+Example 2:
+
+Input: ["a","ab","abc","d","cd","bcd","abcd"]
+Output: 4 
+Explanation: The two words can be "ab", "cd".
+Example 3:
+
+Input: ["a","aa","aaa","aaaa"]
+Output: 0 
+Explanation: No such pair of words.
+
+
+
+Solution: ---------------------------------------------- HashTaclass Solution(object):
+    def maxProduct(self, words):
+        """
+        :type words: List[str]
+        :rtype: int
+        """
+        d = {}
+        for w in words:
+            bitsRepre = 0
+            for c in set(w):
+                bitsRepre |= (1 << ord(c) - ord('a'))         # the constraint given is that the two strings should not have 
+                                                              # any common character. This is taken care by creating a unique number
+                                                              # for every string, i.e. bitsRepre: a an 32 bit integer 
+                                                              # where 0 bit corresponds to 'a', 1st bit corresponds to 'b' and so on.
+            d[bitsRepre] = max(d.get(bitsRepre, 0), len(w))
+        return max([d[x] * d[y] for x in d for y in d if not x & y] or [0])       # if two strings contain the same character
+                                                                                  # i.e.: x & y != 0, we can ignore this case
