@@ -1,0 +1,63 @@
+Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.
+
+Note: The input string may contain letters other than the parentheses ( and ).
+
+Example 1:
+
+Input: "()())()"
+Output: ["()()()", "(())()"]
+Example 2:
+
+Input: "(a)())()"
+Output: ["(a)()()", "(a())()"]
+Example 3:
+
+Input: ")("
+Output: [""]
+
+
+
+Solution: ------------------------------------- DFS --------------------------------- https://www.youtube.com/watch?v=2k_rS_u6EBk
+----------------------------------------------- Time: O(2^(l + r)), Space: O(n^2)
+class Solution(object):
+    def removeInvalidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        l, r = 0, 0                                           # We first check how many unvalid left and right parentheses
+        for c in s:
+            l += (c == '(')
+            if l == 0:
+                r += (c == ')')
+            else:
+                l -= (c == ')')
+        res = []
+        self.dfs(s, l, r, 0, res)
+        return res
+    
+    def isValid(self, s):                                     # isValid function check if the string is a valid one
+        count = 0
+        for w in s:
+            if w == '(':
+                count += 1
+            elif w == ')':
+                count -= 1
+            if count < 0:
+                return False
+        return count == 0
+    
+    def dfs(self, s, l, r, startidx, res):
+        if l == 0 and r == 0:
+            if self.isValid(s):                           
+                res.append(s)                                 # We only append the currS into the res when l == r == 0 and currS valid
+            return 
+        for i in range(startidx, len(s)):
+            if i != startidx and s[i - 1] == s[i]:            # We only remove the first parentheses if there are consecutive ones
+                                                              # to avoid duplications. e.x.: '(()' => '()' after remove the first '(' 
+                                                              # and '()' after remove the second '('
+                continue
+            if s[i] == '(' and l > 0:                         # Not necessary to add 'l > 0' but for time optimization 
+                self.dfs(s[:i] + s[i+1:], l - 1, r, i, res)
+            if s[i] == ')' and r > 0:
+                self.dfs(s[:i] + s[i+1:], l, r - 1, i, res)
