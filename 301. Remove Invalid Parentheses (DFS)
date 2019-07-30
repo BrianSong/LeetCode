@@ -57,7 +57,7 @@ class Solution(object):
                                                               # to avoid duplications. e.x.: '(()' => '()' after remove the first '(' 
                                                               # and '()' after remove the second '('
                 continue
-            if s[i] == '(' and l > 0:                         # Not necessary to add 'l > 0' but for time optimization 
-                self.dfs(s[:i] + s[i+1:], l - 1, r, i, res)
-            if s[i] == ')' and r > 0:
+            if s[i] == ')' and r > 0:                         # Not necessary to add 'r > 0' but for time optimization 
                 self.dfs(s[:i] + s[i+1:], l, r - 1, i, res)
+            if s[i] == '(' and l > 0:                         
+                self.dfs(s[:i] + s[i+1:], l - 1, r, i, res)
