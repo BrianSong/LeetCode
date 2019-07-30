@@ -28,7 +28,7 @@ class Solution(object):
                                                # we count the number of num (bitCount) in the nums array which have that bit set == 1
             bitCount  = 0
             for num in nums:
-                bitCount  += (num >> i) & 1    # By "& 1" we can get whether the rightest bit (in position 1 == idx 0) is 1 or 0
+                bitCount  += (num >> i) & 1            # By "& 1" we can get whether the rightest bit (in position 1 == idx 0) is 1 or 0
             res += bitCount  * (len(nums) - bitCount)  # why this bit contribute bitCount  * (len(nums) - bitCount) ?
                                                        # Let's imagine in 有 有 有 没有 没有, how many different combinations we can make?
                                                        # 3 * 2 = 6 right ?
