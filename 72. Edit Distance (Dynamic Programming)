@@ -46,8 +46,16 @@ class Solution(object):
             for j in range(1, len(word2) + 1):
                 if word1[i - 1] == word2[j - 1]:                                          
                     dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j] + 1, dp[i][j - 1] + 1)
+                    # Why min(dp[i - 1][j - 1], dp[i - 1][j] + 1, dp[i][j - 1] + 1)? Why we can have three approaches?
+                    # Remember that we have 3 operations: insert, delete and replace.
+                    # First, the easiest, dp[i][j] can be directly equal to dp[i - 1][j - 1] if word1[i - 1] == word2[j - 1],
+                    # then, let's consider a case: 12b and ab, where 'a' == 'a',
+                    # as we know, 12b and a has dp[i][j - 1] minimum ways, and dp[i][j] can equal to it
+                    # as long as we insert b after 12b => 12bb and ab is exactly the same as 12b and a,
+                    # and the one insert operation become the '+1'
+                    # the same applies to dp[i - 1][j], where 12 and ab, we can delete b from 12b to make 12b/ab the same as 12/ab
                 else:
                     dp[i][j] = min(dp[i - 1][j - 1] + 1, dp[i - 1][j] + 1, dp[i][j - 1] + 1)
                     # The only difference between word1[i - 1] == word2[j - 1] and word1[i - 1] != word2[j - 1]
-                    # is to also add 1 to dp[i - 1][j - 1] => one more replace operation
+                    # is to add 1 to dp[i - 1][j - 1] => one more replace operation to replace word1[i - 1] the same as word2[j - 1]
         return dp[-1][-1]
