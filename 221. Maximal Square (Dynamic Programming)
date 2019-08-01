@@ -21,17 +21,17 @@ class Solution(object):
         if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
             return 0
         r, c = len(matrix), len(matrix[0])
-        dp = [[int(matrix[i][j]) for j in range(c)] for i in range(r)]          # dp(i,j) represents the side length of the maximum square 
-                                                                                # whose bottom right corner is the cell with index (i,j) 
-                                                                                # in the original matrix.
-                                                                                # dp is first set to the same as matrix
-        res = max(max(dp))                                                      # The initial value for res should be set to 
-                                                                                # the max(max()) in the 2D matrix dp
+        dp = [[int(matrix[i][j]) for j in range(c)] for i in range(r)]        # dp(i,j) represents the side length of the maximum square 
+                                                                              # whose bottom right corner is the cell with index (i,j) 
+                                                                              # in the original matrix.
+                                                                              # dp is first set to the same as matrix
+        res = max(max(dp))                                                    # The initial value for res should be set to 
+                                                                              # the max(max()) in the 2D matrix dp
         for i in range(1, r):
             for j in range(1, c):
                 dp[i][j] = (min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1) * int(matrix[i][j])
-                                                                                # Why min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
-                                                                                # can refer to the solution in the website
-                                                                                # Must mulitply its own value int(matrix[i][j])
+                                                                              # Why min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
+                                                                              # can refer to the solution in the website
+                                                                              # Must mulitply its own value int(matrix[i][j])
                 res = max(res, dp[i][j] ** 2)
         return res
