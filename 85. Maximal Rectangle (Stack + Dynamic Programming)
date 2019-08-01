@@ -1,0 +1,63 @@
+Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+
+Example:
+
+Input:
+[
+  ["1","0","1","0","0"],
+  ["1","0","1","1","1"],
+  ["1","1","1","1","1"],
+  ["1","0","0","1","0"]
+]
+Output: 6
+
+
+Solution: -------------------------------- Stack + Dynamic Programming ------------------ https://www.youtube.com/watch?v=2Yk3Avrzauk
+------------------------------------------ Basically the same as 84. Largest Rectangle in Histogram
+class Solution(object):
+    def maximalRectangle(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
+            return 0
+        res, heights = 0, [0] * len(matrix[0])  
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == '1':
+                    heights[j] += 1
+                else:
+                    heights[j] = 0
+            max_area = self.largestRectangleArea(heights)                 # Create the heights list and pass it to the no.84's function
+            res = max(res, max_area)
+        return res
+    
+    def largestRectangleArea(self, heights):
+        if not heights or len(heights) == 0:
+            return 0
+        res, stack, curridx = 0, [], 0
+        while curridx < len(heights):
+            if not stack or heights[curridx] >= heights[stack[-1]]:
+                stack.append(curridx)
+                curridx += 1
+            else:
+                right = curridx
+                height = stack.pop()
+                while len(stack) != 0 and heights[height] == heights[stack[-1]]:
+                    height = stack.pop()
+                if len(stack) != 0:
+                    left = stack[-1]
+                else:
+                    left = -1
+                res = max(res, (right - left - 1) * heights[height])
+        if stack: 
+            right = stack[-1] + 1
+        while stack:
+            height = stack.pop()
+            if stack:
+                left = stack[-1]
+            else:
+                left = -1
+            res = max(res, (right - left - 1) * heights[height])
+        return res
