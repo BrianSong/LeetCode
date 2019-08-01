@@ -42,4 +42,38 @@ class Solution(object):
         return res
         
         
-Solution no.2: ------------------------------------ Stack solution maybe followed up in the future
+Solution no.2: ------------------------------- Stack O(n) time complexity ----------- https://www.youtube.com/watch?v=KkJrGxuQtYo
+class Solution(object):
+    def largestRectangleArea(self, heights):
+        """
+        :type heights: List[int]
+        :rtype: int
+        """
+        if not heights or len(heights) == 0:
+            return 0
+        res, stack, curridx = 0, [], 0
+        while curridx < len(heights):                                          # Inside "for i in range():", we cannot change i's
+                                                                               # value, so, if we wanna do so, use a while loop instead
+            if not stack or heights[curridx] >= heights[stack[-1]]:
+                stack.append(curridx)
+                curridx += 1
+            else:
+                right = curridx
+                height = stack.pop()
+                while len(stack) != 0 and heights[height] == heights[stack[-1]]:   # To deal with duplicate heights
+                    height = stack.pop()
+                if len(stack) != 0:
+                    left = stack[-1]
+                else:
+                    left = -1
+                res = max(res, (right - left - 1) * heights[height])
+        if stack: 
+            right = stack[-1] + 1
+        while stack:
+            height = stack.pop()
+            if stack:
+                left = stack[-1]
+            else:
+                left = -1
+            res = max(res, (right - left - 1) * heights[height])
+        return res
