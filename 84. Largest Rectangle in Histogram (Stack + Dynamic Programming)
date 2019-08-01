@@ -58,22 +58,30 @@ class Solution(object):
                 stack.append(curridx)
                 curridx += 1
             else:
-                right = curridx
+                right = curridx                                                    # left means leftmost boundary (not included),
+                                                                                   # right means rightmost boundary (not included),
+                                                                                   # height means the height.
                 height = stack.pop()
                 while len(stack) != 0 and heights[height] == heights[stack[-1]]:   # To deal with duplicate heights
                     height = stack.pop()
-                if len(stack) != 0:
+                if len(stack) != 0:                                                # Everytime we want to do stack/queue pop() or [idx]
+                                                                                   # we must check by "if stack/queue:"
                     left = stack[-1]
-                else:
+                else:                                                              # if the stack is empty, the leftmost boundary will
+                                                                                   # be -1 without a doubt
                     left = -1
                 res = max(res, (right - left - 1) * heights[height])
-        if stack: 
+        if stack:                                                                  # After iterate over the entire heights list,
+                                                                                   # if the stack is still not empty,
+                                                                                   # then the stack must be ordered 从小到大,
+                                                                                   # the rightmost boundary can be directly assign to
+                                                                                   # stack[-1] + 1
             right = stack[-1] + 1
-        while stack:
+        while stack:                                                              
             height = stack.pop()
             if stack:
                 left = stack[-1]
-            else:
+            else:                    
                 left = -1
             res = max(res, (right - left - 1) * heights[height])
         return res
