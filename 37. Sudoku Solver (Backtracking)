@@ -1,0 +1,64 @@
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+A sudoku solution must satisfy all of the following rules:
+
+Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+Empty cells are indicated by the character '.'.
+
+
+A sudoku puzzle...
+
+
+...and its solution numbers marked in red.
+
+Note:
+
+The given board contain only digits 1-9 and the character '.'.
+You may assume that the given Sudoku puzzle will have a single unique solution.
+The given board size is always 9x9.
+
+
+Solution: -------------------------------------------------------- Backtracking
+class Solution(object):
+    def solveSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: None Do not return anything, modify board in-place instead.
+        """
+        self.board = board                                                    # Set the board to global variable easy to refer to 
+        self.solve()
+    
+    def findUnassigned(self):                                                 # Find the next '.' to be filled in
+        for i in range(9):
+            for j in range(9):
+                if self.board[i][j] == ".":
+                    return i, j
+        return -1, -1
+    
+    def solve(self):                                                          # Basic helper function
+        row, col = self.findUnassigned()
+        if row == -1 and col == -1:                                           # Base case: means all '.' has been filled, we are done!
+            return True
+        for num in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+            if self.checkVaild(row, col, num):                                # If after check, the current filled in is valid
+                self.board[row][col] = num          
+                if self.solve():                                              # We fill in the number in and use self.solve to solve the  
+                    return True                                               # the newest Sudoku and jump into the next recursion
+                else:                                                         # if the later recursions tell us the current filled in is not
+                                                                              # workable, 
+                    self.board[row][col] = "."                                # We remove the current fill in and try next number in [1, 9]
+        return False                                                          # If try all the number in [1, 9] and still not workable,
+                                                                              # then return False to the upper recursion
+    
+    def checkVaild(self, row, col, num):                                      # Check if the preparing filling in is valid or not
+        for i in range(9):
+            if self.board[row][i] == num or self.board[i][col] == num:        # Check 横竖
+                return False
+        boxStartRow, boxStartCol = (row / 3) * 3, (col / 3) * 3               # Very important to remember: boxStartRow and boxStartCol
+        for i in range(boxStartRow, boxStartRow + 3):                         # Check 3*3 sub-boxes
+            for j in range(boxStartCol, boxStartCol + 3):
+                if self.board[i][j] == num:
+                    return False
+        return True
