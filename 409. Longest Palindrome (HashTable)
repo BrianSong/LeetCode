@@ -1,0 +1,38 @@
+Given a string which consists of lowercase or uppercase letters, 
+find the length of the longest palindromes that can be built with those letters.
+
+This is case sensitive, for example "Aa" is not considered a palindrome here.
+
+Note:
+Assume the length of given string will not exceed 1,010.
+
+Example:
+
+Input:
+"abccccdd"
+
+Output:
+7
+
+Explanation:
+One longest palindrome that can be built is "dccaccd", whose length is 7.
+
+
+Solution: --------------------------------------------------- HashTable
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        HashTable, count = {}, 0
+        for c in s:
+            if c in HashTable:
+                del HashTable[c]
+                count += 1                      # Find a pair 
+            else:
+                HashTable[c] = 1
+        if HashTable:                           # Besides the pairs, we can also use a middle character
+            return 2 * count + 1
+        else:
+            return 2 * count
