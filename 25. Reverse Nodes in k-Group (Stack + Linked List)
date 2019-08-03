@@ -1,0 +1,90 @@
+Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
+
+k is a positive integer and is less than or equal to the length of the linked list. 
+If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
+
+Example:
+
+Given this linked list: 1->2->3->4->5
+
+For k = 2, you should return: 2->1->4->3->5
+
+For k = 3, you should return: 3->2->1->4->5
+
+Note:
+
+Only constant extra memory is allowed.
+You may not alter the values in the list's nodes, only nodes itself may be changed.
+
+
+Solution no.1: ------------------------------------ Stack ---------------------- https://www.youtube.com/watch?v=pLx1VP-FnuY
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseKGroup(self, head, k):
+        """
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        dummynode = ListNode(0)
+        dummynode.next = head
+        currnode, nextnode = dummynode, head
+        stack = []                                 # Why we consider using a stack? because stack is FILO, which is exactly in reverse order
+        while nextnode:
+            for i in range(k):
+                if nextnode:
+                    stack.append(nextnode)
+                    nextnode = nextnode.next
+            if len(stack) != k:
+                return dummynode.next
+            while stack:
+                currnode.next = stack.pop()
+                currnode = currnode.next
+            currnode.next = nextnode
+        return dummynode.next
+        
+        
+Solution no.2: ---------------------------------- Linked List ----------------------- https://www.youtube.com/watch?v=pLx1VP-FnuY
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseKGroup(self, head, k):
+        """
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        if not head:
+            return None
+        dummynode = ListNode(0)
+        dummynode.next = head
+        prev = dummynode
+        while prev:
+            prev = self.reverse(prev, k)
+        return dummynode.next
+    
+    def reverse(self, prev, k):
+        last = prev                                   # prev and last are the boundary nodes of the reversed sub-linked_list
+                                                      # e.g.: k = 3, D -> 1 -> 2 -> 3 -> 4: D and 4 are the prev and last node
+        for i in range(k + 1):
+            last = last.next
+            if i != k and not last:
+                return None
+        tail = prev.next                              # following the previous example, 1 is the tail node here
+        curr = prev.next.next
+        while curr != last:                           # We first move 2 before 1 and then move 3 before 2
+            next = curr.next
+            curr.next = prev.next
+            prev.next = curr
+            tail.next = next
+            curr = next
+        return tail                                   # tail node here will become the prev node for the next reversed sub-linked_list
