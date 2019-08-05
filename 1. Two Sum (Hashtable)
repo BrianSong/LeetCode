@@ -9,37 +9,51 @@ Given nums = [2, 7, 11, 15], target = 9,
 Because nums[0] + nums[1] = 2 + 7 = 9,
 return [0, 1].
 
-Solution no.1: ok for normal case, but failed because of "Time Limit Exceeded" : 运算时间太长，需要优化
-This code's time complexity is o(n^2), as you know, N will bigger than 16000, so this complexity is unacceptable
+Solution no.1: ---------------------- ok for normal case, but failed because of "Time Limit Exceeded" : 运算时间太长，需要优化
+--------------------- This code's time complexity is o(n^2), as you know, N will bigger than 16000, so this complexity is unacceptable
+--------------------- As for the space complexity, a recursive function's memory complexity is O(recursion depth) => O(2)
 class Solution(object):
     def twoSum(self, nums, target):
         res = []
-        currlist = []
-        curridex = 0
-        self.twoSum_help(nums, target, res, currlist, curridex)
+        self.twoSum_help(nums, target, res, [], 0)
         return res
         """
         :type nums: List[int]
         :type target: int
         :rtype: List[int]
         """
-    def twoSum_help(self, nums, target, res, currlist, curridex):
-        if len(currlist) == 2 and target == 0:
-            res.extend(currlist[:])
-        if len(currlist) < 2:
-            for i in range(curridex, len(nums)):
-                currlist.append(i)
-                self.twoSum_help(nums, target - nums[i], res, currlist, i + 1)
-                currlist.pop()
-
-Solution no.2: -------------------------------- Hashtable 
+    def twoSum_help(self, nums, target, res, path, startidx):
+        if len(path) == 2 and target == 0:
+            res.extend(path[:])
+        if len(path) < 2:
+            for i in range(startidx, len(nums)):
+                path.append(i)
+                self.twoSum_help(nums, target - nums[i], res, path, i + 1)
+                path.pop()
+                
+Solution no.2: ------------------------------------- Brute Force O(n^2) time, O(1) space
 class Solution(object):
     def twoSum(self, nums, target):
-        dic = {}                         # Create a dictionary that record the key:value pair
-                                         # for example: dic = {2:0, 7:1, 11:2, 15:3}, key:value
-        for i, n in enumerate(nums):     
-            if n in dic:                 # key in dic
-                                         # value in dic can only be assess by dic[key]
-                return[dic[n], i]        # dic[key] -> value. key is like a special index
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        res = []
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                if nums[i] + nums[j] == target:
+                    res.extend([i, j])
+        return res
+
+Solution no.2: -------------------------------- Hashtable
+------------------------------------------------ O(n) T, O(n) S
+class Solution(object):
+    def twoSum(self, nums, target):
+        HashTable = {}                                # Create a dictionary that record the key:value pair
+        for i, num in enumerate(nums):                # for example: dic = {2:0, 7:1, 11:2, 15:3}, key:value
+            if target - num in HashTable:             # key in dic
+                return[i, HashTable[target - num]]    # value in dic can only be assess by dic[key]
+                break                                 # dic[key] -> value. key is like a special index
             else:
-                dic[target - n] = i 
+                HashTable[num] = i
