@@ -57,3 +57,6 @@ class Solution(object):
                 break                                 # dic[key] -> value. key is like a special index
             else:
                 HashTable[num] = i
+
+Solution no.4? Two Pointers? 
+Since this question asks us to return the original index instead of the item value, two pointers is not applicable here.
