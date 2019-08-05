@@ -31,6 +31,7 @@ class Solution(object):
         
         
 Solution no.2: ------------------------------------------ HashTable
+--------------------------------------------------------- O(n) T O(n) S
 '''
 Solution 1. Brute force. We just need two loops (i, j) and test if SUM[i, j] = k. Time complexity O(n^2), Space complexity O(1). 
 I bet this solution will TLE.
@@ -48,8 +49,11 @@ class Solution(object):
         :rtype: int
         """
         presum, currsum, res = {0:1}, 0, 0                 # {0:1} means there are one(frequency) presum whose value is 0
+                                                           # We must preset the HashTable into {0:1}
+                                                           # Otherwise, those satified subarrays start from index 0 cannot be counted in
         for num in nums:
             currsum += num
-            res += presum.get(currsum - k, 0)
-            presum[currsum] = presum.get(currsum, 0) + 1
+            res += presum.get(currsum - k, 0)              # IMPORTANT !!!!!!!!!!!!!!!!!!!!
+                                                           # currsum - k not k - currsum !!!!!!!!!!!!!!!!!!
+            presum[currsum] = presum.get(currsum, 0) + 1 
         return res
