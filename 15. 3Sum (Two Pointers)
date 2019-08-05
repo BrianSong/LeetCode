@@ -15,7 +15,8 @@ A solution set is:
   [-1, -1, 2]
 ]
 
-Solution:
+Solution: ---------------------------------------------------- Two Pointers
+-------------------------------------------------------------- O(n^2) T O(1) S
 class Solution(object):
     def threeSum(self, nums):
         nums.sort()
