@@ -22,6 +22,7 @@ The two tuples are:
 
 
 Solution: ---------------------------------------------- HashTable
+-------------------------------------------------------- O(n^2) T O(n) S
 class Solution(object):
     def fourSumCount(self, A, B, C, D):
         """
