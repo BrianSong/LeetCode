@@ -46,7 +46,7 @@ class Solution(object):
                     res.extend([i, j])
         return res
 
-Solution no.2: -------------------------------- Hashtable
+Solution no.3: -------------------------------- Hashtable
 ------------------------------------------------ O(n) T, O(n) S
 class Solution(object):
     def twoSum(self, nums, target):
