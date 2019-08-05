@@ -56,3 +56,35 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[List[int]]
         """
+        
+'''
+The correct way to remove left and right duplicate is to do:
+while left < right:
+      if nums[left] + nums[right] == currsum:
+          res.append([nums[i], nums[left], nums[right]])
+          while left < right and nums[left] == nums[left + 1]:
+              left += 1
+          while left < right and nums[right] == nums[right - 1]:
+              right -= 1
+          left += 1
+          right -= 1
+      elif nums[left] + nums[right] > currsum:
+          right -= 1
+      else:
+          left += 1
+Instead of:
+while left < right:
+      while left < right and nums[left] == nums[left + 1]:      # We cannot do the left, right duplicate remove here
+          left += 1                                             # Because in this way, for example [0, 0, 0, 1]
+      while left < right and nums[right] == nums[right - 1]:    # the [0, 0, 0] solution will be automatically removed 
+          right -= 1                                            # We can only remove left and right duplicate after we find one solution
+      if nums[left] + nums[right] == currsum:                   # and try to find the next one (afraid nums[left] and nums[left + 1]
+                                                                # is the same and create duplicate triplets now)
+          res.append([nums[i], nums[left], nums[right]])
+          left += 1
+          right -= 1
+      elif nums[left] + nums[right] > currsum:
+          right -= 1
+      else:
+          left += 1
+'''
