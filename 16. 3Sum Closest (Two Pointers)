@@ -7,7 +7,8 @@ Given array nums = [-1, 2, 1, -4], and target = 1.
 
 The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 
-Solution: ----------------------------------------------------- https://www.youtube.com/watch?v=eHtHNK3Lfmw
+Solution: ---------------------------------- Two Pointers ------------------- https://www.youtube.com/watch?v=eHtHNK3Lfmw
+--------------------------------------------- O(n^2) T, O(1) S
 class Solution(object):
     def threeSumClosest(self, nums, target):
         if nums == [] or len(nums) == 0:
@@ -36,3 +37,23 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
+        
+        
+'''
+for i in range(len(nums) - 2):
+            left = i + 1
+            right = len(nums) - 1
+            while left < right:
+                currsum = nums[i] + nums[left] + nums[right]
+                currdiff = target - currsum                     # if currdiff = target - currsum
+                                                                # then currsum = target - currdiff
+                if currdiff == 0:
+                    return target
+                if abs(diff) > abs(currdiff):
+                    diff = currdiff
+                if currdiff > 0:
+                    left += 1
+                else:
+                    right -= 1
+        return target - diff                                    # So, here, we must return target - diff instead of target + diff !!!!!!!!
+'''
