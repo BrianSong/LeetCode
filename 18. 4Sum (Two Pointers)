@@ -17,6 +17,7 @@ A solution set is:
 ]
 
 Solution: ----------------------------------------- Two Pointers -------------------------- https://www.youtube.com/watch?v=4wFQdfTZdzI
+--------------------------------------------------- O(n^3) T O(1) S
 class Solution(object):
     def fourSum(self, nums, target):
         """
