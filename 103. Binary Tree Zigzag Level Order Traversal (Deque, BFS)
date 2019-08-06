@@ -16,37 +16,43 @@ return its zigzag level order traversal as:
 ]
 
 Solution: ------------------------------------------------------- https://www.youtube.com/watch?v=U77m7wWWhV0
+------------------------- Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), 
+------------------------- where n is the total number of nodes in the tree.
+------------------------- Space complexity : O(n)
+------------------------- BFS will have to store at least an entire level of the tree in the queue (sample queue implementation). 
+------------------------- With a perfect fully balanced binary tree, this would be (n/2 + 1) nodes (the very last level)
 class Solution(object):
     def zigzagLevelOrder(self, root):
-        if root is None:
-            return None
-        size, level, deque, currlist, res = 0, 0, collections.deque(), [], []   # Introduce a new data type: collections.deque()
-                                                                         # Build-in functions: pop(), popleft(), append(), appendleft()
-                                                                         # THERE IS NO pop(0) for collections.deque() but popleft() !!!!
-        deque.append(root)
-        while len(deque) != 0:                               # IMPORTANT!!! CANNOT deque != [] -> RunTime Error
-                                                             # this works for queue != [], but not for deque
-            size = len(deque)
-            for i in range(size):
-                if level % 2 == 0:                           # Case 1: we should popleft() and append(left) and append(right)
-                    pop_element = deque.popleft()     
-                    currlist.append(pop_element.val)         # append(pop_element.val) not append(pop_element)!!!!!!!!!!!!!!!!!!!!!
-                    if pop_element.left:                     # Everytime we want to append something, check if it is None FIRST!!!!!!!!
-                        deque.append(pop_element.left)
-                    if pop_element.right:
-                        deque.append(pop_element.right)
-                else:                                        # Case 2: we should pop() and appendleft(right) and appendleft(left)
-                    pop_element = deque.pop()
-                    currlist.append(pop_element.val)
-                    if pop_element.right:
-                        deque.appendleft(pop_element.right)
-                    if pop_element.left:
-                        deque.appendleft(pop_element.left)
-            res.append(currlist[:])
-            currlist = []
-            level += 1
-        return res
         """
         :type root: TreeNode
         :rtype: List[List[int]]
         """
+        if not root:
+            return None
+        deque = collections.deque()                        # Introduce a new data type: collections.deque()
+                                                           # Build-in functions: pop(), popleft(), append(), appendleft()
+                                                           # THERE IS NO pop(0) for collections.deque() but popleft() !!!!
+        deque.append(root)
+        level = 0
+        res = []
+        while deque:
+            currlevel = []
+            for i in range(len(deque)):
+                if level % 2 == 0:
+                    pop_element = deque.popleft()
+                    currlevel.append(pop_element.val)
+                    if pop_element.left:                   # Everytime we want to append something into the queue in BFS,  we must 
+                                                           # check if it is None FIRST!!!!!!!!
+                        deque.append(pop_element.left)
+                    if pop_element.right:
+                        deque.append(pop_element.right)
+                else:
+                    pop_element = deque.pop()
+                    currlevel.append(pop_element.val)
+                    if pop_element.right:
+                        deque.appendleft(pop_element.right)
+                    if pop_element.left:
+                        deque.appendleft(pop_element.left)
+            res.append(currlevel)
+            level += 1
+        return res
