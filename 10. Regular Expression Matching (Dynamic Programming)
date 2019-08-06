@@ -53,17 +53,27 @@ class Solution(object):
         :rtype: bool
         """
         match = [[False for i in range(len(s) + 1)] for j in range(len(p) + 1)]     # Step no.1: state
-        match[0][0] = True                                                          # Step no.2: init
+        match[0][0] = True                                                          # Step no.2: init, match[0][0] is TRUE !!!!
         for i in range(1, len(p) + 1):                                                         
-            if p[i - 1] == '*':
+            if p[i - 1] == '*':                                                     # when * => zero of preceding element        
                 match[i][0] = match[i - 2][0]
         for i in range(1, len(p) + 1):                                              # Step no.3: transform function
             for j in range(1, len(s) + 1):
-                if s[j - 1] == p[i - 1] or p[i - 1] == '.':
+                if s[j - 1] == p[i - 1] or p[i - 1] == '.':                         # First when the current characters are the same
+                                                                                    # or p[i - 1] == '.'
                     match[i][j] = match[i - 1][j - 1]
-                elif p[i - 1] == '*':
-                    if s[j - 1] == p[i - 2] or p[i - 2] == '.':
-                        match[i][j] = match[i][j - 1] or match[i - 2][j]
-                    else:
+                elif p[i - 1] == '*':                                               # Second when p[i - 1] == '*'
+                    if s[j - 1] == p[i - 2] or p[i - 2] == '.':                     # When '*' => more of the preceding element
+                                                                                    # For example, abcdd == abcd* == abc.*
+                                                                                    # because d == d == . and abcd == abcd* == abc.*
+                                                                                    # it's like ok, s can have one more character
+                                                                                    # as long as it is the same as the character before *,
+                                                                                    # in this way, we can duplicate it,
+                                                                                    # and turn it into the T or F of its preceding matches
+                        match[i][j] = match[i][j - 1] or match[i - 2][j]            # And, of course, it still satisfies the general case
+                                                                                    # as in the init step
+                                                                                    
+                    else:                                                           # Just like in the init step, '*' => zero
+                                                                                    # For example, abcd == abcde*
                         match[i][j] = match[i - 2][j]
         return match[-1][-1]                                                        # Step no.4: return
