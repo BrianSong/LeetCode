@@ -1,0 +1,68 @@
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+But the following [1,2,2,null,3,null,3] is not:
+    1
+   / \
+  2   2
+   \   \
+   3    3
+   
+Solution no.1: ------------------------------------------ DFS ---------------------------- https://www.youtube.com/watch?v=hL4sXXZ1K1Y
+------------------------- Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), 
+------------------------- where n is the total number of nodes in the tree.
+------------------------- Space complexity: The number of recursive calls is bound by the height of the tree. 
+-------------------------- In the worst case, the tree is linear and the height is in O(n). 
+-------------------------- Therefore, space complexity due to recursive calls on the stack is O(n) in the worst case. 
+class Solution(object):
+    def isSymmetric(self, root):
+        if root is None:
+            return True
+        return self.helper(root.left, root.right)
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+    def helper(self, leftnode, rightnode):
+        if not leftnode and not rightnode:       # Boundary Condition 1: Both come to an end and still symmetric
+            return True
+        elif leftnode and rightnode:
+            return leftnode.val == rightnode.val and self.dfs(leftnode.left, rightnode.right) and self.dfs(leftnode.right, rightnode.left)
+        else:                                    # Boundary Condition 2: One end come to the end but the other does not, so not symmetric
+            return False
+            
+            
+Solution no.2: -------------------------------------- BFS + Queue
+------------------------- Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), 
+------------------------- where n is the total number of nodes in the tree.
+-------------------------- Space complexity : There is additional space required for the search queue. 
+-------------------------- In the worst case, we have to insert O(n) nodes in the queue. Therefore, space complexity is O(n).
+class Solution(object):
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        queue = []
+        queue.append(root)
+        queue.append(root)
+        while queue:
+            t1 = queue.pop(0)
+            t2 = queue.pop(0)
+            if not t1 and not t2:
+                continue
+            if not t1 or not t2:                # We try to find out all False cases
+                return False
+            if t1.val != t2.val:
+                return False
+            queue.append(t1.left)
+            queue.append(t2.right)
+            queue.append(t1.right)
+            queue.append(t2.left)
+        return True                             # If the BFS passes all False cases, then we can return True
