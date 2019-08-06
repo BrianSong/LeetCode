@@ -17,9 +17,9 @@ return its level order traversal as:
 Solution:-------------------------------------------------- Queue & BFS ----- https://www.youtube.com/watch?v=B0n3gqPKKic
 ------------------------- Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), 
 ------------------------- where n is the total number of nodes in the tree.
--------------------------- Space complexity : O(n)
------------------ BFS will have to store at least an entire level of the tree in the queue (sample queue implementation). 
------------------ With a perfect fully balanced binary tree, this would be (n/2 + 1) nodes (the very last level)
+------------------------- Space complexity : O(n)
+------------------------- BFS will have to store at least an entire level of the tree in the queue (sample queue implementation). 
+------------------------- With a perfect fully balanced binary tree, this would be (n/2 + 1) nodes (the very last level)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
