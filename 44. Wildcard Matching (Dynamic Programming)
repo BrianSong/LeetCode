@@ -69,5 +69,5 @@ class Solution(object):
                                                                                   # => match[i][j] = match[i][j - 1]
                     match[i][j] = match[i - 1][j] or match[i][j - 1]              # Why we do not consider 斜上方？
                                                                                   # Because 就算斜上方是True, 在前一个i循环，
-                                                                                  # 斜上方的T已经被pass到正上方的True了，不会错过
+                                                                                  # 斜上方的T已经被pass到正上方的True了，不会MISS
         return match[-1][-1]                                                      # Step no.4: return
