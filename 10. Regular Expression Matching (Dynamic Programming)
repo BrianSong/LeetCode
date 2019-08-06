@@ -45,6 +45,7 @@ Output: false
 
 
 Solution: ------------ Dynamic Programming ----------- https://www.youtube.com/watch?v=DqhPJ8MzDKM&t=8s (看讲题思路不要看代码，代码是反的)
+----------------------- O(len(s)*len(p)) T O(len(s)*len(p)) S
 class Solution(object):
     def isMatch(self, s, p):
         """
