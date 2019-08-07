@@ -15,7 +15,13 @@ Given binary tree [3,9,20,null,null,15,7],
    15   7
 return its minimum depth = 2.
 
-Solution: ----------------------------------------------- BFS
+            
+Solution: ------------------------------------------------------------------ BFS
+------------------------- Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), 
+------------------------- where n is the total number of nodes in the tree.
+------------------------- Space complexity : O(n)
+------------------------- BFS will have to store at least an entire level of the tree in the queue (sample queue implementation). 
+------------------------- With a perfect fully balanced binary tree, this would be (n/2 + 1) nodes (the very last level)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -29,28 +35,15 @@ class Solution(object):
         :type root: TreeNode
         :rtype: int
         """
-        return self.bfs(root)
-    
-    def bfs(self, root):
         if not root:
             return 0
-        if None in [root.left, root.right]:
-            return max(self.bfs(root.left), self.bfs(root.right)) + 1
-            '''
-            why max() here?
-            because the question requires that it must be counted from the leaf
-            for example, 
-                  1
-                 /
-                2
-            if we do not add this max(), it will return 1 which counted from 1 but 1 is not a leaf
-            so, we need to add this max() for the situations where one of children of this node is None,
-            we need to calculate the part which follows the tree to the leaf, so, we use max() to take this part out,
-            max(what we want, 0) = what we want
-            '''
-        else:
-            return min(self.bfs(root.left), self.bfs(root.right)) + 1
-            '''
-            as for both the childrens are not None,
-            we keep the principle to find the "minimum" depth
-            '''
+        queue = []
+        queue = [(root,  1)]
+        while queue:
+            currnode, currlevel = queue.pop(0)
+            if not currnode.left and not currnode.right:
+                return currlevel
+            if currnode.left:
+                queue.append((currnode.left, currlevel + 1))
+            if currnode.right:
+                queue.append((currnode.right, currlevel + 1))
