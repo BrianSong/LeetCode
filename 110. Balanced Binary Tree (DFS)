@@ -29,6 +29,7 @@ Given the following tree [1,2,2,3,3,null,null,4,4]:
 Return false.
 
 Solution: ------------------------------------------------------------- https://www.youtube.com/watch?v=Be5CUodZliM
+------------------------------------------------ O(N) T, O(N) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -37,7 +38,7 @@ Solution: ------------------------------------------------------------- https://
 #         self.right = None
 '''
 递归问题：
-找到任意一个节点，研究这个问题该怎么解，该怎么把有效信息传递到上一层（假设下一层已经完成），然后再考虑边界条件。
+找到任意一个节点，假设下一层已经解决了，再研究这个问题该怎么解，该怎么把有效信息传递到上一层（假设下一层已经完成），然后再考虑边界条件。
 '''
 class Solution(object):
     def isBalanced(self, root):
@@ -67,29 +68,3 @@ class Solution(object):
             '''
             else:
                 return max(depth_left, depth_right) + 1    # "+ 1" is the key in this algorithm that connecting inside the recursion
-                
-Solution no.2: ---------------------------------------------- create a global variable to indicate the result
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
-class Solution(object):
-    def isBalanced(self, root):
-        self.res = None
-        self.dfs(root)
-        return self.res != -1
-        """
-        :type root: TreeNode
-        :rtype: bool
-        """
-    def dfs(self, root):
-        if not root:
-            return 0
-        left_depth = self.dfs(root.left)
-        right_depth = self.dfs(root.right)
-        if left_depth == -1 or right_depth == -1 or abs(left_depth - right_depth) > 1:
-            self.res = -1
-        return max(left_depth, right_depth) + 1
