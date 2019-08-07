@@ -16,7 +16,8 @@ return its bottom-up level order traversal as:
 ]
 
 Solution no.1(my own):--------------------------------- almost the same as Q.102
-------------------------- Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), 
+------------------------- Time complexity : O(n^2). Because we traverse the entire tree and we insert some element into a list
+------------------------- the total run time is O(n) * O(n) = O(n^2), 
 ------------------------- where n is the total number of nodes in the tree.
 ------------------------- Space complexity : O(n)
 ------------------------- BFS will have to store at least an entire level of the tree in the queue (sample queue implementation). 
