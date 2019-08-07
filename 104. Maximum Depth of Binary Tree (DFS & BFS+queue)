@@ -16,54 +16,24 @@ Given binary tree [3,9,20,null,null,15,7],
 return its depth = 3.
 
 Two solutions: ---------------------------------------------------------------- DFS
+--------------------------------------- O(n) T, O(d) S where d is the maximum depth
 class Solution(object):
+    class Solution(object):
     def maxDepth(self, root):
-        if root is None:
-            return 0 # Base case for exiting recursion
-        else:
-            left_depth = self.maxDepth(root.left) 
-            # It will return the greatest depth of the left brunch for the root node
-            right_depth = self.maxDepth(root.right) 
-            # It can be processed only the previous left_depth is finished(including all of its inner recursion functions) 
-            # and return a value
-            return max(left_depth, right_depth) + 1 
-            # The reason to add 1 here is because the base case return 0, and the depth should increase 1 for each level of the tree
-Case analyst:
-3 is None： False
-left_depth = f(9) 
-------------------------------
-9 is None: False 
-left_depth = f(None)
-------------------------------
-None is None：True --- return 0 
-------------------------------
-right_depth = f(None)
-None is None：True --- return 0 
----------------------------------------
-left_depth = f(9) is max(0,0) + 1 = 1 
-----------------------------------------
-right_depth = f(20)
----------------------
-20 is None: False
-left_depth = f(15)
--------------------
-15 is None: False
-left_depth = f(None) -----return 0
-right_depth = f(None) -----return 0
-f(15) = max(0,0) + 1 = 1
------------------------------------
-right_depth = f(7)
----------------------
-7 is None: False
-left_depth = f(None) -----return 0
-right_depth = f(None) -----return 0
-f(7) = max(0,0) + 1 = 1
------------------------------
-f(20) = max(1,1) + 1 = 2
-----------------------------
-f(3) = max(1,2) + 1 = 3
-
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        return self.dfs(root)
+    def dfs(self, root):
+        if not root:                                            
+            return 0
+        if not root.left and not root.right:                        # Pre-processing makes the algo much faster
+            return 1
+        return max(self.dfs(root.left) if root.left else 0, self.dfs(root.right) if root.right else 0) + 1  # Another pre-processing
+        
 Solution no.2: --------------------------------------------------------- BFS & Queue
+------------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -73,17 +43,25 @@ Solution no.2: --------------------------------------------------------- BFS & Q
 
 class Solution(object):
     def maxDepth(self, root):
-        if root is None:
+        if not root:
             return 0
-        queue, depth = [root], 0
-        while queue != []:
-            depth += 1
-            for i in range(len(queue)):
-                pop_element = queue.pop(0)
-                if not pop_element.left is None: queue.append(pop_element.left)
-                if not pop_element.right is None: queue.append(pop_element.right)
-        return depth
-        """
-        :type root: TreeNode
-        :rtype: int
-        """
+        queue, res = [(root, 1)], 0
+        while queue:
+            pop_element, level = queue.pop(0)                       # QUEUE POP(0) !!!!!!!!!!! QUEUE POP(0) !!!!!!!!!!!!!!!!!!!!!!!!!!
+            res = level
+            if pop_element.left:
+                queue.append((pop_element.left, level + 1))
+            if pop_element.right:
+                queue.append((pop_element.right, level + 1))
+        return res
+        
+'''
+As for the time complexity for both DFS and BFS are O(n) because  this is tree traversal, we must touch every node, 
+making this O(n) where n is the number of nodes in the tree.
+As for the space complexity:
+Best case for DFS: a balanced tree => minimumize the depth of the tree => O(logN)
+Worst case for DFS: severely unbalanced linear tree which contains only 1 element at each level => O(N)
+Best case for BFS: severely unbalanced linear tree which contains only 1 element at each level => O(1)
+Worse case for BFS: With a perfect fully balanced binary tree, this would be (n/2 + 1) nodes (the very last level) => O(logN) == O(N)
+Worst Case for DFS will be the best case for BFS, and the Best Case for DFS will be the worst case for BFS !!!!
+'''
