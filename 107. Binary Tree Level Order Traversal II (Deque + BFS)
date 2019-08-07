@@ -53,7 +53,14 @@ class Solution(object):
         :type root: TreeNode
         :rtype: List[List[int]]
         """
-Solution no.2: ----------------------------------------- Save the space of the currlist, however, still O(N) Space
+
+
+Solution no.2: Since the above algo has a time complexity of O(n^2) which is cost by each insertion inside each node,
+Instead of doing the insertion, we can resume the append (O(1)) for each node, but reverse the res out of the while loop (O(n)),
+then in this way, the total time complexity will be O(n) + O(n) = O(n) instead of O(n^2) => res.reverse()
+
+
+Solution no.3: ----------------------------------------- Save the space of the currlist, however, still O(N) Space
 class Solution(object):
     def levelOrderBottom(self, root):
         queue, res = collections.deque([(root, 0)]), [] # Introduce a level to record the current level in the Binary Tree
