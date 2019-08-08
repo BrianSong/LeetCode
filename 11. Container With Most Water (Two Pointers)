@@ -18,7 +18,8 @@ Example:
 Input: [1,8,6,2,5,4,8,3,7]
 Output: 49
 
-Solution: -------------------------------------------------------- https://www.youtube.com/watch?v=pdKz9TvIjS8
+Solution: ------------------------------------------ Two Pointers -------------- https://www.youtube.com/watch?v=pdKz9TvIjS8
+------------------------------------ O(N) T, O(1) S
 class Solution(object):
     def maxArea(self, height):
         left, right = 0, len(height) - 1           # Define this two pointers
