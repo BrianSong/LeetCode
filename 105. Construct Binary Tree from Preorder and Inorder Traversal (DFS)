@@ -15,7 +15,8 @@ Return the following binary tree:
     /  \
    15   7
    
-Solution: ------------------------------------------- https://www.youtube.com/watch?v=S1wNG5hx-30
+Solution: ------------------------------------ DFS ------- https://www.youtube.com/watch?v=S1wNG5hx-30
+-------------------------------------- O(N^2) T: Inside each currnode, we transverse the inorder to find idx, O(N) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -45,6 +46,9 @@ class Solution(object):
         currnode = TreeNode(preorder[pre_start])
         idx = inorder.index(preorder[pre_start])
         currnode.left = self.recursion_helper(preorder, inorder, pre_start + 1, in_start, idx - 1)
-        currnode.right = self.recursion_helper(preorder, inorder, pre_start + (idx - in_start + 1), idx + 1, in_end)
-        # IMPORTANT!!!!!!!!!!!!!!!!!!!!! pre_start + (idx - in_start + 1) not pre_start + (idx + 1)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        currnode.right = self.recursion_helper(preorder, inorder, pre_start + (idx - in_start) + 1, idx + 1, in_end)
+        # IMPORTANT!!!!!!!!!!!!!!!!!!!!! pre_start + (idx - in_start) + 1 not pre_start + (idx + 1)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # Why pre_start + (idx - in_start) + 1? Because idx - instart indicates how many left-subtree nodes of the currnode
+        # And they all line up after the currnode before the first right-subtree node in the preorder
+        # As for the inorder, the left part of the currnode belongs to the left subtree and right part belongs to the right subtree
         return currnode
