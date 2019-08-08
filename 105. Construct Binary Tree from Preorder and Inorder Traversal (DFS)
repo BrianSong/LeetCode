@@ -44,7 +44,7 @@ class Solution(object):
         if pre_start >= len(preorder) or in_start > in_end:                     # Exiting conditions: according to the three arguments
             return None
         currnode = TreeNode(preorder[pre_start])
-        idx = inorder.index(preorder[pre_start])
+        idx = inorder.index(preorder[pre_start])                 # How to find the index of specific element inside an array: .index()!
         currnode.left = self.recursion_helper(preorder, inorder, pre_start + 1, in_start, idx - 1)
         currnode.right = self.recursion_helper(preorder, inorder, pre_start + (idx - in_start) + 1, idx + 1, in_end)
         # IMPORTANT!!!!!!!!!!!!!!!!!!!!! pre_start + (idx - in_start) + 1 not pre_start + (idx + 1)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
