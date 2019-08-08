@@ -60,6 +60,7 @@ class Solution(object):
         
         
 Solution no.2: ------------------------------ Two Pointers + DFS
+--------------------------------------------- O(N) T, O(logN) S
 def sortedListToBST(self, head):
     if not head:
         return 
@@ -70,7 +71,8 @@ def sortedListToBST(self, head):
     # '3' is root, '12' belongs to left, '4' is right
     # odd case, like '12345', slow points to '2', '12'
     # belongs to left, '3' is root, '45' belongs to right
-    slow, fast = head, head.next.next                             
+    slow, fast = head, head.next.next                         # For the init assignment, slow should be head,
+                                                              # and fast should be head.next.next instead of head.next
     while fast and fast.next:                                 # Everytime we want to call the next of a linked list node,
                                                               # We MUST check if it is NONE !!!!!!!!!!!!!!!!!!!
                                                               # So, instead of "while fast.next:", it is "while fast and fast.next:"
