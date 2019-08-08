@@ -35,6 +35,9 @@ class Solution(object):
         if start > end:                                      # This condition used very often, need to be remembered
             return None                                      # "return None" or "return" are all OK !!!!!!!!!!!!!!!!!!!!!!!!
         mid = (start + end) / 2                              # '/' in python 2 is '//'
+                                                             # Even though Python does not overflow,
+                                                             # it is still better to change mid = (start + end) / 2
+                                                             # into mid = start + (end - start) / 2 and explain it to the interviewers
         node = TreeNode(nums[mid])                           # Can define a node using its build-in class
         node.left = self.to_bst_help(nums, start, mid - 1)   # Since the function need to return a node, we should use assignment here
         node.right = self.to_bst_help(nums, mid + 1, end)     
