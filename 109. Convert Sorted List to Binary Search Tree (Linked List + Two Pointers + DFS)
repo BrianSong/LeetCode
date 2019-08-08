@@ -17,6 +17,7 @@ One possible answer is: [0,-3,9,-10,null,5], which represents the following heig
  -10  5
  
  Solution: ------------------------------------ Same as Q.108, just convert the linked list into an array as line 37-40
+ -------------------------------------- O(N) T, O(N) S
  # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -58,7 +59,7 @@ class Solution(object):
         return node
         
         
-Solution no.2:
+Solution no.2: ------------------------------ Two Pointers + DFS
 def sortedListToBST(self, head):
     if not head:
         return 
@@ -69,15 +70,22 @@ def sortedListToBST(self, head):
     # '3' is root, '12' belongs to left, '4' is right
     # odd case, like '12345', slow points to '2', '12'
     # belongs to left, '3' is root, '45' belongs to right
-    slow, fast = head, head.next.next
-    while fast and fast.next:                         
+    slow, fast = head, head.next.next                             
+    while fast and fast.next:                                 # Everytime we want to call the next of a linked list node,
+                                                              # We MUST check if it is NONE !!!!!!!!!!!!!!!!!!!
+                                                              # So, instead of "while fast.next:", it is "while fast and fast.next:"
         fast = fast.next.next                                 # Even fast is now pointing to None, it does not matter,
                                                               # we only care about the slow pointer, fast pointer here is only a tool
         slow = slow.next
     # tmp points to root
     tmp = slow.next
     # cut down the left child
-    slow.next = None
+    slow.next = None                                          # By:
+                                                              # 1. Assigning the temp(slow.next) to currnode
+                                                              # 2. Let slow.next = None
+                                                              # 3. Pass temp.next to root.right
+                                                              # We successfully cut the currnode off the left and right sub linkedlist
+                                                              # So solve the duplicate problem !!
     root = TreeNode(tmp.val)
     root.left = self.sortedListToBST(head)
     root.right = self.sortedListToBST(tmp.next)
