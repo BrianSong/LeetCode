@@ -24,6 +24,8 @@ Solution:
 #         self.right = None
 
 class Solution(object): --------------------------------- 与 Q.105 Construct Binary Tree from Preorder and Inorder Traversal 换汤不换药
+-------------------------------------- O(N^2) T: Inside each currnode, we transverse the inorder to find idx, O(N) S
+
     def buildTree(self, inorder, postorder):
         if postorder is None or inorder is None or len(postorder) == 0 or len(inorder) == 0 or len(postorder) != len(inorder):
             return None
@@ -38,6 +40,14 @@ class Solution(object): --------------------------------- 与 Q.105 Construct Bi
             return None
         currnode = TreeNode(postorder[post_end])
         idx = inorder.index(postorder[post_end])
-        currnode.left = self.dfs(inorder, postorder, post_end - 1 - (in_end - idx), in_start, idx - 1)
+        currnode.left = self.dfs(inorder, postorder, post_end - 1 - (in_end - idx), in_start, idx - 1) # IMPORTANT !!!!
+                                                                                                       # post_end - 1 - (in_end - idx)
+                                                                                                       # INSTEAD OF
+                                                                                           # post_end - 1 - (len(inorder) - 1 - idx)
+                                                                                           # How many element on the right subtree
+                                                                                           # of currnode inside postorder is determined
+                                                                                           # by in_end instead of len(inorder) - 1
+                                                                                           # The inorder pointers and postorder/preorder
+                                                                                           # pointers are connected together
         currnode.right = self.dfs(inorder, postorder, post_end - 1 , idx + 1, in_end)
         return currnode
