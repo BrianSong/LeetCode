@@ -1,4 +1,5 @@
-Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.
+Given an integer array nums, find the contiguous subarray within an array 
+(containing at least one number) which has the largest product.
 
 Example 1:
 
@@ -13,26 +14,28 @@ Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
 
 
 Solution: ------------------------------------ Dynamic Programming ----------------------- https://www.youtube.com/watch?v=AtzfZHb35YI
+---------------------------------------------- O(n) T, O(1) S
 class Solution(object):
-    def maxProduct(self, nums):
+    def maxProduct(self, nums):                                   # Very similar to 53. Maximum Subarray
+                                                                  # Only difference is that, the product may become greater if - * -
+                                                                  # So, in here, we introduce another variable "currmin"
         """
         :type nums: List[int]
         :rtype: int
         """
-        if not nums or len(nums) == 0:
+        if not nums:
             return 0
-        currmax, currmin, res = nums[0], nums[0], nums[0]         # Very similar to 53. Maximum Subarray
-                                                                  # Only difference is that, the product may become greater if - * -
-                                                                  # So, in here, we introduce another variable "currmin"
+        currmax, currmin, res = nums[0], nums[0], nums[0]         # res is set to nums[0] for cases like [-2], 
+                                                                  # where the for loop will not be executed
         for i in range(1, len(nums)):
             currmax, currmin = max(currmax * nums[i], currmin * nums[i], nums[i]), min(currmax * nums[i], currmin * nums[i], nums[i])
             '''
             IMPORTANT  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Why we cannot divide it into two lines like:
-            currmax, currmin = max(currmax * nums[i], currmin * nums[i], nums[i])
+            currmax = max(currmax * nums[i], currmin * nums[i], nums[i])
             currmin = min(currmax * nums[i], currmin * nums[i], nums[i]) ?????????????????????????????????????
             Because for the second line, the currmax has already been updated to the new currmax,
             but what we want is the currmax in the previous iteration
             '''
-            res = max(res, max(currmax, currmin))
+            res = max(res, currmax)
         return res
