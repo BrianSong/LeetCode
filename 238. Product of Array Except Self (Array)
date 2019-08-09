@@ -1,0 +1,54 @@
+Given an array nums of n integers where n > 1,  
+return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+
+Example:
+
+Input:  [1,2,3,4]
+Output: [24,12,8,6]
+Note: Please solve it without division and in O(n).
+Follow up:
+Could you solve it with constant space complexity? 
+(The output array does not count as extra space for the purpose of space complexity analysis.)
+
+Solution no.1: ---------------------------------------------- Naive version and rejected:
+class Solution(object):
+    def productExceptSelf(self, nums):
+        output = [1] * len(nums)
+        for index_1, item_1 in enumerate(output):
+            for index_2, item_2 in enumerate(nums):
+                if index_2 == index_1:
+                    pass
+                else:
+                    item_1 *= item_2
+                    output[index_1] = item_1
+        return output
+'''
+This method actually worked and return the correct output
+However, the question asks us to solve in O(n).
+This method using one for loop inside another for loop, so the time complexity is O(n^2)
+So, what should we do to have a O(n)?
+Maybe two for loop side by side? O(2n) can be approximated to O(n)
+'''
+Solution no.2: -------------------------------------------------------- Accpected version with O(n)
+------------------------------------------------ O(n) T, O(1) S
+class Solution(object):
+    def productExceptSelf(self, nums):               # Since the question asks us to find the product except itself,
+                                                     # we can first find the product before itself, and multiply it
+                                                     # by the product after itself
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        if not nums:
+            return None
+        output = [0 for i in range(len(nums))]
+        prod = 1
+        for i in range(len(nums)):                   # Multiple all elements before this element in nums 
+            output[i] = prod                         # We can just assign the output[i] with prod using "="
+            prod *= nums[i]
+        prod = 1
+        for i in range(len(nums) - 1, -1, -1):       # Multiple all elements after this element in nums 
+            output[i] *= prod                        # Different from before, instead of using "=", we must use "*="
+                                                     # because here, we are mulitply the before and after together
+            prod *= nums[i]
+        return output
