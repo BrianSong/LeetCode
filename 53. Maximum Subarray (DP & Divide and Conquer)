@@ -10,6 +10,7 @@ Follow up:
 If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
 
 Solution no.1: DP --------------------------------------------------- 求最大，求最小 -> Dynamic Programming
+------------------------------------------ O(N) T, O(1) S
 class Solution(object):
     def maxSubArray(self, nums):
         if max(nums) < 0:
@@ -46,7 +47,8 @@ Divide and Conquer
 ….b) Maximum subarray sum in right half (Make a recursive call)
 ….c) Maximum subarray sum such that the subarray crosses the midpoint
 '''
-class Solution(object):
+class Solution(object): ------------------------------------------------------- Divide and Conquer
+------------------------------------------- O(nlogn) T
     def maxSubArray(self, nums):
 
         
@@ -58,7 +60,9 @@ class Solution(object):
         """
     def maxSubArrayCrossing(self, nums, middle, left, right):
         
-        currmax , left_max = 0, -float('inf')
+        currmax , left_max = 0, -float('inf')      # Instead of setting left_max and right_max to 0, 
+                                                   # we MUST set it to -float('inf')
+                                                   # Because we assume under this situation, the subarray must cross the middle
         for i in range(middle, left - 1, -1):
             currmax += nums[i]
             if currmax > left_max:
@@ -76,5 +80,6 @@ class Solution(object):
         if left == right:
             return nums[left]
         middle = (left + right) / 2
-        return max(self.maxSubArrayhelp(nums, left, middle), self.maxSubArrayhelp(nums, middle + 1, right), self.maxSubArrayCrossing(nums, middle, left, right))
+        return max(self.maxSubArrayhelp(nums, left, middle), self.maxSubArrayhelp(nums, middle + 1, right), 
+               \ self.maxSubArrayCrossing(nums, middle, left, right))
         # "middle + 1" for self.maxSubArrayhelp(nums, middle + 1, right) is for avoiding repeating
