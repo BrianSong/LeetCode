@@ -15,7 +15,8 @@ Output:
  [1,4,6,4,1]
 ]
 
-Solution:
+Solution: --------------------------------------------------------- Dynamic Programming
+------------------------------------------------------------------- O(N) T, O(1) S, the dp[][] here is the output
 class Solution(object):
     def generate(self, numRows):
         res = [[1]*(i + 1) for i in range(numRows)]           # As for any 2-D list result, we should find a way to initialize it first,
