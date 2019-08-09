@@ -21,7 +21,8 @@ The flattened tree should look like:
          \
           6
           
-Solution: -------------------------------------------------- https://www.youtube.com/watch?v=LfKRZ_qCmYQ
+Solution: --------------------------------------- DFS ----------- https://www.youtube.com/watch?v=LfKRZ_qCmYQ
+------------------------------------------------- O(N) T, O(N) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -43,4 +44,8 @@ class Solution(object):
             self.dfs_help(root.left)      # or the only children node(left node) of the rightest node as needed
             root.right = self.prevnode    # Connect the stored previous node to the current rightest node that has not been processed
             root.left = None              # Let the left node to be NONE as required by the question
+            '''
+            Why we can set root.left to None directly without have a temp to avoid data lossing of the left subtree nodes?
+            Because the left subtree information has already be saved into the self.prevnode in the last recursion level
+            '''
             self.prevnode = root          # Update the global variable to store the current node
