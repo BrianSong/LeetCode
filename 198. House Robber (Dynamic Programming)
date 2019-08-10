@@ -18,9 +18,11 @@ Output: 12
 Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1).
              Total amount you can rob = 2 + 9 + 1 = 12.
              
-Solution: ----------------------------------------------------------- https://www.youtube.com/watch?v=-i2BFAU25Zk
+Solution: ------------------------------------ Dynamic Programming ----------------------- https://www.youtube.com/watch?v=-i2BFAU25Zk
+---------------------------------------------- O(n) T, O(n) S
 '''
 4 steps for DP problem:--------- 当前状态是与之前的状态有关的，或者是由之前的状态直接得到的！！！！！！
+-------------------------------- Instead of getting the exact house getting robbed, the question only asks us the total money/ T&F => DP
 1. Status variable: for each house, we have 2 choices: rob or not rob,
                     so, we define two status variable: two list:
                     if we rob the current house, the maximum money we can get: r[n]
@@ -39,14 +41,14 @@ Solution: ----------------------------------------------------------- https://ww
 '''
 class Solution(object):
     def rob(self, nums):
-        if nums is None or len(nums) == 0:
+        if not nums:
             return 0
-        r , nr = [0] * len(nums), [0] * len(nums)
+        r, nr = [0] * len(nums), [0] * len(nums)
         r[0], nr[0] = nums[0], 0
         for i in range(1, len(nums)):
             r[i] = nr[i - 1] + nums[i]
-            nr[i] = max(nr[i - 1], r[i - 1])
-        return max(r[len(nums) - 1], nr[len(nums) - 1])
+            nr[i] = max(r[i - 1], nr[i - 1])
+        return max(r[-1], nr[-1])
         """
         :type nums: List[int]
         :rtype: int
