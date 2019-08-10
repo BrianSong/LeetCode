@@ -30,17 +30,18 @@ Input: [3,4,5,1,3,null,1]
 Output: 9
 Explanation: Maximum amount of money the thief can rob = 4 + 5 = 9.
 
-Solution: ----------------------------------------- https://www.youtube.com/watch?v=-i2BFAU25Zk
+Solution: ------------------------------------------- DFS ----------------------------- https://www.youtube.com/watch?v=-i2BFAU25Zk
+----------------------------------------------------- O(n) T, O(n) S
 '''
 Every clearly that for the tree data type, we will use DFS to traverse the entire tree.
 DFS: RECURSION ------------ TREE:儿树也是一样的树结构
 What we should consider is what should be passed around inside the recursion function,
 each node will also have 2 circumstances: rob or not rob,
-so, we may need to create a local list - local_res[0 , 1] 
-where index 0 stores the value when this node is not rob, index 1 stores the value when this node is rob.
+so, we may need to create a local list - currrob[0 , 1] 
+where index 0 stores the value when this node is robbed, index 1 stores the value when this node is not robbed.
 The inside logic is:
-local_res[0] = max(left[0], left[1]) + max(right[0], right[1])
-local_res[1] = left[0] + right[0] + root.val
+currrob[0] = left[1] + right[1] + root.val
+currrob[1] = max(left[0], left[1]) + max(right[0], right[1])
 Exiting condition happens when root is None, it will return [0, 0] which meets the expectation when we test it
 '''
 # Definition for a binary tree node.
@@ -52,21 +53,23 @@ Exiting condition happens when root is None, it will return [0, 0] which meets t
 
 class Solution(object):
     def rob(self, root):
-        res = self.rob_helper(root)
-        return max(res[0], res[1])
         """
         :type root: TreeNode
         :rtype: int
         """
-    def rob_helper(self, root):
         if not root:
-            return[0, 0]
-        local_res = [0, 0]
-        left = self.rob_helper(root.left)                                # inside a recursion function where the function returns
-                                                                         # a value, it is very common to assign the whole function
-                                                                         # into a variable like this, where we can ulitize the
-                                                                         # imformation from the next level of recursion
-        right = self.rob_helper(root.right)
-        local_res[0] = max(left[0], left[1]) + max(right[0], right[1])
-        local_res[1] = left[0] + right[0] + root.val
-        return local_res
+            return 0
+        return max(self.dfs(root))
+    
+    def dfs(self, root):
+        if not root:
+            return [0, 0]
+        left = self.dfs(root.left)       # inside a recursion function where the function returns
+                                         # a value, it is very common to assign the whole function
+                                         # into a variable like this, where we can ulitize the
+                                         # imformation from the next level of recursion
+        right = self.dfs(root.right)
+        currrob = [0, 0]
+        currrob[0] = left[1] + right[1] + root.val
+        currrob[1] = max(left[0], left[1]) + max(right[0], right[1])
+        return currrob
