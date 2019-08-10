@@ -19,38 +19,8 @@ Return:
    [5,4,11,2],
    [5,8,4,5]
 ]
-
-Solution:
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
-class Solution(object):
-    def pathSum(self, root, sum):
-        if root is None:
-            return None
-        self.res = []
-        self.dfs_helper(root, sum, [])
-        return self.res
-        """
-        :type root: TreeNode
-        :type sum: int
-        :rtype: List[List[int]]
-        """
-    def dfs_helper(self, root, sum, currlist):
-        if not root:
-            return
-        currlist.append(root.val)
-        if not root.left and not root.right and sum == root.val:
-            self.res.append(currlist[:])
-        self.dfs_helper(root.left, sum - root.val, currlist)
-        self.dfs_helper(root.right, sum - root.val, currlist)
-        currlist.pop()
-        
-New solution: --------------------------------------------------- A more concise one, using path instead of currlist
+Solution: -------------------------------------------------- DFS
+------------------------------------------------------------ O(n) T, O(n) S
 class Solution(object):
     def pathSum(self, root, sum):
         """
@@ -68,5 +38,6 @@ class Solution(object):
             return
         if not root.left and not root.right and sum == root.val:
             res.append(path + [root.val])
-        self.dfs(root.left, sum - root.val, path + [root.val], res)
+        self.dfs(root.left, sum - root.val, path + [root.val], res)        # How to concatenate int to list !!!!
+                                                                           # Use path instead of currlist.append() + currlist.pop()
         self.dfs(root.right, sum - root.val, path + [root.val], res)
