@@ -53,3 +53,17 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
+
+Solution no.2: --------------------------------------- Optimize O(n) S to O(1) S
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        r, nr = nums[0], 0
+        for i in range(1, len(nums)):
+            r, nr = nr + nums[i], max(r, nr)          # Assignment like this, the r, nr in the right will always be the unupdated ones
+        return max(r, nr)
