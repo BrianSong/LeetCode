@@ -16,7 +16,8 @@ Given the below binary tree and sum = 22,
 7    2      1
 return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 
-Solution:
+Solution: --------------------------------------------------- DFS
+------------------------------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -46,3 +47,6 @@ class Solution(object):
                                                                         # So, in this way, this line of code will never be executed.
             return True
         return self.dfs_help(root.left, sum - root.val) or self.dfs_help(root.right, sum - root.val)
+        '''
+        As long as one of the subtree return True, we can pass True upper and uppper to the root node and return True
+        '''
