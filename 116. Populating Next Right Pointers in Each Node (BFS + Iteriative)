@@ -20,7 +20,40 @@ Note:
 You may only use constant extra space.
 Recursive approach is fine, implicit stack space does not count as extra space for this problem.
 
-Solution:
+
+Solution no.1: ---------------------------------------------------- BFS
+------------------------------------------------------------------- O(n) T, O(n) S
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, left, right, next):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+class Solution(object):
+    def connect(self, root):
+        """
+        :type root: Node
+        :rtype: Node
+        """
+        if not root:
+            return None
+        queue = [root]
+        while queue:
+            for i in range(len(queue) - 1):
+                queue[i].next = queue[i + 1]
+            for i in range(len(queue)):
+                pop_element = queue.pop(0)
+                if pop_element.left:
+                    queue.append(pop_element.left)
+                if pop_element.right:
+                    queue.append(pop_element.right)
+        return root
+
+
+Solution no.2: ---------------------------------------------------- Iteriative with O(1) S
 """
 # Definition for a Node.
 class Node(object):
