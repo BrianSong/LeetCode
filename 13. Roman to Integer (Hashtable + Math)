@@ -45,7 +45,8 @@ Output: 1994
 Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 
 
-Solution:
+Solution no.1: -------------------------------------------------------------- HashTable
+-------------------------------------------------- O(n^2) worst T for replace() in Python, O(k) S
 class Solution(object):
     def romanToInt(self,s):
         translation = {                        # We must set it as "I": 1, instead of 1: "I",
@@ -59,7 +60,9 @@ class Solution(object):
             "M" : 1000  
         }
         number = 0
-        s = s.replace("IV", "IIII")
+        s = s.replace("IV", "IIII")            # string.replace() will replace all satisfied old pieces with new pieces, 
+                                               # however, replace() do not modify the original string
+                                               # so, we must do the direct assignment here to modify the original string
         s = s.replace("IX", "VIIII")
         s = s.replace("XL", "XXXX")
         s = s.replace("XC", "LXXXX")
@@ -69,15 +72,31 @@ class Solution(object):
             number += translation[w]
         return number
 
-
-
-
-
-
-
-
-
-
-
-
-
+Solution no.2: -------------------------------------------------------- A much more efficient way
+----------------------------------------------- O(n) T, O(1) S
+class Solution(object):
+    def romanToInt(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+        res = 0
+        for i in range(len(s) - 1, -1, -1):
+            c = s[i]    
+            if c == 'I':
+                res += 1 if res < 5 else -1                 # For case "IV", "IX"
+            elif c == 'V':
+                res += 5
+            elif c == 'X':
+                res += 10 if res < 50 else -10              # For case "XL", "XC"
+            elif c == 'L':
+                res += 50
+            elif c == 'C':
+                res += 100 if res < 500 else -100           # For case "CD", "CM"
+            elif c == 'D':
+                res += 500
+            elif c == 'M':
+                res += 1000
+        return res
