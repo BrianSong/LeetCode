@@ -20,33 +20,20 @@ X can be placed before L (50) and C (100) to make 40 and 90.
 C can be placed before D (500) and M (1000) to make 400 and 900.
 Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.
 
-Solution:
-class Solution(object):
+class Solution(object): -------------------------------------------- Array + Math
+-------------------------------------------------------------------- O(k) T, O(k) S
+-------------------------------------------------------------------- List indexing in python is O(1)
     def intToRoman(self, num):
-        M_number = num / 1000
-        num = num - M_number * 1000
-        D_number = num / 500
-        num = num - D_number * 500
-        C_number = num / 100
-        num = num - C_number * 100
-        L_number = num / 50
-        num = num - L_number * 50
-        X_number = num / 10
-        num = num - X_number * 10
-        V_number = num / 5
-        num = num - V_number * 5
-        I_number = num / 1
-        num = num - I_number * 1
-        
-        s = "M" * M_number + "D" * D_number + "C" * C_number +"L" * L_number +"X" * X_number +"V" * V_number + "I" * I_number
-        s = s.replace("DCCCC", "CM")                
-        s = s.replace("CCCC", "CD")
-        s = s.replace("LXXXX", "XC")                       # s.replace(a, b): replace a in a string using b
-        s = s.replace("XXXX", "XL")
-        s = s.replace("VIIII", "IX")
-        s = s.replace("IIII", "IV")
-        return s
         """
         :type num: int
         :rtype: str
         """
+        if not num:
+            return None
+        
+        M = ["", "M", "MM", "MMM"]
+        C = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"]
+        X = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
+        I = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+        
+        return M[num / 1000] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10]
