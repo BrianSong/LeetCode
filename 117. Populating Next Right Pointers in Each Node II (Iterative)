@@ -16,7 +16,9 @@ You may only use constant extra space.
 Recursive approach is fine, implicit stack space does not count as extra space for this problem.
 
 
-Solution : ---------------------------------------------------- https://www.youtube.com/watch?v=mBVN8G-pIzU
+Solution : ---------------------------------------- Iterative -------------------------- https://www.youtube.com/watch?v=mBVN8G-pIzU
+--------------------------------------------------- O(n) T: Although 2 while loops, but we only operate on each node once,
+--------------------------------------------------- and inside each operation, the T only O(1), O(1) S
 """
 # Definition for a Node.
 class Node(object):
@@ -37,8 +39,9 @@ class Solution(object):
         childhead, child = None, None
         while root:                                       # Use two while loops for traversing right and down
             while root:
-                if root.left:
-                    if not childhead:                     # Two if statments since it is only a binary tree, not "perfect"
+                if root.left:                             # Two if statments since it is only a binary tree, not "perfect"
+                                                          # the root.left or root.right may be None
+                    if not childhead:                     # Means we just start the traverse in the child level nodes
                         childhead = root.left
                         child = root.left
                     else:
@@ -53,6 +56,8 @@ class Solution(object):
                         child = child.next
                 root = root.next                          # Going right
             root = childhead                              # Going down
-            child = None
-            childhead = None
+            child = None                                  # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                          # We MUST empty the child and childhead at the end of every outter while loop
+                                                          # Otherwise, will bring TLE error
+            childhead = None                             
         return dummynode.next
