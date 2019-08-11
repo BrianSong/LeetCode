@@ -21,7 +21,8 @@ You may only use constant extra space.
 Recursive approach is fine, implicit stack space does not count as extra space for this problem.
 
 
-Solution no.1: ---------------------------------------------------- BFS
+Solution no.1: ---------------------------------------------------- BFS ----------- the key here is PERPECT binary tree ()
+------ A Binary tree is Perfect Binary Tree in which all internal nodes have two children and all leaves are at same level.
 ------------------------------------------------------------------- O(n) T, O(n) S
 """
 # Definition for a Node.
