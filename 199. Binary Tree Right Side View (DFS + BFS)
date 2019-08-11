@@ -1,4 +1,5 @@
-Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+Given a binary tree, imagine yourself standing on the right side of it, 
+return the values of the nodes you can see ordered from top to bottom.
 
 Example:
 
@@ -14,6 +15,7 @@ Explanation:
   
   
 Solution no.1: ------------------------------ DFS -------------------------- https://www.youtube.com/watch?v=f72I2qz9K7k
+--------------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -34,7 +36,7 @@ class Solution(object):
         :rtype: List[int]
         """
     def dfs_help(self, root, currlevel, res):          
-        if not root is None:
+        if root:
             if currlevel == len(res):                       # Record a level: Each time we reach a new level, we add the 
                 res.append(root.val)                        # current visiting node into our solution
             self.dfs_help(root.right, currlevel + 1, res)   # DFS visiting order: self -> right -> left
@@ -42,6 +44,7 @@ class Solution(object):
                                                             # If "Left Side View", then self -> left -> right
 
 Solution no.2: ---------------------------- BFS -------------------------------- https://www.youtube.com/watch?v=f72I2qz9K7k
+------------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -51,23 +54,23 @@ Solution no.2: ---------------------------- BFS --------------------------------
 
 class Solution(object):
     def rightSideView(self, root):
-        if root is None:
-            return []
-        queue, res = [], []
-        queue.append(root)
-        while len(queue) > 0:
-            size = len(queue)
-            for i in range(1, size + 1):
-                pop_element = queue.pop(0)
-                if i == size:
-                    res.append(pop_element.val)
-                if not pop_element.left is None:
-                    queue.append(pop_element.left)
-                if not pop_element.right is None:
-                    queue.append(pop_element.right)
-        return res
-                    
         """
         :type root: TreeNode
         :rtype: List[int]
         """
+        if not root:
+            return None
+        queue, res = [root], []
+        while queue:
+            size = len(queue)
+            for i in range(len(queue)):
+                pop_element = queue.pop(0)
+                if i == size - 1:                         # Must be "if i == size - 1" instead of "if i == len(queue) - 1"
+                                                          # because here the len(queue) is not the len(queue) inside line 71
+                                                          # here, since we pop(0) the element beforehead, the len(queue) has changed
+                    res.append(pop_element.val)
+                if pop_element.left:
+                    queue.append(pop_element.left)
+                if pop_element.right:
+                    queue.append(pop_element.right)
+        return res
