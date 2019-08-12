@@ -11,7 +11,7 @@ Example 2:
 Input: "race a car"
 Output: false
 
-Solution: ------------------------------------------- Two Pointers
+Solution: --------------------------------------------------------------- Two Pointers
 class Solution(object):
     def isPalindrome(self, s):
         """
@@ -19,12 +19,16 @@ class Solution(object):
         :rtype: bool
         """
         left, right = 0, len(s) - 1
-        while left < right:                                   # Must be "left < right" instead of "left <= right"
-                                                              # Why? Because we do not need to check the centered element,
-                                                              # it must be same as itself
-                                                              # Moreover, as for cases like " " where space is not alphanumeric character
-                                                              # left += 1 -> left is 1 now and s[left] will bring index out of range error
-            while left < right and not s[left].isalnum():     # isalnum() function check if the char is alphanumeric characters 
+        while left < right:                                  # Can be "left < right" or "left <= right", here we choose the one in front
+                                                             # because we do not need to check the centered element,
+                                                             # it must be same as itself.
+            while left < right and not s[left].isalnum():    # However, here must be left < right instead of left <= right
+                                                             # Why ? Because for cases " ", 
+                                                             # left <= right and not s[left].isalnum() will be satisfied:
+                                                             # left == right == 1 and the space is not alphanumeric character
+                                                             # then left += 1 will be execuated and increase left to 1 
+                                                             # => s[left] will bring index out of range error
+                                                             # isalnum() function check if the char is alphanumeric characters 
                 left += 1
             while left < right and not s[right].isalnum():
                 right -= 1
