@@ -25,13 +25,11 @@ Output: 0
 Explanation: In this case, no transaction is done, i.e. max profit = 0.
 
 Solution: -------------------------------------------------- Greedy - Peak Valley Approach
+------------------------------------------------------------ O(n) T, O(1) S
 '''
 The key point is we need to consider every peak immediately following a valley to maximize the profit.  ---- Greedy Algorithm
 In case we skip one of the peaks (trying to obtain more profit), 
 we will end up losing the profit over one of the transactions leading to an overall lesser profit.
-For example, in the above case, if we skip peaki and valleyj for trying to obtain more profit by considering points 
-with more difference in heights, the net profit obtained will always be lesser than the one obtained by including them, 
-since C will always be lesser than A+B.
 '''
 class Solution(object):
     def maxProfit(self, prices):
@@ -43,7 +41,10 @@ class Solution(object):
             return 0
         valley, peak, res, i = prices[0], prices[0], 0, 0
         while i < len(prices) - 1:                                      # "while" instead of "for", i < len - 1 instead of i < len
+                                                                        # i < len(prices) - 1 is because if i == len(prices) - 1
+                                                                        # there are no more 2 spots for another pair of peak and valley
             while i < len(prices) - 1 and prices[i] >= prices[i + 1]:   # Find valley first and then find peak
+                                                                        # i < len(prices) - 1 is because we refer to prices[i + 1] later
                 i += 1
             valley = prices[i]
             while i < len(prices) - 1 and prices[i] <= prices[i + 1]:
