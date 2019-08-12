@@ -17,15 +17,19 @@ Input: [7,6,4,3,1]
 Output: 0
 Explanation: In this case, no transaction is done, i.e. max profit = 0.
 
-Solution: Dynamic programming - keep update the key argument
+Solution: --------------------------------------------- One Pass
+------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def maxProfit(self, prices):
-        max_profit, min_price = 0, float("inf")                # float("inf") can used to represent a infinite number
-        for price in prices:
-            min_price = min(min_price, price)                  # Keep updating
-            max_profit = max(max_profit, price - min_price)    # Keep updating
-        return max_profit
         """
         :type prices: List[int]
         :rtype: int
         """
+        if not prices:
+            return 0
+        res, currmin = 0, float('inf')           # float("inf") can used to represent a infinite number
+        for price in prices:                     # We traverse the prices from left to right and updating the currmin and res,
+                                                 # the order: from left to right can make sure that we only sell after we buy
+            currmin = min(currmin, price)        # Keep updating
+            res = max(res, price - currmin)      # Keep updating
+        return res
