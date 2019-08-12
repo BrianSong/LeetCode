@@ -13,6 +13,7 @@ Explanation: transactions = [buy, sell, cooldown, buy, sell]
 
 
 Solution no.1: ------------------------------------------------------ Dynamic Programming
+--------------------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -32,17 +33,23 @@ class Solution(object):
         buy[0], sell[0] = -prices[0], 0
         for i in range(1, len(prices)):
             buy[i] = max(buy[i - 1], sell[i - 2] - prices[i])  # buy[i]: To make a decision whether to buy at i, we either take a rest, 
-                                                               # by just using the old decision at i - 1, or sell at/before i - 2, 
-                                                               # then buy at i
-                                                               # We cannot sell at i - 1, then buy at i, because of cooldown
-            sell[i] = max(sell[i - 1], buy[i - 1] + prices[i])
+                                                               # or we take action! => by just using the old decision at i - 1, 
+                                                               # or sell at/before i - 2, then buy at i
+                                                               # We cannot sell at i - 1, then buy at i, due to cooldown
+                                                               # For Q.122, where there is not a cooldown, 
+                                                               # buy[i] = max(buy[i - 1], sell[i - 1] - prices[i])
+            sell[i] = max(sell[i - 1], buy[i - 1] + prices[i]) # As for the sell part, it's the same
+                                                               # we either take a rest or we take a action !
+                                                               # but remember, it's sell[i] = max(sell[i - 1], buy[i - 1] + prices[i]),
+                                                               # instead of sell[i] = max(sell[i - 1], buy[i - 1] + prices[i - 1]),
+                                                               # it is the same stock, the money we make depends on the price today !
         return sell[-1]                                        # In the end we return sell[-1]. 
                                                                # Apparently we cannot finally end up with a buy. 
                                                                # In that case, we would rather take a rest at n - 1.
                                                                
                                                                
                                                                
-Solution no.2: ----------------------- Optimize to O(1) Space
+Solution no.2: ---------------------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -54,13 +61,13 @@ class Solution(object):
         b0, s0 = -prices[0], 0             # DP solution only depending on i - 1 and i - 2 can be optimized using O(1) space.
                                            # Let b2, b1, b0 represent buy[i - 2], buy[i - 1], buy[i]
                                            # Let s2, s1, s0 represent sell[i - 2], sell[i - 1], sell[i]
-        b1, s1, s2 = b0, 0, 0              # IMPORTANT !!!!!!!! b1 must be set to equal to b0 instead of 0
+        b1, s1, s2 = b0, 0, 0              # IMPORTANT !!!!!!!! b1 must be set to equal to b0 instead of 0 just like s1 == s0 == 0
                                            # because b1 represet buy[i - 1] and i == 1
                                            # so, buy[i - 1] should be buy[0] which is b0 instead of 0
         for i in range(1, len(prices)):
             b0 = max(b1, s2 - prices[i])
             s0 = max(s1, b1 + prices[i])
-            s2 = s1
+            s2 = s1                        # s2 = s1 must be put before s1 = s0, otherwise the s1 assigned to s2 will not be original
             b1 = b0
             s1 = s0
         return s0
