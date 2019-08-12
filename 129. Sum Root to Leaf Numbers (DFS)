@@ -32,44 +32,43 @@ The root-to-leaf path 4->9->1 represents the number 491.
 The root-to-leaf path 4->0 represents the number 40.
 Therefore, sum = 495 + 491 + 40 = 1026.
 
-Solution no.1(my own):
+Solution no.1: ----------------------------- my own --------------- DFS
+-------------------------------------------------------------- O(n^2) T ? anyway, not efficient, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
 class Solution(object):
     def sumNumbers(self, root):
-        if root is None:
-            return 0
-        currlist, res = [], []
-        self.dfs(root, currlist, res)
-        string, sum = "", 0
-        for item in res:
-            for i in range(len(item)):
-                string += str(item[i])
-            sum += int(string)
-            string = ""                                # Remember to RESET the string!!!!!!!!!
-        return sum
         """
         :type root: TreeNode
         :rtype: int
         """
-    def dfs(self, root, currlist, res):
-        if root is None:
-            return
-        currlist.append(root.val)
-        if root.left is None and root.right is None:
-            res.append(currlist[:])
-            currlist.pop()                            # Remember to RESET the currlist!!!!!!!!!
-            return
-        self.dfs(root.left, currlist, res)
-        self.dfs(root.right, currlist, res)
-        currlist.pop()                                # Remember to RESET the currlist!!!!!!!!!
+        if not root:
+            return 0
+        final_comb = self.dfs(root)
+        res = 0
+        for item in final_comb:
+            res += int(item)
+        return res
+    
+    def dfs(self, root):
+        if not root:
+            return []
+        left_comb = self.dfs(root.left)
+        right_comb = self.dfs(root.right)
+        if not (left_comb + right_comb):
+            return [str(root.val)]
+        curr_comb = []
+        for item in (left_comb + right_comb):
+            curr_comb.append(str(root.val) + item)
+        return curr_comb
         
-Solution no.2: ----------- Much more concise one
+        
+Solution no.2: ----------------------------------------------- Much more clever approach
+-------------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def sumNumbers(self, root):
         self.res = 0
@@ -77,8 +76,13 @@ class Solution(object):
         return self.res
 
     def dfs(self, root, value):
-        if root:                                      # Classic boundary condition for dfs
-            self.dfs(root.left, value*10+root.val)    # Go left, "* 10" here is very clever
-            self.dfs(root.right, value*10+root.val)   # Go right
-            if not root.left and not root.right:      # Encounter the leaf node, time to add the result
+        if root:                                                 # Classic boundary condition for dfs
+                                                                 # Must check if root is None beforehead
+                                                                 # because we refer to root.left and root.right later,
+                                                                 # if the root is None, will bring Error
+            if not root.left and not root.right:                 # Encounter the leaf node, time to add the result
                 self.res += value*10 + root.val
+                return
+            self.dfs(root.left, value*10+root.val)               # Go left, "* 10" here is very clever
+            self.dfs(root.right, value*10+root.val)              # Go right
+            
