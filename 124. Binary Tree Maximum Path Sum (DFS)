@@ -28,7 +28,7 @@ Output: 42
 Solution: ----------------------------------- DFS ----------------------- https://www.youtube.com/watch?v=9ZNky1wqNUw
 --------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
-# class TreeNode(object):               # For a tree, certainly we need to use recursion(DFS or BFS)
+# class TreeNode(object):                               
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
@@ -46,7 +46,7 @@ class Solution(object):
         self.dfs(root)                                    
         return self.res
     
-    def dfs(self, currnode):
+    def dfs(self, currnode):                             # For a tree, certainly we need to use recursion(DFS or BFS)
         if not currnode:
             return 0
         leftsum = max(0, self.dfs(currnode.left))        # Classic DFS.
