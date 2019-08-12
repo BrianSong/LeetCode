@@ -26,8 +26,9 @@ Output: 42
 
 
 Solution: ----------------------------------- DFS ----------------------- https://www.youtube.com/watch?v=9ZNky1wqNUw
-# Definition for a binary tree node.                     # For a tree, certainly we need to use recursion(DFS or BFS)
-# class TreeNode(object):
+--------------------------------------- O(n) T, O(n) S
+# Definition for a binary tree node.
+# class TreeNode(object):               # For a tree, certainly we need to use recursion(DFS or BFS)
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
@@ -57,3 +58,4 @@ class Solution(object):
         self.res = max(self.res, currsum)
         return currnode.val + max(leftsum, rightsum)     # However, for passing the value to upper recursion,
                                                          # we can only take the larger one of the left or right substree value
+                                                         # because the sub-闭环 cannot be a part of a bigger path
