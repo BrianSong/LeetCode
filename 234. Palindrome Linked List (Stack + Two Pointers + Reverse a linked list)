@@ -13,6 +13,7 @@ Could you do it in O(n) time and O(1) space?
 
 
 Solution no.1:  ------------------------------------- Stack + Two Pointers --------------- https://www.youtube.com/watch?v=teJIpKD1MuQ
+----------------------------------------------------- O(n) T, O(n) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -29,8 +30,8 @@ class Solution(object):
             stack.append(slow)
             slow = slow.next
             fast = fast.next.next
-        if fast:                                  # Special case
-            slow = slow.next
+        if fast:                                  # For the those odd length palindrome which has an center unique element
+            slow = slow.next                      # We do not want to take it into account, so we skip it
         while slow:
             if not slow.val == stack.pop().val:
                 return False
@@ -44,22 +45,30 @@ class Solution(object):
         
         
 Solution no.2: -------------------------------------------------------- Operate on the nodes directly without using a stack
+----------------------------------------------------- O(n) T, O(1) S
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
 class Solution(object):
     def isPalindrome(self, head):
-        fast = slow = head
-        # find the mid node
-        while fast and fast.next:
-            fast = fast.next.next
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        if not head:
+            return True
+        slow, fast, prev = head, head, None
+        while fast and fast.next:                    # find the mid node
             slow = slow.next
-        # reverse the second half
-        prev = None
-        while slow:
-            next = slow.next
+            fast = fast.next.next
+        while slow:                                  # reverse the second half
+            next = slow.next                         # In this way, we make sure that the second half is shorter than the first half
             slow.next = prev
             prev = slow
             slow = next
-        # compare the first and second half nodes
-        while prev:
+        while prev:                                  # compare the first and second half nodes
             if prev.val != head.val:
                 return False
             prev = prev.next
