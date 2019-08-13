@@ -18,34 +18,26 @@ Follow up:
 
 Coud you solve it without converting the integer to a string?
 
-Solution no.1(my own):
+Solution no.1: ------------------------------------------- convert the integer to a string
+-------------------------------------------------- but this would require extra non-constant space for creating the string
+-------------------------------------------------- O(n) T => [::-1], O(n) S => creating string
 class Solution(object):
     def isPalindrome(self, x):
-        string  = str(x)
-        left, right = 0, len(string) - 1
-        while left <= right:
-            if string[left] == string[right]:
-                left += 1
-                right -= 1
-            else:
-                return False
-        return True
         """
         :type x: int
         :rtype: bool
         """
-        
-class Solution(object):
-    def isPalindrome(self, x):
         if x < 0:
             return False
         return str(x) == str(x)[::-1]
-        """
-        :type x: int
-        :rtype: bool
-        """
         
 Solution no.2: ------------------------------------ Follow up answer (without convert the number into a string)
+'''
+Except converting the number into string,
+Second idea would be reverting the number itself, and then compare the number with original number, 
+if they are the same, then the number is a palindrome. 
+However, if the reversed number is larger than int.MAX, we will hit integer overflow problem.
+'''
 class Solution(object):
     def isPalindrome(self, x):
         if x < 0:
@@ -59,3 +51,28 @@ class Solution(object):
         :type x: int
         :rtype: bool
         """
+        
+Solution no.3: ---------------------------------------- convert half the number
+------------------------------------- Time complexity : O(log10(n)) because we divided the input by 10 for every iteration. 
+------------------------------------- Space complexity : O(1).
+'''
+Following the thoughts based on the second idea, to avoid the overflow issue of the reverted number, 
+what if we only revert half of the \text{int}int number? 
+After all, the reverse of the last half of the palindrome should be the same as the first half of the number, 
+if the number is a palindrome.
+'''
+class Solution(object):
+    def isPalindrome(self, x):
+        """
+        :type x: int
+        :rtype: bool
+        """
+        if x < 0 or (x % 10 == 0 and x != 0):              # Very important speical cases like 0, 10, 100, 1000 need to be consider
+            return False                                   # If we do not take 10, 100, 1000 into account here, they will return True
+        if x == 0:                                         # because 0(x) == 0(revertedNum)
+            return True
+        revertedNum = 0
+        while x > revertedNum:
+            revertedNum = revertedNum * 10 + x % 10
+            x /= 10
+        return x == revertedNum or x == revertedNum / 10
