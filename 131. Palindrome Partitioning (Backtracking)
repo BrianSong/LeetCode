@@ -11,7 +11,13 @@ Output:
   ["a","a","b"]
 ]
 
-Solution: ------------------------------- https://www.youtube.com/watch?v=UFdSC_ml4TQ -----------------------------Backtracking
+Solution: ---------------------------- Backtracking --------------------------- https://www.youtube.com/watch?v=UFdSC_ml4TQ
+------------------------------ Time complexity: O(n*(2^n))
+------------------------------ For a string with length n, there will be (n - 1) intervals between chars.
+------------------------------ For every interval, we can cut it or not cut it, so there will be 2^(n - 1) ways to partition the string.
+------------------------------ partition the string. For every partition way, we need to check if it is palindrome, which is O(n).
+------------------------------ So the time complexity is O(n*(2^n))
+------------------------------ O(n) S
 class Solution(object):                                        # This question asks us to find all possible answer,
                                                                # and backtracking is a very common solution for this kind of question
     def partition(self, s):
@@ -22,24 +28,25 @@ class Solution(object):                                        # This question a
         :type s: str
         :rtype: List[List[str]]
         """
-    def backtracking_help(self, s, currlist):
+    def backtracking_help(self, s, path):
         if not s:
-            self.res.append(currlist[:])
+            self.res.append(path[:])
             return
         for i in range(1, len(s) + 1):                        # Why here is len(s) + 1 instead of len(s) as usual
                                                               # Because, later, s[:i] is called and i is not included
-                                                              # also i need to be out of the index range in order to let s -> None
+                                                              # also i need to be len(s)
+                                                              # in order to let s[i:] to be None and meet the base case: "if not s"
+                                                              # to append path to res
             '''
             How to come up with this algorithm:
             create a i to loop over the s is the first step,
             for each section, we will check if this is a palindrome, if yes, we will call the recursion function to dig deeper,
             but now, we are not interested in s[:i] since it is already been investigated, so, we pass s[i:] into the next recursion
             and so on and so on
+            这样做比我一开始的想法（分成左subarray和右subarray更好，因为the length of path is not 2 but uncertain）
             '''
             if self.isPali(s[:i]):                            
-                currlist.append(s[:i])
-                self.backtracking_help(s[i:], currlist)
-                currlist.pop()                                # currlist always need to be pop() in backtracking problem
+                self.backtracking_help(s[i:], path + [s[:i]])
         
     def isPali(self, s):
         return s == s[::-1]
