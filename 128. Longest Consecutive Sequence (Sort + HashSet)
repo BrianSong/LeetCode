@@ -9,7 +9,8 @@ Output: 4
 Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
 
 
-Solution no.1: ---------------------------------------- Sort O(nlogn) time complexity
+Solution no.1: ---------------------------------------- Sort
+------------------------------------------------------- O(nlogn) T, O(1) S
 class Solution(object):
     def longestConsecutive(self, nums):
         """
@@ -19,22 +20,23 @@ class Solution(object):
         if not nums:
             return 0
         nums.sort()
-        res, curr = 1, 1
+        curr, res = 1, 1
         for i in range(1, len(nums)):
-            if nums[i] != nums[i - 1]:              # If the current number and the previous are equal, 
+            if nums[i] - nums[i - 1] == 1:
+                curr += 1
+            elif nums[i] == nums[i - 1]:            # If the current number and the previous are equal, 
                                                     # then our current sequence is neither extended nor broken, 
                                                     # so we simply move on to the next number.
                                                     # for example: [100,4,200,1,3,2,2]
-                if nums[i] == nums[i - 1] + 1:
-                    curr += 1
-                else:
-                    res = max(res, curr)            # Only need to compare res when the sequence break => reduce computational cost
-                    curr = 1
-        return max(res, curr)                       # It is possible that the last element of nums is part of the longest sequence, 
-                                                    # so we return the maximum of the current sequence and the longest one.
-                                                    
-                                                    
-Solution no.2: --------------------------------------- HashSet O(1) time compl.
+                continue
+            else:
+                curr = 1
+            res = max(res, curr)
+        return res
+                                                                                                    
+Solution no.2: ---------- HashSet, why we choose hashset? because as hashtable, they all support O(1) lookup => if num in set? => O(1) T
+------------------------- O(n) T, O(n) S
+
 class Solution(object):
     def longestConsecutive(self, nums):
         """
@@ -42,7 +44,9 @@ class Solution(object):
         :rtype: int
         """
         res = 0
-        nums_set = set(nums)                             # set in Python allows O(1) lookups
+        nums_set = set(nums)                             # Iterating over a list is O(n) and adding each element to the hashset is O(1),
+                                                         # so the total hashset building operation is O(n).
+                                                         # set in Python allows O(1) lookups
         
         for num in set(nums):
             if num - 1 not in nums_set:                  # We try to find the begin element of every possible consecutive sequence
@@ -52,10 +56,10 @@ class Solution(object):
                                                          # if num - 1 not in nums_set:
                                                          # That means, for example, 6,5,4,3,2,1 input, only the value 1 is valid 
                                                          # for continuing the further process, which reduces O(n) to O(1) for this step.
-                currnum = num
-                currres = 1
-                while currnum + 1 in nums_set:           # If the current consecutive sequence can extend, we continue
+                                                         # So the total time complexity of the for loop is O(n) instead of O(n^2)
+                currres = 1                              # Remember to refresh the currres everytime we start a new look up
+                while num + 1 in nums_set:               # If the current consecutive sequence can extend, we continue
                     currres += 1
-                    currnum += 1
+                    num += 1
                 res = max(currres, res)                  # Update the res everytime we finish one possible consecutive sequence
         return res
