@@ -23,7 +23,8 @@ Example 2:
 Input: [0,1,0,1,0,1,99]
 Output: 99
 
-Solution:------------------------------------------- https://www.youtube.com/watch?v=puXcQpwgcD0
+Solution:------------------------------------ Bit Manipulation ------- https://www.youtube.com/watch?v=puXcQpwgcD0
+--------------------------------------------- O(n) T, O(1) S
 '''
 & : and
 | : or
@@ -42,7 +43,10 @@ class Solution(object):
                                               # num >> i is an integer, we use & 1 to get the binary_representation[i]
             rem = counter % 3                 # take the remainder with 3 because every element appears three times except for one
                                               # So, if every element appears five times except for one, we use % 5
-            if i == 31 and rem:               # Must handle the negative case
+            if i == 31 and rem:               # Must handle the negative case, and IMPORTANT !!!!!!! we must let rem = counter % 3
+                                              # before we can handle the negative case, otherwise will bring error !!!!!
+                                              # because the rem is meaningless before we do % 3, 
+                                              # so the negative case cannot be proceeded before we get the meaningful rem
                 res -= 1 << 31                # 1 << 31 = 2147483648
             else:
                 res |= rem << i               # use |= to update the res in binary form everytime
