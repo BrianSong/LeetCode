@@ -13,9 +13,12 @@ Example 2:
 Input: [4,1,2,1,2]
 Output: 4
 
-Solution:
+Solution: --------------------------------------------------- Bit Manipulation
+------------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def singleNumber(self, nums):
+        if not nums:
+            return 0
         res = 0
         for num in nums:
             res = res^num
