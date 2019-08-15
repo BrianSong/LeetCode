@@ -35,6 +35,8 @@ Solution:------------------------------------ Bit Manipulation ------- https://w
 '''
 class Solution(object):
     def singleNumber(self, nums):
+        if not nums:
+            return None
         res = 0
         for i in range(32):
             counter = 0
