@@ -64,6 +64,7 @@ class Solution(object):
         return -1
         
 Solution no.2: -------- Greedy --------------- Make locally optimal choices with the hope to obtain global optimal case (not necessary)
+--------------------------------- O(n) T, O(1) S
 '''
 The heuristic is that if sum(gas) >= sum(cost), there must exists a starting station that enable the circular travel.
 Suppose our circular route stations are {0,...,n} and sum(gas) >= sum(cost). 
@@ -71,9 +72,11 @@ And we define a function route(l, r) as (∑(l<=i<r) gas[i]-cost[i])
 The valid starting station s is the leftmost station that we can travel from it to n. 
 So route(s, n) > 0. And we just need to prove route(s, n) + route(0,k) > 0 for any k from {0,...,s-1}.
 Since s is the leftmost station that we can travel from it to n, so for any k from {0,...,s-1}, 
-we can not travel from k to n. -> route(k,s) < 0. And as sum(gas) >= sum(cost), route(0,k) + route(k,s) + route(s,n) > 0. 
+we can not travel from k to n. -> route(k,s) < 0. Otherwise, the left most station will be k instead of s.
+And as sum(gas) >= sum(cost), route(0,k) + route(k,s) + route(s,n) > 0. 
 Considering route(k,s) < 0, we can conclude that route(0, k) + route(s,n) > 0.
 So based on this, we just need to find out the leftmost station that we can travel from it to n if sum(gas) >= sum(cost).
+一句话概括就是，只要sum(gas) >= sum(cost)，那么就一定存在答案，而且这个答案就是能travel到尽头(i == n)的最右边的station !
 '''
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
@@ -88,7 +91,7 @@ class Solution(object):
             if gas[i] + r < cost[i]:
                 s, r = i + 1, 0
             else:
-                r += gas[i] - cost[i]
+                r += gas[i] - cost[i]              # if satisfied, s will not be changed and reminder will be updated
         return s                                   # As long as sum(gas) > sum(cost), there will be an answer
   
   
