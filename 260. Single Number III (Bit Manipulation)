@@ -11,6 +11,7 @@ The order of the result is not important. So in the above example, [5, 3] is als
 Your algorithm should run in linear runtime complexity. Could you implement it using only constant space complexity?
 
 Solution: ------------------------------------------------------------------ Bit Manipulation
+---------------------------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -25,6 +26,11 @@ class Solution(object):
                                                   # compare x to x - 1: start from 从右往左数第一个为1的位 往右开始 0，1全部颠倒
                                                   # compare x to ~(x - 1): start from 从右往左数第一个为1的位 往右开始 全部相同；往左开始，不同
                                                   # x &= (~(x - 1)) => find the first 1 从右往左数，the other bits are all 0
+                                                  # Let's look at one example:
+                                                  # say x: ******1000000
+                                                  # then x - 1: ******0111111
+                                                  # ~(x - 1): ~*~*~*~*~*~*1000000
+                                                  # x & ~(x - 1): 0000001000000
         for num in nums:
             if num & x == 0:                      # Step no.3: 分组，将两个不同的数(exactly two elements appear only once) 分离到两组中
                                                   # Why x can achieve that?
