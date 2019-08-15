@@ -27,6 +27,7 @@ You must return the copy of the given node as a reference to the cloned graph.
 
 
 Solution: -------------------------------------------------- Deep Copy + HashTable + DFS
+------------------------------------------------------------ It visited every node and every edge once, so should be O(V+E) T, O(n) S
 '''
 #0: "NodeTable" is the hashtable for looking up nodes which have already been created, key is currnode.val, 
     and value is currnode itself.
@@ -51,14 +52,22 @@ class Solution(object):
         :type node: Node
         :rtype: Node
         """
-        self.NodeTable = {}                      #0
+        self.NodeTable = {}                                  # 0
         return self.dfs(node)
         
-    def dfs(self, currnode):                     #1
-        if currnode.val in self.NodeTable:       #2
+    def dfs(self, currnode):                                 # 1
+        if currnode.val in self.NodeTable:                   # 2
+                                                             # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                             # Why not "if currnode in self.visited:
+                                                                            return currnode" ? Isn't it more straightforward ?
+                                                             # Because if we return currnode, instead of creating a deep copy,
+                                                             # we are creating a reference to the original node
+                                                             # So, we use the same val of currnode and copynode as a connection
+                                                             # so that when we face the currnode which has already been processed before
+                                                             # we can return self.HashTable[currnode.val] => copynode directly
             return self.NodeTable[currnode.val]
-        copynode = Node(currnode.val, [])        #3
-        self.NodeTable[copynode.val] = copynode  #4
-        for neigbnode in currnode.neighbors:     #5
+        copynode = Node(currnode.val, [])                    # 3
+        self.NodeTable[copynode.val] = copynode              # 4
+        for neigbnode in currnode.neighbors:                 # 5
             copynode.neighbors.append(self.dfs(neigbnode)) 
         return copynode
