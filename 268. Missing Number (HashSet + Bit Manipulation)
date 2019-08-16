@@ -40,7 +40,7 @@ class Solution(object):
         :rtype: int
         """
         num_set = set(nums)
-        for number in range(len(nums) + 1):          #
+        for number in range(len(nums) + 1):     # len(nums) + 1， not len(nums) because for cases like [0] where we should return 1
             if number not in num_set:
                 return number
 
