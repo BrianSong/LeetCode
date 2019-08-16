@@ -17,7 +17,8 @@ Note:
 Your algorithm should run in O(n) time and uses constant extra space.  # Constant extra space : in-place => only modify the input list
 
 
-Solution: -------------------- Using the num's value as index ---------------- https://www.youtube.com/watch?v=8DqewGsVNkI&pbjreload=10
+Solution: ------------ Array - Using the num's value as index ---------------- https://www.youtube.com/watch?v=8DqewGsVNkI&pbjreload=10
+---------------------- O(n) T,  O(1) S
 class Solution(object):
     def firstMissingPositive(self, nums):
         """
@@ -35,7 +36,7 @@ class Solution(object):
                                                                        # USE abs() wherever needed and not *= -1
                                                                        # but turn it constantly into negative value (in case duplicate)
         for i in range(len(nums)):                                     # Step no.3: loop over the list again, find the first no-negative
-                                                                       # its index will indicate the first missing positive
+                                                                       # its index plus 1 will indicate the first missing positive
             if nums[i] > 0:
                 return i + 1
         return len(nums) + 1
