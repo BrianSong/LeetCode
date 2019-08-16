@@ -17,7 +17,8 @@ Explanation:
 'e' is the letter that was added.
 
 
-Solution n0.1: ------------------------------------- my own --------------------------------------- HashTable + Bit Manipulation
+Solution n0.1: ------------------- my own ----------------------------- HashTable + Bit Manipulation
+---------------------------------- O(n) T, O(n) S
 class Solution(object):
     def findTheDifference(self, s, t):
         """
@@ -50,19 +51,19 @@ class Solution(object):
                      'w' : 23,
                      'x' : 24,
                      'y' : 25, 
-                     'z' : 26,
-                     'c' : 3,
-                    }
+                     'z' : 26
+                     }
         resvalue = 0
         comb = s + t
         for w in comb:
             resvalue ^= HashTable[w]
-        for res, value in HashTable.items():
+        for res, value in HashTable.items():                 # HashTable.items() serves the same as enumerate(list)
             if value == resvalue:
                 return res
                 
                 
 Solution no.2: ------------------------------------------------ Only HashTable
+---------------------------------- O(n) T, O(n) S
 class Solution(object):
     def findTheDifference(self, s, t):
         """
@@ -74,13 +75,17 @@ class Solution(object):
         for w in s:
             HashTable[w] = HashTable.get(w, 0) + 1
         for w in t:
-            if HashTable.get(w, 0) == 0:
+            if HashTable.get(w, 0) == 0:                    # Why cannot just write:
+                                                            # if w not in HashTable: return w
+                                                            # Because for cases like: s = "a", t = "aa",
+                                                            # it will return None instead of "a"
                 return w
             else:
                 HashTable[w] -= 1
                 
                 
 Solution no.3: ---------------------------------------------------- Using ord() and chr(), much more concise
+---------------------------------- O(n) T, O(n) S
 class Solution(object):
     def findTheDifference(self, s, t):
         """
@@ -88,7 +93,7 @@ class Solution(object):
         :type t: str
         :rtype: str
         """
-        code = 0
+        res = 0
         for w in s + t:
-            code ^= ord(w)                                          # ord('a') = 97
-        return chr(code)                                            # chr(97) = 'a'
+            res ^= ord(w)                                          # ord('a') = 97
+        return chr(res)                                            # chr(97) = 'a'
