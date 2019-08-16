@@ -1,0 +1,67 @@
+Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+
+Example 1:
+
+Input: [3,0,1]
+Output: 2
+Example 2:
+
+Input: [9,6,4,2,3,5,7,0,1]
+Output: 8
+Note:
+Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?
+
+Solution no.1: ------------------------------------- Sorting
+---------------------------------------------------- O(nlogn) T, O(1) S
+class Solution(object):
+    def missingNumber(self, nums):
+        nums.sort()
+        if nums[-1] != len(nums):
+            return len(nums)
+        elif nums[0] != 0:
+            return 0
+        
+        for i in range(1, len(nums)):
+            expected_number = nums[i-1] + 1     # Everytime we use i in for loop inside a list, try to use i - 1 instead of i + 1
+                                                # to avoid index out of range
+            if nums[i] != expected_number:
+                return expected_number
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+Solution no.2: ------------------------------------- HashSet
+---------------------------------------------------- O(n) T, O(n) S
+# We can use a HashSet to get constant time containment queries and overall linear runtime.
+class Solution(object):
+    def missingNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        num_set = set(nums)
+        for number in range(len(nums) + 1):          #
+            if number not in num_set:
+                return number
+
+Solution no.3: ------------------------------------- Bit Manipulation
+---------------------------------------------------- O(n) T, O(1) S
+'''
+Because we know that nums contains n numbers and that it is missing exactly one number on the range [0..n-1],
+because nums contain number from 0, 1, 2, ... ,  n and the length of nums is n not n + 1, 
+we know that n definitely replaces the missing number in nums. Therefore, if we initialize an integer to n 
+and XOR it with every index and value, we will be left with the missing number.
+'''
+class Solution(object):
+    def missingNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        n = len(nums)
+        for i, num in enumerate(nums):
+            n ^= i
+            n ^= num
+        return n
