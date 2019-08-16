@@ -13,7 +13,8 @@ Output:
 [5,6]
 
 
-Solution: ----------------------------------------------- O(n) time + O(1) space
+Solution: ----------------------------------------------- Array - Using the num's value as index
+--------------------------------------------------------- O(n) T, O(1) S
 '''
 The basic idea is that we iterate through the input array and mark elements as negative using nums[nums[i] -1] = - nums[nums[i]-1]. 
 In this way all the numbers that we have seen will be marked as negative with certain indexes
@@ -28,9 +29,10 @@ class Solution(object):
         """
         res = []
         for num in nums:
-            if nums[abs(num) - 1] > 0:
-                nums[abs(num) - 1] = - nums[abs(num) - 1]
+            nums[abs(num) - 1] = - abs(nums[abs(num) - 1])   # Instead of checking whether the nums[abs(num) - 1] > 0 or < 0
+                                                             # we just assign the negative to its absolute value
         for i, num in enumerate(nums):
             if num > 0:
-                res.append(i + 1)
+                res.append(i + 1)                            # IMPORTANT !!!!!!!!!!!
+                                                             # res.append(i + 1) not res.append(num + 1) !!!!!!!!!!!
         return res
