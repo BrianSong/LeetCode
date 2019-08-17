@@ -42,19 +42,21 @@ Solution no.1: -------------------------------------------------- Hashtable
 
 class Solution(object):
     def hasCycle(self, head):
-        hashtable = {}
-        while head and head.next:
-            if head.next in hashtable:
-                return True
-            hashtable[head] = head.next
-            head = head.next
-        return False
         """
         :type head: ListNode
         :rtype: bool
         """
+        if not head:
+            return False
+        HashTable = {}
+        while head:
+            if head in HashTable:
+                return True
+            HashTable[head] = head.val
+            head = head.next
+        return False
         
-Solution no.2: ---------------------------------------- Two Pointers ----------------------- https://www.youtube.com/watch?v=9SD2ccDW5CY
+Solution no.2: ----------------------------------- Two Pointers ----------------------- https://www.youtube.com/watch?v=9SD2ccDW5CY
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -63,14 +65,19 @@ Solution no.2: ---------------------------------------- Two Pointers -----------
 
 class Solution(object):
     def hasCycle(self, head):
-        if head is None:
+        if not head:
             return False
         slow, fast = head, head.next        # Create two pointers: fast and slow, as long as there is a cycle, 
                                             # these two pointers will meet each other
         while fast and fast.next:           # Must be while fast and fast.next instead of while fast:
                                             # Since below, we use fast = fast.next.next, Nonetype node has no next attribute
-            if slow == fast:
-                return True
+                                            # if fast and fast.next change into None, then the link is a straight link witout cycle
+                                            # then the while loop is broken and we return False
+            if slow == fast:                # if they meet each other, then there exists a cycle and we can return True
+                return True                 # Why they will definitely meet each other in a cycled linked list ?
+                                            # Because the fast pointer will also be advanced than the slow pointer each step per time,
+                                            # so in this way, the fast pointer will  catch up with the slow pointer from behind,
+                                            # as long as the length of per cycle is not infinte
             slow = slow.next
             fast = fast.next.next
         return False
