@@ -18,8 +18,9 @@ There is only one duplicate number in the array, but it could be repeated more t
 
 
 Solution: ---------------------------------------------------- Floyd's Tortoise and Hare (Cycle Detection)
+----------------------------------------------- O(n) T, O(1) S
 '''
-If we interpret nums such that for each pair of index i and value v_i, the "next" value v_j is at index v_i , 
+If we interpret nums such that for each pair of index i and value v_i, its "next" attribute points to value v_j is at index v_i , 
 we can reduce this problem to cycle detection. See the solution to 142. Linked List Cycle II for more details.
 
 Algorithm:
