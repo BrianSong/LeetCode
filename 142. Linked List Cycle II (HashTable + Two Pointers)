@@ -35,6 +35,7 @@ Can you solve it without using extra space?
 
 
 Solution no.1: -------------------------------------------------- HashTable
+------------------------------------------------ O(n) T, O(n) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -61,6 +62,8 @@ class Solution(object):
         
         
 Solution no.2: ----------------------------------- Two Pointers ---------------------------------- without extra space
+------------------------------------------------ O(n) T, O(1) S
+
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -79,7 +82,8 @@ class Solution(object):
             fast = fast.next.next
             if slow == fast:
                 break
-        else:
+        else:                           # IMPORTANT !!!!!!!!!!!!!!!!!!! while...else...
+                                        # else is execuated when the while condition is not satisfied: i.e. fast == None => no cycle
             return None
         '''
         The logic behind the 2nd part is like this:
@@ -95,10 +99,16 @@ class Solution(object):
                          X_____/   
         
     
-        If fast and slow both start at head, when fast catches slow, slow has traveled H+D and fast 2(H+D). {since slow = slow.next
-        Assume fast has traveled n loops in the cycle, we have:                                             and fast = fast.next.next}
-        2H + 2D = H + D + nL  -->  H + D = nL  --> H = nL - D
-        Thus if two pointers start from head and X, respectively, one first reaches E, the other also reaches E. 
+        If fast and slow both start at head, when fast catches slow, slow has traveled H+D+n1L and fast 2(H+D+n1L). 
+        because slow = slow.next and fast = fast.next.next, and n1 is the number of cycle loop slow travels before meeting
+        Assume fast has traveled n2 loops in the cycle, we have:                                             
+        2(H+D+n1L) = H + D + n2L  -->  H + D = (n2 - n1)L (there is no doubt fast travels more loop than slow, i.e. n2 > n1)
+        So, H = nL - D, where n == n2 - n1, it is a constant.
+        Thus if two pointers start from head and X, respectively, where they meet will be the cycle entry E
+        Why? let's consider when head travels H and reach E point, the slow travels nL - D from X point,
+        L - D is the distance counted from X to E and (n-1)L bring slow back to where it starts,
+        so, after traveling (n-1)L + L - D = nL -D, slow will also reach E point at that time,
+        i.e., the first time head and slow meet, the meeting point is the cycle entry E !
         '''
         while head != slow:             # The second part determines the entry of the cycle if it exists
             head = head.next
