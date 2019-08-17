@@ -21,7 +21,8 @@ Example 3:
 Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 Output: false
 
-Solution: ----------------------------------- Dynamic Programming ---------------------- https://www.youtube.com/watch?v=pYKGRZwbuzs
+
+Solution no.1: ------------------------------ Brutal Force DFS but TLE error
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -29,15 +30,36 @@ class Solution(object):
         :type wordDict: List[str]
         :rtype: bool
         """
-        dp = [False] * (len(s) + 1)          # Step no.1: 题目要求我们返回一个Boolean，大概率就是DP，并且DP state 也应设为Boolean
-                                             # dp[i] is used for recording the result of length i substring in s
-        dp[0] = True                         # Step no.2
-        for i in range(1, len(dp)):          # Step no.3: 用i先遍历整个s
-            for j in range(i, 0, -1):
-                if s[j-1:i] in wordDict:     # Why s[j - 1 : i] instead of s[j:i + 1] ??? because now we are dealing with string starts
-                                             # from index 0 !!!!! not dp start from index 1 !!!! (assmue dp[0] is true)
-                    if dp[j - 1] == True:    # 多设置了一个j变量用来从后往前看，如果从后往前看时，再wordDict中，只要前面的状态是True，
-                                             # 此时的状态也是True
-                        dp[i] = True
-                        break
-        return dp[-1]                        # Step no.4
+        if not wordDict:
+            return False
+        return self.dfs(s, wordDict)
+    
+    def dfs(self, s, wordDict):
+        if s == "":
+            return True
+        for word in wordDict:
+            if word in s and s.index(word) == 0:
+                if self.dfs(s[len(word):], wordDict):
+                    return True
+
+
+Solution: ----------------------------------- Dynamic Programming ---------------------- https://www.youtube.com/watch?v=pYKGRZwbuzs
+--------------------------------------------- O(n^3) T (the substring also takes O(n) T), O(n) S
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        if not wordDict:
+            return False
+        dp = [False] * (len(s) + 1)                # Step no.1: 题目要求我们返回一个Boolean，大概率就是DP，并且DP state 也应设为Boolean
+                                                   # dp[i] is used for recording the result of length i substring in s
+                                                   # IMPORTANT !!!!!! dp = [False] * (len(s) + 1) not dp = [False] * (len(wordDict) + 1)
+        dp[0] = True                               # Step no.2
+        for i in range(1, len(s) + 1):             # Step no.3: 用i先遍历整个s, Remember i here is the i for dp not the i for s
+            for j in range(i - 1, -1, -1):         # 多设置了一个j变量用来从后往前看，如果从后往前看时，在wordDict中，只要前面的状态是True，
+                if s[j:i] in wordDict and dp[j]:   # 且此刻的subarray也在wordDict中，此时的状态也是True
+                    dp[i] = True
+        return dp[-1]                              # Step no.4
