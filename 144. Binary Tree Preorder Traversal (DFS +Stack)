@@ -12,7 +12,8 @@ Input: [1,null,2,3]
 Output: [1,2,3]
 Follow up: Recursive solution is trivial, could you do it iteratively?
 
-Solution: ----------------------------------------------------------- DFS
+Solution: ----------------------------------------------------------- DFS 
+----------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def preorderTraversal(self, root):
         res = []
@@ -34,19 +35,34 @@ the iterative solution will be followed up later on.
 '''
 
 Solution: ----------------------------------------------------------- Stack
+----------------------------------------------------------- O(n) T, O(n) S
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
 class Solution(object):
     def preorderTraversal(self, root):
-        res, stack = [], [root]
-        while stack:
-            node = stack.pop()
-            if node:
-                res.append(node.val)             # Append the node.val first -> preorder
-                stack.append(node.right)         # Make use of the First in Last out property for stack,
-                                                 # So, we append node.right before append node.left
-                stack.append(node.left)          # In the next interation, node = node.left and continue
-        return res
-                
         """
         :type root: TreeNode
         :rtype: List[int]
         """
+        if not root:
+            return None
+        stack, res = [root], []
+        while stack:
+            pop_element = stack.pop()
+            res.append(pop_element.val)              # Append the node.val first -> preorder
+                                                     # Make use of the First in Last out property for stack,
+                                                     # So, we append node.right before append node.left
+                                                     # In the next interation, node = node.left and continue
+            if pop_element.right:                    # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                     # In both stack and queue question, everytime we want to append, 
+                                                     # we should test whether it is None, because None is meaningless and
+                                                     # may bring "NoneType object has no attribute" error in next iteration
+                stack.append(pop_element.right)
+            if pop_element.left:
+                stack.append(pop_element.left)
+        return res
