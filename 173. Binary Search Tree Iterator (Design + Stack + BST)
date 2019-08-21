@@ -34,7 +34,9 @@ Solution:
 #         self.left = None
 #         self.right = None
 
-class BSTIterator(object):
+class BSTIterator(object): ---------------------------------------------- Design + Stack + BST
+--------------------------------------- O(n) T, O(h) S for init()
+--------------------------------------- O(1) T, O(h) S for next() and hasNext()
 
     def __init__(self, root):
         self.stack = []                                  # Stack : First In, Last Out
@@ -60,6 +62,7 @@ class BSTIterator(object):
         
         n = self.stack.pop()                             # return the smallest node in the BST
         self.help(n.right)                               # Then, append the second smallest node into the stack if it is not None
+                                                         # which will be poped in the next next() => stack: Last In First Out
                                                          # Even if it is None, as designed in the help(), stack will not append anything
                                                          # Then, the second smallest node:
                                                          # the mother node will be the one that be pop()
@@ -71,7 +74,7 @@ class BSTIterator(object):
         """
         
     def help(self, root):
-        while not root is None:
+        while root:                                      # Use while instead of calling help function in a recursive way here
             self.stack.append(root)                      # Append itself into the s
             root = root.left                             # Append the one which is "the most" smaller to itself and repeated
                                                          # So, after the initialation, stack.pop() will return the smallest node
