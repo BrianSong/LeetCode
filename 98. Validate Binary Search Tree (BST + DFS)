@@ -69,7 +69,15 @@ class Solution(object):
             return False  
         if root.val >= upperlimit:                                         # Not > but >=  
             return False
-        if not (self.bfs(root.left, lowerlimit, root.val)):
+        if not (self.bfs(root.left, lowerlimit, root.val)):                # How to come up with the following two "if" ?
+                                                                           # For recursion, we only care about the current level
+                                                                           # without falling into the details
+                                                                           # So, let's start with that,
+                                                                           # For a current root, its value will be the high boundary for
+                                                                           # its left subnodes, and low boundary for its right subnodes
+                                                                           # As for the low boundary for the left subnodes and high
+                                                                           # boundary for the right subnodes, they will be determined
+                                                                           # by the value passing down above.
             return False
         if not (self.bfs(root.right, root.val, upperlimit)):               # Here, when root is node 6, it has a lowerlimit == node 10
                                                                            # so, it will return False
