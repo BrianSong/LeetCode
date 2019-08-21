@@ -13,7 +13,7 @@ Calling hasNext() after that should return false.
 Follow up: How would you extend your design to be generic and work with all types, not just integer?
 
 Solution:
-# Below is the interface for Iterator, which is already defined for you.
+# Below is the interface for Iterator, which is already defined for you.     # We will use this in the init()
 #
 # class Iterator(object):
 #     def __init__(self, nums):
@@ -34,10 +34,11 @@ Solution:
 #         :rtype: int
 #         """
 
-class PeekingIterator(object):
+class PeekingIterator(object): ------------------------------------------------------- Design
     def __init__(self, iterator):
         self.iter = iterator
-        self.temp = self.iter.next() if self.iter.hasNext() else None       # Store the next value outside the iterator. 
+        self.temp = self.iter.next() if self.iter.hasNext() else None       # Store the next value outside the iterator
+                                                                            # because we want to cache the next element.
                                                                             # When next is called return the stored value 
                                                                             # and populate with next value from iterator.
         """
@@ -56,9 +57,12 @@ class PeekingIterator(object):
 
     def next(self):                                                        # after calling next(), self.temp need to be updated
         ret = self.temp
-        self.temp = self.iter.next() if self.iter.hasNext() else None      # A = B IF C ELSE D
+        self.temp = self.iter.next() if self.iter.hasNext() else None      # Update the self.temp HERE !!!! IMPORTANT
+                                                                           # The difference between peek() and next() is that
+                                                                           # We do not call self.iter.next in peek() !!
+                                                                           # A = B IF C ELSE D
                                                                            # if C: A = B, else A = D
-        return ret
+        return ret                                                         # We can just return the ret (previous self.temp) here
         """
         :rtype: int
         """
