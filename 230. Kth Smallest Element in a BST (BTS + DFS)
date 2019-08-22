@@ -24,7 +24,8 @@ Input: root = [5,3,6,2,4,null,null,1], k = 3
  1
 Output: 3
 
-Solution:
+Solution: ----------------------------------------------------------- BTS + DFS
+--------------------------------------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -58,3 +59,6 @@ class Solution(object):
             return
         self.kthsmallest_help(root.right) # Look into the right branch and repeat the same process,
                                           # Literally no difference between left and right branch
+                                          # Remember the characteristic of BTS,
+                                          # the smallest node is the leftest node,
+                                          # the second smallest node is the leftest node of the right subtree for the leftest node
