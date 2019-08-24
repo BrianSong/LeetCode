@@ -24,7 +24,8 @@ cache.get(3);       // returns 3
 cache.get(4);       // returns 4
 
 
-Solution: -------------------------------------------------------------------- Design: Deque + Dictionary
+Solution: -------------------------------------------------------------------- Design: Deque + HashTable
+----------------------------------------- O(n) S, and O(n) T for get() and put() due to "self.deque.remove(key))"
 class LRUCache(object):
 
     def __init__(self, capacity):
@@ -46,7 +47,6 @@ class LRUCache(object):
             self.deque.remove(key)                        # Once we call the get(), we let this element's priority to the highest
             self.deque.append(key)
             return self.dict[key]
-        
 
     def put(self, key, value):
         """
@@ -54,16 +54,19 @@ class LRUCache(object):
         :type value: int
         :rtype: None
         """
-        if key in self.dict:
-            self.deque.remove(key)
-        elif len(self.dict) == self.capacity:             # Must be elif instead of if
-                                                          # For example, 2:6 put, 1:5 put, 1:2 put
+        if key in self.dict:                              # For example, 2:6 put, 1:5 put, 1:2 put
                                                           # the completed dictionary should be 2:6 and 1:2 => elif 
                                                           # As long as the key already existed, we do not care about the capacity
                                                           # the only thing we need to do is to update this 1:5 to 1:2 (Same Key)
-            evict_element_key = self.deque.popleft()
-            self.dict.pop(evict_element_key)              # Remove the Least Recently Used element (lowest priority) 
-                                                          # We can use dictionary.pop(key) to remove specific element with known key
+            self.deque.remove(key)
+        else:
+            if len(self.deque) >= self.cap:
+                remove_key = self.deque.popleft()         # Remove the Least Recently Used element (lowest priority) 
+                                                          # We can "del self.dict[remove_key]" to remove specific element with known key
+                                                          # And here is the reason why we choose deque instead of queue in this question
+                                                          # because deque.popleft() => O(1) T, while list.pop(0) => O(n) T
+                                                          
+                del self.dict[remove_key]
         self.deque.append(key)
         self.dict[key] = value
         
