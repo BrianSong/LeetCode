@@ -14,7 +14,8 @@ Example 2:
 Input: -1->5->3->4->0
 Output: -1->0->3->4->5
 
-Solution:
+Solution: -------------------------------------------------------------- Three Pointers: dummy, curr, p - Insertion Sort
+---------------------------------------------- O(n^2) T, O(1) S
 def insertionSortList(self, head):
     ## we need three pointer here, p is the position where cur is gonna inser after
     ## cur is the element we need to compare each time
@@ -27,9 +28,9 @@ def insertionSortList(self, head):
         ## compare cur ndoe with next node val
         ## if the sequence is sorted already, keep looking ahead
         ## continue is a must here for the next iteration ------------- continue -> jump out of from this level of while loop into next
-        next_val = cur.next.val
-        if cur.val <= next_val:
-            cur = cur.next 
+        next_val = cur.next.val                                    # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+        if cur.val <= next_val:                                    # Instead of considering curr to be the moved element,
+            cur = cur.next                                         # We consider curr.next, in this way, we do not need to stroe "prev"
             continue
 
         ## if there is an element which is smaller than previous sequence
@@ -42,7 +43,7 @@ def insertionSortList(self, head):
         ## we use p.next.val to compare, hence p would point element 2
         ## update: cur would point at 7
         while p.next.val <= next_val: ------------------------------------ keep updating p pointer for insertion position
-            p = p.next 
+            p = p.next                                             # The same, comparing p.next.val instead of p.val
 
         ## exchange, insertion
         ## for the above example, p.next should be cur.next which is 4
