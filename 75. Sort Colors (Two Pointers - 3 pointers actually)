@@ -42,7 +42,8 @@ class Solution(object):
         :rtype: None Do not return anything, modify nums in-place instead.
         """
         
-Solution no.2 (Follow-up: one-pass algorithm using only constant space):---------https://www.youtube.com/watch?v=J9DgvL6L1nk
+Solution no.2 (Follow-up: one-pass algorithm using only constant space: in-place):---------https://www.youtube.com/watch?v=J9DgvL6L1nk
+---------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def sortColors(self, nums):
         first, last = 0, len(nums) - 1                    # Create 3 pointers: first, last, curridx
@@ -56,8 +57,11 @@ class Solution(object):
                 curridx += 1
             elif nums[curridx] == 0:                      # Case no.2: curridx points to 0, swap the value and update first and curridx
                 nums[curridx], nums[first] = nums[first], nums[curridx]
-                curridx += 1
-                first += 1
+                curridx += 1                              # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                          # Must remember to also increase the curridx by 1 !!!!!!!!!
+                                                          # otherwise, the curridx will stay at 0 without moving and swap whatever
+                                                          # the new first points to the leftest...
+                first += 1  
             elif nums[curridx] == 2:                      # Case no.3: curridx points to 2, swap the value and update the last
                 nums[curridx], nums[last] = nums[last], nums[curridx]
                 last -= 1                                 # We do not need to update curridx, since it now points to the swap element
