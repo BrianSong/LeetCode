@@ -9,18 +9,9 @@ Example 2:
 
 Input: [3,2,3,1,2,4,5,5,6] and k = 4
 Output: 4
-
-Solution no.1: ---------------------------- O(nlogn)
-class Solution(object):
-    def findKthLargest(self, nums, k):
-        return sorted(nums)[-k]
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
-        
-Solutiono no.2: ------------------------------------- Heap ------------------- https://www.youtube.com/watch?v=zyskis1Gw0c
+       
+Solutiono no.1: ------------------------------------- Heap ------------------- https://www.youtube.com/watch?v=zyskis1Gw0c
+------------------------------------------- O(nlogn) T, O(n) S
 class Solution(object):
     def findKthLargest(self, nums, k):
         """
@@ -30,12 +21,14 @@ class Solution(object):
         """
         heap = []
         for num in nums:
-            heapq.heappush(heap, num)
+            heapq.heappush(heap, num)                                     # heapq is a binary heap, with O(logn) push and O(logn) pop
             if len(heap) > k:
-                heapq.heappop(heap)
+                heapq.heappop(heap)                                       # heap in python 默认为从小到大排序，最小的index为0
         return heap[0]
         
-Solution no.3: ------------------------------------------------- QuickSort ------ https://www.youtube.com/watch?v=zyskis1Gw0c
+Solution no.2: ------------------------------------------------- QuickSort ------ https://www.youtube.com/watch?v=zyskis1Gw0c
+----------------------------------------------- O(N) best case / O(N^2) worst case running time + O(1) memory
+------------------ Why not O(nlogn) ?? because we are not here to sort the entire array, we just here to find the kth largest element
 class Solution(object):
     def findKthLargest(self, nums, k):
         """
@@ -47,18 +40,24 @@ class Solution(object):
     
     def quickSort(self, nums, k):
         if nums:
-            povit = self.partition(nums, 0, len(nums) - 1)
+            povit = self.partition(nums)
             if povit > k:
-                return self.quickSort(nums[0:povit], k)
+                return self.quickSort(nums[0:povit], k)                  # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!
+                                                                         # [0:povit] does not include povit !!!!!!!!!!!!!!!
+                                                                         # In quicksort, every time after we getting the povit,
+                                                                         # it will not be include in the future processing,
+                                                                         # => [0:povit] and [povit+1:]
             elif povit < k:
                 return self.quickSort(nums[povit+1:], k - povit - 1)     # Here is k - povit - 1 instead of k - povit because
                                                                          # the new nums starts from povit + 1 instead of povit
             else:
                 return nums[povit]
             
-    def partition(self, nums, l, r):
-        povit = r
-        while l < povit and povit > 0:
+    def partition(self, nums)
+        povit = len(nums) - 1
+        l = 0
+        while l < povit and povit > 0:                                   # We mention povit > 0 here because we have "nums[povit - 1]"
+                                                                         # However, it is not necessary because we have "l < povit"
             if nums[povit] >= nums[l]:
                 l += 1
             else:
