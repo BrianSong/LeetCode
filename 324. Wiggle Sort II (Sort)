@@ -15,7 +15,8 @@ Follow Up:
 Can you do it in O(n) time and/or in-place with O(1) extra space?
 
 
-Solution: ------------------------------------------------- O(nlogn) time and O(1) space
+Solution: ------------------------------------------------- Sort
+------------------------------------------------- O(nlogn) time and O(1) space
 class Solution(object):
     def wiggleSort(self, nums):
         """
@@ -28,3 +29,4 @@ class Solution(object):
         nums[::2], nums[1::2] = nums[:half][::-1], nums[half:][::-1]        # Why [::-1] for nums[:half] and nums[half:] ? 
                                                                             # because we do not want 
                                                                             # odd-index numbers to be equal to their neighbors
+                                                                            # Put the biggest of the smaller half and larger half together
