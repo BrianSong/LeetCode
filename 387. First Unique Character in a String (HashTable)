@@ -11,6 +11,7 @@ Note: You may assume the string contain only lowercase letters.
 
 
 Solution: ------------------------------------------------------------ HashTable
+--------------------------------------------- O(n) T, O(1) S => space complexity is constant O(26) ~ O(1) for any length of string
 class Solution(object):
     def firstUniqChar(self, s):
         """
