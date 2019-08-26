@@ -15,6 +15,8 @@ Bubble Sort + Merge Sort + Quick Sort: --------- https://classroom.udacity.com/c
 '''
 
 Solution no.1 : ---------------------------------------------------------------- Bubble Sort
+------------------------------------------------- O(n^2)T, O(1) S
+
 class Solution(object):
     def largestNumber(self, nums):
         """
@@ -23,9 +25,10 @@ class Solution(object):
         """
         if not nums or len(nums) == 0:
             return None
-        for i in range(len(nums) - 1, -1, -1):
+        for i in range(len(nums) - 1, -1, -1):                     # Bubble Sort, each time, the i index in the nums is confirmed
+                                                                   # and j index is to iterate from 0 to i and compare everytime
             for j in range(i):
-                if self.compare(nums[j], nums[j + 1]):
+                if str(nums[j]) + str(nums[i]) <= str(nums[i]) + str(nums[j]):
                     nums[j], nums[j + 1] = nums[j + 1], nums[j]
         
         return str(int("".join(map(str, nums))))                   # map(function, iterable)
@@ -33,73 +36,78 @@ class Solution(object):
                                                                    # Why str(int("".join(map(str, nums)))) (seemed unnecessarily)
                                                                    # instead of "".join(map(str, nums)) ??????????
                                                                    # Because for the cases like : [0, 0] => return "00" instead of "0"
-                
-    def compare(self, n1, n2):
-        return str(n1) + str(n2) < str(n2) + str(n1)
         
-Solution no.2: ---------------------------------------------------------------- Merge Sort
+Solution no.2: ---------------------------------------------------------------- Merge Sort (Divide and Conquer)
+------------------------------------------------- O(nlogn) T => logn step and n comparison per step, O(n) S
 class Solution(object):
     def largestNumber(self, nums):
         """
         :type nums: List[int]
         :rtype: str
         """
-        nums = self.mergeSort(nums, 0, len(nums) - 1)
+        if not nums:
+            return None
+        nums = self.split(nums, 0, len(nums) - 1)   # The reason why we need to re-assign nums is that:
+                                                    # in merge sort, we are not doing in-place swap like in bubble sort or quick sort
+                                                    # we are totally create a new sorted list and return it => O(n) S
         return str(int("".join(map(str, nums))))
     
-    def mergeSort(self, nums, l, r):
+    def split(self, nums, l, r):
         if l > r:
-            return
+            return None
         if l == r:
-            return [nums[l]]                                      # return [nums[l]] instead of nums[l], here we want to return a list
-        mid = (l + r) / 2
-        left = self.mergeSort(nums, l, mid)
-        right = self.mergeSort(nums, mid + 1, r)
-        return self.Merge(left, right)
+            return [nums[l]]                        # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                    # return [nums[l]] instead of nums[l], here we want to return a list NOT an integer
+        mid = (l + r) / 2                           # In merge sort, we try to find the MIDDLE
+                                                    # However, in quick sort, we try to find the POVIT
+        left = self.split(nums, l, mid)
+        right = self.split(nums, mid + 1, r)
+        return self.merge(left, right)
     
-    def Merge(self, l1, l2):
+    def merge(self, l1, l2):
         res, i1, i2 = [], 0, 0
         while i1 < len(l1) and i2 < len(l2):
-            if self.compare(l1[i1], l2[i2]):
-                res.append(l2[i2])
-                i2 += 1
-            else:
+            if str(l1[i1]) + str(l2[i2]) >= str(l2[i2]) + str(l1[i1]):
                 res.append(l1[i1])
                 i1 += 1
-        res.extend(l1[i1:] or l2[i2:])
+            else:
+                res.append(l2[i2])
+                i2 += 1
+        if i1 < len(l1):
+            res.extend(l1[i1:])
+        elif i2 < len(l2):
+            res.extend(l2[i2:])
         return res
-    
-    def compare(self, n1, n2):
-        return str(n1) + str(n2) < str(n2) + str(n1)
-        
-Solution no.3: ---------------------------------------------------------------- Quick Sort
+
+Solution no.3: ---------------------------------------------------------------- Quick Sort (Divide and Conquer)
+------------------------------------------------- O(nlogn) average and O(n^2) worst T, O(log(n)) S
 class Solution(object):
     def largestNumber(self, nums):
         """
         :type nums: List[int]
         :rtype: str
         """
-        self.quickSort(nums, 0, len(nums) - 1)
-        return str(int("".join(map(str, nums))))
+        if not nums:
+            return None
+        return str(int(self.split(nums)))                 # Remember to do str(int()) for cases like [0,0] => return 00 instead of 0
     
-    def quickSort(self, nums, l, r):
-        if l >= r:                                              # l == r => still return, no need to do anything as in merge sort
-                                                                # because quick sort is in-place
-            return
-        pos = self.partition(nums, l, r)
-        self.quickSort(nums, l, pos - 1)
-        self.quickSort(nums, pos + 1, r)
-        
-    def partition(self, nums, l, r):
-        pos = r
-        while l < pos and pos != 0:
-            if self.compare(nums[l], nums[pos]):
-                nums[pos - 1], nums[l] = nums[l], nums[pos - 1]
-                nums[pos], nums[pos - 1] = nums[pos - 1], nums[pos]
-                pos -= 1
-            else:
+    def split(self, nums):
+        if not nums:
+            return ""
+        povit = self.find_povit(nums)
+        return self.split(nums[:povit]) + str(nums[povit]) + self.split(nums[povit + 1:])
+    
+    def find_povit(self, nums):
+        povit = len(nums) - 1
+        l = 0
+        while l < povit and povit > 0:
+            if str(nums[l]) + str(nums[povit]) >= str(nums[povit]) + str(nums[l]):        # Instead of normal nums[l] <= nums[povit]
+                                                                                          # here we are finding the Largest Number
+                                                                                          # instead of just sorting the nums
+                                                                                          # Remember to look at the question statement!!
                 l += 1
-        return pos
-                
-    def compare(self, n1, n2):
-        return str(n1) + str(n2) < str(n2) + str(n1)
+            else:
+                nums[povit - 1], nums[l] = nums[l], nums[povit - 1]
+                nums[povit], nums[povit - 1] = nums[povit - 1], nums[povit]
+                povit - 1
+        return povit
