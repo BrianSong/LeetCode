@@ -29,7 +29,8 @@ NOTE: input types have been changed on April 15, 2019. Please reset to default c
 
 
 
-Solution: ----------------------------------------------- HashTable --------------------------- O(n^2) time complexity
+Solution: ----------------------------------------------- HashTable 
+--------------------------------------------------------- O(n^2) T, O(n) S
 import numpy
 class Solution(object):
     def maxPoints(self, points):
@@ -46,7 +47,9 @@ class Solution(object):
                     same += 1
                 elif points[i][0] == points[j][0]:          # 2. Some other point has the same x coordinate as point A, 
                                                             #    which will result to a positive infinite slope.
-                    HashTable['inf'] += 1 
+                    HashTable['inf'] += 1                   # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                            # We CANNOT continue and overlook the 'inf' slope here !!!!!!!!!!!!!
+                                                            # because the inf slope(the straight upright line) must also be considered !
                 else:                                       # 3. General case. We can calculate slope.
                     slope = numpy.float128(points[i][1] - points[j][1]) / numpy.float128(points[i][0] - points[j][0])
                     '''
