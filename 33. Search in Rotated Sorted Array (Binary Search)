@@ -19,6 +19,7 @@ Output: -1
 
 
 Solution: ------------------------------------------------- Binary Search
+----------------------------------------------------------- O(logn) T, O(1) S
 class Solution(object):
     def search(self, nums, target):
         """
@@ -33,12 +34,16 @@ class Solution(object):
             if nums[mid] == target:
                 return mid
             if nums[left] <= nums[mid]:                         # The left half is continuous sorted ascending list
-                if nums[left] <= target <= nums[mid]:
+                if nums[left] <= target <= nums[mid]:           # if target is in the left continuous sorted ascending list,
+                                                                # we just update the right to the middle - 1 and jump into the normal
+                                                                # sorted list binary search step
                     right = mid - 1
-                else:
+                else:                                           # if target is not in this continuous sorted ascending list, 
+                                                                # the only thing we can do is to update the left to middle + 1
                     left = mid + 1
             else:                                               # The right half is continuous sorted ascending list
-                if nums[mid] <= target <= nums[right]:
+                                                                # because the left or right half must have one continuous sorted list 
+                if nums[mid] <= target <= nums[right]:          # the same strategy
                     left = mid + 1
                 else:
                     right = mid - 1
