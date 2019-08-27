@@ -30,7 +30,7 @@ Explanation:
 = 17 + 5
 = 22
 
-Solution: ----------------------------- Stack + lstrip("-")  -------------------------- https://www.youtube.com/watch?v=SAb1kWV7_PY
+Solution: ----------------------------- Stack + isdigit() + lstrip("-")  ----------------- https://www.youtube.com/watch?v=SAb1kWV7_PY
 -------------------------------------------- O(n) T, O(n) S
 
 class Solution(object):
