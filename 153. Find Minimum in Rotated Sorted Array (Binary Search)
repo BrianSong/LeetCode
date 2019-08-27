@@ -15,7 +15,8 @@ Example 2:
 Input: [4,5,6,7,0,1,2]
 Output: 0
 
-Solution: --------------------------------------------------------------------- O(logN)
+Solution: --------------------------------------------------------------------- Binary Search
+----------------------------------------- O(logn) T, O(1) S
 class Solution(object):
     def findMin(self, nums):
         if nums[len(nums) - 1] > nums[0] or len(nums) == 1:  # Eliminate the case when the array is already sorted
@@ -33,7 +34,12 @@ class Solution(object):
             If mid element > first element of array this means that we need to look for the inflection point on the right of mid.
             If mid element < first element of array this that we need to look for the inflection point on the left of mid.
             '''
-            if nums[middle] > nums[0]:
+            if nums[middle] > nums[0]:                    # THE KEY for every binary search problem is how we should 
+                                                          # update the left and right pointer
+                                                          # In this example, this is also the MOST IMPORTANT PART !!!!!!!!!!!!!!!!!
+                                                          # if nums[middle] > nums[0], then the upper half must be sorted,
+                                                          # so we should focus on the latter half and assign left to mid + 1
+                                                          # and vice versa.
                 left = middle + 1
             elif nums[middle] < nums[0]:
                 right = middle - 1
