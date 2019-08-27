@@ -26,6 +26,7 @@ You need to reduce multiple spaces between two words to a single space in the re
 
 
 Solution: --------------------------------------------------------- split() + join()
+--------------------------------------------------------- O(n) T, O(n) S (string is immutable in Python)
 class Solution(object):
     def reverseWords(self, s):
         """
@@ -33,4 +34,8 @@ class Solution(object):
         :rtype: str
         """
         return ' '.join(s.split()[::-1])              # The split() method splits a string into a list
-                                                      # You can specify the separator, default separator is "any" whitespace
+                                                      # You can specify the separator, default separator is any whitespace
+                                                      # and the join() method can join all element in a list into a single string
+                                                      # and the spacer between this element is defined by the argument before join()
+                                                      # in this case is " " one whitespace. 
+                                                      # Remember the spacer will not show up in the head or the tail
