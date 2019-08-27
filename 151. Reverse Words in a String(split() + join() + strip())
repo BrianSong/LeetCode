@@ -39,3 +39,8 @@ class Solution(object):
                                                       # and the spacer between this element is defined by the argument before join()
                                                       # in this case is " " one whitespace. 
                                                       # Remember the spacer will not show up in the head or the tail
+        # Python strip() 方法用于移除字符串头尾指定的字符（默认为空格或换行符）或字符序列
+        # 注意：该方法只能删除开头或是结尾的字符，不能删除中间部分的字符
+        # 只要头尾包含有指定字符序列中的字符就删除
+        # str = "123abcrunoob321"
+        # print (str.strip( '12' )) => "3abcrunoob3"
