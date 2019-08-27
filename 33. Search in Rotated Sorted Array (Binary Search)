@@ -36,7 +36,8 @@ class Solution(object):
             if nums[mid] == target:
                 return mid
             if nums[left] <= nums[mid]:                         # The left half is continuous sorted ascending list
-                if nums[left] <= target <= nums[mid]:           # if target is in the left continuous sorted ascending list,
+                if nums[left] <= target <= nums[mid]:           # all <= instead of < since left may equal to middle and target
+                                                                # if target is in the left continuous sorted ascending list,
                                                                 # we just update the right to the middle - 1 and jump into the normal
                                                                 # sorted list binary search step
                     right = mid - 1
