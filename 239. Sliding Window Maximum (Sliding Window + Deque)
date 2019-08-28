@@ -23,7 +23,7 @@ Could you solve it in linear time?
 
 
 Solution no.1: ----------------------- my own --------------------------------------------- Deque
---------------------------------------------  O(n*k) T, O(n) S
+--------------------------------------------  O(n*k) T for the max(window), O(n) S
 class Solution(object):
     def maxSlidingWindow(self, nums, k):
         """
@@ -65,5 +65,7 @@ class Solution(object):
                 d.popleft()
             if i >= k - 1:                      # For the first k - 1 element do not need to find out the maximum,
                                                 # because the sliding window has not be fulfilled.
-                res.append(nums[d[0]])
+                res.append(nums[d[0]])          # Unlike the question 155.Min Stack where it keeps the level minimum in the tuple
+                                                # this question keeps the currmax at the beginning of deque,
+                                                # In these ways, we can obtain the min or max in O(1) time smartly
         return res
