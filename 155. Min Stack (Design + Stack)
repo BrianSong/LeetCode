@@ -14,7 +14,8 @@ minStack.pop();
 minStack.top();      --> Returns 0.
 minStack.getMin();   --> Returns -2.
 
-Solution: EVERY FUNCTION WE DESIGN SHOULD RUN IN CONSTANT TIME!!!!!!!!!!!!!!!!!!O(1)!!!!!!
+Solution: ------------------------------------------------------ Design + Stack
+---------------------------------------------------------------- O(1) T, O(n) S
 class MinStack(object):
 
     def __init__(self):
@@ -30,9 +31,13 @@ class MinStack(object):
         :rtype: None
         """
         currmin = self.getMin()
-        if currmin is None or x < currmin:
+        if currmin is None or x < currmin:           # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                     # Can not be "if not currmin", must be "if currmin is None" !!!!!!!!!!!!!!!!!
+                                                     # because first statement include the cases when currmin is 0 instead of None
             currmin = x
         self.stack.append((x, currmin))              # Design a tuple to store the current value and current minimum number
+                                                     # At each level, there is a current minimum value and we store it in the tuple
+                                                     # and for the future, whenever we come to each level, we can access the currmin
                                                      # In this way, we can get a O(1) instead of O(n) in the getMin()
                                                      # Since we may need to go over all element in the stack to find the minimum
         
