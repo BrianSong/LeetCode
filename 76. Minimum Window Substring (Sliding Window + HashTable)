@@ -10,7 +10,8 @@ If there is no such window in S that covers all characters in T, return the empt
 If there is such window, you are guaranteed that there will always be only one unique minimum window in S.
 
 
-Solution: ---------------------------------- Sliding Window ------------------------ https://www.youtube.com/watch?v=63i802XLgOM
+Solution: --------------------------- Sliding Window + HashTable ------------------------ https://www.youtube.com/watch?v=63i802XLgOM
+------------------------------------- O(n^2) T, O(n) S
 class Solution(object):
     def minWindow(self, s, t):
         """
@@ -30,18 +31,23 @@ class Solution(object):
         res = ""
         while right < len(s):                                                      # Start with this left pointer, We keep expanding
                                                                                    # the window by moving the right pointer
-            if tHash[s[right]] > sHash[s[right]]:
+            if tHash[s[right]] > sHash[s[right]]:                                  # We first deal with the right pointer for expanding
+                                                                                   # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!1
+                                                                                   # "tHash[s[right]]" INSTEAD OF "tHash[right]"
                 count += 1
             sHash[s[right]] += 1
             while left < len(s) and count == len(t):                               # When the window has all the desired characters, 
                                                                                    # we contract (if possible) 
                                                                                    # and save the smallest window till now
-                if len(res) == 0 or len(res) > right - left + 1:
+                if len(res) == 0 or len(res) > right - left + 1:                
                     res = s[left:right + 1]
-                if tHash[s[left]] >= sHash[s[left]]:
+                if tHash[s[left]] >= sHash[s[left]]:                                    
                     count -= 1
                 sHash[s[left]] -= 1
-                left = self.findNextStrIdx(left + 1, s, t)
+                left = self.findNextStrIdx(left + 1, s, t)                         # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                   # First reduce the count(maybe) and sHash
+                                                                                   # then we update the left pointer
+                                                                                   # the order cannot be reverse !!!!!!!!!!!!!!!
                 
             right = self.findNextStrIdx(right + 1, s, t)
         return res
