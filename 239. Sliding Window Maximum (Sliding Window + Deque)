@@ -23,6 +23,7 @@ Could you solve it in linear time?
 
 
 Solution no.1: ----------------------- my own --------------------------------------------- Deque
+--------------------------------------------  O(n*k) T, O(n) S
 class Solution(object):
     def maxSlidingWindow(self, nums, k):
         """
@@ -41,7 +42,8 @@ class Solution(object):
         return res
         
         
-Solution no.2: ------------------------------ O(n) deque ---------- A good visulation: https://www.youtube.com/watch?v=ShbRCjvB_yQ
+Solution no.2: ------------------------------ Deque ---------- A good visulation: https://www.youtube.com/watch?v=ShbRCjvB_yQ
+--------------------------------------------  O(n) T, O(n) S
 class Solution(object):
     def maxSlidingWindow(self, nums, k):
         """
