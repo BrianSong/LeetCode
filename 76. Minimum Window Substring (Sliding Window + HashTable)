@@ -11,7 +11,7 @@ If there is such window, you are guaranteed that there will always be only one u
 
 
 Solution: --------------------------- Sliding Window + HashTable ------------------------ https://www.youtube.com/watch?v=63i802XLgOM
-------------------------------------- O(n^2) T, O(n) S
+------------------------------------- O(n^2) T, O(k) S
 class Solution(object):
     def minWindow(self, s, t):
         """
