@@ -23,7 +23,7 @@ class Solution(object):
         slow, fast, curr, res = 0, 0, 0, float('inf')
         while fast < len(nums):
             curr += nums[fast]                            # Keep expanding the fast
-            while slow < len(nums) and curr >= s:         # until curr >= s where we need to move slow to the right for extracting
+            while slow < len(nums) and curr >= s:         # until curr >= s where we need to move slow to the right for contracting
                 res = min(res, fast - slow + 1)
                 curr -= nums[slow]
                 slow += 1
