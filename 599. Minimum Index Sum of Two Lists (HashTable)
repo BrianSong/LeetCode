@@ -23,7 +23,9 @@ No duplicates in both lists.
 
 
 
-Solution: -------------------------------------------------------------------------------- HashTable
+Solution: -------------------------------------------------------------- HashTable
+-------------------------------------------------------------- O(l1 + l2) T, where l1 is the length of list1, l2 is the list2 length
+-------------------------------------------------------------- O(l1 * x) S, where x is the average length of words in list1
 class Solution(object):
     def findRestaurant(self, list1, list2):
         """
@@ -31,8 +33,17 @@ class Solution(object):
         :type list2: List[str]
         :rtype: List[str]
         """
-        dic1 = {item: idx for idx, item in enumerate(list1)}                             # Pythonic Style!!! :) 
-        dic2 = {item: idx for idx, item in enumerate(list2)}
-        dicSum = {item: dic1[item] + dic2[item] for item in dic1 if item in dic2}
-        minSum = min(dicSum.values())
-        return [item for item in dicSum if dicSum[item] == minSum]
+        if not list1 or not list2:
+            return None
+        HashTable, idxsum, res = {}, float('inf'), []
+        for i, item in enumerate(list1):
+            HashTable[item] = i
+        for i, item in enumerate(list2):
+            if item in HashTable and i + HashTable[item] < idxsum:
+                res = []
+                res.append(item)
+                idxsum = i + HashTable[item]
+            elif item in HashTable and i + HashTable[item] == idxsum:       # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                            # MUST consider tie cases
+                res.append(item)
+        return res
