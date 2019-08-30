@@ -23,7 +23,7 @@ Example 3:
 Input: "ZY"
 Output: 701
 
-Solution no.1(my own):
+Solution no.1: ----------------------------------------------- HashTable
 class Solution(object):
     def titleToNumber(self, s):
         res = 0
@@ -56,7 +56,7 @@ class Solution(object):
             "Z": 26
         }
         for i in range(len(s)):
-            res += dic[s[len(s)-i-1]] * (26**i)
+            res += dic[s[len(s)-i-1]] * (26**i)                 # s[len(s) - 1 - i] 从后往前 ！！！！！！！！！
             print res
         return res
         """
@@ -65,17 +65,20 @@ class Solution(object):
         """
         
 
-Solution no.2: - ord() 
+Solution no.2: -------------------------------------------- chr() + ord()
 '''
 ord() 函数是 chr() 函数（对于8位的ASCII字符串）或 unichr() 函数（对于Unicode对象）的配对函数，它以一个字符（长度为1的字符串）作为参数，
 返回对应的 ASCII 数值，或者 Unicode 数值，如果所给的 Unicode 字符超出了你的 Python 定义范围，则会引发一个 TypeError 的异常。
 '''
 class Solution(object):
     def titleToNumber(self, s):
+        if not s:
+            return 0
         res = 0
         for i in range(len(s)):
-            res += (ord(s[len(s)-i-1])-64) * (26**i) # ord("A") = 65, ord("B") = 66....
-        return res
+            res += (ord(s[len(s) - 1 - i]) - 64) * (26 ** i)   # ord("A") = 65, ord("B") = 66....
+                                                               # Let's why we substract 64 from it
+        return res         
         """
         :type s: str
         :rtype: int
