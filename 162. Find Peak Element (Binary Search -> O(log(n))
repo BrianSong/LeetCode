@@ -21,33 +21,29 @@ Note:
 
 Your solution should be in logarithmic complexity.
 
-Solution: ----------------------------------------------------https://www.youtube.com/watch?v=6S9ETYGfk9k
-'''
-Conditions:
-     1. array length is 1  -> return the only index 
-     2. array length is 2  -> return the bigger number's index 
-     3. array length is bigger than 2 -> 
-           (1) find mid, compare it with its left and right neighbors  
-           (2) return mid if nums[mid] greater than both neighbors
-           (3) take the right half array if nums[mid] smaller than right neighbor
-           (4) otherwise, take the left half
-'''
+Solution: ---------------------------------------------------- Binary Search
+---------------------------------------------------- O(logn) T, O(1) S
 class Solution(object):
     def findPeakElement(self, nums):
-        left, right = 0, len(nums) - 1       # Set two pointer for binary search
-        # handle condition 3
-        while left < right:
-            mid = (left + right) / 2                                    # We can make sure that every element will be reviewed 
-                                                                        # because of "/"
-            if nums[mid] > nums[mid + 1] and nums[mid] > nums[mid - 1]: # Case 1: find the peak right away
-                return mid
-            elif nums[mid] > nums[mid + 1]:                             # Case 2: Descending, we do not need the right part
-                right = mid - 1               
-            elif nums[mid] < nums[mid + 1]:                             # Case 3: Ascending, we do not need the left part
-                left = mid + 1
-        # handle condition 1 and 2
-        return left if nums[left] >= nums[right] else right             # Return the bigger value which is the peak
         """
         :type nums: List[int]
         :rtype: int
         """
+        if not nums:
+            return None
+        left, right = 0, len(nums) - 1
+        while left < right:                             # Why left < right instead of left <= right ?
+                                                        # What we want is when left == right == peak's index, we break and return left
+                                                        # instead of continue executing when left == right
+            middle = (left + right) / 2
+            if nums[middle] > nums[middle + 1]:         # What we want is any peak in the nums,
+                                                        # As long as the right side of nums[middle]'s slope is increasing
+                                                        # then in the left side of nums[middle], there must exist at least one peak
+                right = middle                          # Why here is "right = middle" while below is "left = middle + 1"
+                                                        # because for a peak, peak must be bigger than its right,
+                                                        # so, the right pointer may be exactly the peak index, 
+                                                        # if we do "right = middle - 1" as "left = middle + 1"
+                                                        # we probably miss this peak
+            else:
+                left = middle + 1
+        return left                                     # At this time, left == right and is the peak index
