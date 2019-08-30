@@ -40,29 +40,24 @@ ABCD＝A×26³＋B×26²＋C×26¹＋D
 1234＝1×10³＋2×10²＋3×10¹＋4
 '''
 
-Solution:
+Solution: ---------------------------------------------------- Math
 class Solution(object):
     def convertToTitle(self, n):
         """
         :type n: int
         :rtype: str
         """
-        capitals = [chr(x) for x in range(ord('A'), ord('Z') + 1)]  # chr()函数用一个范围在range（256）内的（就是0～255）整数作参数，
-                                                                    # 返回一个对应的字符。E.X: chr(65) => 'A'
-                                                                    # ord('A') => 65
-        self.res = ""
-        self.helper(n, capitals)
-        return self.res[::-1]
-    
-    def helper(self, n, capitals):
-        if n <= 26:
-            self.res += capitals[n - 1]                             # We can't simply use the n % 26 method 
-                                                                    # instead we should use (n-1) % 26, 
-                                                                    # then we get a number range from 0 to 25.
-                                                                    # capitals list's index is from 0 to 25.
-        else:
-            self.res += capitals[(n - 1) % 26]                      
-            self.helper((n - 1) /26, capitals)
+        res = ""
+        conversion = [chr(i) for i in range(ord('A'), ord('Z') + 1)]  # chr()函数用一个范围在range（256）内的（就是0～255）整数作参数，
+                                                                      # 返回一个对应的字符。E.X: chr(65) => 'A'
+                                                                      # ord('A') => 65
+        while n:
+            res += conversion[(n - 1) % 26]                           # We can't simply use the n % 26 method 
+                                                                      # instead we should use (n-1) % 26, 
+                                                                      # then we get a number range from 0 to 25.
+                                                                      # capitals list's index is from 0 to 25.
+            n = (n - 1) / 26
+        return res[::-1]                                              # Must remember to reverse the res !!!!!!!!!!!!!!!!!!!!!!
         '''
         IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         1×26³＋2×26²＋3×26¹＋4
