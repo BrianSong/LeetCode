@@ -45,7 +45,8 @@ Version strings are composed of numeric strings separated by dots . and this num
 Version strings do not start or end with dots, and they will not be two consecutive dots.
 
 
-Solution: -------------------------------------------------------------- my own
+Solution no.1: -------------------------------------------------------------- my own
+-------------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def compareVersion(self, version1, version2):
         """
@@ -53,20 +54,39 @@ class Solution(object):
         :type version2: str
         :rtype: int
         """
-        version1_list, version2_list, i = version1.split('.'), version2.split('.'), 0
-        while i < len(version1_list) and i < len(version2_list):
-            if int(version1_list[i]) > int(version2_list[i]):
+        if not version1 or not version2:
+            return 0
+        nums1, nums2 = version1.split('.'), version2.split('.')
+        if len(nums1) > len(nums2):                                   # Adding zeros
+            for i in range(len(nums1) - len(nums2)):
+                nums2.append('0')
+        elif len(nums2) > len(nums1):
+            for i in range(len(nums2) - len(nums1)):
+                nums1.append('0')
+        for i in range(len(nums1)):
+            if int(nums1[i]) > int(nums2[i]):
                 return 1
-            elif int(version1_list[i]) < int(version2_list[i]):
+            elif int(nums2[i]) > int(nums1[i]):
                 return -1
-            else:
-                i += 1
-        if len(version1_list) > len(version2_list):
-            for j in range(i, len(version1_list)):
-                if int(version1_list[j]) != 0:
-                    return 1
-        elif len(version1_list) < len(version2_list):
-            for j in range(i, len(version2_list)):
-                if int(version2_list[j]) != 0:
-                    return -1
+        return 0
+        
+Solution no.2: -------------------------------------------------------------- A more concise and pythonic way
+-------------------------------------------------------------- O(n) T, O(n) S
+class Solution(object):
+    def compareVersion(self, version1, version2):
+        """
+        :type version1: str
+        :type version2: str
+        :rtype: int
+        """
+        if not version1 or not version2:
+            return 0
+        nums1, nums2 = [int(v) for v in version1.split('.')], [int(v) for v in version2.split('.')]
+        for i in range(max(len(nums1), len(nums2))):
+            v1 = nums1[i] if i < len(nums1) else 0                   # Without adding any zeros
+            v2 = nums2[i] if i < len(nums2) else 0
+            if v1 > v2:
+                return 1
+            elif v2 > v1:
+                return -1
         return 0
