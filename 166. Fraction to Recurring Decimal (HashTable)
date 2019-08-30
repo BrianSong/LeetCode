@@ -16,6 +16,7 @@ Input: numerator = 2, denominator = 3
 Output: "0.(6)"
 
 Solution: --------------------------------- my own ------------------------------------------- HashTable
+------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def fractionToDecimal(self, num, deno):
         """
@@ -26,7 +27,7 @@ class Solution(object):
         if deno == 0:
             return None
         HashTable, res = {}, ""
-        numerator, denominator = abs(num), abs(deno)
+        numerator, denominator = abs(num), abs(deno)          # First convert into positive, will handle negative cases below
         res += str(numerator / denominator)
         reminder = numerator % denominator
         if reminder:
@@ -55,6 +56,6 @@ class Solution(object):
             for idx, item in enumerate(res):
                 if item == '.':
                     res = res[:idx + 1 + insert_position] + '(' + res[idx + 1 + insert_position :]
-        if (num < 0 and deno > 0) or (num > 0 and deno < 0):
+        if (num < 0 and deno > 0) or (num > 0 and deno < 0):  # Handle negative cases
             res = '-' + res
         return res
