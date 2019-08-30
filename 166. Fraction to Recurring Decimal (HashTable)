@@ -33,7 +33,10 @@ class Solution(object):
         if reminder:
             res += '.'
         idx = 0
-        HashTable[reminder] = idx
+        HashTable[reminder] = idx                             # Notice that once the remainder starts repeating, 
+                                                              # so does the divided result,
+                                                              # Hence we create a HashTable to record repeat elements and
+                                                              # decide where the "(" should be inserted to 
         idx += 1
         reminder *= 10
         while reminder:
