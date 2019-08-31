@@ -25,60 +25,40 @@ A solution set is:
   [3,5]
 ]
 
-Solution:
+Solution: ------------------------------------------------------------ Backtracking
+------------------------------------------------------------ O(len(candidate) ^ (target / min(candidate))) T, len(candidate) is
+------------------------------------------------------------ the possible step we may take at each recursion, 
+------------------------------------------------------------ and target / min(candidate) is the maximum recursion depth
+------------------------------------------------------------ O(target / min(candidate)) S for the recursion depth
 class Solution(object):
     def combinationSum(self, candidates, target):
-        res = []
-        clist = []
-        self.comb_help(sorted(candidates), target, clist, res) # Need to be sorted first
-        return res
         """
         :type candidates: List[int]
         :type target: int
         :rtype: List[List[int]]
         """
-    def comb_help(self, candidates, target, clist, res):
+        if not candidates:
+            return None
+        res = []
+        self.backtracking(candidates, target, [], 0, res)
+        return res
         
-        for item in candidates:
-            if item > target:
-                break                 # The reason to break here: the candidates list is already sorted from smallest to largest,
-                                      # if adding this item is not working, all other items should not be considered at this level of 
-                                      # recursion, so, use break statement to jump backward twice
-            clist.append(item) # just append the item beforehead since all other situations all contain pop()
-            if item == target:
-                res.append(clist[:])  # Use [:] 
-                clist.pop()           # Better to use pop() here because there is a break statement below, if use pop() later, this 
-                                      # pop() will not be excuated.
-                break                 # break is applied here for the same reason as stated above
-            if item < target:
-                curridex = candidates.index(item)
-                self.comb_help(candidates[curridex:], target-item, clist, res)
-                clist.pop()           # Formal standard for backtracking problem, have a currlist and curridex and pop() after the 
-                                      # recursion function
-                                      
-class Solution(object):
-    def combinationSum(self, candidates, target):
-        candidates.sort()
-        res = []
-        self.backtracking_help(candidates, target, [], res)
-        return res
-        """
-        :type candidates: List[int]
-        :type target: int
-        :rtype: List[List[int]]
-        """
-    def backtracking_help(self, candidates, target, path, res):
-        if target < 0:                                                # Better to move this two if statement outof the for loop,
+    def backtracking(self, candidates, target, curr, idx, res):
+        if target == 0:                                               # Better to move this two if statement outof the for loop,
                                                                       # because it has nothing to do with i or candidates
                                                                       # these two are the exiting conditions
                                                                       # the first thing inside a recursion function should be to check
                                                                       # the base cases - exiting conditions instead of doing a for loop
+            res.append(curr[:])                                       # Use [:] 
             return
-        if target == 0:
-            res.append(path[:])
+        if target < 0:
             return
-        for i, candidate in enumerate(candidates):
-            self.backtracking_help(candidates[i:], target - candidate, path + [candidate], res)
-                
-                
-             
+        for i in range(idx, len(candidates)):                         # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                      # Instead of "for item in candidates", here we ultilize the idx,
+                                                                      # WHY ?????????????????????????????????
+                                                                      # Because in this question, although the same repeated number may 
+                                                                      # be chosen from candidates unlimited number of times, 
+                                                                      # We cannot choose the element from beginning every time,
+                                                                      # if we do that, we will come up with many same curr,
+                                                                      # like [[2,2,3],[2,3,2],[3,2,2],[7]] that we do not want 
+            self.backtracking(candidates, target - candidates[i], curr + [candidates[i]], i, res)
