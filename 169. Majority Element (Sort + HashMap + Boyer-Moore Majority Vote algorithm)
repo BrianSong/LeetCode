@@ -37,6 +37,7 @@ class Solution(object):
                                                           # maximum element in the nums instead of the majority element
 
 Updated Solution: -------------- Boyer-Moore Algorithm -------- https://gregable.com/2013/10/majority-vote-algorithm-find-majority.html
+-------------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def majorityElement(self, nums):
         """
