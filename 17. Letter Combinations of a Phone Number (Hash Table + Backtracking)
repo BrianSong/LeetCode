@@ -1,0 +1,52 @@
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+
+
+Example:
+
+Input: "23"
+Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+Note:
+
+Although the above answer is in lexicographical order, your answer could be in any order you want.
+
+Solution: ---------------------------------------- Backtracking -------------------------- https://www.youtube.com/watch?v=rqpYrqMDbSg
+---------------------------------------------------- O(3^N + 4^M) T where N is the number of digits in the input that maps to 3 letters 
+------ (e.g. 2, 3, 4, 5, 6, 8) and M is the number of digits in the input that maps to 4 letters (e.g. 7, 9), 
+------ and N+M is the total number digits in the input.
+---------------------------------------------------- O(3^N + 4^M) S, since one has to keep all 3^N + 4^M solutions.
+class Solution(object):
+    def letterCombinations(self, digits):
+        """
+        :type digits: str
+        :rtype: List[str]
+        """
+        if not digits:
+            return None
+        self.HashTable = {                              # How to map multiple values into a key                                     
+            '2': ['a', 'b', 'c'], 
+            '3': ['d', 'e', 'f'],
+            '4': ['g', 'h', 'i'],
+            '5': ['j', 'k', 'l'],
+            '6': ['m', 'n', 'o'],
+            '7': ['p', 'q', 'r', 's'],
+            '8': ['t', 'u', 'v'],
+            '9': ['w', 'x', 'y', 'z']            
+        }
+        res = []
+        self.dfs(digits, "", res)
+        return res
+        
+    def dfs(self, digits, currstr, res):
+        if not digits:                                  # Base Case
+            res.append(currstr)
+            return                                      # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                        # DO NOT FORGET to return and end the current recursion (typical for base case)
+        for c in self.HashTable[digits[0]]:             # 在这些所有可能选择的选择中，先走一条路-----------DFS
+                                                        # for example: "234"
+                                                        # 一开始是2, 2对应的是['a', 'b', 'c']
+                                                        # 故在['a', 'b', 'c']中先选择 'a'这条路，继续往下递归
+            self.dfs(digits[1:], currstr + c, res)      # update currstr(最终走完这条路后会加入答案中) 
+                                                        # and by passing currstr + c, we do not need to use currstr.pop()
