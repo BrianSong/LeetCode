@@ -28,22 +28,27 @@ Input: "{[]}"
 Output: true
 
 Solution: ---------------------------------------------------------------------------Stack
-class Solution(object):                                                          
+--------------------------------------------------- O(n) T, O(n) S
+class Solution(object):
     def isValid(self, s):
-        stack = []
-        for i in s:
-            if i == "(" or i == "[" or i == "{":
-                stack.append(i)
-            else:
-                if stack == []:
-                    return False
-                curr_pop = stack.pop()
-                if curr_pop + i != "()" and curr_pop + i != "[]" and curr_pop + i != "{}":    # 'and' not 'or'
-                    return False
-        if stack != []:                                                                       # For the case when s == '('
-            return False
-        return True
         """
         :type s: str
         :rtype: bool
         """
+        if not s:
+            return True
+        stack = []
+        for w in s:
+            if w in ['(', '[', '{']:
+                stack.append(w)
+            else:
+                if stack:
+                    pop_element = stack.pop()                         # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                      # Everytime we want to pop from stack/queue,
+                                                                      # we MUST make sure that they are not None, else will bring error
+                    if not pop_element + w in ['()', '[]', '{}']:
+                        return False
+                else:                                   
+                    return False
+        return True if not stack else False                           # If stack is not empty, e.x. ['('],
+                                                                      # we must return False !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
