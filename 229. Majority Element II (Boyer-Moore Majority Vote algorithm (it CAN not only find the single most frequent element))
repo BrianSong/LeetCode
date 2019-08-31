@@ -11,7 +11,8 @@ Example 2:
 Input: [1,1,1,3,3,2,2,2]
 Output: [1,2]
 
-Solution: ----------------------------------------------- Boyer-Moore Majority Vote algorithm
+Solution: ---------------------------------- Boyer-Moore Majority Vote algorithm (it CAN not only find the single most frequent element)
+-------------------------------------------- O(n) T, O(1) S
 '''
 The essential concepts is you keep a counter for the majority number X. 
 If you find a number Y that is not X, the current counter should deduce 1. 
@@ -28,9 +29,11 @@ class Solution(object):
         :rtype: List[int]
         """
         if len(nums) == 0: return None
-        candidate1, candidate2, count1, count2 = -1, -2, 0, 0
-        for n in nums:
-            if n == candidate1:
+        candidate1, candidate2, count1, count2 = -1, -2, 0, 0                            # We can have at most two numbers
+        for n in nums:                                                                   # to become the "majority element"
+            if n == candidate1:                                                          # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!
+                                                                                         # if, elif, .., elif, else
+                                                                                         # only one of them will be execuated !!!!!
                 count1 += 1
             elif n == candidate2:
                 count2 += 1
