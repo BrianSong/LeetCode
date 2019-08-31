@@ -46,6 +46,7 @@ class Solution(object):
                     pop_element = stack.pop()                         # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                                                       # Everytime we want to pop from stack/queue,
                                                                       # we MUST make sure that they are not None, else will bring error
+                                                                      # CANNOT MAKE THIS MISTAKE NEXT TIME !!!!!!!!!!!!!!!!!!!!!!!!!
                     if not pop_element + w in ['()', '[]', '{}']:
                         return False
                 else:                                   
