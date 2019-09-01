@@ -46,3 +46,35 @@ class Solution(object):
                 self.permu_help(nums, path + [nums[i]], res, visited)            # Use path is a better way compared to currlist,
                                                                                  # since it does not need currlist.pop()
                 visited[i] = False
+                
+Solution no.2: -------------------------------- Backtracking but much more concise and without "visited"
+--------------------------------------------------------- O(n * n!) T and S
+'''
+Space: It doesn't alloc any extra space, just copy and concat the buffers to form the output. 
+There is n! output and each has n elements.
+Time: it doesn't do any extra computation but consider needing copy NN! elements. So time complexity is also O(N*N!)
+'''
+class Solution(object):
+    def permuteUnique(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if not nums:
+            return None
+        res = []    
+        nums.sort()                                                             # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                # Without sorting the nums first,
+                                                                                # the duplicate avoid step below will be useless !!!!!!
+        self.backtracking(nums, [], res)
+        return res
+    
+    def backtracking(self, nums, curr, res):
+        if not nums:
+            res.append(curr[:])
+            return
+        for i in range(len(nums)):
+            if i > 0 and nums[i] == nums[i - 1]:                                # For the current level recursion, we do not want
+                                                                                # to use duplicate element
+                continue
+            self.backtracking(nums[:i] + nums[i + 1:], curr + [nums[i]], res)   # We splice the nums to get rid of "visited"
