@@ -11,37 +11,37 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 1,1,5 → 1,5,1
 
 
-Solution: ---------------------------------------------- https://www.youtube.com/watch?v=w58KFpW5Pjk
+Solution: ---------------------------------------- Array ------------------------- https://www.youtube.com/watch?v=w58KFpW5Pjk
+-------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def nextPermutation(self, nums):
         """
         :type nums: List[int]
         :rtype: None Do not return anything, modify nums in-place instead.
         """
-        if not nums or len(nums) == 0:
+        if not nums:
             return None
-        replaceidx = len(nums) - 2
-        while replaceidx >= 0:                                              # Step no.1: find the element that needed to be replaced
-            if nums[replaceidx] < nums[replaceidx + 1]:
+        replace = len(nums) - 2                                             # Step no.1: find the element that needed to be replaced
+        while replace >= 0:
+            if nums[replace] < nums[replace + 1]:
                 break
-            replaceidx -= 1
-        if replaceidx < 0:                                                  # Special case: e.x.: 5 4 3 2 1
+            replace -= 1
+        if replace < 0:                                                     # Special case: e.x.: 5 4 3 2 1
             self.reverse(nums, 0, len(nums) - 1)
-        else:                                                               # Normal cases e.x. 5 3 4 2 1, the element is 3
-            laridx = replaceidx + 1
-            while laridx < len(nums) and nums[laridx] > nums[replaceidx]:   # Step no.2: Find the closest larger element for replacing
-                                                                            # here, the element is 4
-                laridx += 1
-            temp = nums[laridx - 1]
-            nums[laridx - 1] = nums[replaceidx]
-            nums[replaceidx] = temp
-            self.reverse(nums, replaceidx + 1, len(nums) - 1)               # After the swapping, (5 4 3 2 1) reverse the part after
-                                                                            # the replaced element (5 4 1 2 3)
-                
-    def reverse(self, nums, start, end):
-        while start < end:
-                temp = nums[end]
-                nums[end] = nums[start]
-                nums[start] = temp
-                start += 1
-                end -= 1
+        swap = replace + 1                                                  # Normal cases e.x. 1 2 6 4 2, the replace is 2
+                                                                            # Step no.2: Find the closest larger element for replacing
+                                                                            # here, the swap is 4
+        while swap < len(nums):
+            if nums[swap] > nums[replace]:
+                swap += 1
+            else:
+                break
+        swap -= 1
+        nums[replace], nums[swap] = nums[swap], nums[replace]               # Step no.3: 1 2 6 4 2 becomes 1 4 6 2 2
+        self.reverse(nums, replace + 1, len(nums) - 1)
+    
+    def reverse(self, nums, start, end):                                    # Step no.4: reverse / sort the 6 2 2 to 2 2 6
+        while start <= end:
+            nums[start], nums[end] = nums[end], nums[start]
+            start += 1
+            end -= 1
