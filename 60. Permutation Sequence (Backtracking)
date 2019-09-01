@@ -31,23 +31,25 @@ class Solution(object):
         :type k: int
         :rtype: str
         """
-        nums = [i for i in range(1, n + 1)]
-        self.times = k
-        self.res = ""
-        self.backtracking(nums, "", n)
+        if not n or not k:
+            return None
+        self.res, self.times = "", 0
+        self.backtracking([i for i in range(1, n + 1)], "", k)
         return self.res
-        
-    def backtracking(self, nums, path, n):
-        if len(path) == n:
-            self.times -= 1
-            if self.times == 0:
-                self.res = path
-        else:
-            for num in nums:
-                if not str(num) in path:
-                    self.backtracking(nums, path + str(num), n)
+    
+    def backtracking(self, nums, curr, k):
+        if not nums:
+            self.times += 1
+            if self.times == k:
+                self.res = curr
+            return
+        if self.res:
+            return
+        for i in range(len(nums)):
+            self.backtracking(nums[:i] + nums[i + 1:], curr + str(nums[i]), k)
                     
 Solution no.2: -------------------------------------------------------------- One Pass
+-------------------------------------------------------------- O(n^2) T due to "candidate.remove(digit)", O(n) S
 class Solution(object):
     def getPermutation(self, n, k):
         """
@@ -62,13 +64,15 @@ class Solution(object):
         
     def backtracking(self, n, k, candidate, res):
         if n == 1:
-            res += candidate[0]
+            res += candidate[0]                             # candidate now should have one and only one element
             return res
         else:
             SameFirstNum = math.factorial(n - 1)            # fix the first number, how many permutations for that number
             idx = (k - 1) / SameFirstNum                    # find the index for first number
             digit = candidate[idx]                          # find the first number
+                                                            # We only do (k - 1) here for the indexing 
             res += digit
             candidate.remove(digit)                         # remove the first number
-            return self.backtracking(n - 1, k % SameFirstNum, candidate, res)  
+            return self.backtracking(n - 1, k % SameFirstNum, candidate, res)  # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                               # k & SameFirstNum instead of (k - 1) & SameFirstNum
             # k % SameFirstNum -> small than SameFirstNum
