@@ -13,33 +13,14 @@ Output:
   [1,4],
 ]
 
-Solution: ----------------------------------- Backtracking ------------------------ https://www.youtube.com/watch?v=qzdTZWW1X8A
+Solution: --------------------------------------------- Backtracking with index
 class Solution(object):
     def combine(self, n, k):
-        res = []
-        currlist = []
-        stack_number = 1
-        self.combine_help(n, k, currlist, stack_number, res)
-        return res
         """
         :type n: int
         :type k: int
         :rtype: List[List[int]]
         """
-    def combine_help(self, n, k, currlist, stack_number, res):
-        if k == 0:                  # Exiting Condition
-            res.append(currlist[:])
-        else:
-            for i in range(stack_number, n + 1):
-                currlist.append(i)
-                self.combine_help(n, k - 1, currlist, i + 1, res)
-                #it must be "i + 1" instead of "stack_number + 1" inside a for loop with i
-                currlist.pop()     
-                # Remember to remove the add element and leave the space afterward
-                
-More concise version:
-class Solution(object):
-    def combine(self, n, k):
         if n < 0:
             return[]
         if k <= 0:
@@ -47,11 +28,7 @@ class Solution(object):
         res = []
         self.backtracking_help(n, k, 1, [], res)
         return res
-        """
-        :type n: int
-        :type k: int
-        :rtype: List[List[int]]
-        """
+     
     def backtracking_help(self, n, k, idx, path, res):
         if len(path) == k:
             res.append(path[:])
@@ -59,3 +36,26 @@ class Solution(object):
         for i in range(idx, n + 1):
             self.backtracking_help(n, k, i + 1, path + [i], res) # IMPORTANT!!!!!!!!!! here should be "i + 1" instead of "idx + 1"
                                                                  # the idx need to be updated according to i instead of idx itself!!!!!
+
+Solution no.2: -------------------------------------- Backtracking without index but creating and modifying nums
+----------------------------------------------------- O(n^(k + 1)) T
+----------------------------------------------------- O(k + 1) S
+class Solution(object):
+    def combine(self, n, k):
+        """
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        if not n or not k:
+            return None
+        res = []
+        self.backtracking(k, [i for i in range(1, n + 1)], [], res)
+        return res
+        
+    def backtracking(self, k, nums, curr, res):
+        if k == 0:
+            res.append(curr[:])
+            return
+        for i in range(len(nums)):
+            self.backtracking(k - 1, nums[i + 1:], curr + [nums[i]], res)
