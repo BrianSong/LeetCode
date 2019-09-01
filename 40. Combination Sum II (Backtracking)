@@ -26,43 +26,13 @@ A solution set is:
   [5]
 ]
 
-Solution:
+Solution: ------------------------------------------------------------ Backtracking
+------------------------------------------------------------ O(len(candidate) ^ (target / min(candidate))) T, len(candidate) is
+------------------------------------------------------------ the possible step we may take at each recursion, 
+------------------------------------------------------------ and target / min(candidate) is the maximum recursion depth
+------------------------------------------------------------ O(target / min(candidate)) S for the recursion depth
 class Solution(object):
-    def combinationSum2(self, candidates, target):
-        res = []
-        clist = []
-        self.comb_help(sorted(candidates), target, clist, res) 
-        res = sorted(res)                                                             # Solved the duplicated problem
-                                                                                      # [2,5,2,1,2] three 2 inside the candidate
-        final_res = [res[i] for i in range(len(res)) if i == 0 or res[i-1] != res[i]] # Maybe a smarter way to do inside comb_help()
-                                                                                      # Maybe followed up in the future
-        return final_res
-        """
-        :type candidates: List[int]
-        :type target: int
-        :rtype: List[List[int]]
-        """
-    def comb_help(self, candidates, target, clist, res):
-        for idex, item in enumerate(candidates):
-            if item > target:
-                break
-            clist.append(item)
-            if item == target:
-                res.append(clist[:])
-                clist.pop()
-                break
-            if item < target:
-                curridex = candidates.index(item) # Not a start way to find index for a list contains duplicate elements,
-                                                 # For example, [1, 1, 2], index(1) will only return 0 even this 1 is actually second 1
-                                                 # So I use a little slow way to fix this problem above in line 36
-                prev = item
-                self.comb_help(candidates[curridex+1:], target-item, clist, res) # curridex+1 make sure :Each number in candidates 
-                                                                                 # may only be used once in the combination.
-                clist.pop()
-                
-New Solution: Way more better and concise version:
-class Solution(object):
-    def combinationSum2(self, candidates, target):
+    def combinationSum2(self, candidates, target):                 # The candidates now contain duplicate elements
         candidates.sort()                                          # Need to sort the list first
         res = []
         self.backtracking_help(candidates, target, [], res)
@@ -80,6 +50,14 @@ class Solution(object):
             return
         for i, candidate in enumerate(candidates):
             if i > 0 and candidates[i] == candidates[i - 1]:      # Solve the duplicate choose of the element
+                                                                  # The key point of this question,
+                                                                  # We can have [1,1,6] for target == 8
+                                                                  # but we cannot have two [1,7] for target == 8
+                                                                  # So, the key is that, we do not care if the element is the same
+                                                                  # between upper and lower recursion,
+                                                                  # what we want is that at the current recursion 
+                                                                  # "for i, candidate in enumerate(candidates)",
+                                                                  # We cannot use two same element !!!!!!!!!!!!!!!!!!!!!!!!!!
                 continue
             else:
                 self.backtracking_help(candidates[i+1:], target - candidate, path + [candidate], res)   # Solve the choose from itself
@@ -93,5 +71,3 @@ class Solution(object):
         because in the next for loop, it will not be executed, since candidates is None now,
         so, we must put these two for loop statment outside this unexecuted for loop, so that our res will append [5]
         '''
-        
-        
