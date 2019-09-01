@@ -13,7 +13,7 @@ Output:
   [1,4],
 ]
 
-Solution: --------------------------------------------- Backtracking with index
+Solution no.1: --------------------------------------------- Backtracking with index
 class Solution(object):
     def combine(self, n, k):
         """
