@@ -12,7 +12,6 @@ Output: 1
 Explanation: 5! = 120, one trailing zero.
 Note: Your solution should be in logarithmic time complexity.
 
-Solution:
 '''
 The idea is:
 
@@ -58,9 +57,12 @@ By given number 4617.
 
 Then 4617! has 923 + 184 + 36 + 7 + 1 = 1151 trailing zeroes.
 '''
+Solution: ------------------------------------------------------ Math, Recursion
+---------------------------------------------------------------- O(logn) T, O(logn) S
 class Solution(object):
     def trailingZeroes(self, n):
-        return 0 if n == 0 else n / 5 + self.trailingZeroes(n / 5)
+        return 0 if n == 0 else n / 5 + self.trailingZeroes(n / 5)        # Must add n / 5 else only return self.trailingZeroes(n / 5)
+                                                                          # is totally meaningless
         '''
         return 0 if n == 0 ------- Base case
         first level n / 5 -> ÷ 5: factors of 5
@@ -73,3 +75,17 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
+
+Solution: ------------------------------------------------- Math, Iteration
+----------------------------------------------------------- O(logn) T, O(1) S
+class Solution(object):
+    def trailingZeroes(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        res = 0
+        while n != 0:
+            res += n / 5
+            n = n / 5
+        return res
