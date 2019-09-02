@@ -1,0 +1,46 @@
+Given a linked list, remove the n-th node from the end of list and return its head.
+
+Example:
+
+Given linked list: 1->2->3->4->5, and n = 2.
+
+After removing the second node from the end, the linked list becomes 1->2->3->5.
+Note:
+
+Given n will always be valid.
+
+Follow up:
+
+Could you do this in one pass?
+
+Solution: ------------------------------------------------- Linked List + Two Pointers ------------- One Pass
+----------------------------------------------------------- O(n) T, O(1) S
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        if not head:
+            return None
+        dummynode = ListNode(0)
+        dummynode.next = head
+        slow, fast = dummynode, dummynode           # Both start from dummynode
+                                                    # if we start from head, for cases like [1], 1
+                                                    # it will be difficult to deal with because we cannot use slow.next = slow.next.next
+        for i in range(n + 1):                      # Advance the fast pointer by n + 1 times, so that, in the later
+                                                    # move together process, when fast points to None after the last element of LL, 
+                                                    # slow will point to n + 1 node from end of LL
+            fast = fast.next
+        while fast:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummynode.next
