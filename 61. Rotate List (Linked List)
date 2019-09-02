@@ -18,7 +18,8 @@ rotate 3 steps to the right: 0->1->2->NULL
 rotate 4 steps to the right: 2->0->1->NULL
 
 
-Solution: ---------------------------------------- Two Pointers ------------------------- https://www.youtube.com/watch?v=E99Wmfb1Hwc
+Solution: ---------------------------------------- Linked List ------------------------- https://www.youtube.com/watch?v=E99Wmfb1Hwc
+-------------------------------------------------- O(n) T, O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -42,10 +43,13 @@ class Solution(object):
         while k > 0:                             # Create a certain length of linked list by moving fast pointer and remain slow pointer
             fast = fast.next
             k -= 1
-        while fast.next:                         # Move this certain length of linked list to the right               
+        while fast.next:                         # By moving the fast beforehead by k times and move slow and fast together now,
+                                                 # when fast points to the last element in the linked list, 
+                                                 # slow will point to the last element of supposed new linked list we need to return
+                                                 # e.x.: 1 2 3 4 5 6, k = 2, now fast points to 6 and slow points to 4
             slow = slow.next
             fast = fast.next
-        fast.next = head
+        fast.next = head                         # Now, just linked 1 to 6.next, assign 5 to be the new head and let 4.next = None
         head = slow.next
         slow.next = None
         return head
