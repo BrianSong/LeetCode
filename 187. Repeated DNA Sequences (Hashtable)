@@ -10,8 +10,8 @@ Input: s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
 Output: ["AAAAACCCCC", "CCCCCAAAAA"]
 
 Solution no.1: ------------------------------------------------------- Hashtable
----------------------------------------------------------------------- O(n * k) T, where k == 10 due to the slicing "curr = s[i - 10 : i]"
----------------------------------------------------------------------- O(1) S
+---------------------------------------------------------------- O(n * k) T, where k == 10 due to the slicing "curr = s[i - 10 : i]"
+---------------------------------------------------------------- O(1) S
 class Solution(object):
     def findRepeatedDnaSequences(self, s):
         """
