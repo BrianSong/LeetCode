@@ -21,7 +21,8 @@ Try to come up as many solutions as you can, there are at least 3 different ways
 Could you do it in-place with O(1) extra space?
 
 
-Solution no.1: ------------------------------------------- Using Extra Array
+Solution no.1: ------------------------------------------- Array
+---------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def rotate(self, nums, k):
         """
@@ -29,14 +30,12 @@ class Solution(object):
         :type k: int
         :rtype: None Do not return anything, modify nums in-place instead.
         """
-        res = [0 for i in range(len(nums))]
-        for i in range(len(nums)):
-            res[(i + k) % len(nums)] = nums[i]
-        for i in range(len(nums)):
-            nums[i] = res[i]
+        k %= len(nums)
+        nums[:(len(nums) - k)], nums[len(nums) - k :] = nums[len(nums) - k :], nums[:(len(nums) - k)]  # We store the subarray in cache
             
             
 Solution no.2: ----------------------------------------------- Using Reverse
+---------------------------------------------------------- O(n) T, O(1) S
 '''
 This approach is based on the fact that when we rotate the array k times, k elements from the back end of the array come to the front 
 and the rest of the elements from the front shift backwards.
