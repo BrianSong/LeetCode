@@ -20,7 +20,8 @@ Follow up:
 Could you do it without using any loop / recursion?
 
 
-Solution no.1: ------------------------------------------------------------------ Loop
+Solution: ----------------------------------------------------------------- Math
+----------------------------------------------------------------- O(log3n) T, O(1) S
 '''
 If a number n is a power of a number b, we can write
 n = b^x
@@ -33,9 +34,8 @@ class Solution(object):
         :type n: int
         :rtype: bool
         """
-        if n < 1: return False
+        if not n:                              # n == 0 must be excluded, otherwise the loop will be infinite
+            return False
         while n % 3 == 0:
             n /= 3
         return n == 1
-        
-More math solutions may be followed up in the future.
