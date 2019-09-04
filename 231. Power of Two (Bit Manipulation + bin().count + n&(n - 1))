@@ -15,7 +15,7 @@ Example 3:
 Input: 218
 Output: false
 
-Solution no.1:
+Solution no.1: ------------------------------------------ Bit Manipulation
 class Solution(object):
     def isPowerOfTwo(self, n):
         counter = 0
@@ -23,8 +23,17 @@ class Solution(object):
             counter += (n >> i) & 1                # n >> i, n转换为二进制后右移i位的最右位
         return n > 0 and counter == 1
         
-Solution no.2:
+Solution no.2: ----------------------------------------- bin().count
 class Solution(object):
     def isPowerOfTwo(self, n):
         return n > 0 and bin(n).count('1') == 1    # bin() 返回一个整数 int 或者长整数 long int 的二进制表示 
                                                    # bin() return a string with build-in function count()
+
+Solution no.3: --------------------------------------- n & (n - 1)
+class Solution(object):
+    def isPowerOfTwo(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        return n > 0 and n & (n - 1) == 0          # if n & (n - 1) == 0, then n has only one 1 digit
