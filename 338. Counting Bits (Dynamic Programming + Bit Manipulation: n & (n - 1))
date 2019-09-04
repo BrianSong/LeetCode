@@ -1,5 +1,6 @@
 Given a non negative integer number num. 
-For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1's in their binary representation and return them as an array.
+For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1's in their binary rep
+entation and return them as an array.
 
 Example 1:
 
@@ -17,11 +18,12 @@ Space complexity should be O(n).
 Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.
 
 
-Solution: -------------------------------------------------------- Dynamic Programming
+Solution: -------------------------------------------------- Dynamic Programming + Bit Manipulation: n & (n - 1)
+-------------------------------------------------- O(n) T, O(n) S
 '''
 i & (i-1) drops the lowest set bit. 
-For example: i = 14, its binary representation is 1110, so i-1 is 1101, i&(i-1) = 1100, 
-the number of "1"s in its binary representation decrease one, so we can get ret[i] = ret[i&(i-1)] + 1. 
+For example: i = 14, its binary representation is 1110, so i-1 is 1101, i&(i-1) = 1100 => 10
+the number of "1"s in its binary representation decrease one, so we can get dp[i] = dp[i&(i-1)] + 1, i.e. dp[14] = dp[10] + 1
 '''
 class Solution(object):
     def countBits(self, num):
@@ -29,7 +31,7 @@ class Solution(object):
         :type num: int
         :rtype: List[int]
         """
-        res = [0 for i in range(num + 1)]
+        dp = [0 for i in range(num + 1)]
         for i in range(1, num + 1):                     # i must start from 1 to cope with (i- 1) in the equation
-            res[i] = res[i & (i - 1)] + 1
-        return res
+            dp[i] = dp[i & (i - 1)] + 1               # Very IMPORTANT trick in Bit Manipulation: n & (n - 1) !!!!!!!!!!!!!!!!!!!!!!
+        return dp
