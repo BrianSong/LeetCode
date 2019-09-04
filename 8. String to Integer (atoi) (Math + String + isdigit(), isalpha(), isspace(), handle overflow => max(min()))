@@ -46,7 +46,9 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
              Thefore INT_MIN (−231) is returned.
              
              
-Solution: -------------------------- my own --------------------------------- Too many edge cases.................
+Solution: -------------------------- my own -------------------- Math + String ------------- Too many edge cases.................
+---------------------------------------------------------------- isdigit(), isalpha(), isspace(), handle overflow => max(min())
+------------------------------------ O(n) T, O(1) S
 '''
 no.1: "3.14159" => 3
 no.2: "+-2" => 0
