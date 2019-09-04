@@ -16,6 +16,7 @@ Input: 218
 Output: false
 
 Solution no.1: ------------------------------------------ Bit Manipulation
+---------- O(1) T => left or right shift operation as taking O(1) and a single bitwise & would be considered O(1), O(1) S
 class Solution(object):
     def isPowerOfTwo(self, n):
         counter = 0
