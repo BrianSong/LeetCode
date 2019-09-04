@@ -13,10 +13,25 @@ Example 3:
 Input: 120
 Output: 21
 Note:
-Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. 
+Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−2**31,  2**31 − 1]. 
 For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
 
-Solution:
+Solution no.1:
+class Solution(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        if not x:
+            return x
+        num = abs(x)
+        if int(str(num)[::-1]) >= 2**31 - 1:
+            return 0
+        return int(str(num)[::-1]) if x > 0 else -int(str(num)[::-1])
+        
+Solutio no.2: ------------------------------------------ Math
+-------------------------------------------------------- O(log10(x)) T, because there are roughly log10(x) digits in x, O(1) S
 class Solution(object):
     def reverse(self, x):
         """
@@ -33,6 +48,4 @@ class Solution(object):
             if newrev > pow(2, 31) - 1: return 0        # Hand over overflow cases
             rev = newrev
             currx /= 10
-        if x < 0:
-            return -rev
-        return rev
+        return rev if x > 0 else -rev                   # Hand over negative cases
