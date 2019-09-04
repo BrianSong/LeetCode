@@ -47,7 +47,7 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
              
              
 Solution: -------------------------- my own -------------------- Math + String ------------- Too many edge cases.................
----------------------------------------------------------------- isdigit(), isalpha(), isspace(), handle overflow => max(min())
+---------------------------------------------------------------- isdigit(), isalpha(), isspace(), handle overflow => min(max())
 ------------------------------------ O(n) T, O(1) S
 '''
 no.1: "3.14159" => 3
