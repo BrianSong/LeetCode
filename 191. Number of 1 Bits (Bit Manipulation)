@@ -61,3 +61,17 @@ class Solution(object):
             if n >> i & 1 == 1:
                 res += 1
         return res
+
+Solution no.3:
+class Solution(object):
+    def hammingWeight(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        res = 0
+        while n != 0:
+            res += 1
+            n = n & (n - 1)      # Each time by reset n to be n & (n - 1), we are removing the rightest '1' of n
+                                 # So, the number of times we can remove 1 is exacty how many '1' n has
+        return res
