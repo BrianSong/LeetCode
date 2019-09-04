@@ -62,31 +62,33 @@ class Solution(object):
         :type str: str
         :rtype: int
         """
-        res, positive = '', None
+        if not str:
+            return 0
+        positive, res = None, ""
         for i in range(len(str)):
             if str[i].isspace():
-                if res == '' and positive == None:
-                    pass
+                if res == "" and positive == None:                  # Nothing has been done
+                    continue
                 else:
                     break
             elif str[i] == '+':
-                if positive == None and res == '':
+                if res == "" and positive == None:
                     positive = True
                 else:
                     break
             elif str[i] == '-':
-                if positive == None and res == '':
+                if res == "" and positive == None:
                     positive = False
                 else:
-                    break    
+                    break
             elif str[i].isalpha() or str[i] == '.':
                 break
             elif str[i].isdigit():
                 res += str[i]
         if res == '':
-            res = 0
-        if positive == False:
-            res = - int(res)
-        else:
+            return 0
+        if positive == True or positive == None:
             res = int(res)
-        return min(max(-2147483648, res), 2147483647)
+        else:
+            res = -int(res)
+        return min(max(-2**31, res), 2**31 - 1)
