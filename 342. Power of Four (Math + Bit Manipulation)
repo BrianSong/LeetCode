@@ -11,6 +11,7 @@ Output: false
 Follow up: Could you solve it without loops/recursion?
 
 Solution no.1(my own): -------------------------------- Math
+------------------------------------------------------- O(log4num) T, 0(1) S
 class Solution(object):
     def isPowerOfFour(self, num):
         if num == 0:
