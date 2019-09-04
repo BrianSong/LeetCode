@@ -27,7 +27,9 @@ as the internal binary representation of the integer is the same whether it is s
 In Java, the compiler represents the signed integers using 2's complement notation. 
 Therefore, in Example 3 above the input represents the signed integer -3.
 
-Solution:
+Solution no.1: --------------------------------------------------- Bit Manipulation
+------------------------------------------------------------ O(1) T, The run time depends on the number of bits in n. 
+------- Because n in this piece of code is a 32-bit integer, the time complexity is O(1), O(1) S
 class Solution(object):
     def hammingWeight(self, n):
         bits = 0
@@ -38,9 +40,24 @@ class Solution(object):
                                 # the least significant bit of this number.
                 bits += 1
             mask <<= 1          # To check the next bit, we shift the mask to the left by one.
+                                # here, MUST be mask <<= 1 instead of mask << 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                 # 0000 0000 0000 0000 0000 0000 0000 0010. And so on.
         return bits
         """
         :type n: int
         :rtype: int
         """
+
+
+Solution no.2: --------------------------------------- my own
+class Solution(object):
+    def hammingWeight(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        res = 0
+        for i in range(32):
+            if n >> i & 1 == 1:
+                res += 1
+        return res
