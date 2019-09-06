@@ -8,10 +8,11 @@ Example:
 
 Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
 Output: 7 -> 0 -> 8
-Explanation: 342 + 465 = 807.
+Explanation: 342 + 465 = 807
 
-
-Solution no.1: ------------------------------------------------ my own
+    
+Solution: ----------------------------------------- Linked List
+--------------------------------------- O(n) T, O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -25,67 +26,12 @@ class Solution(object):
         :type l2: ListNode
         :rtype: ListNode
         """
-        dummynode, reminder = ListNode(0), 0
-        prev = dummynode
-        while l1 and l2:
-            head = ListNode(0)
-            head.val = l1.val + l2.val + reminder
-            if head.val >= 10:
-                reminder = head.val / 10
-                head.val %= 10
-            else:
-                reminder = 0
-            l1 = l1.next
-            l2 = l2.next
-            prev.next = head
-            prev = head
-        if l1:
-            while l1:
-                print reminder
-                head = ListNode(0)
-                head.val = l1.val + reminder
-                if head.val >= 10:
-                    reminder = head.val / 10
-                    head.val %= 10
-                else:
-                    reminder = 0
-                l1 = l1.next
-                prev.next = head
-                prev = head
-        elif l2:
-            while l2:
-                head = ListNode(0)
-                head.val = l2.val + reminder
-                if head.val >= 10:
-                    reminder = head.val / 10
-                    head.val %= 10
-                else:
-                    reminder = 0
-                l2 = l2.next
-                prev.next = head
-                prev = head
-        if reminder != 0:                                               # Must check reminder for all cases
-            head = ListNode(reminder)
-            prev.next = head
-        return dummynode.next
-        
-        
-Solution no.2: ----------------------------------------- Integrated and much concise version
-# Definition for singly-linked list.
-# class ListNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
-
-class Solution(object):
-    def addTwoNumbers(self, l1, l2):
-        """
-        :type l1: ListNode
-        :type l2: ListNode
-        :rtype: ListNode
-        """
-        dummynode, reminder = ListNode(0), 0
-        prev = dummynode
+        dummynode, reminder = ListNode(0), 0     # Although the Linked List is reversed,
+                                                 # We do not need to reverse l1 and l2
+                                                 # because Linked list add from left to right
+                                                 # Normal addition add from right to left,
+                                                 # Rervese is exactly what we want!
+        prev = dummynode                         # Use prev to link node from back to front and over and over again
         while l1 or l2 or reminder:              # As long as one is not None, we continue
             head, v1, v2 = ListNode(0), 0, 0     # Must initilize v1 and v2, we cannot let l1.val = 0 or l2.val = 0 if l1 or l2 is None
             if l1:                                    
@@ -98,7 +44,7 @@ class Solution(object):
                 head.val %= 10
             else:
                 reminder = 0
-            if l1: l1 = l1.next
+            if l1: l1 = l1.next                  # MUST CHECK!!!
             if l2: l2 = l2.next
             prev.next = head
             prev = head
