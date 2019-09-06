@@ -20,6 +20,7 @@ The above arrows point to positions where the corresponding bits are different.
 
 
 Solution: ------------------------------------------------------- Bit Manipulation
+---------------------------------------------- O(1) T, O(1) S
 class Solution(object):
     def hammingDistance(self, x, y):
         """
