@@ -17,6 +17,7 @@ Length of the array will not exceed 10^4.
 
 
 Solution: ---------------------------------------------------------- Bit Manipulation
+-------------------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def totalHammingDistance(self, nums):
         """
