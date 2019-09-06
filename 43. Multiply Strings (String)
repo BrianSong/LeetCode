@@ -34,7 +34,8 @@ class Solution(object):
                 poshigh = i + j
                 sumnum += reslist[poslow]
                 reslist[poslow] = sumnum % 10
-                reslist[poshigh] += sumnum / 10
+                reslist[poshigh] += sumnum / 10                  # We do not need to worry about whether relist[poshigh] bigger than 10
+                                                                 # Because we will deal with it in the later iterations
         for num in reslist:
             if not (len(res) == 0 and num == 0):                 # Remove all leading zeros
                 res += str(num)
