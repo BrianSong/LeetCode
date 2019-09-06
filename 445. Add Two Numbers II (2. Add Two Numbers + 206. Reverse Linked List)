@@ -14,6 +14,7 @@ Output: 7 -> 8 -> 0 -> 7
 
 
 Solution: -------------------------------------------- 2. Add Two Numbers + 206. Reverse Linked List
+-------------------------------------------- O(n) T, O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
