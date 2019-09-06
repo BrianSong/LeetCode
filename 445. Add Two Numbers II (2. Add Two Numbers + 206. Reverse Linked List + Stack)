@@ -13,7 +13,7 @@ Input: (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
 Output: 7 -> 8 -> 0 -> 7
 
 
-Solution: -------------------------------------------- 2. Add Two Numbers + 206. Reverse Linked List
+Solution no.1: ------------------------------------- 2. Add Two Numbers + 206. Reverse Linked List
 -------------------------------------------- O(n) T, O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
@@ -51,4 +51,45 @@ class Solution(object):
             curr.next = prev
             prev = curr
             curr = nextele
+        return prev
+
+Solution no.2: ------------------------------------- Stack
+-------------------------------------------- O(n) T, O(n) S
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        s1, s2 = [], []
+        curr1, curr2 = l1, l2
+        while curr1:
+            s1.append(curr1.val)
+            curr1 = curr1.next
+        while curr2:
+            s2.append(curr2.val)
+            curr2 = curr2.next
+        curr1, curr2 = l1, l2
+        prev, reminder = None, 0
+        while s1 or s2 or reminder:
+            if s1:
+                v1 = s1.pop()
+            else:                     # CANNOT FORGET !!!!!
+                v1 = 0
+            if s2:
+                v2 = s2.pop()
+            else:
+                v2 = 0
+            sum = reminder + v1 + v2
+            currnode = ListNode(sum%10)
+            reminder = sum / 10
+            currnode.next = prev
+            prev = currnode
         return prev
