@@ -16,7 +16,8 @@ Input: [4,3,2,1]
 Output: [4,3,2,2]
 Explanation: The array represents the integer 4321.
 
-Solution:
+Solution no.1: ------------------------------------------- Convert to integer
+---------------------------------------------------------- O(n) T, O(1) S, iterate over the entire digits no matter what
 '''
 We're given a list of digits, and the idea here is to convert that list to an integer, num. 
 So each digit is multiplied by the proper place value and added to num. 
@@ -34,3 +35,24 @@ class Solution(object):
         :type digits: List[int]
         :rtype: List[int]
         """
+
+Solution no.2: ------------------------------------------ Work on the list directly
+------------------------------------------------------ O(n) T, O(1) S, in this way, we may not need to iterate over the whole digits
+class Solution(object):
+    def plusOne(self, digits):
+        """
+        :type digits: List[int]
+        :rtype: List[int]
+        """
+        if not digits:
+            return None
+        reminder = 1
+        for i in range(len(digits) - 1,  -1, -1):
+            sum = digits[i] + reminder
+            digits[i] = sum % 10
+            reminder = sum / 10
+            if not reminder:
+                return digits
+        if reminder:
+            digits.insert(0, reminder)
+        return digits
