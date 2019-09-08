@@ -24,7 +24,8 @@ class Solution(object):
             u2, u3, u5 = 2 * dp_ugly[i2], 3 * dp_ugly[i3], 5 * dp_ugly[i5]    
             dp_ugly[i] = min(u2, u3, u5)
             if dp_ugly[i] == u2:
-                i2 += 1
+                i2 += 1                                                    # Must increase by 1 because the next time we apply 2 factor
+                                                                           # should be on the next least element in the dp array
             if dp_ugly[i] == u3:                                           # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 i3 += 1                                                    # MUST be "if" instead of "elif" here !!!!!!!!
             if dp_ugly[i] == u5:                                           # else, when u2, u3, u5 exist duplicate, the dp will also
