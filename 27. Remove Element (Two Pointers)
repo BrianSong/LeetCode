@@ -39,42 +39,28 @@ for (int i = 0; i < len; i++) {
 
 Solution: Two pointer
 class Solution(object):
+    """
+    :type nums: List[int]
+    :type val: int
+    :rtype: int
+    """
     def removeElement(self, nums, val):
-        start, end = 0, len(nums) - 1   # cannot use sorted() here because the question demand us to keep O(1) space com
-        while start <= end:                                    # When the start == end, there is one last element need to be considered
-            if nums[start] == val:                              # When the start element is the same as the target value,
-                                                                # we swap it with the last element in the nums
-                                                                # and we reduce the end by 1 since we know the last element now is 
-                                                                # useless to us.
+        start, end = 0, len(nums) - 1   
+        while start <= end:                                    # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                               # Instead of "start < end", we use "start <= end" !!!!!!!!!!!!
+                                                               # When the start == end, there is one last element need to be considered
+                                                               # If the last element == val: start will remain the same,
+                                                               # and we can return it as the length instead of an index
+                                                               # If the last element != val: start will increase by 1
+                                                               # then now, we return start = start + 1 which is the length we want !!!!
+            if nums[start] == val:                             # When the start element is the same as the target value,
+                                                               # we swap it with the last element in the nums
+                                                               # and we reduce the end by 1 since we know the last element now is 
+                                                               # useless to us.
                 nums[start], nums[end] = nums[end], nums[start]
                 end -= 1
-            else:                                               # If the value does not match, we increase the start by 1,
-                                                                # since this element is also useless to us for analysing 
+            else:                                              # If the value does not match, we increase the start by 1,
+                                                               # since this element is also useless to us for analysing 
                 start += 1
-        return start                                  
-                
-        """
-        :type nums: List[int]
-        :type val: int
-        :rtype: int
-        """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return start                                           # By setting "while start <= end", we can directly return start
+                                                               # as the length instead of start + 1
