@@ -37,7 +37,8 @@ for (int i = 0; i < len; i++) {
     print(nums[i]);
 }
 
-Solution: Two pointer
+Solution: --------------------------------------------------------- Two pointer
+----------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     """
     :type nums: List[int]
