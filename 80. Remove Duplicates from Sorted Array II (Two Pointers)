@@ -33,7 +33,8 @@ for (int i = 0; i < len; i++) {
     print(nums[i]);
 }
 
-Solution: --------------------------------------------------- https://www.youtube.com/watch?v=d4QrBMtg57I
+Solution: ---------------------------------------------- Two Pointers ------------- https://www.youtube.com/watch?v=d4QrBMtg57I
+-------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def removeDuplicates(self, nums):
         if nums is None or len(nums) < 2:
@@ -47,6 +48,9 @@ class Solution(object):
                 fast pointer is the next element we would like to add to the result,
                 the only case we want to avoid is three duplicate element in a roll, we can accept anything else
                 so this three element cannot be the same
+                IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                Instead of "nums[fast] == nums[fast - 1] == nums[fast - 2]" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                We do not care about nums[fast - 1] or nums[fast - 2], what we care about is nums[slow - 1] and nums[slow - 2]
                 '''
                 fast += 1
             else:
