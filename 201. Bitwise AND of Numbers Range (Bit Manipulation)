@@ -9,7 +9,8 @@ Example 2:
 Input: [0,1]
 Output: 0
 
-Solution:
+Solution: ----------------------------------------------------- Bit Manipulation
+--------------------------------------------------------------- O(1) T since 0 <= m <= n <= 2147483647, O(1) S
 '''
 First let's think what does bitwise AND do to two numbers, for example ( 0b means base 2)
 
@@ -35,8 +36,8 @@ The bitwise AND of all the numbers in range [m, n] is just the bitwise AND of th
 
 rangeBitwiseAnd(m, n) = m' & n' = 0bxyz0000
 This tells us,
-the bitwise and of the range is keeping the common bits of m and n from left to right until the first bit that they are different, 
-padding zeros for the rest.
+the bitwise and of the range is keeping the common bits of m and n from left to right 
+until the first bit that they are different, padding zeros for the rest.
 '''
 class Solution(object):
     def rangeBitwiseAnd(self, m, n):
@@ -47,7 +48,8 @@ class Solution(object):
         """
         i = 0
         while m != n:
-            m >>= 1
+            m >>= 1                                      # In a word, we are finding the rightest common position
+                                                         # after we find it, we pad its right with all zeros and return it
             n >>= 1
             i += 1
-        return n << i
+        return n << i                                    # We can also return m << i here, it's the same
