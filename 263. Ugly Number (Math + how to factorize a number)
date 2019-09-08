@@ -22,10 +22,11 @@ Note:
 1 is typically treated as an ugly number.
 Input is within the 32-bit signed integer range: [−231,  231 − 1].
 
-Solution: ------------------------------------------------------------ https://www.youtube.com/watch?v=1wpe7yeqZd0
+Solution: ----------------------------- Math (how to factorize a number) ----------------- https://www.youtube.com/watch?v=1wpe7yeqZd0
+------------------ In each division performed in the while loop n is getting reduced by at least half, so O(logn) T, O(1) S
 class Solution(object):
     def isUgly(self, num):
-        if num == 0:
+        if not num:
             return False
         while num % 2 == 0:                   # num == 2^i * 3^j * 5^k
             num = num / 2.0
@@ -33,9 +34,7 @@ class Solution(object):
             num = num / 3.0
         while num % 5 == 0:
             num = num / 5.0
-        if num == 1:
-            return True
-        return False
+        return num == 1
         """
         :type num: int
         :rtype: bool
