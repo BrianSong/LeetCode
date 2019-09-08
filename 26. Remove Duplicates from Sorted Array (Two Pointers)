@@ -26,7 +26,9 @@ class Solution(object):
                                                # Fast pointer here is used to look every elements
                                                # Slow pointer here is to mark the position for next new element's insertion
         while fast < len(nums):
-            if nums[fast] == nums[fast - 1]:
+            if nums[fast] == nums[slow - 1]:   # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                               # Should be "nums[fast] == nums[slow - 1]" instead of "nums[fast] == nums[fast - 1]"
+                                               # We care about nums[slow - 1] instead of nums[fast - 1                                
                 fast += 1
             else:
                 nums[slow] = nums[fast]        # Not swapping, but let nums[slow] == nums[fast] since we need to insert the different
