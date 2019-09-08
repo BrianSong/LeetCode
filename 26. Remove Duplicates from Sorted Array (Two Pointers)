@@ -17,7 +17,8 @@ Your function should return length = 5, with the first five elements of nums bei
 
 It doesn't matter what values are set beyond the returned length.
 
-Solution: Two pointer
+Solution: ------------------------------------------------- Two pointer
+------------------------------------------------------ O(n) T, O(1) S
 class Solution(object):
     def removeDuplicates(self, nums):
         slow, fast = 1, 1                      # Slow and Fast pointer. Not all two pointer is start and end
@@ -27,12 +28,13 @@ class Solution(object):
             if nums[fast] == nums[fast - 1]:
                 fast += 1
             else:
-                nums[slow] = nums[fast]        # Not swap value, but let nums[slow] == nums[fast] since we need to insert the different
+                nums[slow] = nums[fast]        # Not swapping, but let nums[slow] == nums[fast] since we need to insert the different
                                                # value in place
                 slow += 1
                 fast += 1
-                
-        return slow
+        return slow                            # Why return slow instead of slow + 1 ????
+                                               # Because only the elements before the slow are sure to be unique,
+                                               # the slow itself is not
         """
         :type nums: List[int]
         :rtype: int
