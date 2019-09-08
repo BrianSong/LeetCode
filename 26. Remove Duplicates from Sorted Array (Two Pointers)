@@ -22,6 +22,7 @@ Solution: ------------------------------------------------- Two pointer
 class Solution(object):
     def removeDuplicates(self, nums):
         slow, fast = 1, 1                      # Slow and Fast pointer. Not all two pointer is start and end
+                                               # We do not start from the 0 here because nums[0] must be itself unique
                                                # Fast pointer here is used to look every elements
                                                # Slow pointer here is to mark the position for next new element's insertion
         while fast < len(nums):
