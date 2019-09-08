@@ -12,21 +12,24 @@ Note:
 1 is typically treated as an ugly number.
 n does not exceed 1690.
 
-Solution:
+Solution: ------------------------------------------------------- Dynamic Programming
+----------------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def nthUglyNumber(self, n):
-        dp_ugly = [1] * n                                                     # dp initialization
-        i2, i3, i5 = 0, 0, 0                                                  # Introduce three more variables: i2, i3, i5
+        dp_ugly = [1] * n                                                  # dp initialization
+        i2, i3, i5 = 0, 0, 0                                               # Introduce three more variables: i2, i3, i5
+                                                                           # Try a similar approach of merging from three sorted lists: 
+                                                                           # L1, L2, and L3
         for i in range(1, n):
             u2, u3, u5 = 2 * dp_ugly[i2], 3 * dp_ugly[i3], 5 * dp_ugly[i5]    
             dp_ugly[i] = min(u2, u3, u5)
             if dp_ugly[i] == u2:
                 i2 += 1
-            if dp_ugly[i] == u3:
-                i3 += 1
-            if dp_ugly[i] == u5:
-                i5 += 1
-        return dp_ugly[n - 1]
+            if dp_ugly[i] == u3:                                           # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                i3 += 1                                                    # MUST be "if" instead of "elif" here !!!!!!!!
+            if dp_ugly[i] == u5:                                           # else, when u2, u3, u5 exist duplicate, the dp will also
+                i5 += 1                                                    # contain duplicate, e.x.: [1,2,3,5,6,6,8,9,10]
+        return dp_ugly[-1]
                 
         """
         :type n: int
