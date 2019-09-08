@@ -17,7 +17,7 @@ Your function should return length = 5, with the first five elements of nums bei
 
 It doesn't matter what values are set beyond the returned length.
 
-Solution: ------------------------------------------------- Two pointer
+Solution: ------------------------------------------------- Two pointers
 ------------------------------------------------------ O(n) T, O(1) S
 class Solution(object):
     def removeDuplicates(self, nums):
