@@ -20,7 +20,7 @@ Output: true
 Note:
 You may assume both s and t have the same length.
 
-Solution: ----------------------------------------------------- HashTable
+Solution: ----------------------------------------------------- HashTable + Set
 --------------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def isIsomorphic(self, s, t):
@@ -29,7 +29,8 @@ class Solution(object):
         :type t: str
         :rtype: bool
         """
-        if len(s) != len(t):                            # for "if not s or not t", return False may be wrong: "" and "" => True
+        if len(s) != len(t) or len(set(s)) != len(set(t)):  # for "if not s or not t", return False may be wrong: "" and "" => True
+                                                            # use a set here to prevent from cases like: "ab" and "aa"
             return False
         HashTable = {}
         for i in range(len(s)):
@@ -37,9 +38,5 @@ class Solution(object):
                 if t[i] != HashTable[s[i]]:
                     return False
             else:
-                if t[i] in HashTable.values():          # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                                        # one value in HashTable can only match to one key in Hashtable
-                                                        # for example: "ab" and "aa" should be False
-                    return False
                 HashTable[s[i]] = t[i]
         return True
