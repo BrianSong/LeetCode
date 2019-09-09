@@ -58,7 +58,7 @@ class Solution(object):
             else:                                                
                 i = next[i]                                      # why i = next[i] ????
                                                                  # when needle[i] != needle[j], i is like the mismatch character,
-                                                                 # it should return to the last possible prefix's index which is next[i]
+                                                                 # it should return to the rightest newpossible prefix's index: next[i]
         i = j = 0
         while i < m and j < n:
             if j == -1 or haystack[i] == needle[j]:
