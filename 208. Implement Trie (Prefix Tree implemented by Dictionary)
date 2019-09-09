@@ -16,7 +16,7 @@ You may assume that all inputs are consist of lowercase letters a-z.
 All inputs are guaranteed to be non-empty strings.
 
 
-Solution:
+Solution: ------------------------------------------------- Prefix Tree implemented by Dictionary
 class TrieNode(object):
     def __init__(self):
         self.children = collections.defaultdict(TrieNode)       # collections.defaultdic() not collection.defaultdic()
@@ -31,7 +31,8 @@ class Trie(object):
         """
         Initialize your data structure here.
         """
-        self.root = TrieNode()
+        self.root = TrieNode()                                     # IMPORTANT !!!!!!!!!!!!!!!!!!!
+                                                                   # Remember to add () !!!!!!!!!
         
 
     def insert(self, word):
@@ -64,7 +65,7 @@ class Trie(object):
             if not char in curr.children:                         # 每一个node都有属于自己的self.children dictionary
                 return False
             curr = curr.children[char]
-        return curr.isEndofWord
+        return curr.isEndofWord                                   # return curr.isEndofWord instead of direct True as in startsWith()
         
 
     def startsWith(self, prefix):
