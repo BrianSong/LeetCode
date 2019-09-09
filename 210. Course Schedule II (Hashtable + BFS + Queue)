@@ -27,6 +27,7 @@ The input prerequisites is a graph represented by a list of edges, not adjacency
 You may assume that there are no duplicate edges in the input prerequisites.
 
 Solution: --------------------------------------- nearly the same as 207. Course Schedule
+------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         """
@@ -55,7 +56,8 @@ class Solution(object):
                     queue.append(item)
         for item in indegree:                      # Step no.4: Check the result
             if item != 0:
-                return []                          # If it is impossible to finish all courses, return an empty array.
+                return []                          # If it is impossible to finish all courses, return an empty array !!!!!!!!!!!!!
+                                                   # We CANNOT JUST return res without checking !!!!!!!!!!!!!!!
         return res
         
 # 解题思路照片在文件传输助手 2019.05.17
