@@ -22,7 +22,8 @@ Note:
 The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
 You may assume that there are no duplicate edges in the input prerequisites.
 
-Solution: ---------------------------------------------------------- https://www.youtube.com/watch?v=zkTOIVUdW-I
+Solution: --------------------------------- Hashtable + BFS + Queue ------- https://www.youtube.com/watch?v=zkTOIVUdW-I
+------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         """
@@ -31,9 +32,12 @@ class Solution(object):
         :rtype: bool
         """
         Hashtable = collections.defaultdict(list)   # Step no.1: Create a Hashtable for transforming prerequisites into something useful
+                                                    # HashTable[i] stores the classes that can be taken only after class i is taken
         for item in prerequisites:
             Hashtable[item[1]].append(item[0])
         indegree = [0] * numCourses                 # Step no.2: Create a indegree list for storing indegree variables
+                                                    # the indegree[i] here store the number of pre-classes for index(class) i
+                                                    # course 0 is also applicable here
         for value in Hashtable.values():
             for item in value:
                 indegree[item] += 1
@@ -45,7 +49,8 @@ class Solution(object):
             pop_element = queue.pop(0)
             for item in Hashtable[pop_element]:
                 indegree[item] -= 1
-                if indegree[item] == 0:
+                if indegree[item] == 0:            # If indegree[i] == 0, means that we can freely take this class
+                                                   # So, we add it into the queue
                     queue.append(item)
         for item in indegree:                      # Step no.4: Check the result
             if item != 0:
