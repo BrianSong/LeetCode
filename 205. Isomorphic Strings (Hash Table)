@@ -2,7 +2,8 @@ Given two strings s and t, determine if they are isomorphic.
 
 Two strings are isomorphic if the characters in s can be replaced to get t.
 
-All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character but a character may map to itself.
+All occurrences of a character must be replaced with another character while preserving the order of characters. 
+No two characters may map to the same character but a character may map to itself.
 
 Example 1:
 
@@ -19,17 +20,26 @@ Output: true
 Note:
 You may assume both s and t have the same length.
 
-Solution:
+Solution: ----------------------------------------------------- HashTable
+--------------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def isIsomorphic(self, s, t):
-        dic1, dic2 = {}, {}
-        for i_s, s_w in enumerate(s):                              # Unpack 2 values must use "enumerate()"
-                dic1[s_w] = dic1.get(s_w, []) + [str(i_s)]
-        for i_t, t_w in enumerate(t):
-                dic2[t_w] = dic2.get(t_w, []) + [str(i_t)]
-        return sorted(dic1.values()) == sorted(dic2.values())      # Need to use sorted() since in dictionary, 
-        """                                                        # the order of data is unpredictable !!
+        """
         :type s: str
         :type t: str
         :rtype: bool
         """
+        if len(s) != len(t):                            # for "if not s or not t", return False may be wrong: "" and "" => True
+            return False
+        HashTable = {}
+        for i in range(len(s)):
+            if s[i] in HashTable:
+                if t[i] != HashTable[s[i]]:
+                    return False
+            else:
+                if t[i] in HashTable.values():          # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                        # one value in HashTable can only match to one key in Hashtable
+                                                        # for example: "ab" and "aa" should be False
+                    return False
+                HashTable[s[i]] = t[i]
+        return True
