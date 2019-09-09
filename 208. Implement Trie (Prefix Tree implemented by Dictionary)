@@ -17,7 +17,7 @@ All inputs are guaranteed to be non-empty strings.
 
 
 Solution: ------------------------------------------------- Prefix Tree implemented by Dictionary
----------------------------------------------- O(n) T where n the key length, O(n) S
+---------------------------------------------- O(n) T where n is the key length, O(N) S where N is the total length for all word
 class TrieNode(object):
     def __init__(self):
         self.children = collections.defaultdict(TrieNode)       # collections.defaultdic() not collection.defaultdic()
