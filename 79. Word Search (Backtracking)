@@ -18,6 +18,7 @@ Given word = "ABCB", return false.
 
 
 Solution: ------------------------------------- Backtracking ------------------------ https://www.youtube.com/watch?v=NOfscYKNpqU
+
 class Solution(object):
     def exist(self, board, word):
         """
@@ -25,31 +26,31 @@ class Solution(object):
         :type word: str
         :rtype: bool
         """
-        visited = [[False for j in range(len(board[0]))] for i in range(len(board))]    # A visited list is created for:
+        if not board or not word:
+            return False
+        self.dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        self.visited = [[False for j in range(len(board[0]))] for i in range(len(board))]    # A visited list is created for:
                                                                                 # "The same letter cell may not be used more than once."
         for i in range(len(board)):
             for j in range(len(board[0])):
-                if self.backtracking(board, word, visited, 0, i, j):   # Use every element in the board as a start point for trying
+                if self.backtracking(board, word, i, j):                    # Use every element in the board as a start point for trying
                     return True
         return False
-                
-    def backtracking(self, board, word, visited, index, row, col):
-        if index == len(word): return True                             # Pass all, return True
-        if row < 0 or row >= len(board) or col < 0  or col >= len(board[0]) or visited[row][col] or board[row][col] != word[index]:
-            return False                            
-        visited[row][col] = True
-        if self.backtracking(board, word, visited, index + 1, row + 1, col):  # DOWN
-            return True                                                       # As long as one is satisfied, return immediately,
-                                                                              # No need to try the rest directions
-                                                                              # As long as one direction is True, this curr cell is True
-        if self.backtracking(board, word, visited, index + 1, row, col + 1):  # RIGHT
+    
+    def backtracking(self, board, word, i, j):
+        if len(word) == 0:
             return True
-        if self.backtracking(board, word, visited, index + 1, row - 1, col):  # UP
-            return True
-        if self.backtracking(board, word, visited, index + 1, row, col - 1):  # LEFT
-            return True
-        visited[row][col] = False                                             # If all not satisfied, erase the trace and return False
-                                                                              # Only when all is False, this cell is False
-                                                                              # The True or False of this cell will be utilized by
-                                                                              # the if statement in the upper recursion level
-        return False
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or self.visited[i][j] or board[i][j] != word[0]:
+            return
+        self.visited[i][j] = True
+        for dir in self.dirs:
+            if self.backtracking(board, word[1:], i + dir[0], j + dir[1]):   # use "if" to check that as long as one of the four
+                                                                             # is returning True, we can return True directly
+                return True
+        self.visited[i][j] = False                                           # If all not satisfied, erase the trace and return False
+                                                                             # actually we can just do nothing rather than return False
+                                                                             # Only when all is False, this cell is False
+                                                                             # The True or False of this cell will be utilized by
+                                                                             # the if statement in the upper recursion level
+                                                                             # Since the trace will be erased, we do not need to reset
+                                                                             # self.visited everytime 
