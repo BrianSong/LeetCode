@@ -63,7 +63,10 @@ class Solution(object):
 
 Solution no.2: --------------------------------------------------- Trie
 --------------------------------------------------- O(m*n*wl*(4^wl)) T, wl is the average length of each word
-------------------------------------------- O(wl) S
+------ Space: O(l * wl) = max(O(wl), O(l * wl)) where
+------ O(wl) - The recursive stack can grow at most to wl layers. 
+------ O(l * wl) - In the worst case when all words start with different characters, the trie has l * wl nodes. Also, since each 
+------ word is stored in a leaf node, all the leaf nodes require l * wl memory.
 '''
 Simple backtracking cannot pass the larger test. We must stop backtracking earlier.
 If the current candidate does not exist in all words' prefix, we could stop backtracking immediately. => Trie
