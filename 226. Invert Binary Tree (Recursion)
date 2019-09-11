@@ -1,0 +1,55 @@
+Invert a binary tree.
+
+Example:
+
+Input:
+
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+Output:
+
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+
+Solution: -------------------------------------------- Recursion
+----------------- O(n) T, where n is the number of nodes in the tree. Since at the very least we have to visit each node to invert it
+----------------- O(h) S, where h is the height of the tree. Because h ∈ n, the space complexity is O(n) as well
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def invertTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        if not root:
+            return None
+        root.left, root.right = self.invertTree(root.right), self.invertTree(root.left) # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                        # MUST be one-line !!!!!!!!!!!!!!!!!!
+                                                                                        # if:
+                                                                                        # root.left = self.helper(root.right)
+                                                                                        # root.right = self.helper(root.left)
+                                                                                        # Then, FALSE !!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                        # The root.left now is the new node !!!!!!!!!!!!
+        return root
+'''
+Case analyse:
+Node 2, Node 7 = f(Node 7), f(Node 2)
+                    |
+                    Node 6, Node 9 = f(Node 9), f(Node 6)
+                                        |--return Node 9 (the same for other nodes)
+                                        Node None, Node None = f(None), f(None)
+                                                                  |         |
+                                                                  None      None
+  '''
