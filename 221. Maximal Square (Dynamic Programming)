@@ -36,5 +36,8 @@ class Solution(object):
                                                                             # can refer to the solution in the website
                                                                             # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                                                             # THE KEY IS TO mulitply its own value int(matrix[i][j])
+                                                                            # if matrix[i][j] == 0 there is no possible square at all !!
+                                                                            # if matrix[i][j] == 1, then we can see its neighbour
+                                                                            # to see if there is a possibility for larger square
                 res = max(res, dp[i][j] ** 2)
         return res
