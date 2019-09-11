@@ -27,6 +27,8 @@ class Solution(object):
                                                                             # in the original matrix.
                                                                             # dp is first set to the same as matrix
                                                                             # => initilize the first column and first row
+                                                                            # because the first column and first row's value in dp
+                                                                            # is exactly the value of matrix[i][j]
         res = max(max(dp))                                                  # The initial value for res should be set to 
                                                                             # the max(max()) in the 2D matrix dp
         for i in range(1, r):                                               # IMPORTANT !!!!!!!!!!!!!!!! MUST START FROM 1 !!!!!!!!!!!!
