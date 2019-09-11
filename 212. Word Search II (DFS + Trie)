@@ -27,6 +27,8 @@ The values of words are distinct.
 
 
 Solution no.1: ------------------------------------- DFS as in Leetcode no.79. Word Search ---- Pass 34/36 but TLE error
+------------------------------------------- O(m*n*l*(4^wl)) T, l is the word number, wl is the average length of each word
+------------------------------------------- O(wl) S
 class Solution(object):
     def findWords(self, board, words):
         """
@@ -60,59 +62,58 @@ class Solution(object):
         
 
 Solution no.2: --------------------------------------------------- Trie
+--------------------------------------------------- O(m*n*wl*(4^wl)) T, wl is the average length of each word
+------------------------------------------- O(wl) S
 '''
 Simple backtracking cannot pass the larger test. We must stop backtracking earlier.
 If the current candidate does not exist in all words' prefix, we could stop backtracking immediately. => Trie
 '''
-class TrieNode():
+class TrieNode(object):
+    def __init__(self): 
+        self.children = collections.defaultdict(TrieNode)      # Here (TrieNode) instead of (TrieNode())
+        self.isEnd = False
+
+class Trie(object):
     def __init__(self):
-        self.children = collections.defaultdict(TrieNode)   # Here (TrieNode) instead of (TrieNode())
-        self.isWord = False
-    
-class Trie():
-    def __init__(self):
-        self.root = TrieNode()                              # Here self.root = TrieNode() instead of self.root = TrieNode
+        self.root = TrieNode()                                 # Here self.root = TrieNode() instead of self.root = TrieNode
     
     def insert(self, word):
-        node = self.root
-        for w in word:
-            node = node.children[w]
-        node.isWord = True
+        curr = self.root
+        for c in word:
+            curr = curr.children[c]
+        curr.isEnd = True
     
-    def search(self, word):                                 # Actually search() is not necessary here
-        node = self.root
-        for w in word:
-            node = node.children.get(w)
-            if not node:
-                return False
-        return node.isWord
-    
+        
 class Solution(object):
     def findWords(self, board, words):
+        """
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        if not board or not words:
+            return None
         res = []
-        trie = Trie()                                       # Create a trie data structure
-        node = trie.root                                    # node here is kind of like a dummynode in linked list
-        for w in words:
-            trie.insert(w)
-        for i in xrange(len(board)):
-            for j in xrange(len(board[0])):
-                self.dfs(board, node, i, j, "", res)
+        trie = Trie()                                          # Create a trie data structure
+        for word in words:
+            trie.insert(word)
+        node = trie.root                                       # node here is kind of like a dummynode in linked list
+        self.dirs = [[1, 0], [0, 1], [0, -1], [-1, 0]]
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                self.backtracking(board, node, i, j, "", res)
         return res
     
-    def dfs(self, board, node, i, j, path, res):
-        if node.isWord:
-            res.append(path)
-            node.isWord = False                             # Set node.isWord to false is to de-duplicate
-                                                            # and pass cases like [aaa, aaab]
-        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
-            return 
-        tmp = board[i][j]
-        node = node.children.get(tmp)
-        if not node:
-            return 
-        board[i][j] = "#"                                   # Set board[i][j] to '#' serves as a visited purpose
-        self.dfs(board, node, i+1, j, path+tmp, res)
-        self.dfs(board, node, i-1, j, path+tmp, res)
-        self.dfs(board, node, i, j-1, path+tmp, res)
-        self.dfs(board, node, i, j+1, path+tmp, res)
-        board[i][j] = tmp
+    def backtracking(self, board, node, i, j, curr, res):
+        if node.isEnd:
+            res.append(curr)
+            node.isEnd = False                                 # Set node.isWord to false is to de-duplicate
+            return                                             # and pass cases like [aaa, aaab]
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or not board[i][j] in node.children:
+            return
+        temp = board[i][j]
+        board[i][j] = '#'                                      # Set board[i][j] to '#' serves as a visited purpose
+                                                               # so that we will not use extra space for visited matrix
+        for dir in self.dirs:
+            self.backtracking(board, node.children[temp], i + dir[0], j + dir[1], curr + temp, res)
+        board[i][j] = temp
