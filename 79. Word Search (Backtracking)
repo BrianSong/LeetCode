@@ -19,7 +19,7 @@ Given word = "ABCB", return false.
 
 Solution: ------------------------------------- Backtracking ------------------------ https://www.youtube.com/watch?v=NOfscYKNpqU
 -------------------------- O(M * N * 4^L) T, where M*N is the size of the board and we have 4^L for each cell because of the recursion
--------------------------- O(n) S where n is the total element number inside the board
+-------------------------- O(4^L) S or O(M * N) S whichever is larger 
 class Solution(object):
     def exist(self, board, word):
         """
