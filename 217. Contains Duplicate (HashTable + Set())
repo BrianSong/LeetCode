@@ -16,33 +16,9 @@ Example 3:
 Input: [1,1,1,3,3,4,3,2,4,2]
 Output: true
 
-Solution no.1 (my own):
-class Solution(object):
-    def containsDuplicate(self, nums):
-        dic = {}
-        if len(nums) == 1 or nums is None:
-            return False
-        for number in nums:
-            dic[number] = dic.get(number, 0) + 1
-        for key, value in dic.iteritems():              # iteritems() traverse over the dictionary, like enumerate() for list
-            if value != 1:
-                return True
-        return False
-        """
-        :type nums: List[int]
-        :rtype: bool
-        """
-        
-Solution 2: using set() build in python:
-class Solution(object):
-    def containsDuplicate(self, nums):
-        return not len(nums) == len(set(nums))
-        """
-        :type nums: List[int]
-        :rtype: bool
-        """
 
-Solution 3: Hashtable
+Solution no.1: ----------------------------------------------- Hashtable
+-------------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def containsDuplicate(self, nums):
         hashtable = {}
@@ -53,3 +29,13 @@ class Solution(object):
                 return True
         return False
 
+
+Solution no.2: -------------------------------------------------- Set()
+----------------------------------------------------------------- O(n) T, O(n) S
+class Solution(object):
+    def containsDuplicate(self, nums):
+        return not len(nums) == len(set(nums))
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
