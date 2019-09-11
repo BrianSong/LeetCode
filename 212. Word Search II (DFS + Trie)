@@ -65,6 +65,7 @@ Solution no.2: --------------------------------------------------- Trie
 --------------------------------------------------- O(m*n*wl*(4^wl)) T, wl is the average length of each word
 --------------------------------------------------- why we have wl * 4^wl ? for the worst case all words start with different characters
 --------------------------------------------------- and have different characters, then we will choose from wl for every recursion level
+--------------------------------------------------- anyway, we still have len(words) different word instead of a single word in no.79
 ------ Space: O(l * wl) = max(O(wl), O(l * wl)) where
 ------ O(wl) - The recursive stack can grow at most to wl layers. 
 ------ O(l * wl) - In the worst case when all words start with different characters, the trie has l * wl nodes. Also, since each 
