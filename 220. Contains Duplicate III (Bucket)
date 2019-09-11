@@ -16,7 +16,7 @@ Input: nums = [1,5,9,1,5,9], k = 2, t = 3
 Output: false
 
 Solution: ----------------------------- Bucket ---------------------------------- https://www.youtube.com/watch?v=yc4hCFzNNQc (14 mins)
---------------------------------------- O(n) T, O((max - min) / t + 1) S i.e. the number of bucket we have
+--------------------------------------- O(n) T, O((max - min) / t) S i.e. the number of bucket we have
 '''
 The idea is like the bucket sort algorithm. 
 Suppose we have consecutive buckets covering the range of nums with each bucket a width of (t+1). 
