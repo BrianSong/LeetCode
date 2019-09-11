@@ -19,7 +19,7 @@ Given word = "ABCB", return false.
 
 Solution: ------------------------------------- Backtracking ------------------------ https://www.youtube.com/watch?v=NOfscYKNpqU
 -------------------------- O(M * N * 4^L) T, where M*N is the size of the board and we have 4^L for each cell because of the recursion
--------------------------- O(4^L) S or O(M * N) S whichever is larger 
+-------------------------- O(L) S or O(M * N) S (for visited) whichever is larger 
 class Solution(object):
     def exist(self, board, word):
         """
@@ -55,3 +55,36 @@ class Solution(object):
                                                                              # the if statement in the upper recursion level
                                                                              # Since the trace will be erased, we do not need to reset
                                                                              # self.visited everytime 
+                                                                             
+
+Solution no.2: --------------------------------------------------------- without visited matrix
+-------------------------- O(M * N * 4^L) T, where M*N is the size of the board and we have 4^L for each cell because of the recursion
+-------------------------- O(L) S
+class Solution(object):
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        if not board or not word:
+            return False
+        self.dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if self.backtracking(board, word, i, j):
+                    return True
+        return False
+    
+    def backtracking(self, board, word, i, j):
+        if len(word) == 0:
+            return True
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or board[i][j] != word[0]:
+            return
+        temp = board[i][j]
+        board[i][j] = '#'                                                    # We directly modify the value of board[i][j] to
+                                                                             # some word impossible so that it cannot be revisited
+        for dir in self.dirs:
+            if self.backtracking(board, word[1:], i + dir[0], j + dir[1]):
+                return True
+        board[i][j] = temp                                                   # Must remember to restore board[i][j]
