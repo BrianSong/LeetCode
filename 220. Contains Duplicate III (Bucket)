@@ -15,7 +15,8 @@ Example 3:
 Input: nums = [1,5,9,1,5,9], k = 2, t = 3
 Output: false
 
-Solution: ----------------------------- Bucket ---------------------------------- https://www.youtube.com/watch?v=yc4hCFzNNQc
+Solution: ----------------------------- Bucket ---------------------------------- https://www.youtube.com/watch?v=yc4hCFzNNQc (14 mins)
+--------------------------------------- O(n) T, O((max - min) / t + 1) S i.e. the number of bucket we have
 '''
 The idea is like the bucket sort algorithm. 
 Suppose we have consecutive buckets covering the range of nums with each bucket a width of (t+1). 
@@ -23,6 +24,16 @@ If there are two item with difference <= t, one of the two will happen:
 
 (1) the two in the same bucket
 (2) the two in neighbor buckets
+
+So, when k = 5, the d will become:
+{
+    0: for containing number from 0 ~ 5
+    1: for containing number from 6 ~ 11
+    2: for containing number from 12 ~ 17
+    3: for containing number from 18 ~ 23
+    ...
+    
+}
 '''
 class Solution(object):
     def containsNearbyAlmostDuplicate(self, nums, k, t):
@@ -37,10 +48,12 @@ class Solution(object):
         d = {}
         for i in range(len(nums)):
             if nums[i] / (t + 1) in d:                                                         # t + 1 is for when t == 0 (nums[i] / 0)
+                                                                                               # also, say t == 5, the bucket 0 should
+                                                                                               # contain 0 ~ 5, so must divide by 6
                 return True
-            if nums[i] / (t + 1) - 1 in d and abs(nums[i] - d[nums[i] / (t + 1) - 1]) <= t:    # neighbor basket in the left
+            if nums[i] / (t + 1) - 1 in d and abs(nums[i] - d[nums[i] / (t + 1) - 1]) <= t:    # neighbor bucket in the left
                 return True 
-            if nums[i] / (t + 1) + 1 in d and abs(nums[i] - d[nums[i] / (t + 1) + 1]) <= t:    # neighbor basket in the right 
+            if nums[i] / (t + 1) + 1 in d and abs(nums[i] - d[nums[i] / (t + 1) + 1]) <= t:    # neighbor bucket in the right 
                 return True
             d[nums[i] / (t + 1)] = nums[i]
             if i >= k:                                                                         # Keep the "diff(i, j) <= k" condition
@@ -48,5 +61,13 @@ class Solution(object):
                                                                                                # because i == k, in the next for level,
                                                                                                # i = k + 1, 0 and k + 1 will break the 
                                                                                                # condition
-                del d[nums[i - k] / (t + 1)]
+                del d[nums[i - k] / (t + 1)]                                                   # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                               # Why we can just delete key like this
+                                                                                               # without warrying whether we will delete
+                                                                                               # many element ?
+                                                                                               # because each bucket here is contain
+                                                                                               # at most and only one element
+                                                                                               # which is the one we want to delete
+                                                                                               # if there are two element, we already
+                                                                                               # return True
         return False
