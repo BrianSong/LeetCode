@@ -17,7 +17,8 @@ Input:
 
 Output: 6
 
-Solution no.1: my own ------------------------------------------------------------------------------ DFS
+Solution no.1: ----------------------- my own ------------------------------------------ DFS
+------------------------------------------ O(n) T, O(h) S where h is the tree depth
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -31,15 +32,19 @@ class Solution(object):
         :type root: TreeNode
         :rtype: int
         """
-        if not root: return 0
+        if not root:
+            return 0
         return self.dfs(root)
+    
     def dfs(self, root):
         if not root:
             return 0
         return self.dfs(root.left) + self.dfs(root.right) + 1
         
         
-Solution no.2: -------------------------------------------------------------- Binary Search
+Solution no.2: -------------------------------- Binary Search: how to utilize the complete tree property ???
+---- Since I halve the tree in every recursive step, I have O(log(n)) steps. Finding a depth costs O(log(n)). So overall O(log(n)^2) T
+----  S
 '''
 compare the depth between left sub tree and right sub tree.
 A, If it is equal, it means the left sub tree is a full binary tree (at this moment, leftsubtree's depth is the same as the whole tree)
@@ -57,8 +62,8 @@ class Solution(object):
         """
         :type root: TreeNode
         :rtype: int
-        """
-        if not root:                                                                                   # Remember to check None cases
+        """  
+        if not root:                              # Remember to check the base cases !!!!!!!!!!!!!!!!!!!!!
             return 0
         LeftSubDepth, RightSubDepth = self.getLeftestDepth(root.left), self.getLeftestDepth(root.right)
         if LeftSubDepth == RightSubDepth:
