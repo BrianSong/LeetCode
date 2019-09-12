@@ -44,7 +44,7 @@ class Solution(object):
         
 Solution no.2: -------------------------------- Binary Search: how to utilize the complete tree property ???
 ---- Since I halve the tree in every recursive step, I have O(log(n)) steps. Finding a depth costs O(log(n)). So overall O(log(n)^2) T
-----  S
+---- O(h) S where h is the tree depth
 '''
 compare the depth between left sub tree and right sub tree.
 A, If it is equal, it means the left sub tree is a full binary tree (at this moment, leftsubtree's depth is the same as the whole tree)
