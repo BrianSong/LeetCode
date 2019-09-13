@@ -1,0 +1,89 @@
+Implement the following operations of a queue using stacks.
+
+push(x) -- Push element x to the back of queue.
+pop() -- Removes the element from in front of queue.
+peek() -- Get the front element.
+empty() -- Return whether the queue is empty.
+Example:
+
+MyQueue queue = new MyQueue();
+
+queue.push(1);
+queue.push(2);  
+queue.peek();  // returns 1
+queue.pop();   // returns 1
+queue.empty(); // returns false
+Notes:
+
+You must use only standard operations of a stack -- which means only push to top, peek/pop from top, size, 
+and is empty operations are valid.
+Depending on your language, stack may not be supported natively. You may simulate a stack by using a list or deque (double-ended queue),
+as long as you use only standard operations of a stack.
+You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
+
+Solution: ------------------------------ Two Stack --------------------------- https://www.youtube.com/watch?v=Wg8IiY1LbII
+----------------------------------------- push(): O(1) T, pop(): O(n) T, peak(): O(n) T, empty(): O(1) T, O(n) S
+class MyQueue(object):
+
+    def __init__(self):
+        self.stack1 = []                            # Must use two stack to implement a queue
+        self.stack2 = []                            # We can use only stack function in here: pop() & append()
+        """
+        Initialize your data structure here.
+        """
+        
+
+    def push(self, x):
+        self.stack1.append(x)
+        """
+        Push element x to the back of queue.
+        :type x: int
+        :rtype: None
+        """
+        
+
+    def pop(self):
+        """
+        Removes the element from in front of queue and returns that element.
+        :rtype: int
+        """
+        if self.stack2:                                                         # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                # As long as self.stack2 is not empty,
+                                                                                # it means that the frontest element is still not pop()
+                                                                                # so, we can just pop directly,
+                                                                                # we only reverse the self.stack1 to self.stack2
+                                                                                # when all the frontest elements are poped
+                                                                                # and self.stack2 is empty
+            return self.stack2.pop()
+        while self.stack1:
+            self.stack2.append(self.stack1.pop())
+        return self.stack2.pop()
+        
+
+    def peek(self):
+        """
+        Get the front element.
+        :rtype: int
+        """
+        if self.stack2:
+            return self.stack2[-1]
+        while self.stack1:
+            self.stack2.append(self.stack1.pop())
+        return self.stack2[-1]
+        
+
+    def empty(self):
+        """
+        Returns whether the queue is empty.
+        :rtype: bool
+        """
+        return True if not self.stack1 and not self.stack2 else False
+        
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()
