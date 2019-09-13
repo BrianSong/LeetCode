@@ -21,19 +21,26 @@ You may assume that the given expression is always valid.
 Do not use the eval built-in library function.
 
 Solution: ----------------------------------------------------------------- Stack
+----------------------------------------------------------------- O(n) T, O(n) S 
 class Solution(object):
     def calculate(self, s):
         """
         :type s: str
         :rtype: int
         """
-        s += '+'                                            # add '+' to s is for finishing the last part of s and append it into stack
+        s += '+'                                            # add '+' to s is for help checking the last piece of s string
+                                                            # and append it into stack
         stack, num, preOp = [], 0, '+'                      # preOp is the previous operator here
         for i in range(len(s)):
             if s[i].isdigit():                              # isdigit() function checks if the string is all digit
                 num = num * 10 + int(s[i])
             elif not s[i].isspace():                        # isspace() function checks if the string is space or not
                 if preOp == '+':                            # preOp should be checked here instead of s[i]
+                                                            # What we doing here is that, everytime, s[i] = {'+', '-', '*', '/'}
+                                                            # we 结算(check) the previous part using num and preOp
+                                                            # if preOp == '+' or '-', then no hurry, we just append it into the stack
+                                                            # if preOp == '*' or '/' which have higher priority,
+                                                            # we must calculate it right now and append the result to stack
                     stack.append(num)
                 elif preOp == '-':
                     stack.append(-num)
