@@ -26,7 +26,8 @@ Note:
 All of the nodes' values will be unique.
 p and q are different and both values will exist in the BST.
 
-Solution:
+Solution: ------------------------------------------ BST + Recursion
+-------------------------------------------- O(n) T, O(h) S when totally unbalanced, h=n. In general, h can be near log(n)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -34,7 +35,7 @@ Solution:
 #         self.left = None
 #         self.right = None
 
-class Solution(object):
+class Solution(object): 
     def lowestCommonAncestor(self, root, p, q):
         parent_value = root.val                                 # We should utilize the property of BTS here
         '''
