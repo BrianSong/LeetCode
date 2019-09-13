@@ -38,7 +38,7 @@ class Solution(object):
                 if preOp == '+':                            # preOp should be checked here instead of s[i]
                                                             # What we doing here is that, everytime, s[i] = {'+', '-', '*', '/'}
                                                             # we 结算(check) the previous part using num and preOp
-                                                            # if preOp == '+' or '-', then no hurry, we just append it into the stack
+                                                            # if preOp == '+' or '-', then no hurry, we just append num into the stack
                                                             # if preOp == '*' or '/' which have higher priority,
                                                             # we must calculate it right now and append the result to stack
                     stack.append(num)
