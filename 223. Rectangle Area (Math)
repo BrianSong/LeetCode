@@ -12,7 +12,8 @@ Note:
 
 Assume that the total area is never beyond the maximum possible value of int.
 
-Solution:
+Solution: ---------------------------------------------------- Math
+-------------------------------------------- Meaningless to take about time and space complexity here, just one pass
 class Solution(object):
     def computeArea(self, A, B, C, D, E, F, G, H):
         """
@@ -32,7 +33,7 @@ class Solution(object):
         图片见文件传输助手 2019.5.21
         no.2: 重叠
         '''
-        if F > D or E > C or B > H or A > G:
-            return  (C - A) * (D - B) + (G - E) * (H - F)
-        else:
-            return  (C - A) * (D - B) + (G - E) * (H - F) - ((min(C, G) - max(E, A)) * (min(D, H) - max(B, F)))
+        lower_left = (max(A, E), max(B, F))
+        upper_right = (min(C, G), min(D, H))
+        return (C - A)*(D - B) + (H - F)*(G - E) - (upper_right[0] - lower_left[0])*(upper_right[1] - lower_left[1]) 
+        \ if upper_right[0] > lower_left[0] and upper_right[1] > lower_left[1] else (C - A)*(D - B) + (H - F)*(G - E)
