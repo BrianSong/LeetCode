@@ -43,7 +43,8 @@ If at any point in the traversal, any two of the three flags left, right or mid 
 this means we have found the lowest common ancestor for the nodes p and q.
 '''
 
-Solution:
+Solution: --------------------------------------------------- DFS
+--------------------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -70,5 +71,10 @@ class Solution(object):
         mid = root.val == p.val or root.val == q.val   # WE CAN ASSIGN A BOOLEAN VALUE LIKE THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
         if left + right + mid >= 2:                    # If any two of the three flags left, right or mid become True.
                                                        # IMPORTANT!!!!!!!!!!! WE CAN ADD TRUE LIKE THIS IN PYTHON!!!!!!!!!!!!!!!!!
-            self.res = root
+            self.res = root                            # The root here will be the only lowest common ancestor
+                                                       # because all the nodes are unique and its upper node can only get 1 out of 3
         return left or right or mid                    # Return True if either of the three bool values is True.
+                                                       # CANNOT be "if left or right or mid: return True" !!!!!!!!!!!!!!!!!!!
+                                                       # because in this way, if none of left, right, mid is True,
+                                                       # we are returning None instead of False here, and False cannot be "+"
+                                                       # must add "else: return False"
