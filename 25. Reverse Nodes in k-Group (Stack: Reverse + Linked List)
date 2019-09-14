@@ -18,6 +18,7 @@ You may not alter the values in the list's nodes, only nodes itself may be chang
 
 
 Solution no.1: ------------------------------------ Stack ---------------------- https://www.youtube.com/watch?v=pLx1VP-FnuY
+--------------------------------------------------- O(n^2) T, O(k) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -31,25 +32,34 @@ class Solution(object):
         :type k: int
         :rtype: ListNode
         """
+        if not head:
+            return None
+        stack = []                                            # Why we consider using a stack? because stack is FILO, 
+                                                              # which is exactly in REVERSE order
         dummynode = ListNode(0)
         dummynode.next = head
-        currnode, nextnode = dummynode, head
-        stack = []                                 # Why we consider using a stack? because stack is FILO, which is exactly in reverse order
-        while nextnode:
+        prevnode, currnode = dummynode, head
+        while currnode:
             for i in range(k):
-                if nextnode:
-                    stack.append(nextnode)
-                    nextnode = nextnode.next
+                if currnode:
+                    stack.append(currnode)
+                    currnode = currnode.next                  # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                              # Since we are refering currnode.next here, we MUST check whether
+                                                              # "if currnode" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                              # After k times, currnode now points to the first element of 
+                                                              # the next reverse linked list
             if len(stack) != k:
                 return dummynode.next
             while stack:
-                currnode.next = stack.pop()
-                currnode = currnode.next
-            currnode.next = nextnode
+                prevnode.next = stack.pop()
+                prevnode = prevnode.next
+            prevnode.next = currnode                          # Here, prevnode points to the last element of curr reverse linked list,
+                                                              # So, we just link prevnode to currnode
         return dummynode.next
         
         
 Solution no.2: ---------------------------------- Linked List ----------------------- https://www.youtube.com/watch?v=pLx1VP-FnuY
+------------------------------------------------- O(n^2) T, O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -77,7 +87,8 @@ class Solution(object):
                                                       # e.g.: k = 3, D -> 1 -> 2 -> 3 -> 4: D and 4 are the prev and last node
         for i in range(k + 1):
             last = last.next
-            if i != k and not last:
+            if i != k and not last:                   # This will be satisfied when we come to the last part of the whole linked list
+                                                      # which does not need to be reversed
                 return None
         tail = prev.next                              # following the previous example, 1 is the tail node here
         curr = prev.next.next
