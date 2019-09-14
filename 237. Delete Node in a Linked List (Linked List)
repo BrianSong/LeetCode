@@ -6,13 +6,13 @@ Input: head = [4,5,1,9], node = 5
 Output: [4,1,9]
 Explanation: You are given the second node with value 5, the linked list should become 4 -> 1 -> 9 after calling your function.
 
-Solution:
+Solution: --------------------------------- Bad question !!!!!!!!!! not even given a head ?????????????????????????
+--------------------------------------------- O(1) T and S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
---------------------------------------------------------------- Bad question !!!!!!!!!! not even given a head ?????????????????????????
 class Solution(object):
     def deleteNode(self, node):
         if node.next: # As mentioned in the statement, "EXCEPT THE TAIL"
