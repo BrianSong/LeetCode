@@ -19,6 +19,13 @@ Given target = 20, return false.
 
 Solution: ------------------------------------------ Stair Search --------------------- https://www.youtube.com/watch?v=ZhG1M_FzxgI
 --------------------------------------- O(mn) T: the worst case we will go over every element, O(1) S
+'''
+Why we can use stair search in this question ????????????????????????????
+The reason is that, 
+since the matrix is sorted from left to right and from top to bottom,
+When the target > matrix[i][j], the target CANNOT exist in the left of matrix[i][j], so we increase i and look for new ways,
+the same theory can also apply for when target < matrix[i][j], CANNOT exist below matrix[i][j], so we decrease j and look for new ways
+'''
 class Solution(object):
     def searchMatrix(self, matrix, target):
         if matrix is None or len(matrix) == 0 or len(matrix[0]) == 0: # not only len(matrix) != 0 but also len(matrix[0]) != 0 !!!!
