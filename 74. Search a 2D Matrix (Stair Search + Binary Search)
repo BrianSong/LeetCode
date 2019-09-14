@@ -24,6 +24,7 @@ target = 13
 Output: false
 
 Solution no.1: -------------------------- Stair Search --------------------------------- the same as 240. Search a 2D Matrix II
+----------------------------------------- O(m*n) T, O(1) S
 class Solution(object):
     def searchMatrix(self, matrix, target):
         """
@@ -47,6 +48,7 @@ class Solution(object):
         return False
         
 Solution no.2: -------------------------------------------------- Binary Search
+------------------------------------------------------------ O(log(m*n)) T, O(1) S
 class Solution(object):
     def searchMatrix(self, matrix, target):
         """
