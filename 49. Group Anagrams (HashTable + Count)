@@ -1,0 +1,52 @@
+Given an array of strings, group anagrams together.
+
+Example:
+
+Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+Output:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+Note:
+
+All inputs will be in lowercase.
+The order of your output does not matter.
+
+Solution no.1: ------------------------------------------------------------- HashTable
+---------------------------------------------------- O(nklogk) T where n == len(strs), k == average len(str), O(nk) S => total content
+class Solution(object):
+    def groupAnagrams(self, strs):
+        hashmap = collections.defaultdict(list)     # collections.defaultdic(list) can assign a default list-type value
+                                                    # so that we can use append() or += or -= operators directly
+        for item in strs:
+            hashmap[str(sorted(item))].append(item) # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                    # key can only be integer, string or tuple, so list sorted(item) cannot work
+                                                    # We MUST convert it into a string or tuple (by tuple()) First !!!!!!!!!!!!!!!!
+                                                    # sort() is a very useful tool for "Anagrams" problems
+        return hashmap.values()                     # dictionary.values() (NOT dictionary.values !!!!) return all its values
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        
+        
+Solution no.2: ------------------------------------------ Categorize by Count
+--------------------------------------------------------- O(nk) T, O(nk) S
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        if not strs:
+            return None
+        HashTable = collections.defaultdict(list)
+        for item in strs:
+            counter = [0] * 26                             # Premise: All inputs will be in lowercase !!!!!!!!!!!!!!!!!!!!!!!!!!!
+            for w in item:
+                counter[ord(w) - ord('a')] += 1            # Two strings are anagrams if and only if their character counts 
+                                                           # (respective number of occurrences of each character) are the same.
+            HashTable[tuple(counter)].append(item)         # For example, abbccc will be (1, 2, 3, 0, 0, ..., 0)
+        return HashTable.values()
