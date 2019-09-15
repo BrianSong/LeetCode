@@ -10,6 +10,8 @@ Input: s = "rat", t = "car"
 Output: false
 Note:
 You may assume the string contains only lowercase alphabets. 所谓anagram, 就是两个词所用的字母及其个数都是一样的，但是，字母的位置不一样
+Follow up:
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
 
 Solution no.1: ------------------------------------------------ Sorting
 ----------------------------------------------------------------- O(nlogn) T, O(1) S
@@ -43,3 +45,12 @@ class Solution(object):
             if value != 0:
                 return False
         return True
+        
+Follow up:
+
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
+
+Answer:
+
+Use a hash table instead of a fixed size counter. Imagine allocating a large size array to fit the entire range of unicode characters, 
+which could go up to more than 1 million. A hash table is a more generic solution and could adapt to any range of characters.
