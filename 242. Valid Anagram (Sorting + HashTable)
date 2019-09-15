@@ -1,0 +1,45 @@
+Given two strings s and t , write a function to determine if t is an anagram of s.
+
+Example 1:
+
+Input: s = "anagram", t = "nagaram"
+Output: true
+Example 2:
+
+Input: s = "rat", t = "car"
+Output: false
+Note:
+You may assume the string contains only lowercase alphabets. 所谓anagram, 就是两个词所用的字母及其个数都是一样的，但是，字母的位置不一样
+
+Solution no.1: ------------------------------------------------ Sorting
+----------------------------------------------------------------- O(nlogn) T, O(1) S
+class Solution(object):
+    def isAnagram(self, s, t):
+        return sorted(s) == sorted(t)
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        
+Solution no.2: -------------------------------------------------- HashTable
+----------------------------------------------------------------- O(n) T, O(1) S
+class Solution(object):
+    def isAnagram(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        HashTable = {}
+        for w in s:
+            HashTable[w] = HashTable.get(w, 0) + 1
+        for w in t:
+            if w not in HashTable:
+                return False
+            else:
+                HashTable[w] -= 1
+        for value in HashTable.values():
+            if value != 0:
+                return False
+        return True
