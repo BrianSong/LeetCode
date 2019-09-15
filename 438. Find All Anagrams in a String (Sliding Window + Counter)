@@ -30,6 +30,7 @@ The substring with start index = 2 is "ab", which is an anagram of "ab".
 
 
 Solution no.1: my own -------------------------------- TLE ERROR
+------------------------------------------------------ O(n*klogk) T where k = len(p), O(1) S
 class Solution(object):
     def findAnagrams(self, s, p):
         """
@@ -38,13 +39,14 @@ class Solution(object):
         :rtype: List[int]
         """
         res = []
-        for i in range(len(s) - (len(p) - 1)):
+        for i in range(len(s) - (len(p) + 1)):
             if sorted(s[i:i + len(p)]) == sorted(p):
                 res.append(i)
         return res
         
         
 Solution no.2: ---------------------------------------- Sliding Window Solution using Counter
+------------------------------------------------------ O(n) T, O(k) S
 class Solution(object):
     def findAnagrams(self, s, p):
         """
@@ -60,5 +62,6 @@ class Solution(object):
                 res.append(i - len(p) + 1)
             scounter[s[i - len(p) + 1]] -= 1                        # decrease the count of oldest char in the window
             if scounter[s[i - len(p) + 1]] == 0:                    # remove the count if it is 0 using "del"
+                                                                    # IN & OUT => Sliding Window !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 del scounter[s[i - len(p) + 1]]
         return res
