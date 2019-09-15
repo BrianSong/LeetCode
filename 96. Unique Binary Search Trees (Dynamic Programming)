@@ -13,17 +13,19 @@ Given n = 3, there are a total of 5 unique BST's:
     /     /       \                 \
    2     1         2                 3
 
-Solution: DP
+Solution: -------------------------------- Dynamic Programming ---------------------- https://www.youtube.com/watch?v=HWJEMKWzy-Q
+----------------------------------------------------------- O(n^2) T, O(n) S
 '''
+IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 When the question asks us to return only a value or boolean instead of the specific result,
-Dynamic Programming should be considered immediately!!!!!!!!!!!!!!!!!!!!
+Dynamic Programming should be considered immediately!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 '''
 
 class Solution(object):
     def numTrees(self, n):
         dp = [0] * (n + 1)                      # Step 1: Status variable dp[], dp[n] record the number of 
-        # n + 1 since there is one 0              # how many structurally unique BST's (binary search trees) that store values 1 ... n
-        dp[0], dp[1] = 1, 1                   # Step 2: Initialization
+        # n + 1 since there is one 0            # how many structurally unique BST's (binary search trees) that store values 1 ... n
+        dp[0], dp[1] = 1, 1                     # Step 2: Initialization
         '''
         How to come up with this transformation function:
         For n = 0 and 1, we know num[n] = 1(we assume num[0] = 1 for later's sake)
@@ -38,8 +40,8 @@ class Solution(object):
         (3):
             1      2       3
            / \    / \     / \
-         (0) (2)(1) (1) (2)  (0)
-         1  * 2  1 * 1   2  * 1
+         (0) (2)(1) (1) (2)  (0)                 # (2)代表着两个节点能组合成的BTS种类的数量，在上一步，我们已经得出了(2)为2
+         1  * 2  1 * 1   2  * 1                  # 虽然此刻构成BST的两个节点的值是2，3；之前的是1，2；但是形成的BST的数量都是一样的
             2   +  1    +  2    =  5
         ...
         So, we know that     (n)
@@ -53,7 +55,7 @@ class Solution(object):
         '''
         for i in range(2, n + 1):
             for j in range(i):
-                dp[i] += dp[j]*dp[i-j-1]    # Step 3
+                dp[i] += dp[j]*dp[i-j-1]        # Step 3
         return dp[n]                            # Step 4
                 
         """
