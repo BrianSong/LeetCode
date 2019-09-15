@@ -65,7 +65,7 @@ class Solution(object):
                                                   # the last integer of the previous row."
         while low <= high:
             mid = (low + high) / 2
-            num = matrix[mid / n][mid % n]
+            num = matrix[mid / n][mid % n]        # The KEY !!!!!!!!!!!!!!!!!!!!!!! num = matrix[mid / n][mid % n]
             if num > target:
                 high = mid - 1
             elif num < target:
