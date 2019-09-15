@@ -22,6 +22,7 @@ Explanation:
 
 
 Solution: ------------------------------------------------------ Divide and Conquer
+---------------------------------------------------------------- O(n!) T
 class Solution(object):
     def diffWaysToCompute(self, input):
         """
@@ -37,6 +38,8 @@ class Solution(object):
                                                                               # Divide the current big problem into small ones
                                                                               # Decompose the input into leftpart and rightpart
                                                                               # and continue to decompose until hit the base cases
+                                                                              # for leftposs and rightposs, there are many different
+                                                                              # possiblities that append to that level of res
                 rightposs = self.diffWaysToCompute(input[i+1:])
                 for left in leftposs:                                         # Iterate all possible combinations
                     for right in rightposs:
