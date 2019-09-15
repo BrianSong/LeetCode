@@ -20,7 +20,7 @@ The above output corresponds to the 5 unique BST's shown below:
     /     /       \                 \
    2     1         2                 3
    
-Solution: ------------------------------------------------------- Divide and Conquer
+Solution no.1: ------------------------------------------------------- Divide and Conquer
 ------------------------------------------------------- O(n^n) T, O(?) S
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -57,3 +57,45 @@ class Solution(object):
                     curr.append(currnode)
         return curr                                                   # Since there are so many possibilities, what we want to
                                                                       # return is a list to choose from, rather than a simple node
+                                                                      
+Solution no.2: ------------------------------------------------------- with self.memo
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """
+        if not n:
+            return None
+        self.memo = {}                                                # Introduce self.memo for optimization
+        return self.build_tree(1, n)
+        
+    def build_tree(self, low, high):                                  # Instead passing a list which cannot be the key for self.memo,
+                                                                      # we use two pointers here
+        if low == high:
+            return [TreeNode(low)]
+        if low > high:
+            return [None]
+        if (low, high) in self.memo:
+            return self.memo[(low, high)]
+        curr = []
+        for i in range(low, high + 1):
+            left_poss_node = self.build_tree(low, i - 1)
+            right_poss_node = self.build_tree(i + 1, high)
+            for left in left_poss_node:
+                for right in right_poss_node:
+                    currnode = TreeNode(i)                           
+                    currnode.left = left
+                    currnode.right = right
+                    curr.append(currnode)
+        self.memo[(low, high)] = curr
+        return curr                                                   
+        
+        
