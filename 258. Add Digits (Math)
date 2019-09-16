@@ -6,8 +6,25 @@ Input: 38
 Output: 2 
 Explanation: The process is like: 3 + 8 = 11, 1 + 1 = 2. 
              Since 2 has only one digit, return it.
+             
+Solution no.1: ------------------------------------------------ String
+------------------------------------------------------ O(?) T, O(1) S
+class Solution(object):
+    def addDigits(self, num):
+        """
+        :type num: int
+        :rtype: int
+        """
+        while True:
+            curr = 0
+            for i in range(len(str(num))):
+                curr += int(str(num)[i])
+            if len(str(curr)) == 1:
+                return curr
+            num = curr
 
-Solution:
+Solution no.2: ------------------------------------------------- Math
+----------------------------------------------------- O(1) T and S
 class Solution(object):
     def addDigits(self, num):
         if num == 0:
@@ -26,7 +43,7 @@ dr(n) = 0 if n == 0
 dr(n) = (b-1) if n != 0 and n % (b-1) == 0
 dr(n) = n mod (b-1) if n % (b-1) != 0
 
-or dr(n) = 1 + (n - 1) % 9 IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-1 % 9 = 8 IN PYTHON, AND -1 IN JAVA!!!!!!!!!
+or dr(n) = 1 + (n - 1) % 9 IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-1 % 9 = 8 IN PYTHON, AND -1 IN JAVA!!!!!
 Note here, when n = 0, since (n - 1) % 9 = -1, the return value is zero (correct).
 
 From the formula, we can find that the result of this problem is immanently periodic, with period (b-1).
