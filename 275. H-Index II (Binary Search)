@@ -43,6 +43,8 @@ class Solution(object):
         return len(citations) - start                         # why return len - start? ------ must be paired with "while start <= end"
                                                               # After passing the while loop, start now is the first element in
                                                               # citations that meet the h-index requirement, we should return
-                                                              # the length of how many passed papers instead of citation
+                                                              # the length of how many passed papers for this start instead of citation
                                                               # usually in binary search, we return start or end, seldom middle
+                                                              # If not sure what to return, just try different cases
+                                                              # and find the pattern
         
