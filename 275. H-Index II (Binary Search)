@@ -33,7 +33,9 @@ class Solution(object):
         while start <= end:                                   # Classic binary search: using two pointers, >= must be applied here
             middle = (start + end) / 2
             if citations[middle] == len(citations) - middle:  # If we find it, just return it right now
-                return citations[middle]                      # the citations is in ascending order, there is no possible bigger result
+                return citations[middle]                      # the citations is in ascending order, if we go right, 
+                                                              # the citation will increase however the number of papers will decrease,
+                                                              # so there will be no possible solution going right
             elif citations[middle] > len(citations) - middle: 
                 end = middle - 1
             else:
