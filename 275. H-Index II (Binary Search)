@@ -22,6 +22,7 @@ This is a follow up problem to H-Index, where citations is now guaranteed to be 
 Could you solve it in logarithmic time complexity?
 
 Solution: ------------------------------------ Binary Search ------------------------- logarithmic time complexity
+---------------------------------------------- O(logn) T, O(1) S 
 class Solution(object):
     def hIndex(self, citations):
         """
