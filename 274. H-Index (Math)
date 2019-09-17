@@ -14,7 +14,8 @@ Explanation: [3,0,6,1,5] means the researcher has 5 papers in total and each of 
              two with no more than 3 citations each, her h-index is 3.
 Note: If there are several possible values for h, the maximum one is taken as the h-index.
 
-Solution:
+Solution: ----------------------------------------------- Math
+--------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -23,10 +24,12 @@ class Solution(object):
         """
         n = len(citations)             # How many papers total 
         papers = [0] * (n + 1)         # papers[i] is the number of papers with i citations
+                                       # [n + 1] is because the citations can range from 0 - n(or be truncated to n as shown below)
         for c in citations:
             papers[min(c, n)] += 1     # We want min(c, n) because no matter how high the c is, it can be only counted as n maximum
                                        # since the result cannot exceed n
-        i, s = n, papers[-1]           # count from behind, i is the citiation, s is the number of papers that meet citation i
+        i, s = n, papers[-1]           # count from behind, i is the citiation, s is the number of papers whose citation 
+                                       # is larger or equal to i
         while i > s:                   # Stop at i == s
             i -= 1
             s += papers[i]             # s is updated by adding the number of papers of citation i - 1
