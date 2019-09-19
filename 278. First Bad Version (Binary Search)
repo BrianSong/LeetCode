@@ -18,7 +18,8 @@ call isBadVersion(4) -> true
 Then 4 is the first bad version. 
 
 
-Solution: ------------------------------------------------------- Binary Search
+Solution: ----------------------------------------------------------------------- Binary Search
+----------------------------------------------------------------------- O(logn) T, O(1) S
 # The isBadVersion API is already defined for you.
 # @param version, an integer
 # @return a bool
@@ -31,16 +32,26 @@ class Solution(object):
         :rtype: int
         """
         left, right = 1, n
-        while left <= right:                          # Why left <= right and return left ???
-                                                      # In the last one iteration, left == right
-                                                      # Why? because left ++ or right --, they will not happen in the same time here,
-                                                      # So, left == right will always become the last case
+        while left <= right:                          # Why left <= right instead of left < right? Because we want to check
+                                                      # every element, if left < right and (left = mid + 1, right = mid - 1) !!!!!!!!!!!
+                                                      # we will fail to check one element. e.x., 1, 2, 3 where left = 1, right = 3
+                                                      # if right = mid - 1 and now left == right, if we exit right now, we cannot
+                                                      # check element 1 in 1, 2, 3
+                                                      # Why return left ? 
+                                                      # In the last one iteration, there will be two cases:
+                                                      # 1. left == right
                                                       # After left == right, mid == left == right
                                                       # if isBadVersion(mid) is True, it means it is the first bad one, so right --
                                                       # we return left which is the answer
                                                       # elif isBadVersion(mid) is False. it means it is the leftest to the first bad one
                                                       # and here left ++, which also become the answer
                                                       # So, we return left
+                                                      # 2. left == right - 1, mid = left
+                                                      # if mid is bad version, right will become mid - 1 and be less than left,
+                                                      # however, left still points to the first bad version, because
+                                                      # all the element before left is good and all the elment after right is bad
+                                                      # if mid is not bad version, left will become mid + 1 == right, 
+                                                      # and this is the first situation where left == right we talked about above
             mid = left + (right - left) / 2           # Why not mid = (left + right) / 2 ? To avoid overflow even in Python impossible
                                                       # Because (left + right) / 2 can exceed the integer limit 
                                                       # whereas left + (right - left)/2 doesn't exceed the integer bounds.
