@@ -21,6 +21,7 @@ For the purpose of this problem, assume that your function returns 231 − 1 whe
 
 
 Solution: ------------------------------------- Bit Manipulation -------------------------- https://www.youtube.com/watch?v=uD1Cw1JbD8E
+----------------------------------------------- O((logn)^2) T, O(1) S
 class Solution(object):
     def divide(self, dividend, divisor):
         """
@@ -28,17 +29,20 @@ class Solution(object):
         :type divisor: int
         :rtype: int
         """
-        positive = (dividend < 0) == (divisor < 0)                   # Necessary check before doing division or mod in python
-        dividend, divisor = abs(dividend), abs(divisor)              # Must remember to convert them into abs values
+        positive = (dividend < 0) == (divisor < 0)                  # Necessary check before doing division or mod in python
+        dividend, divisor = abs(dividend), abs(divisor)             # Must remember to convert them into abs values
         res = 0
         while dividend >= divisor:
-            temp, i = divisor, 1
+            temp, i = divisor, 1                                    # Create a temp variable because we shouldn't change divisor's value
+                                                                    # i here means the current times divisor has been multiplied by
+                                                                    # i starts by 1 instead of 2 because we can only ensure
+                                                                    # dividend >= temp * 1 for now
             while dividend >= temp:
-                dividend -= temp
+                dividend -= temp                                    # Update the dividend !!!!!!!!!!! It is keep decreasing !!!!
                 res += i
-                i <<= 1                                              # i <<= 1 is the same as i *= 2
-                                                                     # We do this because multiplication is banned in this question
+                i <<= 1                                             # i <<= 1 is the same as i *= 2
+                                                                    # We do this because multiplication is banned in this question
                 temp <<= 1
         if not positive:
             res = - res
-        return min(max(-2147483648, res), 2147483647)                # Prevent overflow for int type variables
+        return min(max(-2147483648, res), 2147483647)               # Prevent overflow for int type variables
