@@ -36,39 +36,88 @@ In this question, we represent the board using a 2D array. In principle, the boa
 which would cause problems when the active area encroaches the border of the array. How would you address these problems?
 
 
-Solution: --------------------------------------- https://www.youtube.com/watch?v=juGxbF-eadU
+Solution no.1: --------------------------------------- O(mn) Space Solution
+------------------------------------------------------ O(mn * 9) T = O(mn) T, O(mn) S
+'''
+if you update the original array with the given rules, 
+you won't be able to perform simultaneous updation as is required in the question. 
+You might end up using the updated values for some cells to update the values of other cells. 
+But the problem demands applying the given rules simultaneously to every cell.
+'''
 class Solution(object):
     def gameOfLife(self, board):
-        m = len(board)
-        n = len(board[0])
-        for i in range(m):
-            for j in range(n):
-                    life = 0
-                    for y in range(max(0, i - 1), min(m, i + 2)):      # i -> len(2D-MATRIX) -> m / y -> 2D-MATRIX[i][]      m 行
-                                                              # Apply max() and min() here to make sure it does not go over the boundary
-                        for x in range(max(0, j - 1), min(n, j + 2)):  # j -> len(2D-MATRIX[0]) -> n / x -> 2D-MATRIX[][j]   n 列
-                            life += (board[y][x]) & 1                  # Here, some board[i][j] may has already updated into new status
-                                                                       # So, we need to use & 1 to 与最低位 &
-                    if life == 3 or life - board[i][j] == 3:           # Conpress the four rules into one line
-                        board[i][j] |= 0b0010                          # How to express binary in python
-                    '''
-                    二进制：>>> abin = 0b1000
-                    >>> abin
-                    8
-
-                    八进制：>>> aoct = 0o123 （数字0，字母o）
-                    >>> aoct
-                    83
-
-                    十六进制：>>> ahex = 0xAB
-                        >>> ahex
-                    171
-                    '''
-        for i in range(m):
-            for j in range(n):
-                board[i][j] >>= 1
-                        
         """
         :type board: List[List[int]]
         :rtype: None Do not return anything, modify board in-place instead.
         """
+        original = [[board[i][j] for j in range(len(board[0]))] for i in range(len(board))]        # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                                   # CANNOT use original = board !!!!!!
+                                                                                                   # In this way, they will always equal
+                                                                                                   # Also, j instead of i the first [] !
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == 1 and self.checkNeigh(original, i, j) < 2:
+                    board[i][j] = 0
+                elif board[i][j] == 1 and self.checkNeigh(original, i, j) > 3:
+                    board[i][j] = 0
+                elif board[i][j] == 0 and self.checkNeigh(original, i, j) == 3:
+                    board[i][j] = 1
+        
+        
+    def checkNeigh(self, board, r, l):
+        live = 0
+        for i in range(r - 1, r + 2):
+            for j in range(l - 1, l + 2):
+                if i == r and j == l:
+                    continue
+                if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
+                    continue
+                if board[i][j] == 1:
+                    live += 1
+        return live
+        
+Solution no.2: ---------------------------------------------------- O(1) Space Solution
+------------------------------------------------------ O(mn * 9) T = O(mn) T, O(1) S
+'''
+We can use some dummy cell value to signify previous state of the cell along with the new changed value.
+For e.g. If the value of the cell was 1 originally but it has now become 0 after applying the rule, 
+then we can change the value to -1. The negative sign signifies the cell is now dead(0) 
+but the magnitude signifies the cell was a live(1) cell originally.
+Also, if the value of the cell was 0 originally but it has now become 1 after applying the rule, 
+then we can change the value to 2. 
+The positive sign signifies the cell is now live(1) but the magnitude of 2 signifies the cell was a dead(0) cell originally.
+'''
+class Solution(object):
+    def gameOfLife(self, board):
+        """
+        :type board: List[List[int]]
+        :rtype: None Do not return anything, modify board in-place instead.
+        """
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == 1 and self.checkNeigh(board, i, j) < 2:
+                    board[i][j] = -1
+                elif board[i][j] == 1 and self.checkNeigh(board, i, j) > 3:
+                    board[i][j] = -1
+                elif board[i][j] == 0 and self.checkNeigh(board, i, j) == 3:
+                    board[i][j] = 2
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == -1:
+                    board[i][j] = 0
+                elif board[i][j] == 2:
+                    board[i][j] = 1
+        
+    def checkNeigh(self, board, r, l):
+        live = 0
+        for i in range(r - 1, r + 2):
+            for j in range(l - 1, l + 2):
+                if i == r and j == l:
+                    continue
+                if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
+                    continue
+                if board[i][j] == 1 or board[i][j] == -1:
+                    live += 1
+        return live
+        
+# The infinite large board follow up may be addressed in the future
