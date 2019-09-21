@@ -20,12 +20,13 @@ Example 4:
 Input: [1,3,5,6], 0
 Output: 0
 
-Solution no.1:
+Solution no.1: --------------------------------------------------------- Binary Search
+--------------------------------------------------------- O(logn) T, O(1) S
 class Solution(object):
     def searchInsert(self, nums, target):
         left, right = 0, len(nums) - 1           # Two Pointer - Binary Search
         if target > nums[len(nums) - 1]:         # Outside the nums : case no.1
-            return len(nums)
+            return len(nums)                     # It is better to check beforehead, it can be indeed regards as a optimization method
         elif target < nums[0]:                   # Outside the nums: case no.2
             return 0
         while left < right:
@@ -51,7 +52,7 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
-Solution no.2: much more concise
+Solution no.2: 
 class Solution(object):
     def searchInsert(self, nums, target):
         left, right = 0, len(nums) - 1
