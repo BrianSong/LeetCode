@@ -34,7 +34,8 @@ A straight forward solution using O(mn) space is probably a bad idea.
 A simple improvement uses O(m + n) space, but still not the best solution.
 Could you devise a constant space solution?
 
-Solution no.1 Brute O(1) space very inefficient:
+Solution no.1: ------------------------------------------- Brute O(1) space very inefficient
+---------------------------------------------------------- O((m * n) * (m + n)) T, O(1) S
 class Solution(object):
     def setZeroes(self, matrix):
         for i in range(len(matrix)):
@@ -53,7 +54,8 @@ class Solution(object):
         :rtype: None Do not return anything, modify matrix in-place instead.
         """
         
-  Solution no.2 O(1) Space, Efficient Solution:
+  Solution no.2: -------------------------------------------- Flag Strategy
+  ----------------------------------------------------------- O(mn) T, O(1) S
   class Solution(object):
     def setZeroes(self, matrix):
         R, C, is_column = len(matrix), len(matrix[0]), False
@@ -74,7 +76,14 @@ class Solution(object):
                 if matrix[i][0] == 0 or matrix[0][j] == 0:
                     matrix[i][j] = 0
         # See if the first row needs to be set to zero as well
-        if matrix[0][0] == 0:
+        if matrix[0][0] == 0:                                             # This cannot be integrated into the last condition
+                                                                          # to make it become "for i in range(R):"
+                                                                          # Why? Here we are using the first row and first column
+                                                                          # as flag, we cannot set all the first row to zero as long as 
+                                                                          # matrix[0][0] is zero, if we do this, all will be zero
+                                                                          # when matrix[0][0] is 0, we can only set the first row
+                                                                          # to zero after all the element except the first row
+                                                                          # and first column has been assigned
             for j in range(C):
                 matrix[0][j] = 0
         # See if the first column needs to be set to zero as well     
