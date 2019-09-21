@@ -76,7 +76,7 @@ class Solution(object):
                     live += 1
         return live
         
-Solution no.2: --------------------------------------- Flag Strategy
+Solution no.2: --------------------------------------- O(1) S
 ------------------------------------------------------ O(mn * 9) T = O(mn) T, O(1) S
 '''
 We can use some dummy cell value to signify previous state of the cell along with the new changed value.
