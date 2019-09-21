@@ -56,6 +56,9 @@ class Solution(object):
         
   Solution no.2: -------------------------------------------- Flag Strategy
   ----------------------------------------------------------- O(mn) T, O(1) S
+  '''
+  We can use the first cell of every row and column as a flag. This flag would determine whether a row or column has been set to zero.
+  '''
   class Solution(object):
     def setZeroes(self, matrix):
         R, C, is_column = len(matrix), len(matrix[0]), False
