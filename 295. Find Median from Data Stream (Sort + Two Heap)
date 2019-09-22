@@ -27,7 +27,8 @@ If all integer numbers from the stream are between 0 and 100, how would you opti
 If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?
 
 
-Solution no.1: ------------------------- my own ------------------------------ pass 16/18 but TLE Error (O(1) add + O(nlogn) find)
+Solution no.1: -------------------------------- my own(Simple Sorting) ------------------------- pass 16/18 but TLE Error 
+----------------------------------------------- T: O(1) add + O(nlogn) find, O(n) S: linear space to hold input in a container
 class MedianFinder(object):
 
     def __init__(self):
@@ -67,7 +68,8 @@ class MedianFinder(object):
 # param_2 = obj.findMedian()
 
 
-Solution no.2: -------------------------------------------- Heap => O(log n) add, O(1) find
+Solution no.2: -------------------------------------------- Two Heap
+----------------------------------------------------------- T: O(log n) add and O(1) find, O(n) S
 '''
 Heaps are binary trees for which every parent node has a value less than or equal to any of its children. 
 This implementation uses arrays for which heap[k] <= heap[2*k+1] and heap[k] <= heap[2*k+2] for all k, counting elements from zero.
@@ -134,3 +136,6 @@ class MedianFinder(object):
 # obj = MedianFinder()
 # obj.addNum(num)
 # param_2 = obj.findMedian()
+
+
+The two follow up questions may be finished in the future, so busy with homework in computer integrated surgery these days.
