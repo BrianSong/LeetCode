@@ -16,7 +16,8 @@ Input: [5,4,3,2,1]
 Output: false
 
 
-Solution:
+Solution: --------------------------------------------------- Find 3? We set 2. Brillant !!!!!!!!!!!!!!!!!!
+------------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def increasingTriplet(self, nums):
         """
