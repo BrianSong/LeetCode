@@ -50,6 +50,10 @@ class Solution(object):
                                                                              
                     dp[i][j] = min(dp[i + 1][j] + ord(s1[i]), dp[i][j + 1] + ord(s2[j]))
         return dp[0][0]                                                      # dp[0][0] must become the optimal choice by this dp,
+                                                                             # because no matter what s1 and s2 are,
+                                                                             # like "eat" and "ea", they must can be simplified into
+                                                                             # "t" and "" where already exit and calculated in dp
+                                                                             # what already calculated in dp must be optimal answer
                                                                              # see 手机相册2019.09.23看“sea”和“eat”的情况分析
                                                                              # for bottom up dp, we should first come up with
                                                                              # the last row and last column, and decide dp[i][j]'s value
