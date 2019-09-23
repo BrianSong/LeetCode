@@ -26,7 +26,8 @@ Output: "1A1B"
 Explanation: The 1st 1 in friend's guess is a bull, the 2nd or 3rd 1 is a cow.
 Note: You may assume that the secret number and your friend's guess only contain digits, and their lengths are always equal.
 
-Solution no.1 (my own):
+Solution no.1: ----------------------------------------- my own
+-------------------------------------------------------- O(n^2) T due to secret.replace(), O(1) S
 class Solution(object):
     def getHint(self, secret, guess):
         bulls_num, cows_num = 0, 0
@@ -46,7 +47,8 @@ class Solution(object):
         :rtype: str
         """
         
-Solution no.2: ---------------------------------------------- Hash Table
+Solution no.2: ---------------------------------------------- Counter
+------------------------------------------------------------- O(n) T, O(n) S
 '''
 First, creat two dictionary counting the guess and secret array.
 Second, go through the guess array and find the matches, in this way, we can easily get 'A' number.
@@ -65,10 +67,11 @@ class Solution(object):
                 A += 1
                 secret_counter[secret[i]] -= 1
                 guess_counter[secret[i]] -= 1
-            elif guess[i] not in secret_counter:    # not neccessary
+            elif guess[i] not in secret_counter:                # not necessary, because latter, even if key is not in secret_counter,
+                                                                # secret_counter[key] will return 0 and min() will take it
                 guess_counter[guess[i]] = 0
-        for key, value in guess_counter.items():    # key, value in dictionary.items() not dictionary.item()
-            B += min(secret_counter[key], value)
+        for key, value in guess_counter.items():                # key, value in dictionary.items() not dictionary.item()
+            B += min(secret_counter[key], value)                # The reason why "elif guess[i] not in secret_counter:" is not necessary
         return str(A) + "A" + str(B) + "B"
         """
         :type secret: str
