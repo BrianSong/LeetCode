@@ -49,4 +49,17 @@ class Solution(object):
                                                                              # s1[i:] and s2[j + 1:] plus the ord() for extra j
                                                                              
                     dp[i][j] = min(dp[i + 1][j] + ord(s1[i]), dp[i][j + 1] + ord(s2[j]))
-        return dp[0][0]
+        return dp[0][0]                                                      # dp[0][0] must become the optimal choice by this dp,
+                                                                             # see 手机相册2019.09.23看“sea”和“eat”的情况分析
+                                                                             # for bottom up dp, we should first come up with
+                                                                             # the last row and last column, and decide dp[i][j]'s value
+                                                                             # by dp[i + 1][j] and dp[i][j + 1]
+                                                                             # just as in top-down (normal) dp,
+                                                                             # we first initilize the first row and first column,
+                                                                             # and decide dp[i][j] by dp[i - 1][j] and dp[i][j - 1]
+                                                                             # also, we use "for i in range(len(s1) - 1, -1, -1)", 
+                                                                             # "for j in range(len(s2) - 1, -1, -1)" for the bottom-up
+                                                                             # and "for i in range(1, len(s1))"
+                                                                             # and "j in range(1, len(s2))" for top-down
+                                                                             # so that, we always come up with the current dp
+                                                                             # using the initilized dp or previous calculated dp
