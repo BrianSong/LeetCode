@@ -47,7 +47,8 @@ class Codec:
                 dfs_preorder(root.left)
                 dfs_preorder(root.right) 
             else:
-                data.append('#')
+                data.append('#')                     # Very smart way to store None node, as long as we do not continue recursion
+                                                     # from here, we can stop from here and only store the None node we want
         data = []
         dfs_preorder(root)
         return ' '.join(data)                                            # join()
