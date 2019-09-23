@@ -21,6 +21,7 @@ All elements of each string will have an ASCII value in [97, 122].
 
 
 Solution: -------------------------------------------------- Bottom-Up Dynamic Programming
+------------------------------------------------------------ O(m*n) T, O(m*n) S
 class Solution(object):
     def minimumDeleteSum(self, s1, s2):
         """
@@ -30,9 +31,12 @@ class Solution(object):
         """
         dp = [[0 for j in range(len(s2) + 1)] for i in range(len(s1) + 1)]   # Step no.1: dp[i][j] be the answer to the problem for 
                                                                              # the strings s1[i:], s2[j:] (inclusing index i / j)
-        for i in range(len(s1) - 1, -1, -1):                                 # Step no.2: Init
+                                                                             # So, that's why "j in range(len(s2) + 1)"
+                                                                             # and "i in range(len(s1) + 1)", 
+                                                                             # we need to also let s1 and s2 be "" for initilization
+        for i in range(len(s1) - 1, -1, -1):                                 # Step no.2: Init: when s2 == ""
             dp[i][len(s2)] = dp[i + 1][len(s2)] + ord(s1[i])                 # Different than usual, this time is Bottom-Up,
-        for j in range(len(s2) - 1, -1, -1):                                 # the usual preprocessing dp[0][0] now turns to dp[-1][-1]
+        for j in range(len(s2) - 1, -1, -1):                                 # when s1 == ""
             dp[len(s1)][j] = dp[len(s1)][j + 1] + ord(s2[j])
         for i in range(len(s1) - 1, -1, -1):                                 # Step no.3: Transform
             for j in range(len(s2) - 1, -1, -1):
