@@ -50,7 +50,7 @@ class Codec:
                 data.append('#')
         data = []
         dfs_preorder(root)
-        return ' '.join(data)                                             # join()
+        return ' '.join(data)                                            # join()
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
