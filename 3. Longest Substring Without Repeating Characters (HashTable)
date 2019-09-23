@@ -18,19 +18,27 @@ Explanation: The answer is "wke", with the length of 3.
              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
              
 Solution: ------------------------------------------------- HashTable
+----------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         """
         :type s: str
         :rtype: int
         """
-        currlist, maxlength, start = {}, 0, 0
+        if not s:
+            return 0
+        HashTable, start, res = {}, 0, 0                       # Instead of thinking about how we can delete all the element that
+                                                               # appeared before the duplicate element, which is very time consuming
+                                                               # we can create a start pointer to indicate that !!!!!!!!
         for i in range(len(s)):
-            if s[i] in currlist and start <= currlist[s[i]]:  # Must add start <= currlist[s[i]] since if start > currlist[s[i]],
-                                                              # even s[i] is existed in currlist, it does not matter
-                                                              # We only account the elements behind the start pointer
-                start = currlist[s[i]] + 1
+            if not s[i] in HashTable:
+                HashTable[s[i]] = i
+                res = max(res, i - start + 1)
             else:
-                maxlength = max(maxlength, i - start + 1)
-            currlist[s[i]] = i
-        return maxlength
+                start = max(start, HashTable[s[i]] + 1)        # We can only take the max() here !!!!!!!!!!!!!!!!!!!!!!
+                                                               # start can only increase !! else, for example: "abba"
+                                                               # for the last "a", if we do not take max(), start will decrease
+                                                               # from 2 to 1, which bring the result to 3 - 1 + 1 = 3 !!!!!!!!!
+                HashTable[s[i]] = i
+                res = max(res, i - start + 1)                  # Update the res no matter under what condition
+        return res
