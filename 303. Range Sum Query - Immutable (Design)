@@ -8,10 +8,12 @@ sumRange(2, 5) -> -1
 sumRange(0, 5) -> -3
 Note:
 You may assume that the array does not change.
-There are many calls to sumRange function.
+
+*****************************************************There are many calls to sumRange function.*****************************************
 
 
-Solution:
+Solution: ------------------------------------------------------- Design
+----------------------------------------------------------------- O(n) T, O(n) S
 '''
 Imagine that sumRange is called one thousand times with the exact same arguments. How could we speed that up?
 We could trade in extra space for speed. By pre-computing, we can speed up the query to constant time.
@@ -24,7 +26,7 @@ class NumArray(object):
         """
         self.nums, self.sumres = nums, [0 for i in range(len(nums))]
         for i in range(len(nums)):
-            if i == 0:
+            if i == 0:                                                                 # Consider i == 0 situation !!!!!!!!!!!!!!!!
                 self.sumres[i] = self.nums[i]
             else:
                 self.sumres[i] = self.sumres[i - 1] + self.nums[i]
@@ -37,7 +39,9 @@ class NumArray(object):
         :type j: int
         :rtype: int
         """
-        return self.sumres[j] - self.sumres[i - 1] if i != 0 else self.sumres[j]
+        return self.sumres[j] - self.sumres[i - 1] if i != 0 else self.sumres[j]      # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                      # Must consider i == 0 situation !!!!!!!!!!!
+                                                                                      # where i - 1 will bring key error
         
 
 
