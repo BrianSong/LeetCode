@@ -11,14 +11,15 @@ Output: "leotcede"
 Note:
 The vowels does not include the letter "y".
 
-Solution: ---------------------------------------------------------------------------------------- Two Pointer
+Solution: ---------------------------------------------------------- Two Pointer
+---------------------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def reverseVowels(self, s):
         if s is None or len(s) == 0:
             return ""
         slist = list(s)                                                     # Must convert the string into list, otherwise
                                                                             # we cannot assign value to s[n] since it is unicode
-        vowels = set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'])
+        vowels = set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'])    # Convert it into a set so for better look up: O(1)
         left, right = 0, len(s) - 1                                         # REMEMBER TO ADD "-1" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         while left < right:
             if slist[left] in vowels and slist[right] in vowels:
