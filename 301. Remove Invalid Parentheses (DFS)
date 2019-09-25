@@ -18,7 +18,7 @@ Output: [""]
 
 
 Solution: ------------------------------------- DFS --------------------------------- https://www.youtube.com/watch?v=2k_rS_u6EBk
------------------------------------------------ O(2^(l + r)) T, O(n^2) S
+----------------------------------------------- O(2^(l + r)) T：每一个左括号右括号都选择删或者不删, O(n^2) S：递归深度为n, 每一层储存n个字符串
 class Solution(object):
     def removeInvalidParentheses(self, s):
         """
