@@ -18,7 +18,7 @@ Output: [""]
 
 
 Solution: ------------------------------------- DFS --------------------------------- https://www.youtube.com/watch?v=2k_rS_u6EBk
------------------------------------------------ Time: O(2^(l + r)), Space: O(n^2)
+----------------------------------------------- O(2^(l + r)) T, O(n^2) S
 class Solution(object):
     def removeInvalidParentheses(self, s):
         """
@@ -58,6 +58,6 @@ class Solution(object):
                                                               # and '()' after remove the second '('
                 continue
             if s[i] == ')' and r > 0:                         # Not necessary to add 'r > 0' but for time optimization 
-                self.dfs(s[:i] + s[i+1:], l, r - 1, i, res)
-            if s[i] == '(' and l > 0:                         
+                self.dfs(s[:i] + s[i+1:], l, r - 1, i, res)   # We need to use dfs because we update s all the time
+            if s[i] == '(' and l > 0:                         # and we need to record the start index for next time's beginning
                 self.dfs(s[:i] + s[i+1:], l - 1, r, i, res)
