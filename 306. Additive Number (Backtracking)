@@ -23,7 +23,13 @@ Follow up:
 How would you handle overflow for very large input integers?
 
 
-Solution:----------------------------https://www.youtube.com/watch?v=JqOIRBC0_9c&list=PLDLrHkO0R-LzFc3ufrhk5sr1UmnNyW4u0&index=28
+Solution:----------- Backtracking ----------https://www.youtube.com/watch?v=JqOIRBC0_9c&list=PLDLrHkO0R-LzFc3ufrhk5sr1UmnNyW4u0&index=28
+-------------------------------------- O(n^3) T, O(n) S
+'''
+Basically, the main function isAdditiveNumber() is creating different first two elements and feed them into the backtracking()
+backtracking() is taking the first two elements and check if the sum exist in the nums, if it does, then it update the 
+first and second element and feed them back to itself.
+'''
 class Solution(object):
     def isAdditiveNumber(self, nums):
         """
@@ -31,16 +37,16 @@ class Solution(object):
         :rtype: bool
         """
         if len(nums) < 3: return False
-        for i in range(1, len(nums) / 2 + 1):                     # 两数相加，合的长度至少为这两数长度的最大值   
+        for i in range(1, len(nums) / 2 + 1):                     # 两数相加，和的长度至少为这两数长度的最大值   
             if nums[0] == "0" and i > 1:                          # Note: Numbers in the additive sequence cannot have leading zeros,
                                                                   # so sequence 1, 2, 03 or 1, 02, 3 is invalid.
                 return False                                      # This is False since as long as the first is "0" and length > 1,
                                                                   # There is no hope back: 012345...
             first = int(nums[:i])
             j = 1
-            while len(nums) - i - j >= max(i, j):                 # 两数相加，合的长度至少为这两数长度的最大值   
+            while len(nums) - i - j >= max(i, j):                 # 两数相加，和的长度至少为这两数长度的最大值   
                 if nums[i] == "0" and j > 1:
-                    break                                         # Here is break, since still have hope as long as first number changes 
+                    break                                         # Here is break, since still have hope as long as first number changes
                 second = int(nums[i:i+j])
                 if self.backtracking(first, second, i + j, nums):
                     return True
@@ -49,5 +55,6 @@ class Solution(object):
         if start == len(nums):
             return True
         currsum = first + second
-        return str(currsum) == nums[start:start+len(str(currsum))] and self.backtracking(second, currsum, start + len(str(currsum)), nums)
+        return str(currsum) == nums[start:start+len(str(currsum))] 
+        \ and self.backtracking(second, currsum, start + len(str(currsum)), nums)    # and !!!!!!!!!!!!!!! MUST both satisfied
         # BE CAREFUL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CANNOT "len(currsum)", SHOULD BE "len(str(currsum))", SINCE INTEGER HAS NO LENGTH
