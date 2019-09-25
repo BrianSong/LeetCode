@@ -60,4 +60,5 @@ class Solution(object):
             if s[i] == ')' and r > 0:                         # Not necessary to add 'r > 0' but for time optimization 
                 self.dfs(s[:i] + s[i+1:], l, r - 1, i, res)   # We need to use dfs because we update s all the time
             if s[i] == '(' and l > 0:                         # and we need to record the start index for next time's beginning
+                                                              # because start index 前面我们都已经搜索过了
                 self.dfs(s[:i] + s[i+1:], l - 1, r, i, res)
