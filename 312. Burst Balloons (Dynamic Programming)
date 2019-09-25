@@ -18,6 +18,7 @@ Explanation: nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
              
              
 Solution: ------------------------------- Dynamic Programming ------------------------- https://www.youtube.com/watch?v=Ci39lcoLbyw
+----------------------------------------- O(n^3) T, O(n^2) S
 class Solution(object):
     def maxCoins(self, nums):
         """
@@ -39,4 +40,6 @@ class Solution(object):
                                                                 # dp[left][right] records the maximum coins we can get by shooting
                                                                 # all balloons between left and right and i here is the last one shooted
                     dp[left][right] = max(dp[left][right], coins[i]*coins[left]*coins[right] + dp[left][i] + dp[i][right])  # Step no.3
+                                                                # since 从上往下从左往右，dp[left][i]and dp[i][right] are already known
+                                                                # when we try to come up with dp[left][right]
         return dp[0][n-1]                                       # Step no.4
