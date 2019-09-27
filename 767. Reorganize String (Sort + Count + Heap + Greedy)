@@ -1,0 +1,72 @@
+Given a string S, check if the letters can be rearranged so that two characters that are adjacent to each other are not the same.
+
+If possible, output any possible result.  If not possible, return the empty string.
+
+Example 1:
+
+Input: S = "aab"
+Output: "aba"
+Example 2:
+
+Input: S = "aaab"
+Output: ""
+Note:
+
+S will consist of lowercase letters and have length in range [1, 500].
+
+
+Solution no.1: ------------------------------------ Sort by Count
+----------------------------------------- O(α*N + αlogα + α) T where N is the len(S) and α is the size of the alphabet, O(n) S
+class Solution(object):
+    def reorganizeString(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        if not S:
+            return ""
+        N = len(S)
+        A, res = [], [0] * N
+        alphalist = []
+        for s in set(S):
+            alphalist.append([S.count(s), s])
+        alphalist.sort()
+        for c, w in alphalist:
+            if c > (N + 1) / 2:                                        # bigger than (N + 1) / 2 instead of N / 2
+                return ""
+            A.extend(c*w)                                              # A.extend(3*'A') = > [..., A, A, A]
+        res[::2], res[1::2] = A[N/2:], A[:N/2]                         # Arrange the most frequent character first
+        return "".join(res)
+        
+        
+Solution no.2: --------------------------------------- Greedy with Heap
+------------------------------------------------------ O(Nlogα) T: rebuilding the string it takes n steps and in each step 
+------------------------------------------------------ the max heap takes at most O(logA) time to reorganize itself, O(N) S
+class Solution(object):
+    def reorganizeString(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        if not S:
+            return ""
+        pq = []
+        for w in set(S):
+            if S.count(w) > (len(S) + 1) / 2:
+                return ""
+            pq.append((-S.count(w), w))                         # we have a "-" because heap in Python is Min Heap
+        heapq.heapify(pq)
+        res = []
+        while len(pq) >= 2:                               
+            times1, item1 = heapq.heappop(pq)
+            times2, item2 = heapq.heappop(pq)
+            res.append(item1)                                   # Writing the most common letter followed by 
+                                                                # the second most common letter
+            res.append(item2)
+            if times1 + 1:                                      # Check if we run out of the current letter
+                heapq.heappush(pq, (times1 + 1, item1))         # if not, we "decrease" its frequency and keep adding it to the pq
+            if times2 + 1:
+                heapq.heappush(pq, (times2 + 1, item2))
+        return "".join(res) + (pq[0][1] if pq else "")          # At the end, we might have one element still on the heap, 
+                                                                # which must have a count of one. 
+                                                                # If we do, we'll add that to the answer too.
