@@ -56,7 +56,8 @@ class Solution(object):
                                                                       # instead we should use (n-1) % 26, 
                                                                       # then we get a number range from 0 to 25.
                                                                       # capitals list's index is from 0 to 25.
-            n = (n - 1) / 26
+            n = (n - 1) / 26                                          # Why n = (n - 1) / 26 ???????
+                                                                      # for n == 26, we must let next n to be 0 to stop the loop !!!!
         return res[::-1]                                              # Must remember to reverse the res !!!!!!!!!!!!!!!!!!!!!!
         '''
         IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
