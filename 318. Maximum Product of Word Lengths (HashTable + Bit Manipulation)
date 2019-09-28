@@ -20,7 +20,9 @@ Explanation: No such pair of words.
 
 
 
-Solution: ---------------------------------------------- HashTaclass Solution(object):
+Solution: ---------------------------------------------- HashTable + Bit Manipulation
+-------------------------------------------------------- O(n*a) T, where a is the avarage length of those words, O(n) S
+class Solution(object):
     def maxProduct(self, words):
         """
         :type words: List[str]
@@ -34,6 +36,12 @@ Solution: ---------------------------------------------- HashTaclass Solution(ob
                                                               # any common character. This is taken care by creating a unique number
                                                               # for every string, i.e. bitsRepre: a an 32 bit integer 
                                                               # where 0 bit corresponds to 'a', 1st bit corresponds to 'b' and so on.
-            d[bitsRepre] = max(d.get(bitsRepre, 0), len(w))
-        return max([d[x] * d[y] for x in d for y in d if not x & y] or [0])       # if two strings contain the same character
-                                                                                  # i.e.: x & y != 0, we can ignore this case
+            if bitRep in d:
+                d[bitRep] = max(d[bitRep], len(word))
+            else:
+                d[bitRep] = len(word)
+        for a in d:
+            for b in d:
+                if a & b == 0:                                # if two strings do not contain the same letter, then their & will be 0
+                    res = max(res, d[a] * d[b])             
+        return res       
