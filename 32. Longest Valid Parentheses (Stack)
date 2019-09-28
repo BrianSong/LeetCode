@@ -13,7 +13,7 @@ Explanation: The longest valid parentheses substring is "()()"
 
 
 Solution: --------------------------------- Stack --------------------------------------- https://www.youtube.com/watch?v=M1Vw5Tk1rw4
-------------------------------------------- O(n) time, O(n) space
+------------------------------------------- O(n) T, O(n) S
 class Solution(object):
     def longestValidParentheses(self, s):
         """
@@ -29,13 +29,13 @@ class Solution(object):
                 stack.append(i)
             else:
                 if not stack:
-                    left_most = i
-                    continue
-                stack.pop()
-                if not stack:
-                    res = max(res, i - left_most)
+                    leftmost = i
                 else:
-                    res = max(res, i - stack[-1])
+                    stack.pop()
+                    if stack:
+                        res = max(res, i - stack[-1])
+                    else:
+                        res = max(res, i - leftmost)
         return res
         '''
         The best way to demostrate this method is by giving a example,
