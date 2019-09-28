@@ -74,7 +74,8 @@ class Solution(object):
                 res.append(l2[i2])
                 i2 += 1
         if i1 < len(l1):
-            res.extend(l1[i1:])
+            res.extend(l1[i1:])                     # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                    # extend !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOT append !!!!!!!!!!!!!!!!!!!!!!
         elif i2 < len(l2):
             res.extend(l2[i2:])
         return res
