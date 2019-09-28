@@ -16,6 +16,9 @@ Output:
 
 
 Solution: ---------------------------------------------- sorted(iterative, key = lambda x:(- x[0], x[1]))
+------------------------------------------ O(nlogn) + O(n^2) = O(n^2) T, remember for the time of operation inside for loop statement,
+------------------------------------------ We add them instead of multiply them, just like here, we add O(nlogn) T
+------------------------------------------ O(n) S
 '''
 Pick out tallest group of people. Since there's no other groups of people taller than them, 
 therefore each guy's index will be just as same as his k value.
@@ -32,7 +35,10 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         res = []
-        for people in sorted(people, key = lambda x:(- x[0], x[1])):    # Here we use sorted(iterative, key = lambda...)
+        for people in sorted(people, key = lambda x:(- x[0], x[1])):    # why not only just lambda x: -x[0] ??????????????????????????
+                                                                        # because here we also need to sort them according to people[1]
+                                                                        # due to "who have a height greater than or EQUAL to h"
+                                                                        # Here we use sorted(iterative, key = lambda...)
                                                                         # lambda 用于匿名函数，可以免去命名函数的麻烦 (inline function)
                                                                         # why key = lambda x:(- x[0], x[1]) ?
                                                                         # First assign x[0] to -x[0], so that 7 in the first dimension
