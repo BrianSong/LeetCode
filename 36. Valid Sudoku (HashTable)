@@ -47,34 +47,35 @@ Only the filled cells need to be validated according to the mentioned rules.
 The given board contain only digits 1-9 and the character '.'.
 The given board size is always 9x9.
 
-Solution: -------------------------------------------------------- https://www.youtube.com/watch?v=iqe1JSjyldo
+Solution: -------------------------------------- HashTable ------------------ https://www.youtube.com/watch?v=iqe1JSjyldo
+------------------------------------------------ O(m*n) T, O(k) S where m == n == k == 9
 class Solution(object):
     def isValidSudoku(self, board):
-        HashTable = {}
-        for i in range(9):                                                               # Check the rows
-            for j in range(9):
-                if board[i][j] in HashTable:
-                    return False
-                if not board[i][j] == ".":
-                    HashTable[board[i][j]] = 1
-            HashTable = {}                      # IMPORTANT!! WHERE TO UPDATE HASHTBALE? Update the HashTable after the first for loop
-        for j in range(9):                                                               # Check the columns
-            for i in range(9):
-                if board[i][j] in HashTable:
-                    return False
-                if not board[i][j] == ".":
-                    HashTable[board[i][j]] = 1
-            HashTable = {}                     # IMPORTANT!! WHERE TO UPDATE HASHTBALE? Update the HashTable after the first for loop
-        for box in range(9):                                                             # Check the 9 3x3 sub-boxes
-            for i in range(3): 
-                for j in range(3):
-                    if board[i + 3 * (box / 3)][j + 3 * (box % 3)] in HashTable:        # Very clever to ultilize the box variable here
-                        return False
-                    if not board[i + 3 * (box / 3)][j + 3 * (box % 3)] == ".":
-                        HashTable[board[i + 3 * (box / 3)][j + 3 * (box % 3)]] = 1 
-            HashTable = {}                    # IMPORTANT!! WHERE TO UPDATE HASHTBALE? Update the HashTable after the first for loop
-        return True
         """
         :type board: List[List[str]]
         :rtype: bool
         """
+        for i in range(len(board)):                                       # Check the rows
+            HashTable = {}                                                # IMPORTANT !!!!!!!!!!!!!!!!!!!! MUST UPDATE !!!!!!!!!!
+            for j in range(len(board[0])):
+                if board[i][j] in HashTable and board[i][j] != '.':
+                    return False
+                HashTable[board[i][j]] = 1
+        
+        for j in range(len(board[0])):                                    # Check the columns
+            HashTable = {}                                                # IMPORTANT !!!!!!!!!!!!!!!!!!!! MUST UPDATE !!!!!!!!!!
+            for i in range(len(board)):
+                if board[i][j] in HashTable and board[i][j] != '.':
+                    return False
+                HashTable[board[i][j]] = 1
+                
+        for k in range(9):                                                # Check the 9 3x3 sub-boxes
+            HashTable = {}                                                # IMPORTANT !!!!!!!!!!!!!!!!!!!! MUST UPDATE !!!!!!!!!!
+            for i in range(3):                                            # No matter what, since we are checking a 3*3 matrix
+                                                                          # i and j should be in [0, 2] and we further calculate
+                                                                          # using the k (box variable)
+                for j in range(3):
+                    if board[i + 3 * (k / 3)][j + 3 * (k % 3)] in HashTable and board[i + 3 * (k / 3)][j + 3 * (k % 3)] != '.':
+                        return False
+                    HashTable[board[i + 3 * (k / 3)][j + 3 * (k % 3)]] = 1
+        return True
