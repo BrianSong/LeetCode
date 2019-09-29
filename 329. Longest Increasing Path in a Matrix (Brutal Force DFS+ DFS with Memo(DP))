@@ -1,0 +1,90 @@
+Given an integer matrix, find the length of the longest increasing path.
+
+From each cell, you can either move to four directions: left, right, up or down. 
+You may NOT move diagonally or move outside of the boundary (i.e. wrap-around is not allowed).
+
+Example 1:
+
+Input: nums = 
+[
+  [9,9,4],
+  [6,6,8],
+  [2,1,1]
+] 
+Output: 4 
+Explanation: The longest increasing path is [1, 2, 6, 9].
+Example 2:
+
+Input: nums = 
+[
+  [3,4,5],
+  [3,2,6],
+  [2,2,1]
+] 
+Output: 4 
+Explanation: The longest increasing path is [3, 4, 5, 6]. Moving diagonally is not allowed.
+
+
+Solution no.1: ---------------------------------------------------- Brutal Force DFS
+------------------------------------------------------------------- O(m*n*(4^m*n)) T where m = len(matrix), n = len(matrix[0])
+------------------------------------------------------------------- O(m*n) S, maximum recursion tree depth
+class Solution(object):
+    def longestIncreasingPath(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        if not matrix or not matrix[0]:
+            return 0
+        self.dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        self.visited = [[False for j in range(len(matrix[0]))] for i in range(len(matrix))]   # Actually, we do not need visited here
+                                                                                              # because prev >= matrix[r][c] will ensure
+                                                                                              # that we will not fall into dead cycle
+        self.res = 0
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                self.backtracking(i, j, matrix, -float('inf'), 1)
+        return self.res
+    
+    def backtracking(self, r, c, matrix, prev, currres):
+        if r < 0 or r >= len(matrix) or c < 0 or c >= len(matrix[0]) or self.visited[r][c] or prev >= matrix[r][c]:
+            return
+        self.visited[r][c] = True
+        self.res = max(self.res, currres)
+        for dir in self.dirs:
+            self.backtracking(r + dir[0], c + dir[1], matrix, matrix[r][c], currres + 1)
+        self.visited[r][c] = False
+        
+Solution no.2: ----------------------------------------------------- DFS with Memo
+---- O(m*n) T: it only does DFS once for each element and it will then use cache[][] to avoid doing DFS to the same matrix element again
+------------------------------------------------------------------- O(m*n) S, maximum recursion tree depth and memo size
+class Solution(object):
+    def longestIncreasingPath(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        if not matrix:
+            return 0
+        self.dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        self.memo = [[0 for j in range(len(matrix[0]))] for i in range(len(matrix))]  # KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                                      # Calculate and memorize the longest distance 
+                                                                                      # for this cell, so we don't need to calculate it 
+                                                                                      # again in the future
+        res = 0
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                temp = self.backtracking(i, j, matrix, -float('inf'))
+                res = max(temp, res)
+        return res
+    
+    def backtracking(self, r, c, matrix, prev):
+        if r < 0 or r >= len(matrix) or c < 0 or c >= len(matrix[0]) or prev >= matrix[r][c]:
+            return 0
+        if self.memo[r][c] > 0:
+            return self.memo[r][c]
+        tempMax = 0
+        for dir in self.dirs:
+            tempMax = max(self.backtracking(r + dir[0], c + dir[1], matrix, matrix[r][c]) + 1, tempMax)  # "+ 1" !!!!!!!!!!!!!!!!!!!!
+        self.memo[r][c] = tempMax
+        return tempMax                                                               # MUST remember to RETURN !!!!!!!!!!
