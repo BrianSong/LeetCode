@@ -1,0 +1,105 @@
+Given two arrays, write a function to compute their intersection.
+
+Example 1:
+
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+Example 2:
+
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]
+Note:
+
+Each element in the result should appear as many times as it shows in both arrays.
+The result can be in any order.
+Follow up:
+
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+
+
+Solution no.1: ------------------------------------------------ HashTable
+--------------------------------------------------------------- O(n) T, O(n) S
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        if not nums1 or not nums2:
+            return None
+        res = []
+        HashTable = collections.defaultdict(int)
+        for num in nums1:
+            HashTable[num] += 1
+        for num in nums2:
+            if num in HashTable:
+                res.append(num)
+                HashTable[num] -= 1
+                if HashTable[num] == 0:
+                    del HashTable[num]                       # O(1) T for del in HashTable
+        return res
+        
+        
+Follow up:
+
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+
+
+Solution for follow up 1: ------------------------------------------------- Two pointers if the given array is already sorted
+----------------------------------------------------------- O(n) T, O(1) S
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        class Solution(object):
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        if not nums1 or not nums2:
+            return None
+        p1, p2 = 0, 0
+        nums1.sort()
+        nums2.sort()
+        res = []
+        while p1 < len(nums1) and p2 < len(nums2):
+            if nums1[p1] == nums2[p2]:                         # No need to check duplicate as in problem 349
+                res.append(nums1[p1])
+                p1 += 1
+                p2 += 1
+            else:
+                if nums1[p1] > nums2[p2]:
+                    p2 += 1
+                else:
+                    p1 += 1
+        return res
+        
+Solution for follow up 2:
+
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+
+The two pointers method is better because we can finish the loop ealier compared to the set method.
+
+Solution for follow up 3:
+
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at
+once?
+
+If only nums2 cannot fit in memory, put all elements of nums1 into a HashMap, read chunks of array that fit into the memory, 
+and record the intersections.
+
+If both nums1 and nums2 are so huge that neither fit into the memory, sort them individually (external sort), 
+then read 2 elements from each array at a time in memory, record intersections.
+You can read even 1 element from each array at a time, compare them, if they are equal, record intersection, 
+if they are not, remove the smaller one and read the new element from that array. 
+But this will create too much disk I/O, so the best way is to read as much as elements into memory once.
