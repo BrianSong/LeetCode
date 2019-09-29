@@ -16,7 +16,7 @@ Explanation: By calling next repeatedly until hasNext returns false,
              the order of elements returned by next should be: [1,4,6].
              
              
-Solution: ------------------------------------------------------ Stack + Design
+Solution no.1: ------------------------------------------------------ Stack + Design
 # """
 # This is the interface that allows for creating nested lists.
 # You should not implement it, or speculate about its implementation
@@ -71,6 +71,55 @@ class NestedIterator(object):
                 self.stack = self.stack[:-1] + top.getList()[::-1]    # and get the new decomposed nested list by calling the getList()
         return False                                                  # Remember to reverse the new nested list as well
                 
+
+# Your NestedIterator object will be instantiated and called as such:
+# i, v = NestedIterator(nestedList), []
+# while i.hasNext(): v.append(i.next())
+
+
+
+Solution no.2: --------------------------------------- My own ---------------------- Deque + extend()
+--------------------------------------- O(N) T, N is the total element inside the nested list, not len(nested list), but total elements
+--------------------------------------- O(N) S
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        """
+        Initialize your data structure here.
+        :type nestedList: List[NestedInteger]
+        """
+        self.res = collections.deque()                    # Do the all transformation part in the init function
+                                                          # so that it would be faster when facing a lot of call to hasNext() and next()
+        for item in nestedList:
+            if item.isInteger():
+                self.res.append(item.getInteger())
+            else:
+                self.res.extend(self.flattenList(item))   # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                          # Here, We MUST use extend INSTEAD OF append !!!!!!!!!!!!!!!!!!!!!!!
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        return self.res.popleft()                         # Use a deque, so that, popleft() takes O(1) T, and we do not need to
+                                                          # reverse as solution no.1 which is very easy to make mistakes
+        
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return self.res
+    
+    def flattenList(self, List):
+        res = []
+        for item in List.getList():
+            if item.isInteger():
+                res.append(item.getInteger())
+            else:
+                res.extend(self.flattenList(item))
+        return res
+        
 
 # Your NestedIterator object will be instantiated and called as such:
 # i, v = NestedIterator(nestedList), []
