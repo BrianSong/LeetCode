@@ -17,7 +17,9 @@ The relative order inside both the even and odd groups should remain as it was i
 The first node is considered odd, the second node even and so on ...
 
 
-Solution: ------------------------------------------------- Linked List
+Solution: ------------------------------------------------- Linked List + Two Pointers for two seperate linked list
+ -------------------------------------- O(n) T, 
+ -------------------------------------- O(1) S: even though we like creating two seperate linked list, it does not take extra sapce
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -37,6 +39,9 @@ class Solution(object):
                                                                 # if even is None, which means the linked list ends at odd node
                                                                 # if even is not None but even.next is None, ends at even node
                                                                 # In either way, the problem is solved.
+                                                                # Also, in below, we are calling even.next and even.next.next
+                                                                # so even and even.next must not be None to avoid bringring error
+                                                                # Why we do not check odd? because even will surely be faster than odd
             odd.next = even.next
             even.next = even.next.next
             odd = odd.next
