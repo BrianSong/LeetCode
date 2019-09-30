@@ -58,14 +58,14 @@ class Solution(object):
         for i in range(len(board)):                                       # Check the rows
             HashTable = {}                                                # IMPORTANT !!!!!!!!!!!!!!!!!!!! MUST UPDATE !!!!!!!!!!
             for j in range(len(board[0])):
-                if board[i][j] in HashTable and board[i][j] != '.':
+                if board[i][j] in HashTable and board[i][j] != '.':       # IMPORTANT !!!!!!!!!!!!!!!!!!!! "and board[i][j] != '.'" !!!!
                     return False
                 HashTable[board[i][j]] = 1
         
         for j in range(len(board[0])):                                    # Check the columns
             HashTable = {}                                                # IMPORTANT !!!!!!!!!!!!!!!!!!!! MUST UPDATE !!!!!!!!!!
             for i in range(len(board)):
-                if board[i][j] in HashTable and board[i][j] != '.':
+                if board[i][j] in HashTable and board[i][j] != '.':      
                     return False
                 HashTable[board[i][j]] = 1
                 
