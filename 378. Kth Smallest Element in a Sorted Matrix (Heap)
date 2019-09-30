@@ -1,0 +1,42 @@
+Given a n x n matrix where each of the rows and columns are sorted in ascending order, find the kth smallest element in the matrix.
+
+Note that it is the kth smallest element in the sorted order, not the kth distinct element.
+
+Example:
+
+matrix = [
+   [ 1,  5,  9],
+   [10, 11, 13],
+   [12, 13, 15]
+],
+k = 8,
+
+return 13.
+Note: 
+You may assume k is always valid, 1 ≤ k ≤ n2.
+
+Solution no.1: ------------------ Heap ---------- https://medium.com/brain-framework/kth-smallest-element-in-sorted-matrix-b20400cf878e
+--------------------------------- O(log(1)+log(2)+…log(K)) = O(Klog(K)) T because heap insertion takes O(log(Size)), O(k) S
+class Solution(object):
+    def kthSmallest(self, matrix, k):
+        """
+        :type matrix: List[List[int]]
+        :type k: int
+        :rtype: int
+        """
+        if not matrix or not matrix[0] or k < 1:
+            return 0
+        visited = set()                                                         # We need a set so that we don’t insert an element 
+                                                                                # more than once in the heap
+        visited.add((0, 0))
+        pq = [(matrix[0][0], (0, 0))]
+        while k > 1:
+            currsmallest, (row, col) = heapq.heappop(pq)
+            if row + 1 < len(matrix) and not (row + 1, col) in visited:         # Utilize the rows are sorted
+                heapq.heappush(pq, (matrix[row + 1][col], (row + 1, col)))
+                visited.add((row + 1, col))
+            if col + 1 < len(matrix[0]) and not (row, col + 1) in visited:      # Utilize the column are sorted
+                heapq.heappush(pq, (matrix[row][col + 1], (row, col + 1)))
+                visited.add((row, col + 1))
+            k -= 1
+        return pq[0][0]
