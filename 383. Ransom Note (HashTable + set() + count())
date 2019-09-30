@@ -10,8 +10,29 @@ canConstruct("a", "b") -> false
 canConstruct("aa", "ab") -> false
 canConstruct("aa", "aab") -> true
 
+Solution no.1: -------------------------------------------- HashTable
+----------------------------------------------------------- O(n) T, O(n) S
+class Solution(object):
+    def canConstruct(self, ransomNote, magazine):
+        """
+        :type ransomNote: str
+        :type magazine: str
+        :rtype: bool
+        """
+        HashTable = collections.defaultdict(int)
+        for w in magazine:
+            HashTable[w] += 1
+        for w in ransomNote:
+            if not w in HashTable:
+                return False
+            else:
+                HashTable[w] -= 1
+                if HashTable[w] == 0:
+                    del HashTable[w]
+        return True
 
-Solution: -------------------------------------------------- set() + count()
+Solution no.2: -------------------------------------------------- set() + count()
+----------------------------------------------------------------- O(n^2) T, O(1) S
 class Solution(object):
     def canConstruct(self, ransomNote, magazine):
         """
