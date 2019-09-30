@@ -21,7 +21,7 @@ The given board size is always 9x9.
 
 
 Solution: -------------------------------------------------------- Backtracking
--------------------------------------------------------- O(9 ^ m) T: m represents the number of blanks to be filled in, O(m) S
+-------------------------------------------------------- O(9^m) T: m represents the number of blanks to be filled in, O(m) S
 class Solution(object):
     def solveSudoku(self, board):
         """
