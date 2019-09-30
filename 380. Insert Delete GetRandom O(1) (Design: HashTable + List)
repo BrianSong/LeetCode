@@ -88,7 +88,14 @@ class RandomizedSet(object):
 
 
 
-Solution no.2: ------------------------------------------ Really all O(1): using dictionary and list syned
+Solution no.2: ------------------------------------------ Really all O(1): using dictionary and list TOGETHER
+'''
+The reason why last solution fail is that we only use a dictionary, and turn it into a list so that we can get random takes O(n) T
+So, in this method, we are going to use list and dict together !!!!
+The list will record how many element we have left and mainly be in charge of O(1) getRandom() because we can get a random index
+in O(1) T and index reference in list is also O(1)
+The dict will be in charge of O(1) check whether the val already existed and get the index for that val in O(1) which list cannot
+'''
 class RandomizedSet(object):
 
     def __init__(self):
