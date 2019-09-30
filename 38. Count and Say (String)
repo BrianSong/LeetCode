@@ -25,7 +25,8 @@ Input: 4
 Output: "1211"
 
 
-Solution:
+Solution: ------------------------------------------------------------- String
+----------------------------------------- O(?) T: no meaning to talk about complexity for this question, O(1) S
 '''
 初始值第一行是 1。
 第二行读第一行，1 个 1，去掉个字，所以第二行就是 11。
@@ -53,6 +54,7 @@ class Solution(object):
                                                    # since we will never have already added the last sequence
                     currlet = w
                     count = 1
-            temp += str(count) + currlet           # DO NOT forget to also update temp here !!
+            temp += str(count) + currlet           # DO NOT forget to also update temp here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                   # VERY easy to make Mistakes here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             s = temp
         return s
