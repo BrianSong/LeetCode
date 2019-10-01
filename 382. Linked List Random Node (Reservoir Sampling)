@@ -30,32 +30,25 @@ class Solution(object):
         Note that the head is guaranteed to be not null, so it contains at least one node.
         :type head: ListNode
         """
-        self.length = 0
-        self.dummynode = ListNode(0)
-        self.dummynode.next = head
-        while head:
-            self.length += 1
-            head = head.next
-        
+        self.head = head
+        self.size = 0
+        curr = self.head
+        while curr:
+            self.size += 1
+            curr = curr.next
 
     def getRandom(self):
         """
         Returns a random node's value.
         :rtype: int
         """
-        currnode = self.dummynode.next                       # Must refresh currnode every time for the next getRandom() call
-                                                             # Inorder to do this, I introduce a dummynode
-        pickidx = random.randint(1, self.length)
-        n = 1
-        while currnode:
-            if n == pickidx:
-                return currnode.val
-            n += 1
-            currnode = currnode.next                         # REMEMBER !!!!!!
-                                                             # Must update the currnode at the end of every loop !!!
+        k = random.randint(1, self.size)
+        curr = self.head 
+        while k > 1:
+            curr = curr.next
+            k -= 1
+        return curr.val
         
-
-
 # Your Solution object will be instantiated and called as such:
 # obj = Solution(head)
 # param_1 = obj.getRandom()
