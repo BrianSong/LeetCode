@@ -17,6 +17,7 @@ solution.pick(1);
 
 
 Solution no.1: --------------------------------------------- HashTable
+-------------------------------------------------- O(n) T for both __init__() and pick(), O(n) S
 class Solution(object):
 
     def __init__(self, nums):
@@ -55,9 +56,9 @@ class Solution(object):
         """
         :type target: int
         :rtype: int
-        """
+        """                                                        
         res, count = 0, 0                                # count here is used to count how many target number in nums
-        for i, num in enumerate(self.nums):
+        for i, num in enumerate(self.nums):              # random.randint(a, b) => return a random integer N such that a <= N <= b.
             if num == target:                            # if the num == target, the count will increase by 1
                 count += 1
                 currchance = random.randint(1, count)    # After that, picking a random number between 1 and count
