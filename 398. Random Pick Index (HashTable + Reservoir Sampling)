@@ -44,6 +44,7 @@ class Solution(object):
 
 
 Solution no.2: -------------------------------------------- Reservoir Sampling
+----------------------------------------------------------- O(1) T for __init__(), O(n) T pick() and O(1) S
 class Solution(object):
 
     def __init__(self, nums):
