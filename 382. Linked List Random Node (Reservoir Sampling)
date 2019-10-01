@@ -15,7 +15,7 @@ Solution solution = new Solution(head);
 solution.getRandom();
 
 
-Solution no.1:
+Solution no.1: -------------------------------------------- Come up with the linked list length first
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -60,9 +60,12 @@ class Solution(object):
 # obj = Solution(head)
 # param_1 = obj.getRandom()
 
-
+Follow up:
+What if the linked list is extremely large and its length is unknown to you? 
+Could you solve this efficiently without using extra space?
 
 Solution no.2: ------------------------------------------------ Reservoir Sampling (for more details, refers to 398题)
+----------------------------------------------- O(1) T for __init__(), O(n) T for getRandom(), O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
