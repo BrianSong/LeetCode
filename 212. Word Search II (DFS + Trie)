@@ -28,7 +28,7 @@ The values of words are distinct.
 
 Solution no.1: ------------------------------------- DFS as in Leetcode no.79. Word Search ---- Pass 34/36 but TLE error
 ------------------------------------------- O(m*n*l*(4^wl)) T, l is the number of word, wl is the average length of each word
-------------------------------------------- O(wl) S
+------------------------------------------- O(wl) or O(m*n) S
 class Solution(object):
     def findWords(self, board, words):
         """
@@ -36,29 +36,30 @@ class Solution(object):
         :type words: List[str]
         :rtype: List[str]
         """
-        visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
+        if not board or not words:
+            return None
         res = []
+        visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
         for word in words:
             for i in range(len(board)):
                 for j in range(len(board[0])):
-                    self.dfs(board, word, visited, res, "", 0, i, j)
+                    self.dfs(board, i, j, word, "", visited, res)
         return res
     
-    
-    def dfs(self, board, word, visited, res, currpath, idx, row, col):
-        if idx == len(word) and not currpath in res:
-            res.append(currpath[:])
+    def dfs(self, board, i, j, word, path, visited, res):
+        if not word:
+            if not path in res:                                                         # Cannot be if not word and not path in res
+                res.append(path)                                                        # since for cases not word and path in res
+            return                                                                      # if we do not take care of it,
+                                                                                        # it will bring index error in next line word[0]
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or board[i][j] != word[0] or visited[i][j]:
             return
-        if idx == len(word):
-            return
-        if row < 0 or row >= len(board) or col < 0  or col >= len(board[0]) or visited[row][col] or board[row][col] != word[idx]:
-            return
-        visited[row][col] = True
-        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row + 1, col)
-        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row, col + 1)
-        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row - 1, col)
-        self.dfs(board, word, visited, res, currpath + board[row][col], idx + 1, row, col - 1)
-        visited[row][col] = False
+        visited[i][j] = True
+        self.dfs(board, i + 1, j, word[1:], path + board[i][j], visited, res)
+        self.dfs(board, i, j + 1, word[1:], path + board[i][j], visited, res)
+        self.dfs(board, i - 1, j, word[1:], path + board[i][j], visited, res)
+        self.dfs(board, i, j - 1, word[1:], path + board[i][j], visited, res)
+        visited[i][j] = False
         
 
 Solution no.2: --------------------------------------------------- Trie
