@@ -1,0 +1,39 @@
+找出一个树节点的cousins，就是同在一行，非本身也非同父的sibling。这道题geeksforgeeks上有code。
+Given a binary tree and a node, print all cousins of given node. Note that siblings should not be printed.
+Examples:
+Input : root of below tree 
+              1
+            /  \
+           2    3
+          / \  / \
+         4   5 6   7
+       and pointer to a node say 5.
+
+Output : 6, 7
+
+O(N) T, O(N) S
+class Solution(object):
+    def findCousins(self, root, target = 5):
+        if root.val == target:
+            return None
+        res, queue, temp, find, target_parent = [], [], [], False, 0
+        queue.append((root, 0))
+        while queue:
+            if find:
+                break
+            temp = []
+            for i in range(len(queue)):
+                pop_element, parent = queue.pop(0)
+                if pop_element.val == target:
+                    find = True
+                    target_parent = parent
+                temp.append((pop_element.val, parent))
+                if not find:
+                    if pop_element.left:
+                        queue.append((pop_element.left, pop_element.val))
+                    if pop_element.right:
+                        queue.append((pop_element.right, pop_element.val))
+        for item, parent in temp:
+            if parent != target_parent:
+                res.append(item)
+        print res
