@@ -20,7 +20,7 @@ Coud you solve it without converting the integer to a string?
 
 Solution no.1: ------------------------------------------- convert the integer to a string
 -------------------------------------------------- but this would require extra non-constant space for creating the string
--------------------------------------------------- O(n) T => [::-1], O(n) S => creating string
+-------------------------------------------------- O(l) T => [::-1], O(l) S => creating string
 class Solution(object):
     def isPalindrome(self, x):
         """
@@ -32,6 +32,7 @@ class Solution(object):
         return str(x) == str(x)[::-1]
         
 Solution no.2: ------------------------------------ Follow up answer (without convert the number into a string)
+--------------------------------------------------- O(l) T where l is the integer's length, O(1) S
 '''
 Except converting the number into string,
 Second idea would be reverting the number itself, and then compare the number with original number, 
@@ -44,7 +45,10 @@ class Solution(object):
             return False
         temp, res = x, 0
         while temp != 0:
-            res = res * 10 + temp % 10
+            res = res * 10 + temp % 10                    # res = res * 10 + temp % 10
+                                                          # NOT "res += temp % 10" follow another "res *= 10" !!!!!!!!!!!!!!!!!!!!!!
+                                                          # If we do this, the final res will be 10 times larger than it should be
+                                                          # what we want to multiplied by 10 is the previous res instead of the current
             temp /= 10
         return res == x
         """
@@ -53,7 +57,8 @@ class Solution(object):
         """
         
 Solution no.3: ---------------------------------------- convert half the number
-------------------------------------- Time complexity : O(log10(n)) because we divided the input by 10 for every iteration. 
+------------------- Time complexity : O(log10(n)) because we divided the input by 10 for every iteration, n is the input integer's value
+------------------- or O(l) T where l is the integer's length
 ------------------------------------- Space complexity : O(1).
 '''
 Following the thoughts based on the second idea, to avoid the overflow issue of the reverted number, 
@@ -69,7 +74,7 @@ class Solution(object):
         """
         if x < 0 or (x % 10 == 0 and x != 0):              # Very important speical cases like 0, 10, 100, 1000 need to be consider
             return False                                   # If we do not take 10, 100, 1000 into account here, they will return True
-        if x == 0:                                         # because 0(x) == 0(revertedNum)
+        if x == 0:                                         # because finially, it will become x == revertedNum == 0
             return True
         revertedNum = 0
         while x > revertedNum:
