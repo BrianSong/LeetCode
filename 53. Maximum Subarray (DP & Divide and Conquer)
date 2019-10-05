@@ -58,7 +58,17 @@ and being others' possible left, right maximum subarray.
 ….c) Maximum subarray sum such that the subarray crosses the midpoint
 '''
 class Solution(object): ------------------------------------------------------- Divide and Conquer
-------------------------------------------- O(nlogn) T
+------------------------------------------- T(n) = 2 * T(n / 2) + n then, by Master Method: https://www.youtube.com/watch?v=6CX7s7JnXs0
+'''
+In T(n) = a * T(n / b) + f(n) where n: size of the current problem, a: number of subproblem, b: size of subproblem, 
+f(n): the cost of work that has to be done outside
+Case 1: n^logb(a - X) = f(n) where X > 0, then T(n) = O(n^logb(a))
+Case 2: n^logb(a) = f(n), then T(n) = O(n^logb(a) * logn) ----------------------------- In our case we are in case 2
+Case 3: n^logb(a + X) = f(n) where X > 0, then T(n) = O(f(n))
+But for case 3, we must do a regularity check, the formula of case 3 can only be used when a * f(n / b) <= c * f(n) where c < 1
+'''
+------------------------------------------- T(n) = nlog(n) where a = 2, b = 2, f(n) = n so in case 2
+------------------------------------------- O(logn) S: the recursion depth of divide and conquer
     def maxSubArray(self, nums):
 
         
@@ -89,7 +99,7 @@ class Solution(object): ------------------------------------------------------- 
     def maxSubArrayhelp(self, nums, left, right):
         if left == right:
             return nums[left]
-        middle = (left + right) / 2
+        mid = left + (right - left) / 2            # Avoid overflow, nice to mention
         return max(self.maxSubArrayhelp(nums, left, middle), self.maxSubArrayhelp(nums, middle + 1, right), 
                \ self.maxSubArrayCrossing(nums, middle, left, right))
         # "middle + 1" for self.maxSubArrayhelp(nums, middle + 1, right) is for avoiding repeating
