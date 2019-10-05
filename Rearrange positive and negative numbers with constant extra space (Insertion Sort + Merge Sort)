@@ -53,6 +53,8 @@ class Solution(object):
         self.split(nums, mid + 1, right)
         self.merge(nums, left, mid, right)        # Here, the subarray[left, mid] and subarray[mid + 1, right] have already been sorted
                                                   # We need to use merge() to sort them together
+                                                  # That's why we use mergesort instead of directly do this in the main function
+                                                  # we can only merge when we sure the two subarray has already been sorted
     
     def merge(self, nums, l, m, r):
         i, j = l, m + 1
