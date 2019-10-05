@@ -1,0 +1,71 @@
+Given an array of positive and negative numbers, arrange them such that all negative integers appear before 
+all the positive integers in the array without using any additional data structure like hash table, arrays, etc. 
+***************************** The order of appearance should be maintained. ************************************************************
+
+Examples:
+
+Input:  [12 11 -13 -5 6 -7 5 -3 -6]
+Output: [-13 -5 -7 -3 -6 12 11 6 5]
+
+Solution no.1: ---------------------------------------------------------- Brutel Force Insertion Sort
+--------------------------------------------------------------------- O(n^2) T, O(1) S
+'''
+Loop from i = 1 to n - 1.
+  a) If the current element is positive, do nothing.
+  b) If the current element nums[i] is negative, we 
+     insert it into sequence nums[0..i-1] such that 
+     all positive elements in nums[0..i-1] are shifted 
+     one position to their right and nums[i] is inserted
+     at index of first positive element.
+'''
+class Solution(object):
+    def RearrangePosNeg(self, nums):
+        if not nums:
+            return None
+        for i in range(1, len(nums)):                 # Why start from 1 not 0? Since there is no meaning to check whether
+            if nums[i] >= 0:                          # the first element is negative or not. If it is positive, we keep looping
+                continue                              # even if it is negative, we do not need to shift it since it is already the first
+            else:
+                nega, j = nums[i], i - 1
+                while j >= 0 and nums[j] >= 0:        # Use a while loop to avoid index error
+                    nums[j + 1] = nums[j]             # and check whether the current element is positive or negative
+                    j -= 1
+                nums[j + 1] = nega
+        return nums
+        
+        
+Solution no.2: ---------------------------------------------------- Modified MergeSort
+------------------------------------------------------------------- O(nlogn) T
+--------------------------------------------------- O(Log n) space for recursive calls, but no additional data structure
+class Solution(object):
+    def RearrangePosNeg(self, nums):
+        if not nums:
+            return None
+        self.split(nums, 0, len(nums) - 1)
+        return nums
+    
+    
+    def split(self, nums, left, right):
+        if left >= right:
+            return
+        mid = left + (right - left) / 2
+        self.split(nums, left, mid)               # Unlike normal merge sort, here we do not return anyting, we do the swap in-place
+        self.split(nums, mid + 1, right)
+        self.merge(nums, left, mid, right)        # Here, the subarray[left, mid] and subarray[mid + 1, right] have already been sorted
+                                                  # We need to use merge to sort them together
+    
+    def merge(self, nums, l, m, r):
+        i, j = l, m + 1
+        while i <= m and nums[i] < 0:             # nums[i..m] is positive  
+            i += 1
+        while j <= r and nums[j] < 0:             # nums[j..r] is positive  
+            j += 1
+        self.reverse(nums, i, m)                  # 先把后面要reverse回来的subarray reverse => preserve the order
+        self.reverse(nums, m + 1, j - 1)          # 先把后面要reverse回来的subarray reverse => preserve the order
+        self.reverse(nums, i, j - 1)              # 把前一段的正半部分和后半段的负半部分对调，i.e. 负正负正 => 负负正正
+    
+    def reverse(self, nums, l, r):
+        while l <= r:
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1
+            r -= 1
