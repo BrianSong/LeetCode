@@ -45,7 +45,7 @@ class Solution(object):
                 
                 
 Solution no.2: ------------------------------------------------------------- Dynamic programming - Bottom up
-------------------------------------------------------------- O(n) T, O(n) S
+------------------------------------------------------------- O(n*k) T where n is the amount, k is the number of different coins, O(n) S
 class Solution(object):
     def coinChange(self, coins, amount):
         """
@@ -58,7 +58,9 @@ class Solution(object):
         for i in range(1, amount + 1):                      # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                                             # "for i in range(1, amount + 1)" NOT "for i in range(1, len(coins) + 1)" !!
             for c in coins:                                 # Iterate through each coin
-                if i >= c:                                  # if i < c: do not need to continue because the one coin denomination
+                if i >= c:                                  # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                            # MUST CHECK !!!!!!!!!!!!!!!!!! Otherwise i - c will bring index ERROR !!!!
+                                                            # if i < c: do not need to continue because the one coin denomination
                                                             # is bigger than the total amount
                     dp[i] = min(dp[i], dp[i - c] + 1)       # Find the minimum number of previous possible combination and add 1
         return dp[-1] if dp[-1] != float('inf') else -1     # MUST CHECK !!!!!!!!!!!!!!!!!!!!!!!!! using if... else ... !!!!!!!!!!!!!!!!
