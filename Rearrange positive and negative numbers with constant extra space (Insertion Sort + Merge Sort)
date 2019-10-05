@@ -52,7 +52,7 @@ class Solution(object):
         self.split(nums, left, mid)               # Unlike normal merge sort, here we do not return anyting, we do the swap in-place
         self.split(nums, mid + 1, right)
         self.merge(nums, left, mid, right)        # Here, the subarray[left, mid] and subarray[mid + 1, right] have already been sorted
-                                                  # We need to use merge to sort them together
+                                                  # We need to use merge() to sort them together
     
     def merge(self, nums, l, m, r):
         i, j = l, m + 1
