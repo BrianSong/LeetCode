@@ -13,19 +13,25 @@ Solution no.1: DP --------------------------------------------------- 求最大�
 ------------------------------------------ O(N) T, O(1) S
 class Solution(object):
     def maxSubArray(self, nums):
-        if max(nums) < 0:
-            return max(nums)
-        local_max, global_max = 0, 0
+        if not nums:
+            return 0
+        if max(nums) < 0:                               # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                        # MUST consider the negative number situation, when nums = [-1],
+            return max(nums)                            # what we need to return is -1 instead of 0 !!!!!!!!!!!!!!!!!!!!!!!!
+        res, currsum = 0, 0
         for num in nums:
-            local_max = max(0, local_max + num)         # Keep updating  只要大于零，就是值得保留的
+            if currsum + num <= 0:                      # Keep updating  只要大于零，就是值得保留的
                                                         # Why compare to 0?
                                                         # if local_max + num < 0, even there is a very large number later,
                                                         # the previous number will still be useless,
                                                         # because we can start from this very large number instead.
                                                         # As long as local_max + num > 0, it is still valuable,
                                                         # because it can make contribution to the later addition
-            global_max = max(local_max, global_max)     # Keep updating  在所有大于零的subset中选出最大的作为result
-        return global_max
+                currsum = 0
+            else:
+                currsum += num
+                res = max(res, currsum)                 # Keep updating  在所有大于零的subset中选出最大的作为result
+        return res
         """
         :type nums: List[int]
         :rtype: int
@@ -39,6 +45,10 @@ Divide and Conquer
 1. 把一个大问题分解为许多个小的，独立的，解决方法相同的小问题
 2. 在当前的小问题的规模足够小的时候，就地解决 (Boundary Condition), 如果不够小，则继续分解
 3. 合并结果
+In this question, we basically like divide the whole big list into seveal smaller sublist with fixed left and right boundary,
+then we compute its maximum out of three of its' possible configuration: 
+maximum subarray of it exists on the left, right or cross the middle. After we find it, we pass it to the upper recursion,
+and being others' possible left, right maximum subarray.
 '''
 '''
 1) Divide the given array in two halves
