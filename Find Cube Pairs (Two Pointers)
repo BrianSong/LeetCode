@@ -1,0 +1,50 @@
+Given a number n, find two pairs that can represent the number as sum of two cubes. 
+In other words, find two pairs (a, b) and (c, d) such that given number n can be expressed as
+
+n = a^3 + b^3 = c^3 + d^3
+where a, b, c and d are four distinct numbers.
+
+Examples:
+
+Input: n = 1729
+Output: (1, 12) and (9, 10)
+Explanation: 
+1729 = 1^3 + 12^3 = 9^3 + 10^3
+
+Input: n = 4104
+Output: (2, 16) and (9, 15)
+Explanation: 
+4104 = 2^3 + 16^3 = 9^3 + 15^3
+
+Input: n = 13832
+Output: (2, 24) and (18, 20)
+Explanation: 
+13832 = 2^3 + 24^3 = 18^3 + 20^3
+
+
+'''
+Any number n that satisfies the constraint will have two distinct pairs (a, b) and (c, d) 
+such that a, b, c and d are all less than n^1/3. The idea is to create an auxiliary array of size n^1/3. 
+Each index i in the array will store value equal to cube of that index i.e. arr[i] = i^3. 
+Now the problem reduces to finding pair of elements in an sorted array whose sum is equal to given number n. 
+'''
+
+Solution: ------------------------------------------------ Two Pointers
+---------------------------------------------------------- O(n^(1/3)) T and S
+n = 20683
+size = int(n ** (1/3))
+array = [0] * (size + 1)
+res = []
+for i in range(len(array)):
+    array[i] = i **3 
+left, right = 0, len(array) - 1 
+while left <= right:
+    if array[left] + array[right] > n:
+        right -= 1  
+    elif array[left] + array[right] < n:
+        left += 1   
+    else:
+        res.append((left, right))
+        left += 1 
+        right -= 1 
+print(res)
