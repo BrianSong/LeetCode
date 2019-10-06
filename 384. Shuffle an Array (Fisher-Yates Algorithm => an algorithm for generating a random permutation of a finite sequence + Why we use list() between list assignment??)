@@ -16,7 +16,8 @@ solution.reset();
 solution.shuffle();
 
 
-Solution no.1: ------------------------------------- Brute Force => O(n^2) time, O(n) space
+Solution no.1: ------------------------------------- Brute Force ---------------- Why we use list() between list assignment??
+---------------------------------------------------- O(n^2) time due to "aux.pop(remove_idx)", O(n) space
 '''
 The correctness of the algorithm follows from the fact that an element (without loss of generality) 
 is equally likely to be selected during all iterations of the for loop.
@@ -36,26 +37,31 @@ class Solution(object):
         Resets the array to its original configuration and return it.
         :rtype: List[int]
         """
-        self.array = self.original
-        self.original = list(self.original)
-        return self.array
-    
+        self.array = list(self.original)                                       # Everytime we assign = to two different array,
+        return self.array                                                      # if we do not want any connections between them         
+                                                                               # we MUST use list() in between !!!!!!!!!!!!!!!!!!!!!!!
     def shuffle(self):
         """
         Returns a random shuffling of the array.
         :rtype: List[int]
         """
         aux = list(self.array)                                                 # Why use list() ? 
-                                                                               # In python, = means direct assignment, 
+                                                                               # In python, = between list means direct assignment, 
                                                                                # if we let aux = self.array, instead of putting a list()
                                                                                # When aux.pop(), self.array will also pop()
+                                                                               # for example:
+                                                                               # a = [3,4]
+                                                                               # b = a
+                                                                               # b.pop()
+                                                                               # print(a) => [3]
         for i in range(len(self.array)):
             remove_idx = random.randrange(len(aux))
             self.array[i] = aux.pop(remove_idx)
         return self.array
         
         
-Solution no.2: -------------------------------------- Fisher-Yates Algorithm => O(n) time, O(n) space
+Solution no.2: -------------------------------------- Fisher-Yates Algorithm
+----------------------------------------------------- O(n) time, O(n) space
 '''
 On each iteration of the algorithm, we generate a random integer between the current index and the last index of the array. 
 Then, we swap the elements at the current index and the chosen index - this simulates drawing (and removing) the element from the hat, 
