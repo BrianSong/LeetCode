@@ -47,4 +47,4 @@ while left <= right:
         res.append((left, right))
         left += 1 
         right -= 1 
-print(res)
+return res
