@@ -36,7 +36,7 @@ class Solution(object):
         level = 0
         res = []
         while deque:
-            currlevel = []
+            currlevel = []                                 # IMPORTANT !!!!!!!!!! currlevel 在这里！！！！！ 不在for loop 里！！！！！！！
             for i in range(len(deque)):
                 if level % 2 == 0:
                     pop_element = deque.popleft()
@@ -53,6 +53,6 @@ class Solution(object):
                         deque.appendleft(pop_element.right)
                     if pop_element.left:
                         deque.appendleft(pop_element.left)
-            res.append(currlevel)
+            res.append(currlevel)                          # IMPORTANT !!!!!!!!!! res.append(currlevel) 在这里！！ 不在for loop 里！！
             level += 1
         return res
