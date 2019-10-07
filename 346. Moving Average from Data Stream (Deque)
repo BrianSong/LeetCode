@@ -1,0 +1,68 @@
+Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
+
+Example:
+
+MovingAverage m = new MovingAverage(3);
+m.next(1) = 1
+m.next(10) = (1 + 10) / 2
+m.next(3) = (1 + 10 + 3) / 3
+m.next(5) = (10 + 3 + 5) / 3
+
+
+Solution no.1: --------------------------------------- BF Deque
+------------------------------------------------------ O(k) T and S where k = size
+class MovingAverage(object):
+
+    def __init__(self, size):
+        """
+        Initialize your data structure here.
+        :type size: int
+        """
+        self.deque = collections.deque()
+        self.size = size
+        
+
+    def next(self, val):
+        """
+        :type val: int
+        :rtype: float
+        """
+        if len(self.deque) == self.size:
+            self.deque.popleft()
+        self.deque.append(val)
+        sum = 0
+        for item in self.deque:
+            sum += item
+        return float(sum) / len(self.deque)                                   # / by len(self.deque) instead of by self.size
+        
+
+
+# Your MovingAverage object will be instantiated and called as such:
+# obj = MovingAverage(size)
+# param_1 = obj.next(val)
+
+
+Solution no.2: ---------------------------------------- Modified deque
+------------------------------------------------------- O(1) T and O(k) S
+class MovingAverage(object):
+
+    def __init__(self, size):
+        """
+        Initialize your data structure here.
+        :type size: int
+        """
+        self.deque = collections.deque()
+        self.size = size
+        self.sum = 0
+        
+
+    def next(self, val):
+        """
+        :type val: int
+        :rtype: float
+        """
+        if len(self.deque) == self.size:
+            self.sum -= self.deque.popleft()                   # Introduce a sum variable so that we do not need to traverse the deque
+        self.deque.append(val)                                 # This increase the O(k) T to O(1) T
+        self.sum += val
+        return float(self.sum) / len(self.deque)
