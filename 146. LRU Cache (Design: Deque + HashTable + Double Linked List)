@@ -84,7 +84,7 @@ class DLinkedNode():                                            # here, cannot h
     def __init__(self):
         self.key = 0
         self.val = 0
-        self.prev = None
+        self.prev = None                                        # Double means we do not only have "next", we also have "prev"
         self.next = None
 
 
