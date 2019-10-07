@@ -76,3 +76,88 @@ class LRUCache(object):
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
+
+
+Solution no.2: -------------------------------------------------- HashTable + Double Linked List
+----------------------------------------- O(n) S, and O(1) T
+class DLinkedNode():                                            # here, cannot have object or initial setting ??? Why ???
+    def __init__(self):
+        self.key = 0
+        self.val = 0
+        self.prev = None
+        self.next = None
+
+
+class LRUCache(object):
+    
+    def add_node(self, node):
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+        
+    def remove_node(self, node):
+        prev = node.prev
+        next = node.next
+        prev.next = next
+        next.prev = prev
+        
+    def move_exist_to_front(self, node):
+        self.remove_node(node)
+        self.add_node(node)
+    
+    def pop_from_tail(self):
+        node = self.tail.prev
+        self.remove_node(node)
+        return node
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.d = {}
+        self.cap = capacity
+        self.head = DLinkedNode()
+        self.tail = DLinkedNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if key in self.d:
+            self.move_exist_to_front(self.d[key])
+            return self.d[key].val
+        else:
+            return -1
+        
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        if not key in self.d:
+            if len(self.d) == self.cap:
+                remove_node = self.pop_from_tail()
+                del self.d[remove_node.key]
+            newNode = DLinkedNode()
+            newNode.val = value
+            newNode.key = key
+            self.d[key] = newNode
+            self.add_node(newNode)                                    # The error took me one hour to find out !!!!!!!!!!!
+                                                                      # here, we should call add_node() instead of move_exist_to_front()
+        else:                                                               
+            self.d[key].val = value
+            self.move_exist_to_front(self.d[key])
+        
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
