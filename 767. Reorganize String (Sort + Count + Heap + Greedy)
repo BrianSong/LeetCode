@@ -16,7 +16,7 @@ S will consist of lowercase letters and have length in range [1, 500].
 
 
 Solution no.1: ------------------------------------ Sort by Count
------------------------------------------ O(α*N + αlogα + α) T where N is the len(S) and α is the size of the alphabet, O(n) S
+----------------------------------------- O(N + αlogα + α) T where N is the len(S) and α is the size of the l, O(n) S
 class Solution(object):
     def reorganizeString(self, S):
         """
@@ -25,18 +25,21 @@ class Solution(object):
         """
         if not S:
             return ""
-        N = len(S)
-        A, res = [], [0] * N
-        alphalist = []
-        for s in set(S):
-            alphalist.append([S.count(s), s])
-        alphalist.sort()
-        for c, w in alphalist:
-            if c > (N + 1) / 2:                                        # bigger than (N + 1) / 2 instead of N / 2
-                return ""
-            A.extend(c*w)                                              # A.extend(3*'A') = > [..., A, A, A]
-        res[::2], res[1::2] = A[N/2:], A[:N/2]                         # Arrange the most frequent character first
-        return "".join(res)
+        res = [0] * len(S)
+        HashTable = collections.defaultdict(int)
+        for w in S:
+            HashTable[w] += 1
+        if max(HashTable.values()) > (len(S) + 1) / 2:                 # bigger than (len(S) + 1) / 2 instead of len(S) / 2
+            return ""
+        l = []
+        for key, value in HashTable.items():
+            l.append((key, value))
+        l.sort(key = lambda x: x[1])
+        temp = []
+        for value, freq in l:
+            temp.extend(freq * value)                                  # A.extend(3*'A') = > [..., A, A, A]
+        res[::2], res[1::2] = temp[len(S) / 2:], temp[:len(S) / 2]     # Arrange the most frequent character first
+        return "".join(res) 
         
         
 Solution no.2: --------------------------------------- Greedy with Heap
