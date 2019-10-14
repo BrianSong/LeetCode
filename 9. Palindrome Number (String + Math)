@@ -20,7 +20,7 @@ Coud you solve it without converting the integer to a string?
 
 Solution no.1: ------------------------------------------- convert the integer to a string
 -------------------------------------------------- but this would require extra non-constant space for creating the string
--------------------------------------------------- O(l) T => [::-1], O(l) S => creating string
+-------------------------------------------------- O(l) T => [::-1], O(l) S => creating string, where l is the length of the integer
 class Solution(object):
     def isPalindrome(self, x):
         """
@@ -32,7 +32,7 @@ class Solution(object):
         return str(x) == str(x)[::-1]
         
 Solution no.2: ------------------------------------ Follow up answer (without convert the number into a string)
---------------------------------------------------- O(l) T where l is the integer's length, O(1) S
+--------------------------------------------------- O(log10x) T where x is the input integer, O(1) S
 '''
 Except converting the number into string,
 Second idea would be reverting the number itself, and then compare the number with original number, 
@@ -72,10 +72,10 @@ class Solution(object):
         :type x: int
         :rtype: bool
         """
-        if x < 0 or (x % 10 == 0 and x != 0):              # Very important speical cases like 0, 10, 100, 1000 need to be consider
-            return False                                   # If we do not take 10, 100, 1000 into account here, they will return True
-        if x == 0:                                         # because finially, it will become x == revertedNum == 0
-            return True
+        if x < 0 or (x % 10 == 0 and x != 0):             # Very important speical cases like 0, 10, 100, 1000 need to be consider
+            return False                                  # If we do not take 10, 100, 1000 into account here, they will return True
+        if x == 0:                                        # because finially, it will become x == 0 and revertedNum == 1 
+            return True                                   # which satisfy the "x == revertedNum or x == revertedNum / 10" => return True
         revertedNum = 0
         while x > revertedNum:
             revertedNum = revertedNum * 10 + x % 10
