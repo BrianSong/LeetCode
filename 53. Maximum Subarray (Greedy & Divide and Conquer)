@@ -9,7 +9,7 @@ Follow up:
 
 If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
 
-Solution no.1: DP --------------------------------------------------- 求最大，求最小 -> Dynamic Programming
+Solution no.1: --------------------------------------------------- Greedy
 ------------------------------------------ O(N) T, O(1) S
 class Solution(object):
     def maxSubArray(self, nums):
@@ -38,7 +38,18 @@ class Solution(object):
         """
         
         
-Solution no.2: Divide and Conquer
+Solution no.2: ---------------------------- Divide and Conquer
+------------------------------------------- T(n) = 2 * T(n / 2) + n then, by Master Method: https://www.youtube.com/watch?v=6CX7s7JnXs0
+'''
+In T(n) = a * T(n / b) + f(n) where n: size of the current problem, a: number of subproblem, b: size of subproblem, 
+f(n): the cost of work that has to be done outside
+Case 1: n^logb(a - X) = f(n) where X > 0, then T(n) = O(n^logb(a))
+Case 2: n^logb(a) = f(n), then T(n) = O(n^logb(a) * logn) ----------------------------- In our case we are in case 2
+Case 3: n^logb(a + X) = f(n) where X > 0, then T(n) = O(f(n))
+But for case 3, we must do a regularity check, the formula of case 3 can only be used when a * f(n / b) <= c * f(n) where c < 1
+'''
+------------------------------------------- T(n) = nlog(n) where a = 2, b = 2, f(n) = n so in case 2
+------------------------------------------- O(logn) S: the recursion depth of divide and conquer
 '''
 Divide and Conquer
 3 steps:
@@ -57,49 +68,39 @@ and being others' possible left, right maximum subarray.
 ….b) Maximum subarray sum in right half (Make a recursive call)
 ….c) Maximum subarray sum such that the subarray crosses the midpoint
 '''
-class Solution(object): ------------------------------------------------------- Divide and Conquer
-------------------------------------------- T(n) = 2 * T(n / 2) + n then, by Master Method: https://www.youtube.com/watch?v=6CX7s7JnXs0
-'''
-In T(n) = a * T(n / b) + f(n) where n: size of the current problem, a: number of subproblem, b: size of subproblem, 
-f(n): the cost of work that has to be done outside
-Case 1: n^logb(a - X) = f(n) where X > 0, then T(n) = O(n^logb(a))
-Case 2: n^logb(a) = f(n), then T(n) = O(n^logb(a) * logn) ----------------------------- In our case we are in case 2
-Case 3: n^logb(a + X) = f(n) where X > 0, then T(n) = O(f(n))
-But for case 3, we must do a regularity check, the formula of case 3 can only be used when a * f(n / b) <= c * f(n) where c < 1
-'''
-------------------------------------------- T(n) = nlog(n) where a = 2, b = 2, f(n) = n so in case 2
-------------------------------------------- O(logn) S: the recursion depth of divide and conquer
+class Solution(object):
     def maxSubArray(self, nums):
-
-        
-        return self.maxSubArrayhelp(nums, 0, len(nums) - 1)
-        
         """
         :type nums: List[int]
         :rtype: int
         """
-    def maxSubArrayCrossing(self, nums, middle, left, right):
-        
-        currmax , left_max = 0, -float('inf')      # Instead of setting left_max and right_max to 0, 
-                                                   # we MUST set it to -float('inf')
-                                                   # Because we assume under this situation, the subarray must cross the middle
-        for i in range(middle, left - 1, -1):
-            currmax += nums[i]
-            if currmax > left_max:
-                left_max = currmax
-            
-        currmax , right_max = 0, -float('inf')
-        for i in range(middle + 1, right + 1, 1):  # IMPORTANT!!!!!!!!!!! "middle + 1" instead of "middle", otherwise -> repeat!!!!!
-            currmax += nums[i]
-            if currmax > right_max:
-                right_max = currmax
-        return left_max + right_max
-        
-        
-    def maxSubArrayhelp(self, nums, left, right):
+        if not nums:
+            return 0
+        return self.dnc(nums, 0, len(nums) - 1)
+    
+    def dnc(self, nums, left, right):
         if left == right:
             return nums[left]
-        mid = left + (right - left) / 2            # Avoid overflow, nice to mention
-        return max(self.maxSubArrayhelp(nums, left, middle), self.maxSubArrayhelp(nums, middle + 1, right), 
-               \ self.maxSubArrayCrossing(nums, middle, left, right))
-        # "middle + 1" for self.maxSubArrayhelp(nums, middle + 1, right) is for avoiding repeating
+        mid = left + (right - left) / 2
+        l = self.dnc(nums, left, mid)
+        r = self.dnc(nums, mid + 1, right)
+        m = self.crossMiddle(nums, left, mid, right)
+        return max(l, r, m)
+    
+    def crossMiddle(self, nums, left, mid, right):  
+        leftsum, temp = float('-inf'), 0
+        for i in range(mid, left - 1, -1):                        # Instead of "for i in range(mid - 1, left - 1, -1):"
+                                                                  # and "return nums[mid] + leftsum + rightsum"
+                                                                  # what we should do is "for i in range(mid, left - 1, -1):"
+                                                                  # and "return leftsum + rightsum"
+                                                                  # why? As long as we add nums[mid], even not nums[mid - 1]
+                                                                  # this already means we cross the middle and combine left and right
+                                                                  # because mid belongs to left in this question
+            temp += nums[i]                                       
+            leftsum = max(leftsum, temp)
+        rightsum, temp = float('-inf'), 0
+        for i in range(mid + 1, right + 1):
+            temp += nums[i]
+            rightsum = max(rightsum, temp)
+        return leftsum + rightsum                                 # leftsum and rightsum can never be float('-inf'), 
+                                                                  # They are at least one element since left != right
