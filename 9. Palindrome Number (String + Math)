@@ -74,7 +74,7 @@ class Solution(object):
         """
         if x < 0 or (x % 10 == 0 and x != 0):             # Very important speical cases like 0, 10, 100, 1000 need to be consider
             return False                                  # If we do not take 10, 100, 1000 into account here, they will return True
-        if x == 0:                                        # because finially, it will become x == 0 and revertedNum == 1 
+        if x == 0:                                        # because finially, it will become x == 0 and revertedNum == 0 
             return True                                   # which satisfy the "x == revertedNum or x == revertedNum / 10" => return True
         revertedNum = 0
         while x > revertedNum:
