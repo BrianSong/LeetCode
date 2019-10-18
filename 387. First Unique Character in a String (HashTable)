@@ -26,8 +26,8 @@ class Solution(object):
                 HashTable[c] = [i, 1]                           # CANNOT use tuple which is immutable, we must use list
         res = float('inf')
         for index, f in HashTable.values():                     # Instead of checking the HashTable, solution no.2 is smarter approach
-            if f > 1:
-                continue
+            if f > 1:                                           # Loop over the string one more time 
+                continue                                        # and return the first unique character's index
             else:
                 res = min(res, index)
         return res if res != float('inf') else -1
