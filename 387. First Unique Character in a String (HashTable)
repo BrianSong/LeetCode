@@ -9,8 +9,31 @@ s = "loveleetcode",
 return 2.
 Note: You may assume the string contain only lowercase letters.
 
+Solution no.1: -------------------------------------- my own
+class Solution(object):
+    def firstUniqChar(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return -1
+        HashTable = {}
+        for i, c in enumerate(s):
+            if c in HashTable:
+                HashTable[c][1] += 1
+            else:
+                HashTable[c] = [i, 1]                           # CANNOT use tuple which is immutable, we must use list
+        res = float('inf')
+        for index, f in HashTable.values():                     # Instead of checking the HashTable, solution no.2 is smarter approach
+            if f > 1:
+                continue
+            else:
+                res = min(res, index)
+        return res if res != float('inf') else -1
 
-Solution: ------------------------------------------------------------ HashTable
+
+Solution no.2: ------------------------------------------------------------ HashTable
 --------------------------------------------- O(n) T, O(1) S => space complexity is constant O(26) ~ O(1) for any length of string
 class Solution(object):
     def firstUniqChar(self, s):
