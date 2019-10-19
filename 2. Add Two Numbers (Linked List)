@@ -12,7 +12,7 @@ Explanation: 342 + 465 = 807
 
     
 Solution: ----------------------------------------- Linked List
---------------------------------------- O(n) T, O(1) S
+--------------------------------------- O(max(m,n)) T and S where m and n represents the length of l1 and l2 respectively
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
