@@ -28,7 +28,7 @@ Output: false
 Explanation: The root node's value is 5 but its right child's value is 4.
 
 
-Solution: --------------------------------------------------------------------- BST + DFS
+Solution no.1: --------------------------------------------------------------------- BST + DFS
 ---------------------------------------------------- O(n) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -84,3 +84,18 @@ class Solution(object):
                                                                            # so, it will return False
             return False
         return True                                                        # If pass all cases, then return True
+
+
+Solution no.2: ----------------------------------------------------- A much concise version
+class Solution(object):
+    def isValidBST(self, root, min = -float('inf'), max = float('inf')):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if not root:
+            return True
+        left = self.isValidBST(root.left, min, root.val)
+        right = self.isValidBST(root.right, root.val, max)
+        mid = min < root.val < max
+        return left and right and mid
