@@ -41,6 +41,7 @@ class Solution(object):
                                                           # START from intervals[1:] !!!!!!!!!!!!!!!! not intervals !!!!!!!!!!!!!!!!
                                                           # Since we already push the first element into the heap !!!!
             if interval[0] >= room[0]:
-                   heapq.heappop(room)                    # heapq is a binary heap, with O(logn) push and O(logn) pop
+                   heapq.heappop(room)                    # heapq is a binary heap, with O(1):average / O(logn): worst push 
+                                                          # and O(logn) pop
             heapq.heappush(room, interval[1])
         return len(room)                                  # We just return the length of the heap
