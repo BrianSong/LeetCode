@@ -10,14 +10,14 @@ Example 2:
 Input: "cbbd"
 Output: "bb"
 
-Solution:
+Solution: -------------------------------------------------------------- O(n^2) T, O(1) S
 '''
 we could solve it in O(n^2) time using only constant space.
 
 We observe that a palindrome mirrors around its center. Therefore, a palindrome can be expanded from its center, 
-and there are only 2n - 12n−1 such centers.
+and there are only 2n - 1 such centers.
 
-You might be asking why there are 2n - 12n−1 but not nn centers? 
+You might be asking why there are 2n - 1 but not n centers? 
 The reason is the center of a palindrome can be in between two letters. 
 Such palindromes have even number of letters (such as "abba") and its center are between the two 'b's.
 '''
@@ -31,16 +31,12 @@ class Solution(object):
             return ""
         start, end = 0, 0
         for i in range(len(s)):
-            len1 = self.FindExpandLength(s, i, i)       # When the center is in s[i]
-            len2 = self.FindExpandLength(s, i, i + 1)   # When the center is between s[i] and s[i + 1]
-            length = max(len1, len2)
-            if length > end - start + 1:
-                start = i - (length - 1) / 2            # Why here is "start = i - (length - 1) / 2"
-                                                        # instead of "start = i - length / 2" ??
-                                                        # Because when the length is even and center is between s[i] and s[i - 1]
-                                                        # the start should just be in the left of the i -> i - (length - 1) / 2
-                                                        # instead of i - 2 -> i - length / 2
-                end = i + length / 2
+            len1 = self.FindExpandLength(s, i, i)                   # When the center is in s[i]
+            len2 = self.FindExpandLength(s, i, i + 1)               # When the center is between s[i] and s[i + 1]
+            if len_1 > len_2 and len_1 > end - start + 1:           # IMPORTANT !!!!!!!! end - start + 1 instead of start - end + 1 !!!!
+                start, end = i - len_1 / 2, i + len_1 / 2
+            elif len_2 > len_1 and len_2 > end - start + 1:
+                start, end = i - (len_2 - 1) / 2, i + len_2 / 2
         return s[start:end + 1]
     
     def FindExpandLength(self, s, left, right):
@@ -52,3 +48,5 @@ class Solution(object):
                                                         # the left and right has already been updated to left = left - 1
                                                         # and right = right + 1, however, what we want is the original left and right
                                                         # instead of these new left and right
+                                                        # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                        # "(right - 1) - (left + 1) + 1" instead of "(left + 1) - (right - 1) + 1" !!!!!
