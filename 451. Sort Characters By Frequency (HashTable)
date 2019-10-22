@@ -35,7 +35,7 @@ Explanation:
 Note that 'A' and 'a' are treated as two different characters.
 
 
-Solution: -------------------------------------- My own ---------------------------------------- HashTable + Sort by lambda
+Solution: -------------------------------------- My own 
 --------------------------------------------------- O(nlogn) T, O(n) S
 class Solution(object):
     def frequencySort(self, s):
