@@ -55,6 +55,11 @@ class Solution(object):
                                                       # before append num into the HashTable !!!!!!!!!!!!!!!!!!!!!!!!!!
                                                       # Otherwise, the HashTable will keep append new item without return anything
                                                       # for cases like [2, 7, 11, 15] 9
+                                                      # Also, we cannot write code as below WITHOUT check ( )
+                                                      # if not num in HashTable:
+                                                      #     HashTable[num] = i
+                                                      # if target - num in HashTable (and i != HashTable[target - num]):
+                                                      #     return [i, HashTable[target - num]]
                                                       # key in dic
                 return[i, HashTable[target - num]]    # value in dic can only be assess by dic[key]
                                                       # dic[key] -> value. key is like a special index
