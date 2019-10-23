@@ -148,7 +148,8 @@ class LRUCache(object):
             newNode = DLinkedNode()
             newNode.val = value
             newNode.key = key
-            self.d[key] = newNode
+            self.d[key] = newNode                                     # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                                      # MUST remember to add the node into the HashTable !!!!!!!!!!!!!!
             self.add_node(newNode)                                    # The error took me one hour to find out !!!!!!!!!!!
                                                                       # here, we should call add_node() instead of move_exist_to_front()
         else:                                                               
