@@ -19,7 +19,8 @@ Input:
 
 Output: 16
 
-Solution:
+Solution: --------------------------------- Math
+------------------------------------------- O(N) T, O(1) S
 '''
 1. loop over the matrix and count the number of islands;
 2. if the current dot is an island, count if it has any right neighbour or down neighbour;
