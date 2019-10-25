@@ -19,7 +19,8 @@ Input:
 ]
 Output: [1,2,3,4,8,12,11,10,9,5,6,7]
 
-Solution: -------------------------------------------------- https://www.youtube.com/watch?v=dfGhf-Ko0L4
+Solution: -------------------------------------------------- Layer-by-Layer ---- https://www.youtube.com/watch?v=dfGhf-Ko0L4
+--------------------------------------------------------- O(N) T, O(N) S due to res
 class Solution(object):
     def spiralOrder(self, matrix):
         if matrix == []:
@@ -42,9 +43,9 @@ class Solution(object):
         if top == buttom and right > left:      # Special case 1: leave one row
             for i in range(left, right + 1):    # (left, right + 1) now since we need to include every one last elements
                 res.append(matrix[top][i])
-        if top == buttom and right == left:     # Special case 2: leave one element
+        elif top == buttom and right == left:     # Special case 2: leave one element
             res.append(matrix[top][right])
-        if top < buttom and right == left:
+        elif top < buttom and right == left:
             for i in range(top, buttom + 1):    # Special case 3: leave one column
                 res.append(matrix[i][left])
         return res
