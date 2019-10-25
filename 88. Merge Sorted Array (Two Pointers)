@@ -12,7 +12,8 @@ nums2 = [2,5,6],       n = 3
 
 Output: [1,2,2,3,5,6]
 
-Solution: ---------------------------------------------------------- https://www.youtube.com/watch?v=ANUDq_2Bs04
+Solution: -------------------------------------- Two Pointers -------------------- https://www.youtube.com/watch?v=ANUDq_2Bs04
+------------------------------------ O(m + n) T, O(1) S
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         """
@@ -26,6 +27,8 @@ class Solution(object):
             if nums1[m - 1] <= nums2[n - 1]:                                     # case no.1: nums2 > nums1, insert in the end
                                                                                  # IMPORTANT !!!!! BOTH LISTS HAVE BEEN SORTED
                 nums1[m - 1 + n] = nums2[n - 1]                                  # nums1[m - 1 + n] is the rightest 0 in the nums1 list
+                                                                                 # and that will be the position of larger element
+                                                                                 # in not traversed elements in nums1 and nums2
                 n -= 1
             else:                                                                # case no.2: nums2 < nums1, swap the current biggest
                                                                                  # number nums2[m - 1] to the back of the array
