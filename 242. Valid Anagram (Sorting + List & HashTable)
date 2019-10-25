@@ -24,8 +24,9 @@ class Solution(object):
         :rtype: bool
         """
         
-Solution no.2: -------------------------------------------------- HashTable
------------------------------------------------------------------ O(n) T, O(1) S
+Solution no.2: -------------------------------------------------- List
+----------------------------------------------------------------- O(n) T
+-- O(1) S: Although we do use extra space, the space complexity is O(1) because the table's size stays constant no matter how large n is
 class Solution(object):
     def isAnagram(self, s, t):
         """
@@ -33,17 +34,16 @@ class Solution(object):
         :type t: str
         :rtype: bool
         """
-        HashTable = {}
-        for w in s:
-            HashTable[w] = HashTable.get(w, 0) + 1
-        for w in t:
-            if w not in HashTable:
+        if len(s) != len(t) or len(set(s)) != len(set(t)):
+            return False
+        L = [0] * 26
+        for i in range(len(s)):
+            L[ord(s[i]) - ord('a')] += 1
+        for i in range(len(t)):
+            if L[ord(t[i]) - ord('a')] <= 0:
                 return False
             else:
-                HashTable[w] -= 1
-        for value in HashTable.values():
-            if value != 0:
-                return False
+                L[ord(t[i]) - ord('a')] -= 1
         return True
         
 Follow up:
@@ -53,7 +53,7 @@ How would you adapt your solution to such case?
 
 Answer:
 
-Use a hash table instead of a fixed size counter. 
+Use a hash table instead of a fixed size list. 
 Imagine allocating a large size array to fit the entire range of unicode characters, 
 which could go up to more than 1 million (1,114,112 possible characters). 
 A hash table is a more generic solution and could adapt to any range of characters.
