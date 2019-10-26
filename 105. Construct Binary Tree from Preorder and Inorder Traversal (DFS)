@@ -87,7 +87,7 @@ class Solution(object):
         newNode.right = self.backtracking(preorder_right, inorder_right)
         return newNode
         
-Solution no.3: -------------------------------------- Build a hashmap to increase time from O(n^2) to O(n)
+Solution no.3: -------------------------------------- Build a hashmap to decrease time from O(n^2) to O(n)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
