@@ -83,13 +83,13 @@ class Solution(object):
             curr = curr.next.next
         curr = head
         while curr:						              # Step no.2: assign new.random
-            curr.next.random = curr.random.next if curr.random else None
+            curr.next.random = curr.random.next if curr.random else None      # Must check here, curr.random maybe None
             curr = curr.next.next
         old_LL, new_LL = head, head.next
-        dummy = Node(0, new_LL, None)
+        return_head = head.next
         while old_LL and old_LL.next:		                              # Step no.3: Uninterleave
             old_LL.next = old_LL.next.next
-            new_LL.next = new_LL.next.next if new_LL.next else None
+            new_LL.next = new_LL.next.next if new_LL.next else None           # Must check here, new_LL.next maybe None
             old_LL = old_LL.next
             new_LL = new_LL.next
-        return dummy.next
+        return return_head
