@@ -8,7 +8,7 @@ Input: 1->2->3->4->5->NULL, m = 2, n = 4
 Output: 1->4->3->2->5->NULL
 
 Solution: ---------------------------- Two Pointers ---------------------------------- https://www.youtube.com/watch?v=esl_A_pzBcg
--------------------------------------- O(n) T, O(1) S
+-------------------------------------- O(n) T since we process all the nodes at-most twice, O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -25,17 +25,18 @@ class Solution(object):
         """
         if not head or m > n:
             return None
-        dummynode = ListNode(0)
-        dummynode.next = head
-        left, right, prevnode = head, head, dummynode
-        for i in range(1, m):
-            prevnode = prevnode.next
+        dummy = ListNode(0)
+        dummy.next = head
+        prev, left = dummy, head
+        for i in range(m - 1):
             left = left.next
-        for i in range(1, n):
+            prev = prev.next
+        right = left
+        for i in range(n - m):
             right = right.next
-        while left != right:                               # 把 left node 插入 right node 的后面，直到他们重合
-            prevnode.next = left.next
+        while left != right:                                 # 把 left node 插入 right node 的后面，直到他们重合
+            prev.next = left.next
             left.next = right.next
             right.next = left
-            left = prevnode.next
-        return dummynode.next
+            left = prev.next
+        return dummy.next
