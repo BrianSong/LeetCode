@@ -54,7 +54,7 @@ class Solution(object):
         return currnode
 
 
-Solution: -------------------------------------------- My own
+Solution no.2: -------------------------------------------- My own ---------- split the array: waste a lot of space and very slow
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -86,3 +86,32 @@ class Solution(object):
         newNode.left = self.backtracking(preorder_left, inorder_left)
         newNode.right = self.backtracking(preorder_right, inorder_right)
         return newNode
+        
+Solution no.3: -------------------------------------- Build a hashmap to increase time from O(n^2) to O(n)
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        if preorder is None or inorder is None or len(preorder) == 0 or len(inorder) == 0 or len(preorder) != len(inorder):
+            return None
+        self.HashTable = {val:idx for idx, val in enumerate(inorder)}                   # VERY VERY CLEVER
+        return self.dfs(preorder, inorder, 0, 0, len(inorder) - 1)
+        """
+        :type preorder: List[int]
+        :type inorder: List[int]
+        :rtype: TreeNode
+        """
+    def dfs(self, preorder, inorder, pre_start, in_start, in_end):
+        if pre_start >= len(preorder) or in_start > in_end:
+            return None
+        idx = self.HashTable[preorder[pre_start]]
+        currroot = TreeNode(preorder[pre_start])
+        currroot.left = self.dfs(preorder, inorder, pre_start + 1, in_start, idx - 1)
+        currroot.right = self.dfs(preorder, inorder, pre_start + 1 + (idx - in_start), idx + 1, in_end)
+        return currroot
+
