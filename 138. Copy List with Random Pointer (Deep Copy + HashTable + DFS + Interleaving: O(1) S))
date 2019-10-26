@@ -39,20 +39,57 @@ class Solution(object):
         """
         if not head:
             return None
-        self.HashTable = {}
+        self.HashTable = {}                                 # Use a HashTable to avoid copying the same node twice
         return self.dfs(head)
     
     def dfs(self, currnode):
         if not currnode:                                    # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!	
 						            # CAN NOT forget to check if the currnode is NONE !!!!
             return None
-        if currnode.val in self.HashTable:
-            return self.HashTable[currnode.val]
+        if currnode in self.HashTable:
+            return self.HashTable[currnode]
         copynode = Node(currnode.val, None, None)           # Also, read the definition for a node carefully,
 						            # it is "def __init__(self, val, next, random)", 
 							    # so, instead of "copynode = Node(currnode.val)", 
 							    # it must be "copynode = Node(currnode.val, None, None)" !!!!
-        self.HashTable[copynode.val] = copynode
+        self.HashTable[currnode] = copynode	            # Store the copynode 
         copynode.next = self.dfs(currnode.next)
         copynode.random = self.dfs(currnode.random)
         return copynode
+	
+	
+Solution no.2: ---------------------------------------- O(1) S interleaving method
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+"""
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+        if not head:
+            return None
+        curr = head
+        while curr:				                              # Step no.1: interleave old with new
+            newNode = Node(curr.val, None, None)
+            newNode.next = curr.next
+            curr.next = newNode
+            curr = curr.next.next
+        curr = head
+        while curr:						              # Step no.2: assign new.random
+            curr.next.random = curr.random.next if curr.random else None
+            curr = curr.next.next
+        old_LL, new_LL = head, head.next
+        dummy = Node(0, new_LL, None)
+        while old_LL and old_LL.next:		                              # Step no.3: Uninterleave
+            old_LL.next = old_LL.next.next
+            new_LL.next = new_LL.next.next if new_LL.next else None
+            old_LL = old_LL.next
+            new_LL = new_LL.next
+        return dummy.next
