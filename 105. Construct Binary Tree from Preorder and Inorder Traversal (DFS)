@@ -52,3 +52,37 @@ class Solution(object):
         # And they all line up after the currnode before the first right-subtree node in the preorder
         # As for the inorder, the left part of the currnode belongs to the left subtree and right part belongs to the right subtree
         return currnode
+
+
+Solution: -------------------------------------------- My own
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        """
+        :type preorder: List[int]
+        :type inorder: List[int]
+        :rtype: TreeNode
+        """
+        if not preorder or not inorder:
+            return None
+        return self.backtracking(preorder, inorder, 0, )
+    
+    def backtracking(self, preorder, inorder):
+        if not preorder:
+            return None
+        newNode = TreeNode(preorder[0])
+        currValue = preorder[0]
+        index = inorder.index(currValue)
+        preorder_left = preorder[1:1 + index]
+        preorder_right = preorder[1 + index:]
+        inorder_left = inorder[:index]
+        inorder_right = inorder[index + 1:]
+        newNode.left = self.backtracking(preorder_left, inorder_left)
+        newNode.right = self.backtracking(preorder_right, inorder_right)
+        return newNode
