@@ -41,7 +41,8 @@ class Solution(object)
         """
         
 Solution no.2: ------------------------------------------- Recursive
------------------------------------------------------------------------- O(n) T, O(n) S
+------------------------------------------------------------------------ O(n) T
+-------------- O(n) S The extra space comes from implicit stack space due to recursion. The recursion will go up to n levels deep
 
 class Solution(object):
     def reverseList(self, head):
