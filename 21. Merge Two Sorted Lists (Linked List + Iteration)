@@ -7,7 +7,7 @@ Input: 1->2->4, 1->3->4
 Output: 1->1->2->3->4->4
 
 Solution: --------------------------------------------- Linked List + Iteration
------------------------------------------- O(n) T, O(1) S
+------------------------------------------ O(m + n) T, O(1) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -21,16 +21,25 @@ class Solution(object):
         :type l2: ListNode
         :rtype: ListNode
         """
-        dummynode = ListNode(0)
-        currnode = dummynode
+        if not l1:
+            return l2
+        if not l2:
+            return l1
+        dummy = ListNode(0)
+        prev = dummy
         while l1 and l2:
-            if l1.val > l2.val:
-                l1, l2 = l2, l1
-            currnode.next = l1
-            l1 = l1.next
-            currnode = currnode.next
-        if l1:
-            currnode.next = l1
-        if l2:
-            currnode.next = l2
-        return dummynode.next
+            if l1.val <= l2.val:
+                newNode = ListNode(l1.val)
+                prev.next = newNode
+                prev = newNode                                          # prev = newNode instead of newNode = prev !!!!!!!!!!!!
+                l1 = l1.next
+            else:
+                newNode = ListNode(l2.val)
+                prev.next = newNode
+                prev = newNode
+                l2 = l2.next
+        if not l1 and l2:
+            prev.next = l2
+        elif not l2 and l1:
+            prev.next = l1
+        return dummy.next
