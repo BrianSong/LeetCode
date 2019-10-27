@@ -17,6 +17,7 @@ s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
 
 
 Solution: -------------------------------------------------------- Stack
+-------------------------------------------------------- O(n) T and S
 '''
 The solution is a simple stack based one which evalutes the innermost brackets first. 
 You iterate through the string, and push everything to a stack until you've found a right bracket. 
@@ -54,7 +55,7 @@ class Solution(object):
                                                        # we can do it after we get all the number ahead of the '[',
                                                        # Also, "currk = stack.pop() + currk" instead of "currk += stack.pop()"
                                                        # for the same reason as above
-                stack.append(int(currk) * currstr)
+                stack.append(int(currk) * currstr)     # After getting the current res, what we need to do is to append it back to stack!
             else:
                 stack.append(c)
         return ''.join(stack)
