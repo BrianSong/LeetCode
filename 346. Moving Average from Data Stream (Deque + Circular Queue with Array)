@@ -66,3 +66,36 @@ class MovingAverage(object):
         self.deque.append(val)                                 # This increase the O(k) T to O(1) T
         self.sum += val
         return float(self.sum) / len(self.deque)
+
+Solution no.3: -------------------------------------- Circular Queue with Array
+------------------------------------------------------- O(1) T and O(k) S
+class MovingAverage(object):
+
+    def __init__(self, size):
+        """
+        Initialize your data structure here.
+        :type size: int
+        """
+        self.c_q = [0] * size
+        self.sum = 0
+        self.head = 0
+        self.size = size
+        self.count = 0
+
+    def next(self, val):
+        """
+        :type val: int
+        :rtype: float
+        """
+        self.count += 1
+        tail = (self.head + 1) % self.size                                  
+        self.sum = self.sum - self.c_q[tail] + val                      # eat the tail
+        self.head = (self.head + 1) % self.size                         # move the head forward
+        self.c_q[self.head] = val
+        return float(self.sum) / min(self.count, self.size)
+        
+
+
+# Your MovingAverage object will be instantiated and called as such:
+# obj = MovingAverage(size)
+# param_1 = obj.next(val)
