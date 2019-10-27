@@ -37,3 +37,28 @@ class Solution(object):
             if curr_height > height[i]:
                 res += (curr_height - height[i]) * 1          # * 1 => multiply the width
         return res
+        
+        
+Solution no.2: -------------------------------------------- Two Pointers
+------------------------------------------------ O(n) T, O(1) S
+class Solution(object):
+    def trap(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        if not height:
+            return 0
+        curr_left_max, curr_right_max = height[0], height[-1]
+        left, right = 0, len(height) - 1
+        res = 0
+        while left < right:
+            curr_left_max = max(curr_left_max, height[left])
+            curr_right_max = max(curr_right_max, height[right])
+            if curr_left_max < curr_right_max:
+                res += curr_left_max - height[left]
+                left += 1
+            else:
+                res += curr_right_max - height[right]
+                right -= 1
+        return res
