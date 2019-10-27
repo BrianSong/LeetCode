@@ -48,12 +48,16 @@ class Solution(object):
         :type k: int
         :rtype: int
         """
-        presum, currsum, res = {0:1}, 0, 0                 # {0:1} means there are one(frequency) presum whose value is 0
-                                                           # We must preset the HashTable into {0:1}
-                                                           # Otherwise, those satified subarrays start from index 0 cannot be counted in
+        if not nums:
+            return 0
+        res, currsum = 0, 0
+        HashTable = collections.defaultdict(int)
+        HashTable[0] = 1                                  # MUST MUST MUST initialize here !!!!! 
+                                                          # Otherwise, those satified subarrays start from index 0 cannot be counted in
         for num in nums:
             currsum += num
-            res += presum.get(currsum - k, 0)              # IMPORTANT !!!!!!!!!!!!!!!!!!!!
-                                                           # currsum - k not k - currsum !!!!!!!!!!!!!!!!!!
-            presum[currsum] = presum.get(currsum, 0) + 1 
+            if currsum - k in HashTable:                  # IMPORTANT !!!!!!!!!!!!!!!!!!!!
+                                                          # currsum - k not k - currsum !!!!!!!!!!!!!!!!!!
+                res += HashTable[currsum - k]
+            HashTable[currsum] += 1
         return res
