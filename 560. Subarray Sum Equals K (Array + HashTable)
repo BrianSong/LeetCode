@@ -7,8 +7,26 @@ Note:
 The length of the array is in range [1, 20,000].
 The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
 
+Solution no.1: -------------------------------- Naive BF
+----------------------------------------------- O(n^3) T, O(1) S
+class Solution(object):
+    def subarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        res = 0
+        for i in range(len(nums)):
+            for j in range(i, len(nums)):
+                if sum(nums[i:j + 1]) == k:
+                    res += 1
+        return res
 
-Solution no.1: -------------------------------- Brute Force TLE ERROR
+Solution no.2: -------------------------------- Better Brute Force TLE ERROR
+----------------------------------------------- O(n^2) T, O(1) S
 class Solution(object):
     def subarraySum(self, nums, k):
         """
@@ -30,7 +48,7 @@ class Solution(object):
         return res
         
         
-Solution no.2: ------------------------------------------ HashTable
+Solution no.3: ------------------------------------------ HashTable
 --------------------------------------------------------- O(n) T O(n) S
 '''
 Solution 1. Brute force. We just need two loops (i, j) and test if SUM[i, j] = k. Time complexity O(n^2), Space complexity O(1). 
