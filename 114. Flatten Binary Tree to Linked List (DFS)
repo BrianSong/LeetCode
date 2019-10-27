@@ -23,6 +23,12 @@ The flattened tree should look like:
           
 Solution: --------------------------------------- DFS ----------- https://www.youtube.com/watch?v=LfKRZ_qCmYQ
 ------------------------------------------------- O(N) T, O(N) S
+'''
+If you notice carefully in the flattened tree, each node's right child points to the next node of a pre-order traversal.
+Since we cannot forsee what is the next node in the pre-order traversal, 
+what we can do is to do the reversed pre-order traversal where we can store the previous node in our reversed pre-order traversal
+what is exactly the next node in a normal pre-order traversal, then we can assign it to the currnode.right
+'''
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
