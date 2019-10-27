@@ -14,8 +14,8 @@ Output: 7 -> 8 -> 0 -> 7
 
 
 Solution no.1: ------------------------------------- 2. Add Two Numbers + 206. Reverse Linked List
--------------------------------------------- O(n) T, O(1) S
-# Definition for singly-linked list.
+-------------------------------------------- O(max(m, n)) T, O(m + n) S because we are also creating new l1 and l2
+# Definition for singly-linked list. 
 # class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
@@ -54,7 +54,7 @@ class Solution(object):
         return prev
 
 Solution no.2: ------------------------------------- Stack
--------------------------------------------- O(n) T, O(n) S
+-------------------------------------------- O(max(m, n)) T, O(m + n) S
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -79,17 +79,11 @@ class Solution(object):
         curr1, curr2 = l1, l2
         prev, reminder = None, 0
         while s1 or s2 or reminder:
-            if s1:
-                v1 = s1.pop()
-            else:                     # CANNOT FORGET !!!!!
-                v1 = 0
-            if s2:
-                v2 = s2.pop()
-            else:
-                v2 = 0
+            v1 = s1.pop() if s1 else 0
+            v2 = s2.pop() if s2 else 0
             sum = reminder + v1 + v2
             currnode = ListNode(sum%10)
             reminder = sum / 10
-            currnode.next = prev
+            currnode.next = prev             # Instead of "prev.next = currnode", here, what we want to return is the reverse order !!!!
             prev = currnode
         return prev
