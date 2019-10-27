@@ -60,15 +60,11 @@ class Solution(object):
         """
         if not root:
             return None
-        queue, res = [root], []
+        res, queue = [], [root]
         while queue:
-            size = len(queue)
+            res.append(queue[-1].val)
             for i in range(len(queue)):
                 pop_element = queue.pop(0)
-                if i == size - 1:                         # Must be "if i == size - 1" instead of "if i == len(queue) - 1"
-                                                          # because here the len(queue) is not the len(queue) inside line 71
-                                                          # here, since we pop(0) the element beforehead, the len(queue) has changed
-                    res.append(pop_element.val)
                 if pop_element.left:
                     queue.append(pop_element.left)
                 if pop_element.right:
