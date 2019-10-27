@@ -26,6 +26,11 @@ If we understand the use of median for dividing, we are very close to the answer
 Solution: ----------------------------------------------------- Binary Search 
 -------------- https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn)))-solution-with-explanation
 -------------- https://www.youtube.com/watch?time_continue=26&v=LPFhl65R7ww
+------------------------------ Time complexity: O(log(min(m,n))), 
+-------- At first, the searching range is [0, m]. And the length of this searching range will be reduced by half after each loop. 
+-------- So, we only need log(m) loops. Since we do constant operations in each loop, 
+-------- so the time complexity is (log(m)). Since m≤n, so the time complexity is O(log(min(m,n)))
+-------- Space complexity: O(1)O(1)
 class Solution(object):
     def findMedianSortedArrays(self, A, B):
         """
