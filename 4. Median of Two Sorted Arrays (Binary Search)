@@ -24,8 +24,8 @@ If we understand the use of median for dividing, we are very close to the answer
 '''
 
 Solution: ----------------------------------------------------- Binary Search 
--------------- https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn)))-solution-with-explanation
--------------- https://www.youtube.com/watch?time_continue=26&v=LPFhl65R7ww
+------------- https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(m,n)))-solution-with-explanation
+------------- https://www.youtube.com/watch?time_continue=26&v=LPFhl65R7ww
 ------------------------------ Time complexity: O(log(min(m,n))), 
 -------- At first, the searching range is [0, m]. And the length of this searching range will be reduced by half after each loop. 
 -------- So, we only need log(m) loops. Since we do constant operations in each loop, 
@@ -40,7 +40,9 @@ class Solution(object):
         """
         m, n = len(A), len(B)
         if m > n:
-            A, B, m, n = B, A, n, m
+            A, B, m, n = B, A, n, m                             # Why n≥m? Because I have to make sure j is non-negative 
+                                                                # since 0≤i≤m and j = (m + n + 1) / 2 - i, 
+                                                                # If n < m, then j may be negative, that will lead to wrong result
         i_min, i_max, half_len = 0, m, (m + n + 1) / 2          # this m + n + "1" is to ensure that the left partition elements number
                                                                 # must be equal or greater than the right's
         while i_min <= i_max:
