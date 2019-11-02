@@ -55,5 +55,5 @@ for i in range(len(nums) - 2):
                     left += 1
                 else:
                     right -= 1
-        return target - diff                                    # So, here, we must return target - diff instead of target + diff !!!!!!!!
+        return target - diff                                  # So, here, we must return target - diff instead of target + diff !!!!!!!!
 '''
