@@ -46,7 +46,7 @@ Solution no.2: ------------------------------------------- Recursive
 
 class Solution(object):
     def reverseList(self, head):
-        prev = None
+        prev = None 
         current = head
         return self.rever_help(prev, current)  # Return CANNOT BE FORGOT!!!!
         
