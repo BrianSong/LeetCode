@@ -33,12 +33,12 @@ class Solution(object):
         if not s:
             return 0
         self.count = 0
-        for i in range(len(s) - 1):
+        for i in range(len(s)):
             self.checkPalind(s, i, i)                         # To check the palindrome of odd length palindromic sub-string
                                                               # i.e.: 分割点（回文中心点pivot）在s[i]本身
             self.checkPalind(s, i, i + 1)                     # To check the palindrome of even length palindromic sub-string
                                                               # i.e.: 分割点（回文中心点pivot）在s[i]与s[i+1]中间
-        return self.count + 1                                 # Plus 1 is for the last individual character (for i in range(len(s) - 1))
+        return self.count
     
     def checkPalind(self, s, l, r):
         while l >= 0 and r < len(s) and s[l] == s[r]:         # IMPORTANT !!!!!!!!!!!! WHILE !!!!! NOT IF !!!!!!!!
