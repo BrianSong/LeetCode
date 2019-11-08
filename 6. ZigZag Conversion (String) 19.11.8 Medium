@@ -25,6 +25,7 @@ Y A   H R
 P     I
 
 Solution: --------------------------------------------------------------------- https://www.youtube.com/watch?v=8zXTAn7i5rU
+----------------------------------------------- O(n) T and S
 class Solution(object):
     def convert(self, s, numRows):
         """
