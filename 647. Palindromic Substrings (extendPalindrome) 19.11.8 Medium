@@ -21,7 +21,7 @@ Note:
 The input string length won't exceed 1000.
 
 
-Solution: ---------------------------------- extendPalindrome 
+Solution: ---------------------------------- O(n^2) T, O(1) S ---------------------- extendPalindrome 
 # https://leetcode.com/problems/palindromic-substrings/discuss/105688/Very-Simple-Java-Solution-with-Detail-Explanation
 # The upper link provides a very good visualiztion
 class Solution(object):
