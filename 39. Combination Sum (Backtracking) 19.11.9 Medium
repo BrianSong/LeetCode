@@ -62,3 +62,8 @@ class Solution(object):
                                                                       # if we do that, we will come up with many same curr,
                                                                       # like [[2,2,3],[2,3,2],[3,2,2],[7]] that we do not want 
             self.backtracking(candidates, target - candidates[i], curr + [candidates[i]], i, res)
+            
+        '''
+        for i, candidate in enumerate(candidates):
+            self.backtracking(candidates[i:], target - candidate, path + [candidate], res)
+        '''
