@@ -26,12 +26,12 @@ class Solution(object):
         if len(strs) == 0:
             return ""
         res = strs[0]
-        for i in range(1, len(strs)):                               # Traverse the entire strs
-            while not res in strs[i] or strs[i].index(res) != 0:    # Must add "not res in strs[i]" for non-existing cases
-                                                                    # if we do not add "not res in strs[i]", 
-                                                                    # will bring "substring not found" error,
-                                                                    # because .index() for string in Python requires the substring to exist
-                res = res[:(len(res) - 1)]                          # if not satisfied, reduce the res from the right by one character
-                if res == "":                                       # No LCP at all, return directly
+        for i in range(1, len(strs)):                              # Traverse the entire strs
+            while not res in strs[i] or strs[i].index(res) != 0:   # Must add "not res in strs[i]" for non-existing cases
+                                                                   # if we do not add "not res in strs[i]", 
+                                                                   # will bring "substring not found" error,
+                                                                   # because .index() for string in Python requires the substring to exist
+                res = res[:(len(res) - 1)]                         # if not satisfied, reduce the res from the right by one character
+                if res == "":                                      # No LCP at all, return directly
                     return ""
         return res
