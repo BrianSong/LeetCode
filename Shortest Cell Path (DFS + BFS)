@@ -1,0 +1,77 @@
+Finding a shortest path is typically done with a breadth first search. Here, nodes are locations on the grid with value 1, 
+and two nodes are neighbors if they are 4-directionally adjacent.
+
+The breadth first search algorithm is given a source in the graph, and it explores all nodes distance 0 from the source, 
+then all nodes distance 1, then all nodes distance 2, and so on. The algorithm records the node’s distance when it visits, 
+and that way we can determine the shortest path in the graph to some target node.
+
+By visiting nodes in order from distance to the source, this ensures that if we find the target word, 
+we found it at the least possible distance and thus the answer is correct.
+
+
+Solution no.1: ----------------------------------- my own DFS
+-------------------------------------------------- O(4^(m * n)) T and O(m*n) S
+def shortestCellPath(grid, sr, sc, tr, tc):
+  # Check edge cases
+  if not grid or not grid[0]:
+    return None
+  res = []
+  # visited matrix to avoid re-visit
+  visited = [[False for j in range(len(grid[0]))] for i in range(len(grid))]
+  visited[sr][sc] = True                                                             # Must also add the start point into the visited !!
+  # dfs to found all possible paths
+  dfs(grid, sr, sc, tr, tc, 0, visited, res)
+  # If there are no paths at all
+  if not res:
+    return -1
+  return min(res)
+
+def dfs(grid, x, y, tr, tc, path, visited, res):
+  # Base case
+  if x == tr and y == tc:
+    res.append(path)
+    return
+  # Try all four possible directions
+  for dir in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+    new_x = x + dir[0]
+    new_y = y + dir[1]
+    if 0 <= new_x and new_x < len(grid) and 0 <= new_y and new_y < len(grid[0]) 
+     / and grid[new_x][new_y] == 1 and not visited[new_x][new_y]:
+      visited[new_x][new_y] = True
+      dfs(grid, new_x, new_y, tr, tc, path + 1, visited, res)
+      visited[new_x][new_y] = False
+      
+      
+Solution no.2: -------------- BFS: A more optimal solution (Finding a shortest path is typically done with a breadth first search)
+----------------------------- O(m*n) T and S
+'''
+The breadth first search algorithm is given a source in the graph, and it explores all nodes distance 0 from the source, 
+then all nodes distance 1, then all nodes distance 2, and so on. The algorithm records the node’s distance when it visits, 
+and that way we can determine the shortest path in the graph to some target node.
+'''
+import collections
+def shortestCellPath(grid, sr, sc, tr, tc):
+  # Check the edge cases
+  if not grid or not grid[0]:
+    return None
+  # Use a queue to implement the bfs
+  q = collections.deque()
+  # Use a visited set to avoid re-visit
+  visited = set()
+  q.append((sr, sc, 0))
+  visited.add((sr, sc))                                    # For a set, we cannot do visited.add([sr, sc])
+  # BFS                                                    # Because "unhashable type: 'list'"
+  while q:                                                 # A set is a hash in Python and its key can only be tuple() not list[]
+    x, y, length = q.popleft()
+    if x == tr and y == tc:
+      return length
+    for dir in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+      new_x = x + dir[0]
+      new_y = y + dir[1]
+      # Check if the new_x and new_y is a valid pair
+      if 0 <= new_x and new_x < len(grid) and 0 <= new_y and new_y < len(grid[0]) 
+      / and grid[new_x][new_y] == 1 and not (new_x, new_y) in visited:
+        visited.add((new_x, new_y))
+        q.append((new_x, new_y, length + 1))
+  # If nothing has been returned, it means that there is no such path available
+  return -1
