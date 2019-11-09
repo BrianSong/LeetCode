@@ -31,6 +31,7 @@ Note:
 
 Solution no.1: ---------------------------------------------------- Heap
 -------------------------------------------------------------- O(nlogn) T, O(n) S
+-------------------------------------------------------------- heapq is a binary heap, with O(log n) push and O(log n) pop
 class Solution(object):
     def kClosest(self, points, K):
         """
