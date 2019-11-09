@@ -12,6 +12,7 @@ Input: "race a car"
 Output: false
 
 Solution: --------------------------------------------------------------- Two Pointers
+--------------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def isPalindrome(self, s):
         """
