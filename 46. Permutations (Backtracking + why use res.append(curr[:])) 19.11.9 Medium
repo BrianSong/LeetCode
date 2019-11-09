@@ -54,7 +54,8 @@ class Solution(object):
 
 
 Solution no.2: --------------------------------------------------------- Backtracking
---------------------------------------------------------- O(n * n!) T and S
+--------------------------------------------------------- O(n * n!) T and O(n!) S
+-------------- since you will have n! permutation. And, for each permutation, you run exact n recursive call to reach it.
 '''
 Space: It doesn't alloc any extra space, just copy and concat the buffers to form the output. 
 There is n! output and each has n elements.
