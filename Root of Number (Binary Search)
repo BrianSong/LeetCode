@@ -1,0 +1,66 @@
+Root of Number
+Many times, we need to re-implement basic functions without using any standard library functions already implemented. 
+For example, when designing a chip that requires very little memory space.
+
+In this question we’ll implement a function root that calculates the n’th root of a number. 
+The function takes a nonnegative number x and a positive integer n, and returns the positive n’th root of x within an error of 0.001 
+(i.e. suppose the real root is y, then the error is: |y-root(x,n)| and must satisfy |y-root(x,n)| < 0.001).
+
+Don’t be intimidated by the question. 
+While there are many algorithms to calculate roots that require prior knowledge in numerical analysis (some of them are mentioned here), 
+there is also an elementary method which doesn’t require more than guessing-and-checking. Try to think more in terms of the latter.
+
+Make sure your algorithm is efficient, and analyze its time and space complexities.
+
+Examples:
+
+input:  x = 7, n = 3
+output: 1.913
+
+input:  x = 9, n = 2
+output: 3
+Constraints:
+
+[time limit] 5000ms
+
+[input] float x
+
+0 ≤ x
+[input] integer n
+
+0 < n
+[output] float
+
+
+Solution: ---------------------------------------------------- Binary Search
+# Test case 1: x = 7, n = 3
+
+def root(x, n):
+  # Check edge cases
+  if x < 0 or n <= 0:
+    return -1
+  # Implement a binary search algorithm to solve this question
+  left, right = 0, x
+  while left <= right:
+    # 2.0 makes sure the mid is a floating number instead of a integer number
+    mid = (left + right) / 2.0
+    curr_product = mid ** n
+    # Check the base case
+    # Consider the terminate condition
+    if curr_product == x or abs(curr_product - x) < 0.001:
+      return mid
+    if curr_product > x:
+      right = mid                                # We can just don't write like "right = mid + 1(0.001)"
+    else:                                        # We can just let right = mid for precision purpose and do not lose any possible answer
+                                                 # Why this will not work in a normal case: because for the normal case,
+                                                 # mid = (left + right) / 2 and it is an integer, if we do this,
+                                                 # it will be left == mid == right forever and cause TLE
+      left = mid
+
+
+# O(1) S
+# O(logx) T for integer cases
+# HERE
+# Set k to the number of iteration, then: 2^(-k) * x < 0.001 where x is the initial error
+# so, k > log(x) + 3log(10) where log's base is 2 and for each iteration, the time complexity if O(1)
+# so, O(log(x)) T
