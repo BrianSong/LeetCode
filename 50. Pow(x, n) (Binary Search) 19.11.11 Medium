@@ -20,6 +20,7 @@ n is a 32-bit signed integer, within the range [−231, 231 − 1]
 
 
 Solution: --------------------------------------- Binary Search -------------------------- https://www.youtube.com/watch?v=yEQq3t3T_J0
+------------------------------------------------- O(logn) T, O(1) S
 class Solution(object):
     def myPow(self, x, n):
         """
