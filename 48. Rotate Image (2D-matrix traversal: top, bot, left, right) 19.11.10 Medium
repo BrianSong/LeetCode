@@ -40,14 +40,17 @@ rotate the input matrix in-place such that it becomes:
   [16, 7,10,11]
 ]
 
-Solution: ---------------------------------------------------- https://www.youtube.com/watch?v=9ryIfj5DohI
+Solution: ------------------------------------------------ 2D-matrix traversal: top, bot, left, right 
+------------------------------------------------ https://www.youtube.com/watch?v=9ryIfj5DohI
+------------------------------------------------ O(n^2) T, O(1) S
 class Solution(object):
     def rotate(self, matrix):
         n = len(matrix)
         top, bot, left, right = 0, n - 1, 0, n - 1
         while n > 1:
             for i in range(n - 1):
-                matrix[top][left + i], matrix[top + i][right], matrix[bot][right - i], matrix[bot - i][left] = matrix[bot - i][left], matrix[top][left + i], matrix[top + i][right], matrix[bot][right - i]
+                matrix[top][left + i], matrix[top + i][right], matrix[bot][right - i], matrix[bot - i][left] 
+                / = matrix[bot - i][left], matrix[top][left + i], matrix[top + i][right], matrix[bot][right - i]
             n -= 2
             top += 1
             bot -= 1
