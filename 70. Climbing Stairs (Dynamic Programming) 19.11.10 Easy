@@ -20,7 +20,7 @@ Explanation: There are three ways to climb to the top.
 2. 1 step + 2 steps
 3. 2 steps + 1 step
 
-Solution: 一道非常典型的动态规划题
+Solution: 一道非常典型的动态规划题 ------------------------------ O(n) T and S
 class Solution(object):
     def climbStairs(self, n):
         nums = [0] * (n + 1)                     # Step 1
