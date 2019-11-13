@@ -41,6 +41,7 @@ Output: "/a/b/c"
 
 
 Solution: ----------------------------- Stack + split() + join() -----------https://www.youtube.com/watch?v=l-og2X5GibY
+---------------------------------------------------------- O(n) T and S
 class Solution(object):
     def simplifyPath(self, path):
         """
