@@ -11,6 +11,7 @@ Output:
 ]
 
 Solution: -------------------------------------------- https://www.youtube.com/watch?v=dfGhf-Ko0L4
+------------------------------------------------------ O(n^2) T and S
 class Solution(object):
     def generateMatrix(self, n):
         res = [[0 for x in range(n)] for y in range(n)]
