@@ -11,6 +11,7 @@ Output: 5
 
 
 Solution no.1: ------------------------------------------- my own
+---------------------------------------------------------- O(n) T and S
 class Solution(object):
     def lengthOfLastWord(self, s):
         """
@@ -23,6 +24,7 @@ class Solution(object):
         
         
 Solution no.2: --------------------------------------------------- Two Pointers
+---------------------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def lengthOfLastWord(self, s):
         """
