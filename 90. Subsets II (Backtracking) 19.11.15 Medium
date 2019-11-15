@@ -44,6 +44,7 @@ class Solution(object):
                 
                 
 Solution: -------------------------- a much more better and concise new solution!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+----------------------------------------- O(2^n) T, O(2^n) S or O(n) S
 class Solution(object):
     def subsetsWithDup(self, nums):
         if nums is None or len(nums) == 0:
