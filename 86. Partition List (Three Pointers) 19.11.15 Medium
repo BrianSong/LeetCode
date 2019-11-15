@@ -8,6 +8,7 @@ Input: head = 1->4->3->2->5->2, x = 3
 Output: 1->2->2->4->3->5
 
 Solution: --------------------------------------------------------- https://www.youtube.com/watch?v=TARvjokaGxg
+-------------------------------------------------------- O(n) T, O(1) S 
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
