@@ -49,7 +49,7 @@ class Solution(object):
             clist.pop()                               # STEP 4
         
         
-More concise version:
+More concise version: ----------------------------------------- O(2^n) T, O(2^n) S or O(n) S
 class Solution(object):
     def subsets(self, nums):
         if nums is None or len(nums) == 0:
