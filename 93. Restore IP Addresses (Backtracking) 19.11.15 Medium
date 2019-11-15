@@ -6,6 +6,7 @@ Input: "25525511135"
 Output: ["255.255.11.135", "255.255.111.35"]
 
 Solution: ------------------------------ Backtracking ------------------------------------ https://www.youtube.com/watch?v=nxBMEvLqDzY
+-------------------------------------------------- O(1) T: 2^32 maximum possible IP address, O(1) S => 4 deepth
 class Solution(object):
     def restoreIpAddresses(self, s):
         """
