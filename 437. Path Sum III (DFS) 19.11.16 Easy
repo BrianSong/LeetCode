@@ -29,7 +29,7 @@ Return 3. The paths that sum to 8 are:
 
 Solution: ----------------------------------------- DFS -------------- Similar to #112 and #113, check the whole tree.
 ---------------------------------------------------- The only difference is: Any node can play as start or end in a valid path.
----------------------------------------------------- O(n^2) T, O(nlogn) S
+---------------------------------------------------- O(n^2) T, O(n) S
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
