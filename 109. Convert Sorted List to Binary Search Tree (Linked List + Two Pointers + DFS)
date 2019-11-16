@@ -92,3 +92,29 @@ def sortedListToBST(self, head):
     root.left = self.sortedListToBST(head)
     root.right = self.sortedListToBST(tmp.next)
     return root
+    
+    
+# The above one is confusing, so I updated a more clear one below:
+class Solution(object):
+    def sortedListToBST(self, head):
+        """
+        :type head: ListNode
+        :rtype: TreeNode
+        """
+        if not head:
+            return None
+        if not head.next:
+            return TreeNode(head.val)
+        prev = None
+        slow, fast = head, head
+        while fast and fast.next:
+            prev = slow
+            fast = fast.next.next
+            slow = slow.next
+        if prev:
+            prev.next = None
+        mid = slow
+        currnode = TreeNode(mid.val)
+        currnode.left = self.sortedListToBST(head)
+        currnode.right = self.sortedListToBST(mid.next)
+        return currnode
