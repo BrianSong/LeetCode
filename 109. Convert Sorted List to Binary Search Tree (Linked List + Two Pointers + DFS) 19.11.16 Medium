@@ -60,7 +60,7 @@ class Solution(object):
         
         
 Solution no.2: ------------------------------ Two Pointers + DFS
---------------------------------------------- O(N) T, O(logN) S
+--------------------------------------------- O(NlogN) T, O(logN) S
 def sortedListToBST(self, head):
     if not head:
         return 
