@@ -98,8 +98,9 @@ class Solution(object):
                 HashTable[word[:i] + "*" + word[i + 1:]].append(word)                     # HashTable here is the all possible 
                                                                                           # 衍生体 of word, for example:
                                                                                           # hit: *it, h*t, hi*
-        queue, visited, step = [beginWord], [beginWord], 1                                # Introduce a visited list,
+        queue, visited, step = [beginWord], set(), 1                                      # Introduce a visited list,
                                                                                           # for avoid 死循环: hit => hot => hit => hot
+        visited.add(beginWord)
         while queue:
             for i in range(len(queue)):
                 pop_element = queue.pop(0)
@@ -110,7 +111,7 @@ class Solution(object):
                         if item == endWord:
                             return step + 1
                         if item not in visited:
-                            visited.append(item)
+                            visited.add(item)
                             queue.append(item)
             step += 1
         return 0
