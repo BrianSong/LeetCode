@@ -23,6 +23,7 @@ Output: false
 
 
 Solution no.1: ------------------------------ Brutal Force DFS but TLE error
+--------------------------------------------- O(n^n) T, O(n) S
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -31,17 +32,42 @@ class Solution(object):
         :rtype: bool
         """
         if not wordDict:
-            return False
-        return self.dfs(s, wordDict)
+            return None
+        return self.BF(s, wordDict, 0)
     
-    def dfs(self, s, wordDict):
-        if s == "":
+    def BF(self, s, wordDict, start):
+        if start == len(s):
             return True
-        for word in wordDict:
-            if word in s and s.index(word) == 0:
-                if self.dfs(s[len(word):], wordDict):
-                    return True
+        for end in range(start, len(s) + 1):
+            if s[start:end] in wordDict and self.BF(s, wordDict, end):
+                return True
+        return False
 
+Solution no.2: ----------------------------------------- Recursion with memo
+--------------------------------------------- O(n^2) T, O(n) S
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        if not wordDict:
+            return None
+        self.memo = {}
+        return self.BF(s, wordDict, 0)
+    
+    def BF(self, s, wordDict, start):
+        if start == len(s):
+            return True
+        if start in self.memo:
+            return self.memo[start]
+        for end in range(start, len(s) + 1):
+            if s[start:end] in wordDict and self.BF(s, wordDict, end):
+                self.memo[start] = True
+                return True
+        self.memo[start] = False
+        return False
 
 Solution: ----------------------------------- Dynamic Programming ---------------------- https://www.youtube.com/watch?v=pYKGRZwbuzs
 --------------------------------------------- O(n^3) T (the substring also takes O(n) T), O(n) S
