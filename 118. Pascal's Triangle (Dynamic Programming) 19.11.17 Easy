@@ -25,7 +25,7 @@ class Solution(object):
         """
         if not numRows:
             return None
-        res = [[1 for i in range(j + 1)] for j in range(numRows)]     # As for any 2-D list result, 
+        res = [[1]*(i + 1) for i in range(numRows)]                   # As for any 2-D list result, 
                                                                       # we should find a way to initialize it first,
                                                                       # then, we can use res[i][j] to assign or assess 
                                                                       # the values in it very easy
