@@ -11,7 +11,7 @@ Input: [3,2,3,1,2,4,5,5,6] and k = 4
 Output: 4
        
 Solutiono no.1: ------------------------------------- Heap ------------------- https://www.youtube.com/watch?v=zyskis1Gw0c
-------------------------------------------- O(nlogn) T, O(n) S
+------------------------------------------- O(nlogk) T, O(n) S
 class Solution(object):
     def findKthLargest(self, nums, k):
         """
@@ -21,7 +21,7 @@ class Solution(object):
         """
         heap = []
         for num in nums:
-            heapq.heappush(heap, num)                 # heapq is a binary heap, with O(1):average / O(logn): worst push and O(logn) pop
+            heapq.heappush(heap, num)                 # heapq is a binary heap, with O(1):average / O(logk): worst push and O(logk) pop
             if len(heap) > k:
                 heapq.heappop(heap)                                       # heap in python 默认为从小到大排序，最小的index为0
         return heap[0]
