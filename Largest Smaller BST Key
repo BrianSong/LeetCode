@@ -1,0 +1,63 @@
+Largest Smaller BST Key
+Given a root of a Binary Search Tree (BST) and a number num, 
+implement an efficient function findLargestSmallerKey that finds the largest key in the tree that is smaller than num. 
+If such a number doesn’t exist, return -1. Assume that all keys in the tree are nonnegative.
+
+Analyze the time and space complexities of your solution.
+
+For example:
+
+For num = 17 and the binary search tree below:
+
+alt
+
+Your function would return:
+
+14 since it’s the largest key in the tree that is still smaller than 17.
+
+Constraints:
+
+[time limit] 5000ms
+[input] Node rootNode
+[output] integer
+
+
+Solution no.1: ---------------------------------- my own DFS
+-------------------------------------------- O(N) T / S
+def find_largest_smaller_key(self, num):
+    # Check edge cases
+    if not self.root:
+      return -1
+    # Implement a DFS to traverse the BST and utilize BST's property
+    diff = self.dfs(self.root, num, float('inf'))
+    # Check my global variable to see if I find a valid result
+    if diff == float('inf'):
+      return -1
+    return num - diff
+
+  
+  # Implement a DFS
+  def dfs(self, node, num, diff):
+    # Check edge cases
+    if not node:
+      return float('inf')
+    if node.key > num:
+      return self.dfs(node.left, num, diff)
+    else:
+      # means that I just find a possible candidate
+      curr_diff = num - node.key
+      further_diff = self.dfs(node.right, num, diff)
+      return min(curr_diff, further_diff)
+      
+Solution no.2: ------------------------------------------- Better iterative way
+---------------------------------------------------------- O(N) T and O(1) S
+def find_largest_smaller_key(self, num):
+    node = self.root
+    res = -1
+    while node:
+      if node.key < num:
+        res = node.key                                        # The key here is that, we only need to store the last possible result
+        node = node.right
+      else:
+        node = node.left
+    return res
