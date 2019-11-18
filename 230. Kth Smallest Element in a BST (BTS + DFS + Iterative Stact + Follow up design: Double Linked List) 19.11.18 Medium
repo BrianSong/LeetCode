@@ -63,6 +63,25 @@ class Solution(object):
                                           # the smallest node is the leftest node,
                                           # the second smallest node is the leftest node of the right subtree for the leftest node
                                           
+Solution no.1.1: ------------------------------ Better DFS
+--------------------------------------------------------------------- O(n) T, O(n) S
+def kthSmallest(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: int
+        """
+        res = []
+        self.inorder(root, res)
+        return res[k - 1]
+    
+    def inorder(self, root, res):
+        if not root:
+            return
+        self.inorder(root.left, res)
+        res.append(root.val)
+        self.inorder(root.right, res)
+                                          
 Solution no.2: ------------------------------------ Using a stack to do iteratively
 ------ Time complexity : O(H+k), where H is a tree height. 
 ------ This complexity is defined by the stack, which contains at least H + k elements, 
