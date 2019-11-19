@@ -59,3 +59,26 @@ class Solution(object):
                                                                    # defined by iterable. 
                                                                    # key, if provided, specifies a function of one argument 
                                                                    # and we use lambda here, the element to compare is c[x] => frequency
+                                                                   
+                                                                   
+Solution no.3: -------------------------------------- A clearer version of solution no.2
+------------------------------------------ O(nlogk) T, O(n) S
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        if not nums:
+            return None
+        count = collections.Counter(nums)
+        pq = []
+        for num in set(nums):
+            heapq.heappush(pq, (count[num], num))
+            if len(pq) > k:
+                heapq.heappop(pq)
+        res = []
+        for item in pq:
+            res.append(item[1])
+        return res
