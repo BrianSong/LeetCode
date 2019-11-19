@@ -46,6 +46,7 @@ class Solution(object):
         return res
         
 Solution no.2: Not using "%" operation (一般来说，对于CPU取余数的运算相对来说效率很低，上面解法避免了使用大量的求余数操作，提升了程序的性能。)
+------------------------------------------- O(n) T, O(1) S
 class Solution(object):
     def fizzBuzz(self, n):
         """
