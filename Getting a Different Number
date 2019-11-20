@@ -1,0 +1,31 @@
+Given an array arr of unique nonnegative integers, 
+implement a function getDifferentNumber that finds the smallest nonnegative integer that is NOT in the array.
+
+Even if your programming language of choice doesn’t have that restriction (like Python), 
+assume that the maximum value an integer can have is MAX_INT = 2^31-1. So, for instance, 
+the operation MAX_INT + 1 would be undefined in our case.
+
+Your algorithm should be efficient, both from a time and a space complexity perspectives.
+
+Solve first for the case when you’re NOT allowed to modify the input arr. 
+If successful and still have time, see if you can come up with an algorithm with an improved space complexity 
+when modifying arr is allowed. Do so without trading off the time complexity.
+
+Analyze the time and space complexities of your algorithm.
+
+
+Solution: -------------------------------------------- O(n) T, O(1) S
+def get_different_number(arr):
+  # Check the edge cases
+  if not arr:
+    return None
+  # We can use the arr as the indicator of us 
+  # so that we can achieve O(1) S
+  for item in arr:
+    if abs(item) <= len(arr) - 1:
+      arr[abs(item)] *= - 1
+  # Loop over the modified arr to find the missing element
+  for i, item in enumerate(arr):
+    if item > 0:
+      return i
+  return len(arr)
