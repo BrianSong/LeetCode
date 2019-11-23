@@ -76,7 +76,7 @@ we can not travel from k to n. -> route(k,s) < 0. Otherwise, the left most stati
 And as sum(gas) >= sum(cost), route(0,k) + route(k,s) + route(s,n) > 0. 
 Considering route(k,s) < 0, we can conclude that route(0, k) + route(s,n) > 0.
 So based on this, we just need to find out the leftmost station that we can travel from it to n if sum(gas) >= sum(cost).
-一句话概括就是，只要sum(gas) >= sum(cost)，那么就一定存在答案，而且这个答案就是能travel到尽头(i == n)的最右边的station !
+一句话概括就是，只要sum(gas) >= sum(cost)，那么就一定存在答案，而且这个答案就是能travel到尽头(i == n)的最左边的station !
 '''
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
