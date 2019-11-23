@@ -23,7 +23,7 @@ Constraints:
 
 
 Solution no.1: ---------------------------------- my own DFS
--------------------------------------------- O(logN) T, O(logN) S
+-------------------------------------------- O(N) T and S
 def find_largest_smaller_key(self, num):
     # Check edge cases
     if not self.root:
@@ -50,7 +50,7 @@ def find_largest_smaller_key(self, num):
       return min(curr_diff, further_diff)
       
 Solution no.2: ------------------------------------------- Better iterative way
----------------------------------------------------------- O(logN) T and O(1) S
+---------------------------------------------------------- O(N) T and O(1) S
 def find_largest_smaller_key(self, num):
     node = self.root
     res = -1
