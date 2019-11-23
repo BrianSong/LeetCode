@@ -1,0 +1,67 @@
+There are n servers numbered from 0 to n-1 connected by undirected server-to-server connections forming a network 
+where connections[i] = [a, b] represents a connection between servers a and b. 
+Any server can reach any other server directly or indirectly through the network.
+
+A critical connection is a connection that, if removed, will make some server unable to reach some other server.
+
+Return all critical connections in the network in any order.
+
+ 
+
+Example 1:
+
+
+
+Input: n = 4, connections = [[0,1],[1,2],[2,0],[1,3]]
+Output: [[1,3]]
+Explanation: [[3,1]] is also accepted.
+ 
+
+Constraints:
+
+1 <= n <= 10^5
+n-1 <= connections.length <= 10^5
+connections[i][0] != connections[i][1]
+There are no repeated connections.
+
+
+Solution no.1: -------------------------------------- my own BF PASS 8/12 BUT TLE
+----------------------------------------------------- 时间复杂度爆炸
+class Solution(object):
+    def criticalConnections(self, n, connections):
+        """
+        :type n: int
+        :type connections: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if not connections or n <= 0:
+            return None
+        res = []
+        for connection in connections:
+            new_connections = list(connections)                  # MUST use list() to CUT connection here !!!!!!!!!!!!!!!!!!!!!!!!
+            new_connections.remove(connection)
+            d = collections.defaultdict(set)
+            for new_connection in new_connections:
+                d[new_connection[0]].add(new_connection[1])
+                d[new_connection[1]].add(new_connection[0])
+            critical = False  
+            for i in range(n):
+                visited = set()
+                visited.add(i)
+                self.dfs(d, i, visited)
+                if len(visited) != n:                            # A smart way here is to check the length of visited
+                    critical = True
+                    break                                        # We can break immediately to optimize time  
+            if critical:                                         # Use the boolean flag we set before to decide whether to append or not
+                res.append(connection)
+        return res
+    
+    def dfs(self, d, n, visited):
+        for value in d[n]:
+            if not value in visited:
+                visited.add(value)
+                self.dfs(d, value, visited)
+                
+                
+                
+Solution no.2: ---------------------------------- This is a OA question, not VO, maybe followed up in the future but not now
