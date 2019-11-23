@@ -44,6 +44,7 @@ class Codec:
         def dfs_preorder(root):
             if root:
                 data.append(str(root.val))           # Must covert it into a string so that ' '.join() will not throw an error
+                                                     # join() function take a list with string elements and convert it into a string
                 dfs_preorder(root.left)
                 dfs_preorder(root.right) 
             else:
@@ -60,7 +61,7 @@ class Codec:
         :rtype: TreeNode
         """
         def dedfs():
-            currval = next(data)                                         # next()
+            currval = queue.popleft()                                    # After take one element, we just popleft it
             if currval == '#':
                 return None
             else:
@@ -68,8 +69,9 @@ class Codec:
                 currnode.left = dedfs()
                 currnode.right = dedfs()
                 return currnode
-        data = iter(data.split())                                        # iter()
-                                                                         # split()
+        queue = collections.deque()                                      # In order to have O(1) popleft
+        for item in data.split():                                        # split() takes a string and convert it into a list with str
+            queue.append(item)
         return dedfs()
         
         
