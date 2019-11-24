@@ -1,0 +1,136 @@
+Design and implement a data structure for Least Frequently Used (LFU) cache. It should support the following operations: get and put.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+put(key, value) - Set or insert the value if the key is not already present. When the cache reaches its capacity, 
+it should invalidate the least frequently used item before inserting a new item. For the purpose of this problem, 
+when there is a tie (i.e., two or more keys that have the same frequency), the least recently used key would be evicted.
+
+Note that the number of times an item is used is the number of calls to the get and put functions for that item since it was inserted. 
+This number is set to zero when the item is removed.
+
+ 
+
+Follow up:
+Could you do both operations in O(1) time complexity?
+
+ 
+
+Example:
+
+LFUCache cache = new LFUCache( 2 /* capacity */ );
+
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // returns 1
+cache.put(3, 3);    // evicts key 2
+cache.get(2);       // returns -1 (not found)
+cache.get(3);       // returns 3.
+cache.put(4, 4);    // evicts key 1.
+cache.get(1);       // returns -1 (not found)
+cache.get(3);       // returns 3
+cache.get(4);       // returns 4
+
+
+Solution: ------------------------------------------------------- O(1) T for put() and get()
+class DLLNode:
+    def __init__(self, key, value):
+        self.key = key
+        self.val = value
+        self.freq = 1
+        self.prev = None
+        self.next = None
+
+class DLinkedList:
+    def __init__(self):
+        self.head = DLLNode(None, None)
+        self.tail = DLLNode(None, None)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
+        
+    
+    def append(self, node):
+        node.next = self.head.next
+        node.prev = self.head
+        node.next.prev = node
+        self.head.next = node
+        self.size += 1
+        
+    def pop(self, node = None):
+        if self.size == 0:
+            return 0
+        if not node:
+            node = self.tail.prev
+        prev_node = node.prev
+        prev_node.next = node.next
+        node.next.prev = prev_node
+        self.size -= 1
+        return node
+
+class LFUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.d = {}
+        self.freq_to_DLL = collections.defaultdict(DLinkedList)               # Key for this question, for each frequency,
+                                                                              # there is a individual Double Linked List
+        self.cap = capacity
+        self.size = 0
+        self.min_freq = 0                                                     # Another key for this question is to keep track of
+                                                                              # the current minimum frequency
+        
+    
+    def update(self, node):
+        freq = node.freq
+        self.freq_to_DLL[freq].pop(node)
+        if self.min_freq == freq and self.freq_to_DLL[freq].size == 0:
+            self.min_freq += 1
+        node.freq += 1
+        self.freq_to_DLL[node.freq].append(node)
+    
+    
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if key in self.d:
+            node = self.d[key]  
+            self.update(node)                               # How do we update it? We increase the node's frequency
+                                                            # move it up to the DLL that has the higher frequency
+                                                            # And remember to update the minimum frequency if necessary
+            return node.val 
+        else:
+            return -1
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        if self.cap == 0:
+            return
+        
+        if key in self.d:
+            node = self.d[key]
+            self.update(node)
+            node.val = value
+        else:
+            if self.size == self.cap:
+                pop_node = self.freq_to_DLL[self.min_freq].pop()
+                del self.d[pop_node.key]
+                self.size -= 1
+            new_node = DLLNode(key, value)
+            self.d[key] = new_node
+            self.freq_to_DLL[1].append(new_node)
+            self.min_freq = 1                                     # Since there is a new node, the minimum frequency can be set to 1
+            self.size += 1
+            
+
+# Your LFUCache object will be instantiated and called as such:
+# obj = LFUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
