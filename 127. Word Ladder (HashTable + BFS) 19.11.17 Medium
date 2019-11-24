@@ -82,6 +82,7 @@ class Solution(object):
         
         
 Solution no.2: ------------------------------------------- HashTable + BFS, Accepted solution
+------------------------------------------------ O(N * L) T and S where N is the number of words, and L is their average length
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
         """
