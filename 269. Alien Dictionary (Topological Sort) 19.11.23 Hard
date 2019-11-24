@@ -1,0 +1,92 @@
+There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. 
+You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. 
+Derive the order of letters in this language.
+
+Example 1:
+
+Input:
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+
+Output: "wertf"
+Example 2:
+
+Input:
+[
+  "z",
+  "x"
+]
+
+Output: "zx"
+Example 3:
+
+Input:
+[
+  "z",
+  "x",
+  "z"
+] 
+
+Output: "" 
+
+Explanation: The order is invalid, so return "".
+Note:
+
+You may assume all letters are in lowercase.
+You may assume that if a is a prefix of b, then a must appear before b in the given dictionary.
+If the order is invalid, return an empty string.
+There may be multiple valid order of letters, return any one of them is fine.
+
+
+Solution: -------------------------------------------------- Topological Sort
+------------------------------------------------------------ O(V + E) T and S
+class Solution(object):
+    def alienOrder(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        if not words:
+            return None
+        directed_graph = self.build_graph(words)                            # Step no.1: build the graph
+        visited = set()                                                     # visited here the global "visited", it is used to make sure
+        res = []                                                            # we do not append duplicate elements into the res
+                                                                            # If a element is inside the visited, it means all path
+                                                                            # derived from it has been traversed already
+        for node in directed_graph:                                         # Step no.2: use DFS to detect any cycle
+            if not node in visited:
+                if not self.dfs(directed_graph, node, visited, set(), res): # res is keeping updating in each recursion function
+                    return ""                                               # Cycle detected !!!!!
+        return "".join(res)[::-1]                                           # Return in a reversed order
+        
+    def build_graph(self, words):
+        graph = collections.defaultdict(set)
+        for word in words:
+            for c in word:
+                graph[c] = set()                                            # Must let every element has its value even the set is empty
+                                                                            # so that in the main function, we can still traversed it
+        for i in range(1, len(words)):
+            curr_word = words[i]
+            prev_word = words[i - 1]
+            for j in range(min(len(curr_word), len(prev_word))):
+                if curr_word[j] != prev_word[j]:
+                    graph[prev_word[j]].add(curr_word[j])
+                    break
+        return graph
+    
+    def dfs(self, graph, node, visited, seen, res):                         # seen here is the current dfs "visited"
+        if node in seen:                                                    # Cycle detected !!!!!!
+            return False
+        seen.add(node)
+        for next_element in graph[node]:
+            if not next_element in visited:                                 # If it is in visited, we do not need to traverse it
+                if not self.dfs(graph, next_element, visited, seen, res):
+                    return False
+        visited.add(node)                                                   # Now, all paths derived from node has been traversed
+        res.append(node)                                                    # we can append node to the visited and res
+        return True                                     
