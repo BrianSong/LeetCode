@@ -100,6 +100,7 @@ class AutocompleteSystem(object):
             else:
                 i = len(self.curr)
                 self.match = [match for match in self.match if len(match) > i and match[i] == c]   # Filter matches for c
+                                                             # OLD MISTAKE !!!!!! EVERYTIME WE DO indexing, Must Check for index ERROR !
             self.curr += c
             return self.match[:3]
             
