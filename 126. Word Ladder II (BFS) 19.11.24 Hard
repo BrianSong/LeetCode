@@ -71,7 +71,7 @@ class Solution(object):
         
 Solution no.2: --------------------------------------------------- PASS 
 ------------------------------------------------------------------ Now, different node can be visited multiple times, 
------------------------------------------------------------------- So, O(n^2) T and S
+------------------------------------------------------------------ So, O(max(N^2, N * L)) T and O(N * L) S
 class Solution(object):
     def findLadders(self, beginWord, endWord, wordList):
         """
