@@ -1,0 +1,114 @@
+Given two words (beginWord and endWord), and a dictionary's word list, 
+find all shortest transformation sequence(s) from beginWord to endWord, such that:
+
+Only one letter can be changed at a time
+Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+Note:
+
+Return an empty list if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+You may assume no duplicates in the word list.
+You may assume beginWord and endWord are non-empty and are not the same.
+Example 1:
+
+Input:
+beginWord = "hit",
+endWord = "cog",
+wordList = ["hot","dot","dog","lot","log","cog"]
+
+Output:
+[
+  ["hit","hot","dot","dog","cog"],
+  ["hit","hot","lot","log","cog"]
+]
+Example 2:
+
+Input:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+
+Output: []
+
+Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
+
+
+Solution no.1: ----------------------------------------- my own based on Word Ladder I but TLE
+class Solution(object):
+    def findLadders(self, beginWord, endWord, wordList):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: List[List[str]]
+        """
+        if not beginWord or not endWord or not wordList or not endWord in wordList:
+            return None
+        poss_to_word = collections.defaultdict(set)               # Here use a set will be faster than list
+        for word in wordList:
+            for i in range(len(word)):
+                poss_to_word[word[:i] + '*' + word[i + 1:]].add(word)
+        res = []
+        Find = False                                              # Create a boolean flag to indicate so that we can stop at that level
+        queue = collections.deque()
+        queue.append((beginWord, {beginWord}, [beginWord]))       # Instead of a global visited, here we need to set a local visited
+        while queue:
+            if Find:
+                break
+            for i in range(len(queue)):
+                pop_word, curr_visited, curr_path = queue.popleft()
+                for i in range(len(pop_word)):
+                    for next_word in poss_to_word[pop_word[:i] + '*' + pop_word[i + 1:]]:
+                        if next_word == endWord:
+                            Find = True
+                            res.append(curr_path  + [next_word]) 
+                        elif not next_word in curr_visited and next_word != pop_word:
+                            queue.append((next_word, curr_visited | {next_word}, curr_path + [next_word]))    # {} | {} == [] + [] !!!!
+                
+        return res
+        
+        
+Solution no.2: --------------------------------------------------- PASS 
+------------------------------------------------------------------ Now, different node can be visited multiple times, 
+------------------------------------------------------------------ So, O(n^2) T and S
+class Solution(object):
+    def findLadders(self, beginWord, endWord, wordList):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: List[List[str]]
+        """
+        if not beginWord or not endWord or not wordList or not endWord in wordList:
+            return None
+        poss_to_word = collections.defaultdict(list)
+        for word in wordList:
+            for i in range(len(word)):
+                poss_to_word[word[:i] + '*' + word[i + 1:]].append(word)
+        queue = collections.deque()
+        visited = {}
+        queue.append((beginWord, [beginWord], 1))
+        visited[beginWord] = 1                                                          # The reason why this pass
+                                                                                        # it still use a global visited
+        res = []
+        Find = False                                                                    # Use a boolean flag to indicate 
+                                                                                        # we should whether to process or not
+        while queue:
+            if Find:
+                break
+            for i in range(len(queue)):
+                pop_word, path, dist = queue.popleft()
+                for i in range(len(pop_word)):
+                    for next_word in poss_to_word[pop_word[:i] + '*' + pop_word[i + 1:]]:
+                        if next_word == endWord:
+                            res.append(path + [next_word])
+                            Find = True
+                        elif not next_word in visited or visited[next_word] >= dist:    # KEY !!!!!
+                                                                                        # And when the "visited[next_word] >= dist"
+                                                                                        # it means the current next_word has been showed
+                                                                                        # up in other path but not this one, so we can
+                                                                                        # continue to proceed
+                            queue.append((next_word, path + [next_word], dist + 1))
+                            visited[next_word] = dist
+        return res
