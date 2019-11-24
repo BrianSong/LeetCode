@@ -1,0 +1,97 @@
+The deletion distance of two strings is the minimum number of characters you need to delete 
+in the two strings in order to get the same string. For instance, the deletion distance between "heat" and "hit" is 3:
+
+By deleting 'e' and 'a' in "heat", and 'i' in "hit", we get the string "ht" in both cases.
+We cannot get the same string from both strings by deleting 2 letters or fewer.
+Given the strings str1 and str2, write an efficient function deletionDistance that returns the deletion distance between them. 
+Explain how your function works, and analyze its time and space complexities.
+
+Examples:
+
+input:  str1 = "dog", str2 = "frog"
+output: 3
+
+input:  str1 = "some", str2 = "some"
+output: 0
+
+input:  str1 = "some", str2 = "thing"
+output: 9
+
+input:  str1 = "", str2 = ""
+output: 0
+Constraints:
+
+[input] string str1
+[input] string str2
+[output] integer
+
+
+Solution no.1: -------------------------------------------- my own O(m * n) T and S
+def deletion_distance(str1, str2):
+  # Check the edge cases
+  if not str1 and not str2:
+    return 0
+  if not str1:
+    return len(str2)
+  if not str2:
+    return len(str1)
+  # Implement a dynamic programming approach to solve this question
+  # Step no.1: Define my state in dp
+  dp = [[0 for j in range(len(str2) + 1)] for i in range(len(str1) + 1)]
+  # Step no.2: Initialization
+  dp[0][0] = 0
+  for i in range(1, len(dp)):
+    dp[i][0] = i
+  for j in range(1, len(dp[0])):
+    dp[0][j] = j
+  # Step no.3: Transformation function
+  for i in range(1, len(dp)):
+    for j in range(1, len(dp[0])):
+      # Two conditions
+      if str1[i - 1] == str2[j - 1]:
+        dp[i][j] = dp[i - 1][j - 1]
+      else:
+        dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + 1        # This holds since we need to delete at least one of the letters 
+                                                              # str1[i] or str2[j] and the deletion of one of the letters is counted as 
+                                                              # 1 deletion (hence the 1 in the formula). 
+                                                              # Need to take the minimum between dp(i-1,j) and dp(i,j-1).
+  # Step no.4: Return
+  return dp[-1][-1]
+  
+  
+Solution no.2: -------------------------------------------- Optimize the Space to O(min(m, n))
+'''
+The solution above takes O(m * n) space since we save all previous values, 
+but notice that dp(i,j) requires only dp(i-1,j), dp(i,j-1) and dp(i-1,j-1).
+'''
+def deletion_distance(str1, str2):
+  # Check the edge cases
+  if not str1 and not str2:
+    return 0
+  if not str1:
+    return len(str2)
+  if not str2:
+    return len(str1)
+  # Implement a dynamic programming approach to solve this question
+  # Make sure that the length of str2 isn't longer than the length of str1 so that we can achieve O(min(m, n)) S
+  if len(str2) > len(str1):
+    str1, str2 = str2, str1
+  # Step no.1: Define my state in dp
+  prev = [0] * (len(str2) + 1)                              # Use two lists to replace the larger 2D matrix 
+  curr = [0] * (len(str2) + 1)
+  for i in range(len(str1) + 1):
+    for j in range(len(str2) + 1):
+      # Step no.2: Initialization
+      if i == 0:
+        curr[j] = j
+      elif j == 0:
+        curr[j] = i
+      # Step no.3: Transformation function
+      elif str1[i - 1] == str2[j - 1]:
+        curr[j] = prev[j - 1]
+      else:
+        curr[j] = min(prev[j], curr[j - 1]) + 1
+    prev = curr
+    curr = [0] * (len(str2) + 1)
+  # Step no.4: Return
+  return prev[-1]
