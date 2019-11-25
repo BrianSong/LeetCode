@@ -1,0 +1,61 @@
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Your goal is to reach the last index in the minimum number of jumps.
+
+Example:
+
+Input: [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2.
+    Jump 1 step from index 0 to 1, then 3 steps to the last index.
+Note:
+
+You can assume that you can always reach the last index.
+
+
+Solution no.1: ---------------------------------------------- my own DP but TLE pass 91/92 due to O(n^2) T
+class Solution(object):
+    def jump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return -1
+        if len(nums) == 1:
+            return 0
+        dp = [float('inf')] * len(nums)
+        for i in range(len(dp)):
+            for j in range(i + 1, min(i + nums[i] + 1, len(nums))):       # Need to make sure j index is valid
+                if i == 0:
+                    dp[j] = 1
+                else:
+                    dp[j] = min(dp[j], dp[i] + 1)
+        return dp[-1]
+        
+Solution no.2: ------------------------------------------------ Greedy
+--------------------------------------------------------------- O(n) T and O(1) S
+class Solution(object):
+    def jump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return -1
+        if len(nums) == 1:
+            return 0
+        jump, curr_end, curr_farest = 0, 0, 0                   # curr_end record the current end for this jump
+                                                                # curr_farest record the farest distance the next jump can reach
+                                                                # and this will become the curr_end for next jump
+        for i in range(len(nums)):                     
+            curr_farest = max(curr_farest, i + nums[i])
+            if i == len(nums) - 1:                              # Already reach the end, just break, instead of possibily 
+                                                                # increase jump again (i == curr_end == len(nums) - 1)
+                break
+            if i == curr_end:                                   # when i == curr_end: the current jump has ended
+                jump += 1
+                curr_end = curr_farest
+        return jump
