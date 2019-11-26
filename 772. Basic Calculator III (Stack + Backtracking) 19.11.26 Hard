@@ -58,6 +58,6 @@ class Solution(object):
                 preOp = s[i]
                 number = 0
                 i += 1
-            else:
+            else:                                                   # Also remember to update i here (space cases)
                 i += 1
         return sum(stack)
