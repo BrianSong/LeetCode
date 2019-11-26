@@ -1,0 +1,75 @@
+In a given grid, each cell can have one of three values:
+
+the value 0 representing an empty cell;
+the value 1 representing a fresh orange;
+the value 2 representing a rotten orange.
+Every minute, any fresh orange that is adjacent (4-directionally) to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange.  If this is impossible, return -1 instead.
+
+ 
+
+Example 1:
+
+
+
+Input: [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+Example 2:
+
+Input: [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation:  The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+Example 3:
+
+Input: [[0,2]]
+Output: 0
+Explanation:  Since there are already no fresh oranges at minute 0, the answer is just 0.
+ 
+
+Note:
+
+1 <= grid.length <= 10
+1 <= grid[0].length <= 10
+grid[i][j] is only 0, 1, or 2.
+
+
+Solution: --------------------------------------------- my own BFS
+-------------------------------------------- O(n) T and S
+class Solution(object):
+    def orangesRotting(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return -1
+        m, n = len(grid), len(grid[0])
+        number_of_orange = 0
+        queue = collections.deque()
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 2:
+                    queue.append((i, j))
+                if grid[i][j] != 0:
+                    number_of_orange += 1
+        if number_of_orange == 0:
+            return 0
+        step = 0
+        rotted = 0
+        seen = set()                                        # Use a seen here so that we do not add one orange into the queue twice
+                                                            # Of course, we can achieve the same thing by modifing the original input
+                                                            # but I think using a addition set() is a better approach
+        while queue:
+            for i in range(len(queue)):
+                r, c = queue.popleft()
+                grid[r][c] = 2
+                rotted += 1
+                for dir in [[1, 0], [0, 1], [-1, 0], [0, -1]]:
+                    new_r = r + dir[0]
+                    new_c = c + dir[1]
+                    if 0 <= new_r < m and 0 <= new_c < n and grid[new_r][new_c] == 1 and not (new_r, new_c) in seen:
+                        seen.add((new_r, new_c))
+                        queue.append((new_r, new_c))
+            step += 1
+        return step - 1 if rotted == number_of_orange else -1
