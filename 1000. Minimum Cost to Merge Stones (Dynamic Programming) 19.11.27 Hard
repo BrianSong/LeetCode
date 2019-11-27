@@ -40,7 +40,7 @@ Note:
 1 <= stones[i] <= 100
 
 
-Solution: ------------------------------------------------- Dynamic Programming
+Solution: ------------------------------------------------- Dynamic Programming ------- https://www.youtube.com/watch?v=FabkoUzs64o
 ----------------------------------------------------------- O(N^3/K) T and O(KN^2) S
 class Solution(object):
     def mergeStones(self, stones, K):
