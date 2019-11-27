@@ -1,0 +1,90 @@
+Given a matrix of integers A with R rows and C columns, find the maximum score of a path starting at [0,0] and ending at [R-1,C-1].
+
+The score of a path is the minimum value in that path.  For example, the value of the path 8 →  4 →  5 →  9 is 4.
+
+A path moves some number of times from one visited cell to any neighbouring unvisited cell in one of the 4 cardinal directions 
+(north, east, west, south).
+
+ 
+
+Example 1:
+
+
+
+Input: [[5,4,5],[1,2,6],[7,4,6]]
+Output: 4
+Explanation: 
+The path with the maximum score is highlighted in yellow. 
+Example 2:
+
+
+
+Input: [[2,2,1,2,2,2],[1,2,2,2,1,2]]
+Output: 2
+Example 3:
+
+
+
+Input: [[3,4,6,3,4],[0,2,1,1,7],[8,8,3,2,7],[3,2,4,9,8],[4,1,2,0,0],[4,6,5,4,3]]
+Output: 3
+
+
+Solution no.1: ----------------------------------------------- BF TLE
+class Solution(object):
+    def maximumMinimumPath(self, A):
+        """
+        :type A: List[List[int]]
+        :rtype: int
+        """
+        if not A or not A[0]:
+            return -1
+        visited = set()
+        visited.add((0, 0))
+        res = []
+        self.dfs(A, 0, 0, visited, [A[0][0]], res)
+        return max(res)
+    
+    def dfs(self, A, r, c, visited, path, res):
+        if r == len(A) - 1 and c == len(A) - 1:
+            res.append(min(path))
+            return
+        for dir in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+            new_r = r + dir[0]
+            new_c = c + dir[1]
+            if 0 <= new_r < len(A) and 0 <= new_c < len(A[0]) and not (new_r, new_c) in visited:
+                visited.add((new_r, new_c))
+                self.dfs(A, new_r, new_c, visited, path + [A[new_r][new_c]], res)
+                visited.remove((new_r, new_c))
+                
+                
+Solution no.2: ------------------------------------ Heap + Greedy -------------- https://www.youtube.com/watch?v=mMm0KfZpsg8
+--------------------------------------------------- O(m * n) T and S
+class Solution(object):
+    def maximumMinimumPath(self, A):
+        """
+        :type A: List[List[int]]
+        :rtype: int
+        """
+        m, n = len(A), len(A[0])
+        mini = min(A[0][0], A[m - 1][n - 1])
+        pq = []
+        visited = set()
+        pq.append((-A[0][0], (0, 0)))
+        visited.add((0, 0))
+        r, c = 0, 0
+        while r != m - 1 or c != n - 1:
+            print r, c
+            (curr_val, (r, c)) = heapq.heappop(pq)                      # Every step, we choose the cell with the highest value
+            curr_val *= -1
+            if curr_val < mini:                                         # We also record the current minimum and return it in the end
+                                                                        # when we pop something from the heap, it means that it is our
+                                                                        # best choice, if the curr_val < mini, it means that we must
+                                                                        # go from there and its value will become the newest mini
+                mini = curr_val
+            for dir in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+                new_r = r + dir[0]
+                new_c = c + dir[1]
+                if 0 <= new_r < m and 0 <= new_c < n and not (new_r, new_c) in visited:
+                    visited.add((new_r, new_c))
+                    heapq.heappush(pq, ( - A[new_r][new_c], (new_r, new_c)))
+        return mini
