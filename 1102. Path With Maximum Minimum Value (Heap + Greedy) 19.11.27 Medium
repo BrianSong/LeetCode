@@ -73,7 +73,6 @@ class Solution(object):
         visited.add((0, 0))
         r, c = 0, 0
         while r != m - 1 or c != n - 1:
-            print r, c
             (curr_val, (r, c)) = heapq.heappop(pq)                      # Every step, we choose the cell with the highest value
             curr_val *= -1
             if curr_val < mini:                                         # We also record the current minimum and return it in the end
