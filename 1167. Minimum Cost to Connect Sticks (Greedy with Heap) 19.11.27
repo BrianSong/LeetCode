@@ -1,0 +1,31 @@
+You have some sticks with positive integer lengths.
+
+You can connect any two sticks of lengths X and Y into one stick by paying a cost of X + Y.  
+You perform this action until there is one stick remaining.
+
+Return the minimum cost of connecting all the given sticks into one stick in this way.
+
+
+Solution: --------------------------------------- my own ---------------------- Greedy with Heap
+------------------------------------------------- O(nlogn) T, O(n) S
+'''
+Some of the sticks will be used more than the others. Which sticks should be used the most/least?
+The sticks with long lengths cost a lot so we should use these the least.
+What if we keep merging the two shortest sticks?
+'''
+class Solution(object):
+    def connectSticks(self, sticks):
+        """
+        :type sticks: List[int]
+        :rtype: int
+        """
+        if not sticks:
+            return None
+        heapq.heapify(sticks)
+        res = 0
+        while len(sticks) >= 2:
+            merge_1 = heapq.heappop(sticks)
+            merge_2 = heapq.heappop(sticks)
+            res += merge_1 + merge_2
+            heapq.heappush(sticks, merge_1 + merge_2)
+        return res
