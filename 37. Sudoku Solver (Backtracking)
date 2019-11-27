@@ -66,13 +66,15 @@ class Solution(object):
         return True
         
         
-Solution no.2: -------------------------------------------------- my own
+Solution no.2: -------------------------------------------------- my own and FASTER !!!!
 import collections
 def sudoku_solve(board):
       # Check the edge cases
       if len(board) < 9 or len(board[0]) < 9:
         return False
-      row_Hash = collections.defaultdict(set)
+      row_Hash = collections.defaultdict(set)                       # The reason why my solution is FASTER, 
+                                                                    # I build three Hash for O(1) check valid, instead of the upper
+                                                                    # O(9 * 9) check valid
       col_Hash = collections.defaultdict(set)
       box_Hash = collections.defaultdict(set)
       for i in range(len(board)):
@@ -127,15 +129,15 @@ def helper(board, row_Hash, col_Hash, box_Hash):
       for num in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
         if not str(num) in row_Hash[r] and not str(num) in col_Hash[c] and not str(num) in box_Hash[k]:
           board[r][c] = str(num)
-          row_Hash[r].add(num)
-          col_Hash[c].add(num)
-          box_Hash[k].add(num)
-          if helper(board, row_Hash, col_Hash, box_Hash):
-            return True
+          row_Hash[r].add(str(num))
+          col_Hash[c].add(str(num))
+          box_Hash[k].add(str(num))
+          if self.helper(board, row_Hash, col_Hash, box_Hash):
+              return True
           board[r][c] = '.'
-          row_Hash[r].remove(num)
-          col_Hash[c].remove(num)
-          box_Hash[k].remove(num)
+          row_Hash[r].remove(str(num))
+          col_Hash[c].remove(str(num))
+          box_Hash[k].remove(str(num))
       return False
   
 
