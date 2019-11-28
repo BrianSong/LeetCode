@@ -1,0 +1,39 @@
+Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
+
+Note:
+The sum of the entire nums array is guaranteed to fit within the 32-bit signed integer range.
+
+Example 1:
+
+Input: nums = [1, -1, 5, -2, 3], k = 3
+Output: 4 
+Explanation: The subarray [1, -1, 5, -2] sums to 3 and is the longest.
+Example 2:
+
+Input: nums = [-2, -1, 2, 1], k = 1
+Output: 2 
+Explanation: The subarray [-1, 2] sums to 1 and is the longest.
+
+
+Solution: ---------------------------------------------- my own Pre_Sum HashTable
+------------------------------------------------------------- O(n) T and S
+class Solution(object):
+    def maxSubArrayLen(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        res = 0
+        currsum = 0
+        pre_sum = {0:-1}
+        for i, num in enumerate(nums):
+            currsum += num
+            if currsum - k in pre_sum:
+                res = max(res, i - pre_sum[currsum - k])
+            if not currsum in pre_sum:                                # If it has already in the pre_sum, we do not update,
+                                                                      # because the previous means longer length of current substring
+                pre_sum[currsum] = i
+        return res
