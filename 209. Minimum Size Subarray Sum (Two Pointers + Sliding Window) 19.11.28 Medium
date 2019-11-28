@@ -29,3 +29,25 @@ class Solution(object):
                 slow += 1
             fast += 1
         return res
+        
+        
+镜像问题，求maximum subarray's length that is <= s
+class Solution(object):
+    def minSubArrayLen(self, s, nums):
+        """
+        :type s: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        slow, fast = 0, 0
+        max_length, curr_sum = float('-inf'), 0
+        while slow < len(nums) and fast < len(nums):
+            while fast < len(nums) and curr_sum + nums[fast] <= s:
+                curr_sum += nums[fast]
+                max_length = max(max_length, fast - slow + 1)
+                fast += 1
+            curr_sum -= nums[slow]
+            slow += 1
+        return max_length if max_length != float('-inf') else 0
