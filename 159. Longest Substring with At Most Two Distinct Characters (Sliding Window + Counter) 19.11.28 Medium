@@ -1,0 +1,39 @@
+Given a string s , find the length of the longest substring t  that contains at most 2 distinct characters.
+
+Example 1:
+
+Input: "eceba"
+Output: 3
+Explanation: t is "ece" which its length is 3.
+Example 2:
+
+Input: "ccaabbb"
+Output: 5
+Explanation: t is "aabbb" which its length is 5.
+
+
+Solution: ---------------------------------------------- Sliding Window + Counter
+-------------------------------------------------------- O(n) T and S
+class Solution(object):
+    def lengthOfLongestSubstringTwoDistinct(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+        k = 2
+        start, res = 0, float('-inf')
+        counter = collections.Counter()
+        for i in range(len(s)):
+            if not s[i] in counter:
+                k -= 1
+            counter[s[i]] += 1
+            while k < 0:
+                counter[s[start]] -= 1
+                if counter[s[start]] == 0:
+                    k += 1
+                    del counter[s[start]]
+                start += 1
+            res = max(res, i - start + 1)
+        return res
