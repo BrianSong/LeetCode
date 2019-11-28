@@ -45,9 +45,13 @@ class Solution(object):
                 K -= 1
             counter[A[j]] += 1
             while K < 0:
-                counter[A[start]] -= 1
-                if counter[A[start]] == 0:
-                    K += 1
+                counter[A[start]] -= 1                       # there is only one character at start, once we delete it, we must move
+                                                             # the start pointer for looking for next character to delete
+                if counter[A[start]] == 0:      
+                    K += 1 
                 start += 1
-            res += j - start + 1
+            res += j - start + 1                             # Why the length here is the number of increased subarray ????
+                                                             # because everytime we introduce a valid character into the subarray,
+                                                             # the increased number of subarray all end at this new valid character
+                                                             # and there are (j - start + 1) kinds of new start
         return res
