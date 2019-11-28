@@ -1,0 +1,40 @@
+Given a string, find the length of the longest substring T that contains at most k distinct characters.
+
+Example 1:
+
+Input: s = "eceba", k = 2
+Output: 3
+Explanation: T is "ece" which its length is 3.
+Example 2:
+
+Input: s = "aa", k = 1
+Output: 2
+Explanation: T is "aa" which its length is 2.
+
+
+Solution: ----------------------------------------------- Sliding Window + Counter
+--------------------------------------------------------- O(N) T and S
+class Solution(object):
+    def lengthOfLongestSubstringKDistinct(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        if not s or not k:
+            return 0
+        start, res = 0, float('-inf')
+        counter = collections.Counter()
+        for i in range(len(s)):
+            if not s[i] in counter:                         # If we want to use "if not s[i] in counter" as condition
+                k -= 1
+            counter[s[i]] += 1
+            while k < 0:
+                counter[s[start]] -= 1
+                if counter[s[start]] == 0:
+                    k += 1
+                    del counter[s[start]]                   # We must remember to delete here, otherwise, even count[s[start]] == 0
+                                                            # s[start] is still considered to be "in" counter
+                start += 1                                  # start must move each iteration, because we are looking for "subarray" here
+            res = max(res, i - start + 1)
+        return res
