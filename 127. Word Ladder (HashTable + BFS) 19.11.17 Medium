@@ -116,3 +116,43 @@ class Solution(object):
                             queue.append(item)
             step += 1
         return 0
+
+Solution no.3: ---------------------------------------------- BFS but without the transformed HashTable
+-------------- O(N * L ^ 2) T , extra O(L) due to new word building, but here we are saving the space for the HashTable
+class Solution(object):
+    def ladderLength(self, source, target, words):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: int
+        """
+        # Check the edge cases
+        if not words or not target or not source or not target in words:
+            return 0
+        # Implement a BFS to solve this question since it requires SHORTEST path
+        queue = collections.deque()
+        # Use a visit set to avoid infinite loop
+        visited = set()
+        # Create a words set
+        words_set = set(words)
+        queue.append(source)
+        visited.add(source)
+        step = 0
+        while queue:
+            # Use a for loop to ensure level traversal
+            for i in range(len(queue)):
+                pop_word = queue.popleft()
+                # Check the base case
+                if pop_word == target:
+                    return step + 1
+                for i, c in enumerate(pop_word):
+                    # Loop over 26 possible characters
+                    for num in range(26):
+                        replace_c = chr(97 + num)
+                        replace_word = pop_word[:i] + replace_c + pop_word[i + 1:]
+                        if replace_word in words_set and not replace_word in visited:
+                            visited.add(replace_word)
+                            queue.append(replace_word)
+            step += 1
+        return 0
