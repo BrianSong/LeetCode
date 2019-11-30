@@ -71,10 +71,9 @@ class Solution(object):
                                                                                   # as long as it is the same as the character before *,
                                                                                   # in this way, we can duplicate it,
                                                                                   # and turn it into the T or F of its preceding matches
-                        match[i][j] = match[i][j - 1] or match[i - 2][j]          # And, of course, it still satisfies the general case
+                        match[i][j] = match[i][j - 1]
+                    match[i][j] = match[i][j] or match[i - 2][j]                  # And, of course, it still satisfies the general case
                                                                                   # as in the init step
-                                                                                    
-                    else:                                                         # Just like in the init step, '*' => zero
+                                                                                  # Just like in the init step, '*' => zero
                                                                                   # For example, abcd == abcde*
-                        match[i][j] = match[i - 2][j]
         return match[-1][-1]                                                      # Step no.4: return
