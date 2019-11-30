@@ -82,7 +82,7 @@ class Solution(object):
                 curr_dp += dp_2
             if S[i] != '0':                                              # Here is "if" instead of "elif", the first two conditions
                 curr_dp += dp_1                                          # can be satisfied simultaneously !!
-            if (S[i] == '0' and int(S[i - 1]) >= 3) or int(S[i]) < 0:
+            if (S[i] == '0' and int(S[i - 1]) >= 3) or int(S[i]) < 0:    # Remember to consider the invalid input here
                 return 0
             dp_1, dp_2 = curr_dp, dp_1                                   # MUST update these two TOGETHER in one line !!!!!
                                                                          # Instead of: dp_1 = curr_dp
