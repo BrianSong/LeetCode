@@ -44,7 +44,7 @@ The board square with number 1 has no snake or ladder.
 The board square with number N*N has no snake or ladder.
 
 
-Solution no: ----------------------------------------------------- BFS: SHORTEST path
+Solution: ----------------------------------------------------- BFS: SHORTEST path
 ------------------------------------------------------------------ O(n^2) T and S
 class Solution(object):
     def snakesAndLadders(self, board):
