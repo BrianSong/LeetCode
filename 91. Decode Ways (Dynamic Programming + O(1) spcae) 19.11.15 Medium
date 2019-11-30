@@ -60,3 +60,30 @@ class Solution(object): --------------------------------------------------------
             if 10 <= int(s[i - 2:i]) <= 26:
                 dp[i] += dp[i - 2]
         return dp[-1]
+        
+Solution: ------------------------------------------------------ my own O(1) S DP
+class Solution(object):
+    def numDecodings(self, S):
+        # Check the edge cases:
+        if not S:
+            return 0
+        if len(S) == 1:
+            if S[0] == '0':
+                return 0
+            else:
+                return 1
+        # DP
+        # Step no.1
+        dp_2, dp_1 = 1, 1
+        # Step no.3
+        for i in range(len(S)):
+            curr_dp = 0
+            if i != 0 and 10 <= int(S[i - 1] + S[i]) <= 26:
+                curr_dp += dp_2
+            if S[i] != '0':                                              # Here is "if" instead of "elif", the first two conditions
+                curr_dp += dp_1                                          # can be satisfied simultaneously !!
+            if (S[i] == '0' and int(S[i - 1]) >= 3) or int(S[i]) < 0:
+                return 0
+            dp_1, dp_2 = curr_dp, dp_1                                   # MUST update these two TOGETHER in one line !!!!!
+                                                                         # Instead of: dp_1 = curr_dp
+        return dp_1                                                      #             dp_2 = dp_1 (this dp_1 has already been updated)
