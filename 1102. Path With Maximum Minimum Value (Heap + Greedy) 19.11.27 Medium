@@ -72,7 +72,9 @@ class Solution(object):
         pq.append((-A[0][0], (0, 0)))
         visited.add((0, 0))
         r, c = 0, 0
-        while r != m - 1 or c != n - 1:
+        while True:
+            if r == len(A) - 1 and c == len(A[0]) - 1:
+                break
             (curr_val, (r, c)) = heapq.heappop(pq)                      # Every step, we choose the cell with the highest value
             curr_val *= -1
             if curr_val < mini:                                         # We also record the current minimum and return it in the end
