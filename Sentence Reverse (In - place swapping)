@@ -1,0 +1,74 @@
+You are given an array of characters arr that consists of sequences of characters separated by space characters. 
+Each space-delimited sequence of characters defines a word.
+
+Implement a function reverseWords that reverses the order of the words in the array in the most efficient manner.
+
+Explain your solution and analyze its time and space complexities.
+
+Example:
+
+input:  arr = [ 'p', 'e', 'r', 'f', 'e', 'c', 't', '  ',
+                'm', 'a', 'k', 'e', 's', '  ',
+                'p', 'r', 'a', 'c', 't', 'i', 'c', 'e' ]
+
+output: [ 'p', 'r', 'a', 'c', 't', 'i', 'c', 'e', '  ',
+          'm', 'a', 'k', 'e', 's', '  ',
+          'p', 'e', 'r', 'f', 'e', 'c', 't' ]
+Constraints:
+
+[time limit] 5000ms
+
+[input] array.character arr
+
+0 ≤ arr.length ≤ 100
+[output] array.character
+
+
+Solution no.1: ----------------------------------------- O(N) T and S where L is the total character in arr
+def reverse_words(arr):
+    # Check the edge cases
+    if not arr:
+      return ""
+    curr_string = ""
+    l = []
+    for c in arr:
+      if c != ' ':
+        curr_string += c
+      else:
+        l.append(curr_string)
+        curr_string = ""
+    if curr_string:
+      l.append(curr_string)
+    l = l[::-1]
+    i = 0
+    for word in l:
+      for c in word:
+        arr[i] = c
+        i += 1
+      if i < len(arr):
+        arr[i] = ' '
+        i += 1
+    return arr
+    
+    
+Solution no.2: ---------------------------------------- Optimize the space to O(1)
+def reverse_words(arr):
+    if not arr:
+      return ""
+    i_start = 0
+    for i in range(len(arr)):
+      if arr[i] == ' ':
+        swap(arr, i_start, i - 1)
+        i_start = i + 1
+    if i_start != len(arr) - 1:
+      swap(arr, i_start, len(arr) - 1)
+    swap(arr, 0, len(arr) - 1)
+    return arr
+  
+
+def swap(arr, start, end):
+    if 0 <= start <= len(arr) - 1 and 0 <= end <= len(arr) - 1:
+      while start <= end:
+        arr[start], arr[end] = arr[end], arr[start]
+        start += 1
+        end -= 1
