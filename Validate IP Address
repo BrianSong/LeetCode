@@ -25,26 +25,26 @@ Constraints:
 
 Solution: ---------------------------------------------------- O(n) T and O(1) S
 def validateIP(ip):
-  # Check edge cases
-  if not ip or len(ip) < 7:
-    return False
-  # Initilize two variables
-  curr_num = 0
-  curr_length = 0
-  dot = 0
-  # Do a linear scan to the input
-  for c in ip:
-    if c == '.':
-      dot += 1
-      if not (0 <= curr_num <= 255) or dot > 3 or curr_length == 0:          # for cases like '91..76.12'
-        return False
-      curr_num = 0
-      curr_length = 0
-    elif c.isdigit():
-      curr_num = curr_num * 10 + int(c)
-      curr_length += 1
-      if curr_length != len(str(curr_num)):                                  # for cases like '008.9.76.12'
-        return False
-    else:
+    # Check edge cases
+    if not ip or len(ip) < 7:
       return False
-  return True if 0 <= curr_num <= 255 else False
+    # Initilize two variables
+    curr_num = 0
+    curr_length = 0
+    dot = 0
+    # Do a linear scan to the input
+    for c in ip:
+      if c == '.':
+        dot += 1
+        if not (0 <= curr_num <= 255) or dot > 3 or curr_length == 0:          # for cases like '91..76.12'
+          return False
+        curr_num = 0
+        curr_length = 0
+      elif c.isdigit():
+        curr_num = curr_num * 10 + int(c)
+        curr_length += 1
+        if curr_length != len(str(curr_num)):                                  # for cases like '008.9.76.12'
+          return False
+      else:
+        return False
+    return True if 0 <= curr_num <= 255 else False
