@@ -1,0 +1,50 @@
+Validate an IP address (IPv4). An address is valid if and only if it is in the form "X.X.X.X", where each X is a number from 0 to 255.
+
+For example, "12.34.5.6", "0.23.25.0", and "255.255.255.255" are valid IP addresses, while "12.34.56.oops", "1.2.3.4.5", 
+and "123.235.153.425" are invalid IP addresses.
+
+Examples:
+
+ip = '192.168.0.1'
+output: true
+
+ip = '0.0.0.0'
+output: true
+
+ip = '123.24.59.99'
+output: true
+
+ip = '192.168.123.456'
+output: false
+Constraints:
+
+[time limit] 5000ms
+[input] string ip
+[output] boolean
+
+
+Solution: ---------------------------------------------------- O(n) T and O(1) S
+def validateIP(ip):
+  # Check edge cases
+  if not ip or len(ip) < 7:
+    return False
+  # Initilize two variables
+  curr_num = 0
+  curr_length = 0
+  dot = 0
+  # Do a linear scan to the input
+  for c in ip:
+    if c == '.':
+      dot += 1
+      if not (0 <= curr_num <= 255) or dot > 3 or curr_length == 0:          # for cases like '91..76.12'
+        return False
+      curr_num = 0
+      curr_length = 0
+    elif c.isdigit():
+      curr_num = curr_num * 10 + int(c)
+      curr_length += 1
+      if curr_length != len(str(curr_num)):                                  # for cases like '008.9.76.12'
+        return False
+    else:
+      return False
+  return True if 0 <= curr_num <= 255 else False
