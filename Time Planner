@@ -58,7 +58,7 @@ def meeting_planner(slotsA, slotsB, dur):
       interval_1 = slotsA[A]
       interval_2 = slotsB[B]
       # Find the overlap
-      start = max(interval_1[0], interval_2[0])
+      start = max(interval_1[0], interval_2[0])           # Very clever way to find the overlap between two intervals
       end = min(interval_1[1], interval_2[1])
       if start < end:                                     # Since "time slots in a person’s availability don’t overlap"
         if end - start >= dur:                            # Then, we do not need to worry about any overlap may merge,
