@@ -32,15 +32,20 @@ class Solution(object):
         """
         if len(s) < k:                                                        # Base case
             return 0
-        c = min(set(s), key = s.count)                                        # Find out the least appear character
-        if s.count(c) >= k:                                                   # if the least appear character appears more than k times
+        counter = collections.Counter(s)
+        c = min(counter, key = counter.get)                                   # Find out the least appear character
+        if counter[c] >= k:                                                   # if the least appear character appears more than k times
                                                                               # then the whole string is ok
             return len(s)
         else:
-            return max(self.longestSubstring(t, k) for t in s.split(c))       # Switch your mindset
+            max_length = float('-inf')
+            for sub in s.split(c):
+                max_length = max(max_length, self.longestSubstring(sub, k))   # Switch your mindset
                                                                               # the question asks us to find the at least appear k times
                                                                               # But actually, the length depends on
                                                                               # the characters appear less than k times,
                                                                               # We need to use it as the pivot to splict the string
                                                                               # because it will always be too infrequent 
                                                                               # and thus can't be part of any ok substring
+            return max_length
+        
