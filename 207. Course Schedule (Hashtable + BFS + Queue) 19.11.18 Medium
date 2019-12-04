@@ -52,9 +52,6 @@ class Solution(object):
                 if indegree[item] == 0:            # If indegree[i] == 0, means that we can freely take this class
                                                    # So, we add it into the queue
                     queue.append(item)
-        for item in indegree:                      # Step no.4: Check the result
-            if item != 0:
-                return False
-        return True
+        return sum(indegree) == 0                  # Step no.4: Check the result
         
 # 解题思路照片在文件传输助手 2019.05.17
