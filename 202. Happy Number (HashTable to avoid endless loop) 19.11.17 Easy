@@ -15,7 +15,7 @@ Explanation:
 12 + 02 + 02 = 1
 
 Solution: -------------------------------------------------- HashTable to avoid endless loop
------------------------------------- Meaningless to talk about time or space complexity since the input is only 1 integer
+------------------------------------ O(logn) T and S
 class Solution(object):
     def isHappy(self, n):
         """
