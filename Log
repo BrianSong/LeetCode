@@ -1,0 +1,47 @@
+Please use this Google doc during your interview (your interviewer will see what you write here). 
+To free your hands for typing, we recommend using a headset or speakerphone.
+
+# Log requests in the following format:
+#  "Request {N} started at {startTime}, ended at {endTime}."
+
+import collections
+
+class Logger(object):
+	def __init__(self):
+		self.start_time = {}
+		self.end_time = {}
+		self.queue = collections.deque()
+
+	def startRequest(self, requestId):
+		self.start_time[requestId] = getTime()
+		self.queue.append(requestId)
+
+	def endRequest(self, requestId):
+		if not requestId in self.endRequest:
+			self.end_time[requestId] = getTime()
+		if self.queue and self.queue[0] == requestId:
+			print(self.end_time[requestId] - self.start_time[requestId])
+			del self.start_time[requestId]
+      del self.end_time[requestId]
+			self.queue.popleft()
+			for item in self.queue:
+				if item in self.end_time:
+					print(self.end_time[item] - self.start_time[item])
+					self.queue.remove(item)
+          
+# Assume if I call the getTime() then I can get the current at that moment
+
+logger.startRequest(id)
+… process …
+logger.endRequest(id)
+
+logger.startRequest(1)
+logger.startRequest(2)
+logger.endRequest(2)
+logger.endRequest(1)
+logger.startRequest(3)
+logger.endRequest(3)
+
+
+"Request 1 took {n} seconds"
+"Request 2 took {m} seconds"
