@@ -1,0 +1,71 @@
+Given a string S, consider all duplicated substrings: (contiguous) substrings of S that occur 2 or more times.  
+(The occurrences may overlap.)
+
+Return any duplicated substring that has the longest possible length.  (If S does not have a duplicated substring, the answer is "".)
+
+ 
+
+Example 1:
+
+Input: "banana"
+Output: "ana"
+Example 2:
+
+Input: "abcd"
+Output: ""
+ 
+
+Note:
+
+2 <= S.length <= 10^5
+S consists of lowercase English letters.
+
+Solution no.1: ----------------------------------------------- BF ----- O(n^3) T
+class Solution(object):
+    def longestDupSubstring(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        if not S:
+            return ""
+        HashTable = collections.defaultdict(int)
+        for i in range(len(S)):
+            for j in range(i + 1, len(S) + 1):                  # len(S) + 1 instead of len(S) here !!!!
+                HashTable[S[i:j]] += 1
+        max_length = 0
+        res = ""
+        for key, value in HashTable.items():
+            if value >= 2:
+                if len(key) > max_length:
+                    res = key
+                    max_length = len(key)
+        return res
+        
+
+Solution no.2: -------------------------------------------- Better BF --------- O(n^2) T
+class Solution(object):
+    def longestDupSubstring(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        if not S:
+            return ""
+        HashTable = collections.defaultdict(int)
+        for i in range(len(S)):
+            curr_string = ""                    
+            for j in range(i, len(S)):
+                curr_string += S[j]                     # Instead of using subSting, we append the newest character
+                HashTable[curr_string] += 1 
+        max_length = 0
+        res = ""
+        for key, value in HashTable.items():
+            if value >= 2:
+                if len(key) > max_length:
+                    res = key
+                    max_length = len(key)
+        return res
+        
+
+Solution n0.3: -------------------------------- Will be followed up in the future
