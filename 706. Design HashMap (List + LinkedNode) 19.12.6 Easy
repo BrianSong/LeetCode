@@ -1,0 +1,123 @@
+706. Design HashMap
+Easy
+
+512
+
+78
+
+Favorite
+
+Share
+Design a HashMap without using any built-in hash table libraries.
+
+To be specific, your design should include these functions:
+
+put(key, value) : Insert a (key, value) pair into the HashMap. If the value already exists in the HashMap, update the value.
+get(key): Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key.
+remove(key) : Remove the mapping for the value key if this map contains the mapping for the key.
+
+Example:
+
+MyHashMap hashMap = new MyHashMap();
+hashMap.put(1, 1);          
+hashMap.put(2, 2);         
+hashMap.get(1);            // returns 1
+hashMap.get(3);            // returns -1 (not found)
+hashMap.put(2, 1);          // update the existing value
+hashMap.get(2);            // returns 1 
+hashMap.remove(2);          // remove the mapping for 2
+hashMap.get(2);            // returns -1 (not found) 
+
+Note:
+
+All keys and values will be in the range of [0, 1000000].
+The number of operations will be in the range of [1, 10000].
+Please do not use the built-in HashMap library.
+
+
+Solution:
+class LinkedNode(object):
+    def __init__(self, key, value):
+        self.pair = [key, value]
+        self.next = None
+
+class MyHashMap(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.m = 1000
+        self.list = [None] * self.m
+        
+
+    def put(self, key, value):
+        """
+        value will always be non-negative.
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        index = key % self.m
+        if self.list[index] == None:
+            self.list[index] = LinkedNode(key, value)
+        else:
+            curr = self.list[index]
+            while True:
+                if curr.pair[0] == key:
+                    curr.pair[1] = value
+                    return
+                if not curr.next:                            
+                    break
+                curr = curr.next
+            curr.next = LinkedNode(key, value)    # We want to build connection here, so we must let curr.next = LinkedNode(key, value)
+                                                  # Instead of curr.next = curr; curr = None; None = LinkedNode(key, value)
+            
+    def get(self, key):
+        """
+        Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key
+        :type key: int
+        :rtype: int
+        """
+        index = key % self.m
+        if self.list[index] == None:
+            return -1
+        else:
+            curr = self.list[index]
+            while curr:
+                if curr.pair[0] == key:
+                    return curr.pair[1]
+                curr = curr.next
+        return -1
+        
+
+    def remove(self, key):
+        """
+        Removes the mapping of the specified value key if this map contains a mapping for the key
+        :type key: int
+        :rtype: None
+        """
+        index = key % self.m
+        if self.list[index] == None:
+            return
+        else:
+            prev = curr = self.list[index]
+            if curr.pair[0] == key:
+                self.list[index] = curr.next
+            else:
+                curr = curr.next
+                while curr:
+                    if curr.pair[0] == key:
+                        prev.next = curr.next
+                        return
+                    else:
+                        curr = curr.next
+                        prev = prev.next
+        
+
+
+# Your MyHashMap object will be instantiated and called as such:
+# obj = MyHashMap()
+# obj.put(key,value)
+# param_2 = obj.get(key)
+# obj.remove(key)
