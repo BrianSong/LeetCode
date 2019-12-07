@@ -46,26 +46,41 @@ class Solution(object):
                                                                            
                                                                            
                                                                            
-My original solution, failed: ---------------------------------------- why ? Cannot handle cases like [[1]] and [[1, 0]]
-HashTable, res = {}, 0
+My original solution, PASS BUT A LITTLE SLOW:
+class Solution(object):
+    def islandPerimeter(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        # Check the edge cases
+        if not grid or not grid[0]:
+            return 0
+        # Loop over the grid, find any land cell and count their contribution to the total perimeter
+        res = 0
         for i in range(len(grid)):
             for j in range(len(grid[0])):
-                curr_connected = 0
                 if grid[i][j] == 1:
-                    if 0 < i and grid[i - 1][j] == 1:
-                        curr_connected += 1
-                    if 0 < j and grid[i][j - 1] == 1:
-                        curr_connected += 1
-                    if i < len(grid) - 1 and grid[i + 1][j] == 1:
-                        curr_connected += 1
-                    if j < len(grid[0]) - 1 and grid[i][j + 1] == 1:
-                        curr_connected += 1
-                    HashTable[(i, j)] = 4 - curr_connected
-        for value in HashTable.values():
-            if value == 3:
-                res += 3
-            elif value == 2:
-                res += 2
-            elif value == 1:
-                res += 1
+                    # Use a helper function to do the counting for me
+                    curr_count = self.count(grid, i, j)
+                    if curr_count == 0:
+                        return 4
+                    elif curr_count == 1:
+                        res += 3
+                    elif curr_count == 2:
+                        res += 2
+                    elif curr_count == 3:
+                        res += 1
+                    else:
+                        continue
         return res
+    
+    # Helper function
+    def count(self, grid, i, j):
+        count = 0
+        for dir in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+            new_i = i + dir[0]
+            new_j = j + dir[1]
+            if 0 <= new_i < len(grid) and 0 <= new_j < len(grid[0]) and grid[new_i][new_j] == 1:
+                count += 1
+        return count
