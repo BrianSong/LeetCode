@@ -1,0 +1,81 @@
+Given an array of unique characters arr and a string str, 
+Implement a function getShortestUniqueSubstring that finds the smallest substring of str containing all the characters in arr. 
+Return "" (empty string) if such a substring doesn’t exist.
+
+Come up with an asymptotically optimal solution and analyze the time and space complexities.
+
+Example:
+
+input:  arr = ['x','y','z'], str = "xyyzyzyx"
+
+output: "zyx"
+Constraints:
+
+[time limit] 5000ms
+
+[input] array.character arr
+
+1 ≤ arr.length ≤ 30
+[input] string str
+
+1 ≤ str.length ≤ 500
+[output] string
+
+
+Solution no.1: -------------------------------- my own but huge time complexity
+def get_shortest_unique_substring(arr, str):
+    # Check the edge cases
+    if not arr or not str:
+      return ""
+    # Implement the Two Pointers to solve this question
+    slow, fast = 0, 0
+    min_length = float('inf')
+    res = ""
+    arr_set = set(arr)
+    while fast < len(str):
+      while check(arr, str[slow : fast + 1]):
+        if min_length > fast - slow + 1:
+          res = str[slow: fast + 1]
+          min_length = fast - slow + 1
+        slow += 1
+      fast += 1
+    return res
+
+def check(arr, subarr):
+    for item in arr:
+      if not item in subarr:
+        return False
+    return True
+    
+
+Solution no.2: ---------------------------------------- Optimal solution
+------------------------------------------------------- O(N) T and S
+import collections
+
+def get_shortest_unique_substring(arr, str):
+    # Check the edge cases
+    if not arr or not str:
+      return ""
+    # Implement the Two Pointers to solve this question
+    slow, fast = 0, 0
+    min_length = float('inf')
+    res = ""
+    arr_set = set(arr)
+    curr_counter = collections.defaultdict(int)                           # Use two Hash to achieve linear time
+    while fast < len(str):
+      if not str[fast] in arr_set:                                        # if the fast is not in arr_set, we just ignore it
+        fast += 1
+        continue
+      curr_counter[str[fast]] += 1
+      print fast, slow, curr_counter
+      while slow <= fast and len(curr_counter) == len(arr_set):
+        if min_length > fast - slow + 1:
+          res = str[slow: fast + 1]
+          min_length = fast - slow + 1
+        if str[slow] in arr_set:                                          # We only care those characters that is in arr_set
+          curr_counter[str[slow]] -= 1
+        if curr_counter[str[slow]] == 0:
+          del curr_counter[str[slow]]
+        slow += 1
+      fast += 1
+    return res
