@@ -1,0 +1,84 @@
+Given a binary tree, find the largest subtree which is a Binary Search Tree (BST), 
+where largest means subtree with largest number of nodes in it.
+
+Note:
+A subtree must include all of its descendants.
+
+Example:
+
+Input: [10,5,15,1,8,null,7]
+
+   10 
+   / \ 
+  5  15 
+ / \   \ 
+1   8   7
+
+Output: 3
+Explanation: The Largest BST Subtree in this case is the highlighted one.
+             The return value is the subtree's size, which is 3.
+Follow up:
+Can you figure out ways to solve it with O(n) time complexity?
+
+
+Solution no.1: ---------------------------------------- my own BF
+------------------------------------------------------- O(n^2) T and O(n) S
+class Solution(object):
+    def largestBSTSubtree(self, w):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        # Check the edge cases
+        if not w:
+            return 0
+        self.res = -float('inf')
+        self.helper(w)
+        return self.res
+    
+    def helper(self, node):
+        if not node:
+            return
+        if self.checkBST(node):
+            self.res = max(self.res, self.number_of_node(node))
+        self.helper(node.left)
+        self.helper(node.right)
+    
+    def checkBST(self, node, upper = float('inf'), lower = float('-inf')):
+        if not node:
+            return True
+        if node.val <= lower or node.val >= upper:
+            return False
+        return self.checkBST(node.left, node.val, lower) and self.checkBST(node.right, upper, node.val)
+    
+    def number_of_node(self, node):
+        if not node:
+            return 0
+        return self.number_of_node(node.left) + self.number_of_node(node.right) + 1
+        
+        
+Solution no.2: --------------------------------------------- O(n) T and S
+class Solution(object):
+    def largestBSTSubtree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:
+            return 0
+        self.res = 0
+        self.helper(root)
+        return self.res
+    
+    def helper(self, root):
+        if root:
+            left_res, left_count, left_lower, left_upper = self.helper(root.left)
+            right_res, right_count, right_lower, right_upper = self.helper(root.right)
+            if left_res and right_res and left_upper < root.val < right_lower:
+                self.res = max(self.res, left_count + right_count + 1)
+                return True, left_count + right_count + 1, min(left_lower, root.val), max(root.val, right_upper)  # add min(), max()
+                                                                                       # in order to deal with the leaf node case
+            else:
+                return False, 0, min(left_lower, root.val), max(root.val, right_upper) 
+        else:
+            return True, 0, float('inf'), float('-inf')                                # Carefully about what is returned here
