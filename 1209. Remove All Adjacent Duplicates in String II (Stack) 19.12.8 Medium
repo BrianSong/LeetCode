@@ -1,0 +1,87 @@
+Given a string s, a k duplicate removal consists of choosing k adjacent 
+and equal letters from s and removing them causing the left and the right side of the deleted substring to concatenate together.
+
+We repeatedly make k duplicate removals on s until we no longer can.
+
+Return the final string after all such duplicate removals have been made.
+
+It is guaranteed that the answer is unique.
+
+ 
+
+Example 1:
+
+Input: s = "abcd", k = 2
+Output: "abcd"
+Explanation: There's nothing to delete.
+Example 2:
+
+Input: s = "deeedbbcccbdaa", k = 3
+Output: "aa"
+Explanation: 
+First delete "eee" and "ccc", get "ddbbbdaa"
+Then delete "bbb", get "dddaa"
+Finally delete "ddd", get "aa"
+Example 3:
+
+Input: s = "pbbcggttciiippooaais", k = 2
+Output: "ps"
+
+
+Solution no.1: ----------------------------------------------- Stack
+-------------------------------------------------------------- O(n * k)  T and O(n) S
+class Solution(object):
+    def removeDuplicates(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: str
+        """
+        # Check the edge cases
+        if not s:
+            return ""
+        if not k:
+            return s
+        # Use a stack to implement this question because we may want to look into the previous characters 
+        # and pop whenever that is possible
+        # No clue how to approach except the BF(using no space), 
+        # then what we can think about next is to use a helper data structure to decrease the time complexity 
+        # while sacrifice the space complexity
+        stack = []
+        for w in s:
+            stack.append(w)
+            if len(stack) >= k:
+                match = True
+                for i in range(2, k + 1):
+                    if stack[-i] != w:
+                        match = False
+                if match:
+                    for i in range(k):
+                        stack.pop()
+        return ''.join(stack)
+        
+  
+Solution no.2: ------------------------------------------- Better Stack
+-------------------------------------------------------------- O(n)  T and O(n) S
+class Solution(object):
+    def removeDuplicates(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: str
+        """
+        # Check the edge cases
+        if not s:
+            return ""
+        if not k:
+            return s
+        stack = []
+        for w in s:
+            if not stack or stack[-1][0] != w:
+                stack.append((w, 1))
+            else:
+                stack.append((w, stack[-1][1] + 1))       # Instead of just one char, we append a tuple = (char, count) into the stack
+            if stack[-1][1] == k:                         # One very regular optimization way is to keep more information in stack/queue
+                for i in range(k):
+                    stack.pop()
+        return ''.join([char for char, _ in stack])
