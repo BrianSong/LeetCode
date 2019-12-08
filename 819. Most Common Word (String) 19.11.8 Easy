@@ -42,15 +42,25 @@ class Solution(object):
         :type banned: List[str]
         :rtype: str
         """
-        dict = collections.defaultdict(int)
-        banned = set(banned)
-        string = ""
+        if not paragraph:
+            return None
+        banned_set = set(banned)
+        processed_list = []
+        '''
         for c in paragraph:
             if c in "!?',;.":
                 c = ' '
-            string += c
-        list = string.lower().split()
-        for word in list:            
-            if word not in banned:
-                dict[word]+=1
-        return max(dict, key = dict.get)
+            string += c                                # If we do the string concatenation like this, the time complexity is not O(n)
+        '''
+        for c in paragraph:
+            if not c.isalpha():
+                c = ' '
+            processed_list.append(c)
+        processed_string = ''.join(processed_list)
+        l = processed_string.lower().split()
+        res = ""
+        counter = collections.defaultdict(int)
+        for item in l:
+            if not item in banned:
+                counter[item] += 1
+        return max(counter, key = counter.get)
