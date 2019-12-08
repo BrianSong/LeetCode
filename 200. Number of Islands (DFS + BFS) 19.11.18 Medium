@@ -21,7 +21,7 @@ Input:
 
 Output: 3
 
-Solution: ------------------------------------------- DFS --------- https://www.youtube.com/watch?v=hhBiPyr1Byo
+Solution no.1: ------------------------------------------- DFS --------- https://www.youtube.com/watch?v=hhBiPyr1Byo
 ------------------ Time complexity : O(M×N) where M is the number of rows and N is the number of columns.
 ------------------ Space complexity : worst case O(M×N) in case that the map is filled with 1 where DFS goes by M×N deep.
 class Solution(object):
@@ -50,3 +50,37 @@ class Solution(object):
                                                       # main function, it will not be considered as a new island
         for dir in self.dirs:
             self.dfs(grid, i + dir[0], j + dir[1])    # TRY OUT EVERY POSSIBILITIES until reach the exiting condition ------ DFS!!!!
+            
+            
+Solution no.2: ----------------------------------------------------- BFS
+-------------------------------------------------------------------- O(m * n) T and S
+class Solution(object):
+    def numIslands(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        # Now solve this in BFS
+        # Check the edge cases
+        if not grid or not grid[0]:
+            return 0
+        res = 0
+        queue = collections.deque()
+        visited = set()
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == '1':
+                    res += 1
+                    queue.append((i, j))
+                    visited.add((i, j))
+                    while queue:
+                        pop_x, pop_y = queue.popleft()
+                        grid[pop_x][pop_y] = '#'
+                        for dir in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+                            new_x = pop_x + dir[0]
+                            new_y = pop_y + dir[1]
+                            if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]) 
+                            / and grid[new_x][new_y] == '1' and not (new_x, new_y) in visited:
+                                queue.append((new_x, new_y))
+                                visited.add((new_x, new_y))
+        return res
