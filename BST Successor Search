@@ -1,0 +1,47 @@
+In a Binary Search Tree (BST), 
+an Inorder Successor of a node is defined as the node with the smallest key greater than 
+the key of the input node (see examples below). 
+Given a node inputNode in a BST,
+you’re asked to write a function findInOrderSuccessor that returns the Inorder Successor of inputNode. 
+If inputNode has no Inorder Successor, return null.
+
+Explain your solution and analyze its time and space complexities.
+
+altIn this diagram, the inorder successor of 9 is 11 and the inorder successor of 14 is 20.
+
+Example:
+
+In the diagram above, for inputNode whose key = 11
+
+Your function would return:
+
+The Inorder Successor node whose key = 12
+
+Constraints:
+
+[time limit] 5000ms
+[input] Node inputNode
+[output] Node
+
+
+Solution: --------------------------------------- O(n) T and O(1) S
+def find_in_order_successor(self, inputNode):
+    if not inputNode.right:                             # Two cases
+      return self.find_leftest(inputNode.right)
+
+    parent = inputNode.parent
+    child = inputNode
+
+    while parent and child == parent.right:             # if child == parent.right => child > parent, we do not want it
+      child = parent
+      parent = child.parent
+
+    return parent
+  
+def find_leftest(self, node):
+    while node.left:
+      node = node.left
+    return node
+    
+    
+    
