@@ -37,3 +37,27 @@ class Solution(object):
                 prev = head
                 head = head.next
         return dummynode.next
+
+Solution no.2: ----------------------------------------------- my own
+class Solution(object):
+    def removeElements(self, head, val):
+        """
+        :type head: ListNode
+        :type val: int
+        :rtype: ListNode
+        """
+        # Check the edge cases
+        if not head:
+            return None
+        dummynode = ListNode(0)
+        dummynode.next = head
+        currnode = dummynode
+        while currnode and currnode.next:
+            # Make the comparison between my currnode.next with the val,
+            # if they are the same, then I just abandon my currnode.next
+            if currnode.next.val == val:
+                currnode.next = currnode.next.next
+            # Only move the currnode when currnode.next.val is sure to be not equal to val !!!!!!!
+            else:
+                currnode = currnode.next
+        return dummynode.next
