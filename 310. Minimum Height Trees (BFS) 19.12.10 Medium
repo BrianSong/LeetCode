@@ -1,0 +1,126 @@
+For an undirected graph with tree characteristics, we can choose any node as the root. 
+The result graph is then a rooted tree. Among all possible rooted trees, 
+those with minimum height are called minimum height trees (MHTs). 
+Given such a graph, write a function to find all the MHTs and return a list of their root labels.
+
+Format
+The graph contains n nodes which are labeled from 0 to n - 1. 
+You will be given the number n and a list of undirected edges (each edge is a pair of labels).
+
+You can assume that no duplicate edges will appear in edges. 
+Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
+
+Example 1 :
+
+Input: n = 4, edges = [[1, 0], [1, 2], [1, 3]]
+
+        0
+        |
+        1
+       / \
+      2   3 
+
+Output: [1]
+Example 2 :
+
+Input: n = 6, edges = [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]]
+
+     0  1  2
+      \ | /
+        3
+        |
+        4
+        |
+        5 
+
+Output: [3, 4]
+Note:
+
+According to the definition of tree on Wikipedia: 
+“a tree is an undirected graph in which any two vertices are connected by exactly one path. 
+In other words, any connected graph without simple cycles is a tree.”
+The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
+
+
+Solution no.1: --------------------------------- my own BF, TLE pass 58 / 66
+------------------------------------------------ O(n ^ 2) T and S
+class Solution(object):
+    def findMinHeightTrees(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+        # Check the edge cases
+        if n <= 1 or not edges:
+            return [0]
+        if len(edges) == 1:
+            return edges[0]
+        # Loop over the edges and find the candidate root
+        # First initilize a list to record the frequency of each node
+        node_freq = [0] * n
+        # Build a map
+        map = collections.defaultdict(set)
+        for edge in edges:
+            node_freq[edge[0]] += 1
+            node_freq[edge[1]] += 1
+            map[edge[0]].add(edge[1])
+            map[edge[1]].add(edge[0])
+        candidate = set()
+        for i, freq in enumerate(node_freq):
+            if freq > 1:
+                candidate.add(i)
+        min_height = float('inf')
+        res = []
+        # Find the length of the root candidate to each leaf using BFS
+        for node in candidate:
+            max_path = 0
+            queue = collections.deque()
+            visited = set()
+            queue.append(node)
+            visited.add(node)
+            while queue:
+                for i in range(len(queue)):
+                    pop_node = queue.popleft()
+                    for neigh in map[pop_node]:
+                        if not neigh in visited:
+                            visited.add(neigh)
+                            queue.append(neigh)
+                max_path += 1
+            if max_path < min_height:
+                res = [node]
+                min_height = max_path
+            elif max_path == min_height:
+                res.append(node)
+        return res
+        
+
+Solution no.2: ------------------------------------------------ Optimize O(n) T and S
+--------------------------------- https://leetcode.com/uploads/files/1469152741497-1463645059503_1214297289.jpg
+class Solution(object):
+    def findMinHeightTrees(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+        # Check the edge cases
+        if n <= 1 or not edges:
+            return [0]
+        if len(edges) == 1:
+            return edges[0]
+        map = [set() for _ in range(n)]
+        for edge in edges:
+            map[edge[0]].add(edge[1])
+            map[edge[1]].add(edge[0])
+        leaves = [i for i in range(n) if len(map[i]) == 1]        
+        while n > 2:
+            n -= len(leaves)
+            new_leaves = []
+            for leave in leaves:
+                neigh = map[leave].pop()                        # map[leave].pop() instead of map[leave][0] since set cannot do indexing
+                map[neigh].remove(leave)
+                if len(map[neigh]) == 1:
+                    new_leaves.append(neigh)
+            leaves = new_leaves
+        return leaves
