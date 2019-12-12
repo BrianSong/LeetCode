@@ -52,9 +52,9 @@ class Solution(object):
         for line in lines:
             curr = line.split('\t')[-1]
             curr_depth = len(line) - len(curr)
-            curr_depth += 1                                                           # Increase the depth here for latter use
+            curr_depth += 1                                                           
             if '.' in curr:
-                max_length = max(max_length, depth[curr_depth - 1] + len(curr))       
+                max_length = max(max_length, depth[curr_depth] + len(curr))
             else:
-                depth[curr_depth] = depth[curr_depth - 1] + len(curr) + 1
+                depth[curr_depth + 1] = depth[curr_depth] + len(curr) + 1
         return max_length
