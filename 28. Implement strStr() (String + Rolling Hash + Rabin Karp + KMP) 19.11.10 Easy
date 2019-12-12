@@ -32,7 +32,49 @@ class Solution(object):
                 return i
         return -1
 
-Solution no.2: -------------------------------- KMP ------------------------------------ https://www.youtube.com/watch?v=BXCEFAzhxGY
+Solution no.2: ---------------------- Rolling Hash + Rabin Karp ----------------------- https://www.youtube.com/watch?v=H4VrKHVG5qI
+------------------------------------- Worst O(m * n) T, best O(m) T
+class Solution(object):
+    def strStr(self, haystack, needle):
+        """
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        """
+        if len(needle) == 0: 
+            return 0
+        self.prime = 3
+        m, n = len(haystack), len(needle)
+        needle_hash = self.get_hash(needle)
+        curr_hash = self.get_hash(haystack[:len(needle)])
+        if curr_hash == needle_hash and self.checkEqual(haystack[:len(needle)], needle):
+            return 0
+        for i in range(1, m - n + 2):
+            if curr_hash == needle_hash and self.checkEqual(haystack[i - 1 : i - 1 + n], needle):
+                return i - 1
+            else:
+                if i + n - 1 <= len(haystack) - 1:
+                    curr_hash = self.update_hash(curr_hash, haystack[i - 1], haystack[i + n - 1], n)
+        return -1
+        
+        
+    def get_hash(self, s):
+        hash = 0
+        for i in range(len(s)):
+            hash += ord(s[i]) * (self.prime ** i)
+        return hash
+    
+    def update_hash(self, previous_hash, delete_char, new_char, len_needle):
+        previous_hash -= ord(delete_char)
+        previous_hash /= self.prime
+        new_hash = previous_hash + ord(new_char) * (self.prime ** (len_needle - 1))
+        return new_hash
+    
+    def checkEqual(self, s, t):
+        return s == t
+
+
+Solution no.3: -------------------------------- KMP ------------------------------------ https://www.youtube.com/watch?v=BXCEFAzhxGY
 ----------------------------------------------- O(m + n) T,  O(m) S
 class Solution(object):
     def strStr(self, haystack, needle):
