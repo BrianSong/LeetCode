@@ -46,15 +46,13 @@ class Solution(object):
         self.prime = 3
         m, n = len(haystack), len(needle)
         needle_hash = self.get_hash(needle)
-        curr_hash = self.get_hash(haystack[:len(needle)])
-        if curr_hash == needle_hash and self.checkEqual(haystack[:len(needle)], needle):
-            return 0
-        for i in range(1, m - n + 2):
-            if curr_hash == needle_hash and self.checkEqual(haystack[i - 1 : i - 1 + n], needle):
-                return i - 1
+        for i in range(0, m - n + 1):
+            if i == 0:
+                curr_hash = self.get_hash(haystack[:len(needle)])
             else:
-                if i + n - 1 <= len(haystack) - 1:
-                    curr_hash = self.update_hash(curr_hash, haystack[i - 1], haystack[i + n - 1], n)
+                curr_hash = self.update_hash(curr_hash, haystack[i - 1], haystack[i + n - 1], n)
+            if curr_hash == needle_hash and self.checkEqual(haystack[i : i + n], needle):
+                res += 1
         return -1
         
         
@@ -72,7 +70,6 @@ class Solution(object):
     
     def checkEqual(self, s, t):
         return s == t
-
 
 Solution no.3: -------------------------------- KMP ------------------------------------ https://www.youtube.com/watch?v=BXCEFAzhxGY
 ----------------------------------------------- O(m + n) T,  O(m) S
