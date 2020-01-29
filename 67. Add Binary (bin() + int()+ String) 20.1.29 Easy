@@ -44,3 +44,33 @@ class Solution(object):
         :type b: str
         :rtype: str
         """
+
+Java Version:
+class Solution {
+    public String addBinary(String a, String b) {
+        if (a == null || a.length() == 0) {
+            return b;
+        }
+        if (b == null || b.length() == 0) {
+            return a;
+        }
+        
+        char[] aArray = a.toCharArray(), bArray = b.toCharArray();
+        StringBuilder res = new StringBuilder();
+        
+        int i = aArray.length - 1, j = bArray.length - 1;
+        int v1;
+        int v2;
+        int carry = 0;
+        int currSum;
+        
+        while (i >= 0 || j >= 0 || carry != 0) {
+            v1 = (i >= 0) ? Character.getNumericValue(aArray[i --]) : 0;
+            v2 = (j >= 0) ? Character.getNumericValue(bArray[j --]) : 0;
+            currSum = v1 + v2 + carry;
+            res.append(currSum % 2);
+            carry = currSum / 2;
+        }
+        return res.reverse().toString();
+    }
+}
