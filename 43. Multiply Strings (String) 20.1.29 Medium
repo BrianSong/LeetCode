@@ -54,7 +54,10 @@ class Solution {
         
         for (int i = num1.length() - 1; i >= 0; i --) {
             for (int j = num2.length() - 1; j >= 0; j --) {
-                int currNum = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                int currNum = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');    # We can convert char to int in java 
+                                                                                  # using various ways. 
+                                                                                  # If we direct assign char variable to int, 
+                                                                                  # it will return ASCII value of given character.
                 int posLow = i + j + 1;
                 int posHigh = i + j;
                 int currSum = list[posLow] + currNum;
