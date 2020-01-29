@@ -79,3 +79,27 @@ class Solution(object):
                 res += HashTable[currsum - k]
             HashTable[currsum] += 1
         return res
+
+Java Version:
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        
+        Map<Integer, Integer> hashMap = new HashMap<>();
+        
+        hashMap.put(0, 1);
+        
+        int currSum = 0, res = 0;
+        
+        for (int num : nums) {
+            currSum += num;
+            if (hashMap.containsKey(currSum - k)) {                               # 先check再put!!!!!!!!!!!!
+                res += hashMap.get(currSum - k);
+            }
+            hashMap.put(currSum, hashMap.getOrDefault(currSum, 0) + 1);
+        }
+        return res;
+    }
+}
