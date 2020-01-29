@@ -54,10 +54,7 @@ class Solution {
         
         for (int i = num1.length() - 1; i >= 0; i --) {
             for (int j = num2.length() - 1; j >= 0; j --) {
-                int currNum = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');    # We can convert char to int in java 
-                                                                                  # using various ways. 
-                                                                                  # If we direct assign char variable to int, 
-                                                                                  # it will return ASCII value of given character.
+                int currNum = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');    
                 int posLow = i + j + 1;
                 int posHigh = i + j;
                 int currSum = list[posLow] + currNum;
@@ -73,5 +70,39 @@ class Solution {
         }
         res = (res.length() == 0) ? "0" : res;
         return res;
+    }
+}
+
+class Solution {
+    public String multiply(String num1, String num2) {
+        if (num1 == null || num1.length() == 0 || num2 == null || num2.length() == 0) {
+            return null;
+        }
+        
+        StringBuilder res = new StringBuilder();
+        
+        int[] list = new int[num1.length() + num2.length()];
+        
+        for (int i = num1.length() - 1; i >= 0; i --) {
+            for (int j = num2.length() - 1; j >= 0; j --) {
+                int currNum = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');         # We can convert char to int in java 
+                                                                                       # using various ways. 
+                                                                                       # If we direct assign char variable to int, 
+                                                                                       # it will return ASCII value of given character.
+                int posLow = i + j + 1;
+                int posHigh = i + j;
+                int currSum = list[posLow] + currNum;
+                list[posLow] = currSum % 10;
+                list[posHigh] += currSum / 10;
+            }
+        }
+        
+        for (int i : list) {
+            if (!(res.length() == 0 && i == 0)) {
+                res.append(Integer.toString(i));
+            }
+        }
+       
+        return (res.length() == 0) ? "0" : res.toString();
     }
 }
