@@ -45,3 +45,33 @@ class Solution(object):
                 if - c - d in HashTable:
                     res += HashTable[- c - d]
         return res
+
+Java Version:
+class Solution {
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        if (A == null || A.length == 0 || B == null || B.length == 0 || C == null || C.length == 0 || D == null || D.length == 0) {
+            return 0;
+        }
+        
+        int res = 0;
+        
+        Map<Integer, Integer> hashMap = new HashMap<>();
+        for (int a : A) {
+            for (int b : B) {
+                hashMap.put(a + b, hashMap.getOrDefault(a + b, 0) + 1);
+            }
+        }
+        
+        
+        for (int c : C) {
+            for (int d : D) {
+                if (hashMap.containsKey(-c - d)) {
+                    res += hashMap.get(-c - d);
+                }
+            }
+        }
+        
+        return res;
+        
+    }
+}
