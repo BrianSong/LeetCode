@@ -43,3 +43,47 @@ class Solution(object):
             l1 = None if not l1 else l1.next     # MUST check as well !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             l2 = None if not l2 else l2.next
         return dummynode.next
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if (l1 == null && !(l2 == null)) {
+            return l2;
+        }
+        if (!(l1 == null) && l2 == null) {
+            return l1;
+        }
+        if (l1 == null && l2 == null) {
+            return null;
+        }
+        
+        ListNode dummyNode = new ListNode(0);
+        int remainder = 0;
+        
+        ListNode prevNode = dummyNode;
+        
+        while (l1 != null || l2 != null || remainder != 0) {
+            int v1 = (l1 != null) ? l1.val : 0;
+            int v2 = (l2 != null) ? l2.val : 0;
+            int currVal = v1 + v2 + remainder;
+            ListNode currNode = new ListNode(currVal % 10);
+            prevNode.next = currNode;
+            prevNode = currNode;
+            remainder = currVal / 10;
+            l1 = (l1 != null) ? l1.next : null;
+            l2 = (l2 != null) ? l2.next : null;
+        }
+        
+        return dummyNode.next;
+        
+    }
+}
