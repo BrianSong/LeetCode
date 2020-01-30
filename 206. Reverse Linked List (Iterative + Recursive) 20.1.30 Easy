@@ -40,6 +40,33 @@ class Solution(object)
         :rtype: ListNode
         """
         
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode prev = null;
+        
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+        
+        return prev;
+    }
+}
+        
 Solution no.2: ------------------------------------------- Recursive
 ------------------------------------------------------------------------ O(n) T
 -------------- O(n) S The extra space comes from implicit stack space due to recursion. The recursion will go up to n levels deep
@@ -58,3 +85,34 @@ class Solution(object):
             current.next = prev
             return self.rever_help(current, nextele) # There must be a return here because of syntax: this function is used to return
                                                      # the current node, so, if and else must both have a "return"
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        
+        ListNode prev = null;
+        ListNode curr = head;
+        return reverse(prev, curr);
+    }
+    
+    public ListNode reverse(ListNode prevNode, ListNode currNode) {
+        if (currNode == null) {
+            return prevNode;
+        }
+        
+        ListNode nextNode = currNode.next;
+        currNode.next = prevNode;
+        return reverse(currNode, nextNode);
+    }
+}
