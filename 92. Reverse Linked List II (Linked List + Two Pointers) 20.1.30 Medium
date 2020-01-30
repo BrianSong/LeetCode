@@ -40,3 +40,47 @@ class Solution(object):
             right.next = left
             left = prev.next
         return dummy.next
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (head == null || m > n) {
+            return null;
+        }
+        
+        ListNode dummyNode = new ListNode(0);
+        dummyNode.next = head;
+        ListNode prevNode = dummyNode;
+        
+        ListNode leftNode = head;
+        
+        for (int i = 0; i < m - 1; i ++) {
+            leftNode = leftNode.next;
+            prevNode = prevNode.next;
+        }
+        
+        ListNode rightNode = leftNode;
+        
+        for (int j = 0; j < n - m; j ++) {
+            rightNode = rightNode.next;
+        }
+        
+        while (leftNode != rightNode) {
+            prevNode.next = leftNode.next;
+            leftNode.next = rightNode.next;
+            rightNode.next = leftNode;
+            leftNode = prevNode.next;
+        }    
+        
+        return dummyNode.next;
+        
+    }
+}
