@@ -50,3 +50,36 @@ class Solution(object):
             for j in range(len(stringbuilder[i])):
                 res += stringbuilder[i][j]
         return res
+
+
+Java Version:
+class Solution {
+    public String convert(String s, int numRows) {
+        if (s == null || s.length() == 0 || numRows < 1) {
+            return "";
+        }
+        
+        char[] C = s.toCharArray();
+        
+        StringBuilder[] sb = new StringBuilder[numRows];
+        for (int i = 0; i < sb.length; i ++) {
+            sb[i] = new StringBuilder();
+        }
+        
+        int i = 0;
+        while (i < C.length) {
+            for (int index = 0; index < numRows && i < C.length; index ++) {
+                sb[index].append(C[i ++]);
+            }
+            for (int index = numRows - 2; index >= 1 && i < C.length; index --) {
+                sb[index].append(C[i ++]);
+            }
+        }
+        
+        for (int index = 1; index < numRows; index ++) {
+            sb[0].append(sb[index]);
+        }
+        
+        return sb[0].toString();
+    }
+}
