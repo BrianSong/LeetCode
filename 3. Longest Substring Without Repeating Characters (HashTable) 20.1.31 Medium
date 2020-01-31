@@ -68,3 +68,31 @@ class Solution(object):
                 HashTable[s[i]] = i
                 res = max(res, i - start + 1)                # Update the res no matter under what condition
         return res
+
+Java Version:
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        Map<Character, Integer> hashMap = new HashMap<>();
+        
+        int head = 0;
+        
+        int res = Integer.MIN_VALUE;
+        
+        for (int i = 0; i < s.length(); i ++) {
+            if (hashMap.containsKey(s.charAt(i))) {
+                head = Math.max(hashMap.get(s.charAt(i)) + 1, head);
+            }
+            
+            res = Math.max(res, i - head + 1);
+            
+            hashMap.put(s.charAt(i), i);
+        }
+        
+        return res;
+        
+    }
+}
