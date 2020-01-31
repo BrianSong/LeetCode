@@ -50,3 +50,43 @@ class Solution(object):
                                                         # instead of these new left and right
                                                         # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                                         # "(right - 1) - (left + 1) + 1" instead of "(left + 1) - (right - 1) + 1" !!!!!
+
+Java Version:
+class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        
+        int start = 0;
+        int end = 0;
+        int maxLength = Integer.MIN_VALUE;
+        
+        for (int i = 0; i < s.length(); i ++) {
+            int length1 = expandFromCenter(s, i, i);
+            int length2 = expandFromCenter(s, i, i + 1);
+            
+            if (length1 > length2 && length1 > maxLength) {
+                start = i - length1 / 2;
+                end =  i + length1 / 2;
+                maxLength = length1;
+            } else if (length2 > length1 && length2 > maxLength) {
+                start = i - length2 / 2 + 1;
+                end = i + length2 / 2;
+                maxLength = length2;
+            }
+            
+        }
+        
+        return s.substring(start, end + 1);
+    }
+    
+    public int expandFromCenter(String s, int start, int end) {
+        while (start >= 0 && end < s.length() && s.charAt(start) == s.charAt(end)) {
+            start --;
+            end ++;
+        }
+        
+        return (end - 1) - (start + 1) + 1;
+    }
+}
