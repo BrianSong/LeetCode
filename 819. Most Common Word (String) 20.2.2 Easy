@@ -64,3 +64,37 @@ class Solution(object):
             if not item in banned:
                 counter[item] += 1
         return max(counter, key = counter.get)
+
+
+Java Version:
+class Solution {
+    public String mostCommonWord(String paragraph, String[] banned) {
+        if (paragraph == null || paragraph.length() == 0) {
+            return "";
+        }
+        
+        String[] words = paragraph.toLowerCase().split("\\W+");
+        
+        Set<String> bannedSet = new HashSet<>(Arrays.asList(banned));
+        
+        Map<String, Integer> hashMap = new HashMap<>();
+        
+        for (String word : words) {
+            if (! bannedSet.contains(word)) {
+                hashMap.put(word, hashMap.getOrDefault(word, 0) + 1);
+            }
+        }
+        
+        int maxFrequency = Integer.MIN_VALUE;
+        String res = "";
+        
+        for (String key : hashMap.keySet()) {
+            if (hashMap.get(key) > maxFrequency) {
+                maxFrequency = hashMap.get(key);
+                res = key;
+            }
+        }
+        return res;
+        
+    }
+}
