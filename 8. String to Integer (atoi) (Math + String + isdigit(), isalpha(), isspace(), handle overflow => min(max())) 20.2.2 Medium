@@ -92,3 +92,40 @@ class Solution(object):
         else:
             res = -int(res)
         return min(max(-2**31, res), 2**31 - 1)
+
+
+class Solution {
+    public int myAtoi(String str) {
+        if (str == null || str.length() == 0) {
+            return 0;
+        }
+        
+        int sign = 1, i = 0, n = str.length();
+        
+        while (i < n && str.charAt(i) == ' ') {
+            i ++;
+        }
+        
+        if (i == n) {
+            return 0;
+        }
+        
+        if (str.charAt(i) == '+' || str.charAt(i) == '-') {
+            sign = (str.charAt(i ++) == '+') ? 1 : -1;
+        }
+        
+        int res = 0;
+        
+        while (i < n && Character.isDigit(str.charAt(i))) {
+            int currNum = str.charAt(i ++) - '0';
+            if (res > (Integer.MAX_VALUE - currNum) / 10) {
+                int overFlowRes = (sign == 1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+                return overFlowRes;
+            }
+            res = res * 10 + currNum;
+        }
+        
+        return res * sign;
+        
+    }
+}
