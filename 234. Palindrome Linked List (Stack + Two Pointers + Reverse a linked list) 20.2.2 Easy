@@ -74,3 +74,49 @@ class Solution(object):
             prev = prev.next
             head = head.next
         return True
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null) {
+            return true;
+        }
+        
+        ListNode fast = head;
+        ListNode slow = head;
+        
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        
+        ListNode prev = null;
+        
+        while (slow != null) {
+            ListNode next = slow.next;
+            slow.next = prev;
+            prev = slow;
+            slow = next;
+        }
+        
+        while (prev != null) {
+            if (prev.val != head.val) {
+                return false;
+            }
+            prev = prev.next;
+            head = head.next;
+        }
+        
+        return true;
+        
+    }
+}
