@@ -100,3 +100,45 @@ class Solution(object):
             elif c == 'M':
                 res += 1000
         return res
+
+
+Java Version:
+class Solution {
+    public int romanToInt(String s) {
+        
+        int res = 0;
+        
+        char[] C = s.toCharArray();
+        
+        for (int i = C.length - 1; i >= 0; i --) {
+            if (C[i] == 'I') {
+                if (res < 5) {
+                    res ++;
+                } else {
+                    res --;
+                }
+            } else if (C[i] == 'V') {
+                res += 5;
+            } else if (C[i] == 'X') {
+                if (res < 50) {
+                    res += 10;
+                } else {
+                    res -= 10;
+                }
+            } else if (C[i] == 'L') {
+                res += 50;
+            } else if (C[i] == 'C') {
+                if (res < 500) {
+                    res += 100;
+                } else {
+                    res -= 100;
+                }
+            } else if (C[i] == 'D') {
+                res += 500;
+            } else {
+                res += 1000;
+            }
+        }
+        return res;
+    }
+}
