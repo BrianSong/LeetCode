@@ -50,3 +50,29 @@ class Solution(object):
             return
         self.backtracking(n, left + 1, right, curr + '(', res)
         self.backtracking(n, left, right + 1, curr + ')', res)
+
+
+Java Version:
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        if (n <= 0) {
+            return null;
+        }
+        List<String> res = new ArrayList<>();
+        backtracking(0, 0, n, "", res);
+        return res;
+    }
+    
+    public void backtracking(int left, int right, int n, String path, List<String> res) {
+        if (left == right && left == n) {
+            res.add(path);
+            return;
+        } else if (right > left || left > n || right > n) {
+            return;
+        } else {
+            backtracking(left + 1, right, n, path + "(", res);
+            backtracking(left, right + 1, n, path + ")", res);
+            return;
+        }
+    }
+}
