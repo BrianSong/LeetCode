@@ -85,3 +85,34 @@ class Solution(object):
                                                                              # we splice the nums every time so that as long as
                                                                              # we select this element at this level of recursion,
                                                                              # we will not use it because it is removed from the nums
+
+Java Version:
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
+        
+        List<List<Integer>> res = new ArrayList<>();
+        
+        helper(nums, new ArrayList<>(), res);
+        return res;
+    }
+    
+    public void helper(int[] nums, List<Integer> path, List<List<Integer>> res) {
+        if (path.size() == nums.length) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        
+        for (int i = 0; i < nums.length; i ++) {
+            if (path.contains(nums[i])) {
+                continue;
+            }
+            path.add(nums[i]);
+            helper(nums, path, res);
+            path.remove(path.size() - 1);
+        }
+        return;
+    }
+}
