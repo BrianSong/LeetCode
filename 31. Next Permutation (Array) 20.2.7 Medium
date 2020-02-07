@@ -45,3 +45,51 @@ class Solution(object):
             nums[start], nums[end] = nums[end], nums[start]
             start += 1
             end -= 1
+
+
+Java Version:
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int swapPos1 = -1;
+        for (int i = nums.length - 1; i >= 0; i --) {
+            if (i != nums.length - 1 && nums[i] < nums[i + 1]) {
+                swapPos1 = i;
+                break;
+            }
+        }
+        
+        if (swapPos1 == -1) {
+            swap(nums, 0, nums.length - 1);
+            return;
+        }
+        
+        int swapPos2 = -1;
+        
+        for (int i = swapPos1 + 1; i < nums.length; i ++) {
+            if (nums[i] > nums[swapPos1]) {
+                swapPos2 = i;
+                continue;
+            } else {
+                break;
+            }
+        }
+        
+        int temp = nums[swapPos1];
+        nums[swapPos1] = nums[swapPos2];
+        nums[swapPos2] = temp;
+        
+        swap(nums, swapPos1 + 1, nums.length - 1);
+        
+    }
+    
+    
+    public void swap(int[] nums, int left, int right) {
+        while (left <= right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left ++;
+            right --;
+        }
+    }
+}
