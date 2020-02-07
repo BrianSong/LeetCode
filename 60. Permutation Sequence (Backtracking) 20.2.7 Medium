@@ -76,3 +76,43 @@ class Solution(object):
             return self.backtracking(n - 1, k % SameFirstNum, candidate, res)  # IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                                                                # k & SameFirstNum instead of (k - 1) & SameFirstNum
             # k % SameFirstNum -> small than SameFirstNum
+
+
+Java Version:
+class Solution {
+    public String getPermutation(int n, int k) {
+        if (n <= 0 || k <= 0) {
+            return "";
+        }
+        
+        int[] factorial = new int[n + 1];
+        factorial[0] = 1;
+        int sum = 1;
+        StringBuilder res = new StringBuilder();
+        
+        for (int i = 1; i < factorial.length; i ++) {
+            sum *= i;
+            factorial[i] = sum;
+        }
+        
+        
+        List<Integer> candidates = new ArrayList<>();
+        for (int i = 1; i <= n; i ++) {
+            candidates.add(i);
+        }
+        
+        while (n != 1) {
+            int firstSameNum = factorial[n - 1];
+            int index = (k - 1) / firstSameNum;
+            res.append(candidates.get(index).toString());
+            candidates.remove(index);
+            k = k - index * factorial[n - 1];
+            n -= 1;
+        }
+        
+        res.append(candidates.get(0).toString());
+                
+        return res.toString();
+        
+    }
+}
