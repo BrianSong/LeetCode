@@ -53,3 +53,30 @@ class Solution(object):
                     return False
         return True if not stack else False                           # If stack is not empty, e.x. ['('],
                                                                       # we must return False !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Java Version:
+class Solution {
+    public boolean isValid(String s) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        
+        Stack<Character> stack = new Stack<>();
+        
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '[' || c == '{') {
+                stack.add(c);
+            } else if (stack.size() == 0) {
+                return false;
+            } else if (c == ')' && stack.pop() != '(') {
+                return false;
+            } else if (c == ']' && stack.pop() != '[') {
+                return false;
+            } else if (c == '}' && stack.pop() != '{') {
+                return false;
+            }
+        }
+        
+        return stack.size() == 0;
+    }
+}
