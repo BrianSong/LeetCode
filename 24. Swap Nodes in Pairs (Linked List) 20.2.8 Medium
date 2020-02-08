@@ -35,3 +35,35 @@ class Solution(object):
             head = head.next
             prev = prev.next.next
         return dummynode.next
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        
+        ListNode dummyNode = new ListNode(0);
+        dummyNode.next = head;
+        ListNode prevNode = dummyNode;
+        
+        while (prevNode.next != null && prevNode.next.next != null) {
+            ListNode nextNode = prevNode.next;
+            prevNode.next = prevNode.next.next;
+            nextNode.next = prevNode.next.next;
+            prevNode.next.next = nextNode;
+            prevNode = prevNode.next.next;
+        }
+        
+        return dummyNode.next;
+    }
+}
