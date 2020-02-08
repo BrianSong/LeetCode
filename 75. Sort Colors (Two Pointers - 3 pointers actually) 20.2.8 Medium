@@ -70,3 +70,38 @@ class Solution(object):
         :type nums: List[int]
         :rtype: None Do not return anything, modify nums in-place instead.
         """
+
+
+Java Version:
+class Solution {
+    public void sortColors(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        
+        while (left < nums.length && nums[left] == 0) {
+            left ++;
+        }
+        
+        while (right >= 0 && nums[right] == 2) {
+            right --;
+        }
+                
+        int curr = left;
+        
+        while (curr <= right) {
+            if (nums[curr] == 1) {
+                curr ++;
+            } else if (nums[curr] == 0) {
+                int temp = nums[left];
+                nums[left] = nums[curr];
+                nums[curr] = temp;
+                left ++;
+                curr ++;
+            } else {
+                int temp = nums[right];
+                nums[right] = nums[curr];
+                nums[curr] = temp;
+                right --;
+            }
+        }
+    }
+}
