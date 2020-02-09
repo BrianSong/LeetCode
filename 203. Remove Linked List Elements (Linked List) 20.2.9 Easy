@@ -61,3 +61,35 @@ class Solution(object):
             else:
                 currnode = currnode.next
         return dummynode.next
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) {
+            return null;
+        }
+        
+        ListNode dummyNode = new ListNode(0);
+        dummyNode.next = head;
+        ListNode currNode = dummyNode;
+        
+        while (currNode != null && currNode.next != null) {
+            if (currNode.next.val == val) {
+                currNode.next = currNode.next.next;
+            } else {
+                currNode = currNode.next;
+            }
+        }
+        
+        return dummyNode.next;
+    }
+}
