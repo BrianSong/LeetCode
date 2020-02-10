@@ -108,3 +108,26 @@ class Solution(object):
         if j == n:
             return i - n
         return -1
+
+Java Version:
+class Solution {
+    public int strStr(String haystack, String needle) {
+        if (needle == "" || haystack == "") {
+            return 0;
+        }
+        
+        for (int i = 0; i <= haystack.length() - needle.length(); i ++) {
+            if (haystack.substring(i, i + needle.length()).equals(needle)) {    # We can use == operators for reference comparison 
+                                                                                # (address comparison) and .equals() method for 
+                                                                                # content comparison. 
+                                                                                # In simple words, == checks if both objects point to 
+                                                                                # the same memory location 
+                                                                                # whereas .equals() evaluates to 
+                                                                                # the comparison of values in the objects.
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+}
