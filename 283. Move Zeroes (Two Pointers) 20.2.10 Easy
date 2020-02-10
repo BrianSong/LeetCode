@@ -40,3 +40,29 @@ class Solution(object):
                 zero += 1
                                                                              # if facing 0, zero will not add one, so, in this way, 
                                                                              # zero indicates the 0's index
+
+Java Version:
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int slow = 0;
+        while (slow < nums.length) {
+            if (nums[slow] != 0) {
+                slow ++;
+            } else {
+                break;
+            }
+        }
+        int fast = slow + 1;
+        while (fast < nums.length) {
+            if (nums[fast] == 0) {
+                fast ++;
+            } else {
+                int temp = nums[slow];
+                nums[slow] = nums[fast];
+                nums[fast] = temp;
+                slow ++;
+                fast ++;
+            }
+        }
+    }
+}
