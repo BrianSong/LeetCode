@@ -47,3 +47,35 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
+
+
+Java Version:
+class Solution {
+    public int findMin(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        
+        if (nums[nums.length - 1] > nums[0] || nums.length == 1) {
+            return nums[0];
+        }
+        
+        int left = 0, right = nums.length - 1;
+        
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (mid + 1 < nums.length && nums[mid] > nums[mid + 1]) {
+                return nums[mid + 1];
+            }
+            if (mid - 1 >= 0 && nums[mid] < nums[mid - 1]) {
+                return nums[mid];
+            }
+            if (nums[left] > nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+}
