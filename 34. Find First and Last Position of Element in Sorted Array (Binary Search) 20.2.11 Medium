@@ -45,3 +45,42 @@ class Solution(object):
         if r2 < 0 or nums[r2] != target:
             return [-1, -1]
         return [l1, r2]
+
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if (nums == null || nums.length == 0 || Arrays.asList(nums).contains(target)) {
+            return new int[] {-1, -1};
+        }
+        
+        int l1 = 0, r1 = nums.length - 1;
+        while (l1 <= r1) {
+            int mid1 = (l1 + r1) / 2;
+            if (nums[mid1] < target) {
+                l1 = mid1 + 1;
+            } else {                                                   # 相等时move right pointer
+                r1 = mid1 - 1;
+            }
+        }
+        
+        if (l1 >= nums.length || nums[l1] != target) {
+            return new int[] {-1, -1};
+        }
+        
+        int l2 = 0, r2 = nums.length - 1;
+        while (l2 <= r2) {
+            int mid2 = (l2 + r2) / 2;
+            if (nums[mid2] <= target) {                                # 相等时move left pointer
+                l2 = mid2 + 1;
+            } else {
+                r2 = mid2 - 1;
+            }
+        }
+        
+        if (r2 < 0 || nums[r2] != target) {
+            return new int[] {-1, -1};
+        }
+        
+        return new int[] {l1, r2};
+    }
+}
