@@ -58,3 +58,31 @@ class Solution(object):
                                                    # VERY easy to make Mistakes here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             s = temp
         return s
+
+
+Java Version:
+class Solution {
+    public String countAndSay(int n) {
+        String s = "1";
+        for (int i = 0; i < n - 1; i ++) {
+            Character currLet = s.charAt(0);
+            int count = 0;
+            StringBuilder temp = new StringBuilder();
+            for (char c : s.toCharArray()) {
+                if (c == currLet) {
+                    count ++;
+                } else {
+                    temp.append(Integer.toString(count));
+                    temp.append(Character.toString(currLet));
+                    currLet = c;
+                    count = 1;
+                }
+            }
+            temp.append(Integer.toString(count));
+            temp.append(Character.toString(currLet));
+            s = temp.toString();
+        }
+        
+        return s;
+    }
+}
