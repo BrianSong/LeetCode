@@ -61,3 +61,27 @@ class Solution(object):
         :type matrix: List[List[int]]
         :rtype: None Do not return anything, modify matrix in-place instead.
         """
+        
+        
+Java Version:
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        int top = 0, bot = n - 1, left = 0, right = n - 1;
+        while (n > 1) {
+            for (int i = 0; i < n - 1; i ++) {
+                int temp = matrix[top][left + i];
+                matrix[top][left + i] = matrix[bot - i][left];
+                matrix[bot - i][left] = matrix[bot][right - i];
+                matrix[bot][right - i] = matrix[top + i][right];
+                matrix[top + i][right] = temp;
+            }
+            
+            n -= 2;
+            left ++;
+            right --;
+            top ++;
+            bot --;
+        }
+    }
+}
