@@ -71,11 +71,11 @@ class Solution {
             }
             String key = sb.toString();
             if (!hashMap.containsKey(key)) {
-                hashMap.put(key, new ArrayList());
+                hashMap.put(key, new ArrayList<>());
             }
             hashMap.get(key).add(str);
         }
         
-        return new ArrayList(hashMap.values());
+        return new ArrayList<>(hashMap.values());
     }
 }
