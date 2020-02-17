@@ -42,3 +42,33 @@ class Solution(object):
             x = x * x
             n /= 2
         return res * x
+
+
+Java Version:
+class Solution {
+    public double myPow(double x, int n) {
+        if (x == 1 || n == 0) {
+            return 1;
+        }
+        if (n == 1) {
+            return x;
+        }
+        
+        long N = n;
+        if (n < 0) {
+            x = 1 / x;
+            N = -N;
+        }
+        
+        double res = 1;
+        while (N > 1) {
+            if (N % 2 == 1) {
+                res *= x;
+                N--;
+            }
+            x = x * x;
+            N /= 2;
+        }
+        return res * x;
+    }
+}
