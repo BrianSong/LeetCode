@@ -104,3 +104,57 @@ class Solution(object):
             rightsum = max(rightsum, temp)
         return leftsum + rightsum                                 # leftsum and rightsum can never be float('-inf'), 
                                                                   # They are at least one element since left != right
+
+
+Java Version:
+class Solution {
+    public int maxSubArray(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int currSum = nums[0], maxSum = nums[0];
+        for (int i = 1; i < nums.length; i ++) {
+            currSum = Math.max(nums[i], nums[i] + currSum);
+            maxSum = Math.max(currSum, maxSum);
+        }
+        return maxSum;
+    }
+}
+
+
+class Solution {
+    public int maxSubArray(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        return dnc(nums, 0, nums.length - 1);
+    }
+    
+    public int dnc(int[] nums, int left, int right) {
+        if (left == right) {
+            return nums[left];
+        }
+        int mid = left + (right - left) / 2;
+        int l = dnc(nums, left, mid);
+        int r = dnc(nums, mid + 1, right);
+        int m = cross(nums, left, right, mid);
+        return Math.max(Math.max(l, r), m);
+    }
+    
+    public int cross(int[] nums, int left, int right, int mid) {
+        int leftSum = Integer.MIN_VALUE, temp = 0;
+        for (int i = mid; i >= left; i --) {
+            temp += nums[i];
+            leftSum = Math.max(leftSum, temp);
+        }
+        
+        int rightSum = Integer.MIN_VALUE;
+        temp = 0;
+        for (int i = mid + 1; i <= right; i ++) {
+            temp += nums[i];
+            rightSum = Math.max(rightSum, temp);
+        }
+        
+        return leftSum + rightSum;
+    }
+}
