@@ -39,3 +39,22 @@ class Solution(object):
             '''
             res = max(res, currmax)
         return res
+
+
+Java Version:
+class Solution {
+    public int maxProduct(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int currMax = nums[0], currMin = nums[0], res = nums[0];
+        for (int i = 1; i < nums.length; i ++) {
+            int tempMax = currMax, temMin = currMin;
+            currMax = Math.max(Math.max(tempMax * nums[i], temMin * nums[i]), nums[i]);
+            currMin = Math.min(Math.min(tempMax * nums[i], temMin * nums[i]), nums[i]);
+            res = Math.max(currMax, res);
+        }
+        
+        return res;
+    }
+}
