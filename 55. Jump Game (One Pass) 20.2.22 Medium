@@ -32,3 +32,22 @@ class Solution(object):
                 return True
             i += 1
         return False
+
+
+Java Version:
+class Solution {
+    public boolean canJump(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+        int i = 0, currMax = 0;
+        while (i < nums.length && i <= currMax) {
+            currMax = Math.max(i + nums[i], currMax);
+            if (currMax >= nums.length - 1) {
+                return true;
+            }
+            i ++;
+        }
+        return false;
+    }
+}
