@@ -39,3 +39,44 @@ class Solution(object):
             res[top][right] += number
 
         return res
+
+
+Java Version:
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] matrix = new int[n][n];
+        if (n <= 0) {
+            return matrix;
+        }
+        
+        int top = 0, bot = n - 1, left = 0, right = n - 1;
+        int num = 1;
+        while (n > 1) {
+            for (int i = 0; i < n - 1; i ++) {
+                matrix[top][left + i] = num ++;
+            }
+            for (int i = 0; i < n - 1; i ++) {
+                matrix[top + i][right] = num ++;
+            }
+            for (int i = 0; i < n - 1; i ++) {
+                matrix[bot][right - i] = num ++;
+            }
+            for (int i = 0; i < n - 1; i ++) {
+                matrix[bot - i][left] = num ++;
+            }
+            
+            n -= 2;
+            left ++;
+            right --;
+            top ++;
+            bot --;
+        }
+        
+        if (n == 1) {
+            matrix[top][left] = num;
+        }
+        
+        return matrix;
+        
+    }
+}
