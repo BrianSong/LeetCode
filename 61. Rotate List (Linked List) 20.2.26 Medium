@@ -53,3 +53,43 @@ class Solution(object):
         head = slow.next
         slow.next = None
         return head
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        int length = 0;
+        ListNode pointer = head;
+        while (pointer != null) {
+            pointer = pointer.next;
+            length ++;
+        }
+        k %= length;
+        if (k == 0) {
+            return head;
+        }
+        ListNode slow = head, fast = head;
+        for (int i = 0; i < k; i ++) {
+            fast = fast.next;
+        }
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        ListNode finalHead = slow.next;
+        slow.next = null;
+        fast.next = head;
+        return finalHead;
+    }
+}
