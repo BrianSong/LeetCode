@@ -60,3 +60,32 @@ class Solution(object):
             else:
                 stack.append(item)
         return "/" + "/".join(stack)
+
+
+Java Version:
+class Solution {
+    public String simplifyPath(String path) {
+        if (path == null || path.length() == 0) {
+            return "";
+        }
+        Stack<String> stack = new Stack<>();
+        String[] components = path.split("/");
+        for (String item : components) {
+            if (item.equals(".") || item.isEmpty()) {
+                continue;
+            } else if (item.equals("..")) {
+                if (stack.size() != 0) {
+                    stack.pop();
+                }
+            } else {
+                stack.add(item);
+            }
+        }
+        StringBuilder res = new StringBuilder();
+        for (String s : stack) {
+            res.append("/");
+            res.append(s);
+        }
+        return res.length() > 0 ? res.toString() : "/";
+    }
+}
