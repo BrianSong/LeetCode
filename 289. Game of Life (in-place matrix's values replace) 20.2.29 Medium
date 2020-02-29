@@ -121,3 +121,103 @@ class Solution(object):
         return live
         
 # The infinite large board follow up may be addressed in the future
+
+
+
+Java Version:
+class Solution {
+    public void gameOfLife(int[][] board) {
+        int m = board.length, n = board[0].length;
+        int[][] prev = new int[m][n];
+        for (int i = 0; i < m; i ++) {
+            for (int j = 0; j < n; j ++) {
+                prev[i][j] = board[i][j];
+            }
+        }
+        for (int i = 0; i < m; i ++) {
+            for (int j = 0; j < n; j ++) {
+                if (prev[i][j] == 1) {
+                    if (numOfLiveNeigh(prev, i, j) < 2 || numOfLiveNeigh(prev, i, j) > 3) {
+                        board[i][j] = 0;
+                    } else {
+                        board[i][j] = 1;
+                    }
+                } else {
+                    if (numOfLiveNeigh(prev, i, j) == 3) {
+                        board[i][j] = 1;
+                    }
+                }
+            }
+        }
+    }
+    public int numOfLiveNeigh(int[][] prev, int r, int c) {
+        int liveNeigh = 0;
+        for (int i = -1; i <= 1; i ++) {
+            for (int j = -1; j <= 1; j ++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                } else {
+                    if (0 <= r + i && r + i < prev.length && 0 <= c + j && c + j < prev[0].length) {
+                        if (prev[r + i][c + j] == 1) {
+                            liveNeigh ++;
+                        }
+                    }
+                }
+            }
+        }
+        return liveNeigh;
+    }
+}
+
+
+
+Java Version:
+class Solution {
+    public void gameOfLife(int[][] board) {
+        int m = board.length, n = board[0].length;
+        for (int i = 0; i < m; i ++) {
+            for (int j = 0; j < n; j ++) {
+                if (board[i][j] == 1) {
+                    if (numOfLiveNeigh(board, i, j) < 2 || numOfLiveNeigh(board, i, j) > 3) {
+                        board[i][j] = -1;
+                    }
+                } else if (board[i][j] == 0) {
+                    if (numOfLiveNeigh(board, i, j) == 3) {
+                        board[i][j] = 2;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < m; i ++) {
+            for (int j = 0; j < n; j ++) {
+                System.out.println(board[i][j]);
+            }
+        }
+        for (int i = 0; i < m; i ++) {
+            for (int j = 0; j < n; j ++) {
+                if (board[i][j] == -1) {
+                    board[i][j] = 0;
+                } else if (board[i][j] == 2) {
+                    board[i][j] = 1;
+                }
+            }
+        }
+    }
+    public int numOfLiveNeigh(int[][] board, int r, int c) {
+        int liveNeigh = 0;
+        for (int i = -1; i <= 1; i ++) {
+            for (int j = -1; j <= 1; j ++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                } else {
+                    if (0 <= r + i && r + i < board.length && 0 <= c + j && c + j < board[0].length) {
+                        if (board[r + i][c + j] == 1 || board[r + i][c + j] == -1) {
+                            liveNeigh ++;
+                        }
+                    }
+                }
+            }
+        }
+        return liveNeigh;
+    }
+}
