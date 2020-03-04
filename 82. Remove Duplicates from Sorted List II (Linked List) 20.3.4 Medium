@@ -37,3 +37,38 @@ class Solution(object):
                 pre = pre.next
                 head = head.next
         return dummynode.next
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        ListNode dummyNode = new ListNode(0);
+        dummyNode.next = head;
+        ListNode prevNode = dummyNode, currNode = head;
+        while (currNode != null && currNode.next != null) {
+            if (currNode.val == currNode.next.val) {
+                while (currNode != null && currNode.next != null && currNode.val == currNode.next.val) {
+                    currNode = currNode.next;
+                }
+                currNode = currNode.next;
+                prevNode.next = currNode;
+            } else {
+                prevNode.next = currNode;
+                prevNode = currNode;
+                currNode = currNode.next;
+            }
+        }
+        return dummyNode.next;
+    }
+}
