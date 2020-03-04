@@ -50,3 +50,49 @@ class Solution(object):
         :type x: int
         :rtype: ListNode
         """
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        if (head == null) {
+            return head;
+        }
+        ListNode dummyNode = new ListNode(0);
+        dummyNode.next = head;
+        ListNode boundaryNode = dummyNode, prevNode = dummyNode, currNode = head;
+        while (currNode != null) {
+            if (boundaryNode == prevNode) {
+                if (currNode.val >= x) {
+                    currNode = currNode.next;
+                    prevNode = prevNode.next;
+                } else {
+                    boundaryNode = boundaryNode.next;
+                    currNode = currNode.next;
+                    prevNode = prevNode.next;
+                }
+            } else {
+                if (currNode.val >= x) {
+                    currNode = currNode.next;
+                    prevNode = prevNode.next;
+                } else {
+                    prevNode.next = currNode.next;
+                    ListNode nextNode = boundaryNode.next;
+                    currNode.next = nextNode;
+                    boundaryNode.next = currNode;
+                    currNode = prevNode.next;
+                    boundaryNode = boundaryNode.next;
+                }
+            }
+        }
+        return dummyNode.next;
+    }
+}
