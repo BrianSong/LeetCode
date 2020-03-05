@@ -87,3 +87,26 @@ class Solution(object):
             dp_1, dp_2 = curr_dp, dp_1                                   # MUST update these two TOGETHER in one line !!!!!
                                                                          # Instead of: dp_1 = curr_dp
         return dp_1                                                      #             dp_2 = dp_1 (this dp_1 has already been updated)
+
+
+
+Java Version:
+class Solution {
+    public int numDecodings(String s) {
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+        int[] dp = new int[s.length() + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i < dp.length; i ++) {
+            if (s.charAt(i - 1) != '0') {
+                dp[i] += dp[i - 1];
+            }
+            if (10 <= Integer.valueOf(s.substring(i - 2, i)) && Integer.valueOf(s.substring(i - 2, i)) <= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+        return dp[dp.length - 1];
+    }
+}
