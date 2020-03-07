@@ -99,7 +99,7 @@ class Solution {
 }
 
 
-Java Version:
+Java Version for solution no.2:
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
