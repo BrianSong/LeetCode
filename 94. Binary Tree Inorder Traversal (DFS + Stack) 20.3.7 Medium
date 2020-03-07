@@ -124,3 +124,38 @@ class Solution {
         dfs(root.right, res);
     }
 }
+
+Java Version for solution no.2:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Stack<TreeNode> s = new Stack<>();
+        TreeNode currNode = root;
+        s.add(currNode);
+        while (s.size() != 0) {
+            while (currNode.left != null) {
+                s.add(currNode.left);
+                currNode = currNode.left;
+            }
+            TreeNode popNode = s.pop();
+            res.add(popNode.val);
+            if (popNode.right != null) {
+                s.add(popNode.right);
+                currNode = popNode.right;
+            }
+        }
+        return res;
+    }
+}
