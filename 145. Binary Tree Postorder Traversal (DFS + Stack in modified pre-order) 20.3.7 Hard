@@ -94,3 +94,37 @@ class Solution {
         res.add(root.val);
     }
 }
+
+
+Java Version for solution no.2:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Stack<TreeNode> s = new Stack<>();
+        s.add(root);
+        while (s.size() != 0) {
+            TreeNode popNode = s.pop();
+            res.add(popNode.val);
+            if (popNode.left != null) {
+                s.add(popNode.left);
+            }
+            if (popNode.right != null) {
+                s.add(popNode.right);
+            }
+        }
+        Collections.reverse(res);
+        return res;
+    }
+}
