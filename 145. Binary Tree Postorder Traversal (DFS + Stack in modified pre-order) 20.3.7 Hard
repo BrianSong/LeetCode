@@ -63,3 +63,34 @@ class Solution(object):
             if pop_element.right:
                 stack.append(pop_element.right)
         return res[::-1]                                # Reverse the res
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        dfs(root, res);
+        return res;
+    }
+    
+    public void dfs(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.left, res);
+        dfs(root.right, res);
+        res.add(root.val);
+    }
+}
