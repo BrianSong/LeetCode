@@ -99,3 +99,33 @@ class Solution(object):
         right = self.isValidBST(root.right, root.val, max)
         mid = min < root.val < max
         return left and right and mid
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return helper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    
+    public boolean helper(TreeNode currNode, long lowerBound, long upperBound) {
+        if (currNode == null) {
+            return true;
+        }
+        if (currNode.val <= lowerBound || currNode.val >= upperBound) {
+            return false;
+        }
+        return helper(currNode.left, lowerBound, currNode.val) && helper(currNode.right, currNode.val, upperBound);
+    }
+}
