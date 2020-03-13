@@ -98,4 +98,49 @@ class Solution(object):
         self.memo[(low, high)] = curr
         return curr                                                   
         
-        
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    Map<int[], List<TreeNode>> s = new HashMap<>(); 
+    public List<TreeNode> generateTrees(int n) {
+        if (n <= 0) {
+            return new ArrayList<TreeNode>();
+        }
+        return dnc(1, n);
+    }
+    
+    public List<TreeNode> dnc(int left, int right) {
+        List<TreeNode> curr = new ArrayList<>();
+        if (left > right) {
+            curr.add(null);
+            return curr;
+        }
+        int[] past = new int[] {left, right};
+        if (s.containsKey(past)) {
+            return s.get(past);
+        }
+        for (int i = left; i <= right; i ++) {
+            List<TreeNode> leftSubNode = dnc(left, i - 1);
+            List<TreeNode> rightSubNode = dnc(i + 1, right);
+            for (TreeNode leftNode : leftSubNode) {
+                for (TreeNode rightNode : rightSubNode) {
+                    TreeNode currNode = new TreeNode(i);
+                    currNode.left = leftNode;
+                    currNode.right = rightNode;
+                    curr.add(currNode);
+                }
+            }
+        }
+        s.put(new int[] {left, right}, curr);
+        return curr;
+    }
+}
