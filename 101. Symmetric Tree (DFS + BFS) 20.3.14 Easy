@@ -67,3 +67,74 @@ class Solution(object):
             queue.append(t1.right)
             queue.append(t2.left)
         return True                             # If the BFS passes all False cases, then we can return True
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return checkIfSymmetric(root.left, root.right);
+    }
+    
+    public boolean checkIfSymmetric(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        return p.val == q.val && checkIfSymmetric(p.left, q.right) && checkIfSymmetric(p.right, q.left);
+    }
+}
+
+
+Java Version no.2:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        q.offer(root);
+        while (q.size() != 0) {
+            TreeNode node1 = q.poll();
+            TreeNode node2 = q.poll();
+            if (node1 == null && node2 == null) {
+                continue;
+            }
+            if (node1 == null || node2 == null) {
+                return false;
+            }
+            if (node1.val != node2.val) {
+                return false;
+            }
+            
+            q.offer(node1.left);
+            q.offer(node2.right);
+            q.offer(node1.right);
+            q.offer(node2.left);
+        }
+        return true;
+    }
+}
