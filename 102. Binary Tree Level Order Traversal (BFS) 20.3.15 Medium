@@ -48,3 +48,41 @@ class Solution(object):
         :type root: TreeNode
         :rtype: List[List[int]]
         """
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (q.size() != 0) {
+            List<Integer> curr = new ArrayList<>();
+            int currIterTime = q.size();
+            for (int i = 0; i < currIterTime; i ++) {
+                TreeNode popNode = q.poll();
+                curr.add(popNode.val);
+                if (popNode.left != null) {
+                    q.offer(popNode.left);
+                }
+                if (popNode.right != null) {
+                    q.offer(popNode.right);
+                }
+            }
+            res.add(curr);
+        }
+        return res;
+    }
+}
