@@ -78,7 +78,7 @@ class Solution(object):
             we keep the principle to find the "minimum" depth
             '''
 
-Java Version:
+Java Version for DFS:
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -100,5 +100,46 @@ class Solution {
             return Math.max(minDepth(root.left), minDepth(root.right)) + 1;
         }
         return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+    }
+}
+
+
+Java Version for BFS:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int level = 0;
+        boolean findNearestLeaf = false;
+        while (q.size() != 0 && !findNearestLeaf) {
+            int currSize = q.size();
+            for (int i = 0; i < currSize; i ++) {
+                TreeNode popNode = q.poll();
+                if (popNode.left == null && popNode.right == null) {
+                    findNearestLeaf = true;
+                    break;
+                }
+                if (popNode.left != null) {
+                    q.offer(popNode.left);
+                }
+                if (popNode.right != null) {
+                    q.offer(popNode.right);
+                }
+            }
+            level ++;
+        }
+        return level;
     }
 }
