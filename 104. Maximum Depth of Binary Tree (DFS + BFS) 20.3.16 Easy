@@ -65,3 +65,62 @@ Best case for BFS: severely unbalanced linear tree which contains only 1 element
 Worse case for BFS: With a perfect fully balanced binary tree, this would be (n/2 + 1) nodes (the very last level) => O(logN) == O(N)
 Worst Case for DFS will be the best case for BFS, and the Best Case for DFS will be the worst case for BFS !!!!
 '''
+
+
+Java Version for DFS:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+}
+
+
+Java Version for BFS:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int level = 0;
+        while (q.size() != 0) {
+            int currSize = q.size();
+            for (int i = 0; i < currSize; i ++) {
+                TreeNode popNode = q.poll();
+                if (popNode.left != null) {
+                    q.offer(popNode.left);
+                }
+                if (popNode.right != null) {
+                    q.offer(popNode.right);
+                }
+            }
+            level ++;
+        }
+        return level;
+    }
+}
