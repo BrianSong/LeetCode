@@ -68,3 +68,44 @@ class Solution(object):
             '''
             else:
                 return max(depth_left, depth_right) + 1    # "+ 1" is the key in this algorithm that connecting inside the recursion
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        if (dfs(root) != -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public int dfs(TreeNode currNode) {
+        if (currNode == null) {
+            return 0;
+        }
+        int leftDepth = dfs(currNode.left);
+        int rightDepth = dfs(currNode.right);
+        if (leftDepth == -1 || rightDepth == -1) {
+            return -1;
+        } else {
+            if (Math.abs(leftDepth - rightDepth) > 1) {
+                return -1;
+            } else {
+                return Math.max(leftDepth, rightDepth) + 1;
+            }
+        }
+    }
+}
