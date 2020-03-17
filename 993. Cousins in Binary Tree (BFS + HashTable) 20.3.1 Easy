@@ -68,3 +68,55 @@ class Solution(object):
                 else:
                     return False
         return False
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isCousins(TreeNode root, int x, int y) {
+        if (root == null) {
+            return false;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (q.size() != 0) {
+            int currSize = q.size();
+            boolean findX = false, findY = false;
+            for (int i = 0; i < currSize; i ++) {
+                TreeNode popNode = q.poll();
+                if (popNode.val == x) {
+                    findX = true;
+                }
+                if (popNode.val == y) {
+                    findY = true;
+                }
+                if (popNode.left != null && popNode.right != null) {
+                    if (popNode.left.val == x && popNode.right.val == y) {
+                        return false;
+                    }
+                    if  (popNode.right.val == x && popNode.left.val == y) {
+                        return false;
+                    }
+                }
+                if (popNode.left != null) {
+                    q.offer(popNode.left);
+                }
+                if (popNode.right != null) {
+                    q.offer(popNode.right);
+                }
+            }
+            if (findX && findY) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
