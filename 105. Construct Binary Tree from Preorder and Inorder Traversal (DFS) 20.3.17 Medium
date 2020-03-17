@@ -115,3 +115,40 @@ class Solution(object):
         currroot.right = self.dfs(preorder, inorder, pre_start + 1 + (idx - in_start), idx + 1, in_end)
         return currroot
 
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0 || inorder == null || inorder.length == 0) {
+            return null;
+        }
+        return build(preorder, inorder, 0, 0, inorder.length - 1);
+    }
+    
+    public TreeNode build(int[] preorder, int[] inorder, int preStart, int inStart, int inEnd) {
+        if (preStart >= preorder.length || inStart > inEnd) {
+            return null;
+        }
+        TreeNode currNode = new TreeNode(preorder[preStart]);
+        int index = 0;
+        for (int i = inStart; i <= inEnd; i ++) {
+            if (inorder[i] == preorder[preStart]){
+                index = i;
+                break;
+            }
+        }
+        int numberOfLeft = index - inStart;
+        currNode.left = build(preorder, inorder, preStart + 1, inStart, index - 1);
+        currNode.right = build(preorder, inorder, preStart + numberOfLeft + 1, index + 1, inEnd);
+        return currNode;
+    }
+}
