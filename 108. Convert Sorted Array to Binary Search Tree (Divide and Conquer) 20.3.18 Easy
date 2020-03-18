@@ -52,3 +52,38 @@ class Solution(object):
         self.to_bst_help(nums, mid + 1, end)           
         '''
         return node                                          # As the question required 
+
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
+        return build(nums, 0, nums.length - 1);
+    }
+    
+    public TreeNode build(int[] nums, int left, int right) {
+        if (left > right) {
+            return null;
+        }
+        if (left == right) {
+            return new TreeNode(nums[left]);
+        }
+        int mid = left + (right - left) / 2;
+        TreeNode currNode = new TreeNode(nums[mid]);
+        currNode.left = build(nums, left, mid - 1);
+        currNode.right = build(nums, mid + 1, right);
+        return currNode;
+    }
+}
