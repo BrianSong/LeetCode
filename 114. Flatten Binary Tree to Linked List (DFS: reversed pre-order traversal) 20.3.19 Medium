@@ -56,3 +56,33 @@ class Solution(object):
             Because the left subtree information has already be saved into the self.prevnode in the last recursion level
             '''
             self.prevnode = root          # Update the global variable to store the current node
+
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    TreeNode prevNode = null;
+    public void flatten(TreeNode root) {
+        dfsReversePre(root);
+    }
+    
+    public void dfsReversePre(TreeNode currNode) {
+        if (currNode == null) {
+            return;
+        }
+        dfsReversePre(currNode.right);
+        dfsReversePre(currNode.left);
+        currNode.right = prevNode;
+        currNode.left = null;
+        prevNode = currNode;
+    }
+}
