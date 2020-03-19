@@ -70,3 +70,31 @@ class Solution(object):
                         -2   2
                         /     \
                        2      -2
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int pathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return 0;
+        }
+        return count(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+    }
+    
+    public int count(TreeNode root, int sum) {
+        if (root == null) {
+            return 0;
+        }
+        return root.val == sum ? 1 + count(root.left, sum - root.val) + count(root.right, sum - root.val) \
+        : count(root.left, sum - root.val) + count(root.right, sum - root.val);
+    }
+}
