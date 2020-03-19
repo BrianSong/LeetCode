@@ -98,3 +98,38 @@ class Solution {
         : count(root.left, sum - root.val) + count(root.right, sum - root.val);
     }
 }
+
+
+Java Version Solution No.2: ---------------------------------------- O(n) T / S
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    Map<Integer, Integer> numToFreq = new HashMap<>();
+    public int pathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return 0;
+        }
+        numToFreq.put(0, 1);
+        return dfs(root, 0, sum);
+    }
+    
+    public int dfs(TreeNode currNode, int currSum, int sum) {
+        if (currNode == null) {
+            return 0;
+        }
+        currSum += currNode.val;
+        int curr = numToFreq.getOrDefault(currSum - sum, 0);
+        numToFreq.put(currSum, numToFreq.getOrDefault(currSum, 0) + 1);
+        int left = dfs(currNode.left, currSum, sum);
+        int right = dfs(currNode.right, currSum, sum);
+        numToFreq.put(currSum, numToFreq.getOrDefault(currSum, 0) - 1);
+        return curr + left + right;
+    }
+}
