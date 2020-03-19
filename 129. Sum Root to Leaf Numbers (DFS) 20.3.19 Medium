@@ -85,4 +85,38 @@ class Solution(object):
                 return
             self.dfs(root.left, value*10+root.val)               # Go left, "* 10" here is very clever
             self.dfs(root.right, value*10+root.val)              # Go right
-            
+
+
+
+Java Version but without using global variable:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return dfs(root, 0);
+    }
+    
+    public int dfs(TreeNode currNode, int currSum) {
+        if (currNode.left == null && currNode.right == null) {
+            return currSum * 10 + currNode.val;
+        }
+        int left = 0, right = 0;
+        if (currNode.left != null) {
+            left = dfs(currNode.left, currSum * 10 + currNode.val);
+        }
+        if (currNode.right != null) {
+            right = dfs(currNode.right, currSum * 10 + currNode.val);
+        }
+        return left + right;
+    }
+}
