@@ -29,3 +29,21 @@ class Solution(object):
                 res[j] += res[j - 1]              # As we know, res[i][j] = res[i - 1][j - 1] + res[i - 1][j], in this O(k)
                                                   # space complexity, res[j] is updated using the previous res[j] and res[j - 1]
         return res
+
+
+Java Version:
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> currRow = new ArrayList<>();
+        if (rowIndex < 0) {
+            return currRow;
+        }
+        for (int i = 0; i <= rowIndex; i ++) {
+            currRow.add(0, 1);
+            for (int j = 1; j < currRow.size() - 1; j ++) {
+                currRow.set(j, currRow.get(j) + currRow.get(j + 1));
+            }
+        }
+        return currRow;
+    }
+}
