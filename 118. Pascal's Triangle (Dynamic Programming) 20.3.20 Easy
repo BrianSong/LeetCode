@@ -33,3 +33,24 @@ class Solution(object):
             for j in range(1, len(res[i]) - 1):
                 res[i][j] = res[i - 1][j - 1] + res[i - 1][j]
         return res
+
+
+Java Version:
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (numRows <= 0) {
+            return res;
+        }
+        List<Integer> currRow = new ArrayList<>();
+        
+        for (int i = 0; i < numRows; i ++) {
+            currRow.add(0, 1);
+            for (int j = 1; j < currRow.size() - 1; j ++) {
+                currRow.set(j, currRow.get(j) + currRow.get(j + 1));
+            }
+            res.add(new ArrayList<>(currRow));
+        }
+        return res;
+    }
+}
