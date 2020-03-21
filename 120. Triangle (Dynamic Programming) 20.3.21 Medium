@@ -1,0 +1,89 @@
+120. Triangle
+Medium
+
+1059
+
+114
+
+Favorite
+
+Share
+Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+
+For example, given the following triangle
+
+[
+     [2],
+    [3,4],
+   [6,5,7],
+  [4,1,8,3]
+]
+The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).
+
+Note:
+
+Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.
+
+Solution: ---------------------------------------------------------- "minimun" path sum -> Dynamic Programming obviously
+----------------------------------------------------- O(n) T, O(n) S
+class Solution(object):
+    def minimumTotal(self, triangle):
+        """
+        :type triangle: List[List[int]]
+        :rtype: int
+        """
+        if not triangle:
+            return None
+        dp = triangle[:][:]
+        for i in range(1, len(triangle)):
+            for j in range(len(triangle[i])):
+                if j == 0:
+                    dp[i][j] = dp[i - 1][j] + triangle[i][j]
+                elif j == len(triangle[i]) - 1:
+                    dp[i][j] = dp[i - 1][j - 1] + triangle[i][j]
+                else:
+                    dp[i][j] = min(dp[i - 1][j], dp[i - 1][j - 1]) + triangle[i][j]
+        return min(dp[-1])
+
+
+Java Version no.1: ----------------------------- Simple recursion but TLE because O(n^n) T
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle == null) {
+            return 0;
+        }
+        return findMin(triangle, 0, 0);
+    }
+    
+    public int findMin(List<List<Integer>> triangle, int currRow, int currIndex) {
+        if (currRow == triangle.size() - 1) {
+            return triangle.get(currRow).get(currIndex);
+        }
+        
+        return Math.min(findMin(triangle, currRow + 1, currIndex), findMin(triangle, currRow + 1, currIndex + 1)) + \ 
+        triangle.get(currRow).get(currIndex);
+    }
+}
+
+
+Java Version no.2: -------------------------------- DP => traditional optimization way for backtracking problem
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle == null) {
+            return 0;
+        }
+        List<List<Integer>> dp = new ArrayList<>(triangle);
+        for (int i = 1; i < dp.size(); i ++) {
+            for (int j = 0; j < dp.get(i).size(); j ++) {
+                if (j == 0) {
+                    dp.get(i).set(j, dp.get(i - 1).get(j) + dp.get(i).get(j));
+                } else if (j == dp.get(i).size() - 1) {
+                    dp.get(i).set(j, dp.get(i - 1).get(j - 1) + dp.get(i).get(j));
+                } else {
+                    dp.get(i).set(j, Math.min(dp.get(i - 1).get(j - 1), dp.get(i - 1).get(j)) + dp.get(i).get(j));
+                }
+            }
+        }
+        return Collections.min(dp.get(dp.size() - 1));
+    }
+}
