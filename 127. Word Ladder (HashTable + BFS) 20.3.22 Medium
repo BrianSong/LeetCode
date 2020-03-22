@@ -156,3 +156,46 @@ class Solution(object):
                             queue.append(replace_word)
             step += 1
         return 0
+
+
+Java Version:
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String word : wordList) {
+            for (int i = 0; i < word.length(); i ++) {
+                String newWord = word.substring(0, i) + "*" + word.substring(i + 1, word.length());
+                List<String> currStringList = map.getOrDefault(newWord, new ArrayList<>());
+                currStringList.add(word);
+                map.put(newWord, currStringList);
+            }
+        }
+        Set<String> visited = new HashSet<>();
+        Queue<String> q = new LinkedList<>();
+        int length = 1;
+        visited.add(beginWord);
+        q.add(beginWord);
+        while (q.size() != 0) {
+            int currSize = q.size();
+            for (int iter = 0; iter < currSize; iter ++){
+                String popString = q.poll();
+                if (popString.equals(endWord)) {
+                    return length;
+                }
+                for (int i = 0; i < popString.length(); i ++) {
+                    String transformString = popString.substring(0, i) + "*" + popString.substring(i + 1, popString.length());
+                    if (map.containsKey(transformString)) {
+                        for (String nextString : map.get(transformString)) {
+                            if (! visited.contains(nextString)) {
+                                q.add(nextString);
+                                visited.add(nextString);
+                            }
+                        }
+                    }
+                }
+            }
+            length ++;
+        }
+        return 0;
+    }
+}
