@@ -50,3 +50,42 @@ class Solution(object):                                        # This question a
         
     def isPali(self, s):
         return s == s[::-1]
+
+
+Java Version:
+class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> res = new ArrayList<>();
+        if (s == null || s.length() == 0) {
+            return res;
+        }
+        backtracking(s, new ArrayList<>(), res);
+        return res;
+    }
+    
+    public void backtracking(String currS, List<String> path, List<List<String>> res) {
+        if (currS.length() == 0) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 1; i <= currS.length(); i ++) {
+            if (checkPalin(currS.substring(0, i))) {
+                path.add(currS.substring(0, i));
+                backtracking(currS.substring(i, currS.length()), path, res);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+    
+    public boolean checkPalin(String s) {
+        int left = 0, right = s.length() - 1;
+        while (left <= right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left ++;
+            right --;
+        }
+        return true;
+    }
+}
