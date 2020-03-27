@@ -89,3 +89,80 @@ class Solution(object):
                 if s[j:i] in wordDict and dp[j]:   # 且此刻的subarray也在wordDict中，此时的状态也是True
                     dp[i] = True
         return dp[-1]                              # Step no.4
+
+
+
+Java Version no.1: --------------------------------------- O(n^n)
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
+            return false;
+        }
+        Set<String> set = new HashSet<>(wordDict);
+        return backtracking(s, set, 0);
+    }
+    
+    public boolean backtracking(String s, Set<String> set, int start) {
+        if (start == s.length()) {
+            return true;
+        }
+        for (int end = start + 1; end <= s.length(); end ++) {
+            if (set.contains(s.substring(start, end)) && backtracking(s, set, end)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+Java Version no.2: ------------------------------------------ O(n^2)
+class Solution {
+    Map<Integer, Boolean> memo = new HashMap<>();
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
+            return false;
+        }
+        Set<String> set = new HashSet<>(wordDict);
+        return backtracking(s, set, 0);
+    }
+    
+    public boolean backtracking(String s, Set<String> set, int start) {
+        if (start == s.length()) {
+            return true;
+        }
+        if (memo.containsKey(start)) {
+            return memo.get(start);
+        }
+        for (int end = start + 1; end <= s.length(); end ++) {
+            if (set.contains(s.substring(start, end)) && backtracking(s, set, end)) {
+                memo.put(start, true);
+                return true;
+            }
+        }
+        memo.put(start, false);
+        return false;
+    }
+}
+
+
+Java Version no.3: ------------------------------ O(n^3)
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
+            return false;
+        }
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i < dp.length; i ++) {
+            for (int j = i - 1; j >= 0; j --) {
+                if (dp[j] && wordDict.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        System.out.println(dp);
+        return dp[dp.length - 1];
+    }
+}
