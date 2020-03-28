@@ -35,3 +35,29 @@ class Solution(object):
             if curr == 1:
                 return True
             n = curr
+
+
+Java Version:
+class Solution {
+    public boolean isHappy(int n) {
+        if (n <= 0) {
+            return false;
+        }
+        Set<Integer> set = new HashSet<>();
+        while (true) {
+            int temp = 0;
+            while (n != 0) {
+                temp += Math.pow((n % 10), 2);
+                n /= 10;
+            }
+            n = temp;
+            if (set.contains(n)) {
+                return false;
+            }
+            set.add(n);
+            if (n == 1) {
+                return true;
+            }
+        }
+    }
+}
