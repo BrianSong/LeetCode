@@ -47,3 +47,28 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
+        
+        
+Java Version:
+class Solution {
+    public int numSquares(int n) {
+        if (n <= 0) {
+            return -1;
+        }
+        int[] leastPSN = new int[n + 1];
+        leastPSN[0] = 0;
+        for (int i = 1; i <= n; i ++) {
+            int localRes = Integer.MAX_VALUE;
+            int j = 1;
+            while (i - j * j >= 0) {
+                int currRes = leastPSN[i - j * j] + 1;
+                if (currRes < localRes) {
+                    localRes = currRes;
+                }
+                j ++;
+            }
+            leastPSN[i] = localRes;
+        }
+        return leastPSN[leastPSN.length - 1];
+    }
+}
