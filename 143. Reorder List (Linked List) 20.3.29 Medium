@@ -48,3 +48,48 @@ class Solution(object):
             first.next = second
             second.next = nextnodeFirst
             first, second = nextnodeFirst, nextnodeSecond
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode secondHead = slow.next;
+        slow.next = null;
+        ListNode reversedSecondHead = reverseLL(secondHead);
+        while (reversedSecondHead != null) {
+            ListNode nextNodePart1 = head.next;
+            ListNode nextNodePart2 = reversedSecondHead.next;
+            head.next = reversedSecondHead;
+            reversedSecondHead.next = nextNodePart1;
+            head = nextNodePart1;
+            reversedSecondHead = nextNodePart2;
+        }
+    }
+    
+    public ListNode reverseLL(ListNode head) {
+        ListNode prevNode = null;
+        while (head != null) {
+            ListNode nextNode = head.next;
+            head.next = prevNode;
+            prevNode = head;
+            head = nextNode;
+        }
+        return prevNode;
+    }
+}
