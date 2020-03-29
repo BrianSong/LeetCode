@@ -36,3 +36,30 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
+
+
+Java Version:
+class Solution {
+    public int nthUglyNumber(int n) {
+        if (n <= 0) {
+            return -1;
+        }
+        int[] primeSequence = new int[n];
+        primeSequence[0] = 1;
+        int index2 = 0, index3 = 0, index5 = 0;
+        for (int i = 1; i < primeSequence.length; i ++) {
+            int currMin = Math.min(Math.min(primeSequence[index2] * 2, primeSequence[index3] * 3), primeSequence[index5] * 5);
+            primeSequence[i] = currMin;
+            if (currMin == primeSequence[index2] * 2) {
+                index2 ++;
+            }
+            if (currMin == primeSequence[index3] * 3) {
+                index3 ++;
+            }
+            if (currMin == primeSequence[index5] * 5) {
+                index5 ++;
+            }
+        }
+        return primeSequence[primeSequence.length - 1];
+    }
+}
