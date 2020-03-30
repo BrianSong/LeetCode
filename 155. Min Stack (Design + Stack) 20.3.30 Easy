@@ -71,3 +71,48 @@ class MinStack(object):
 # obj.pop()
 # param_3 = obj.top()
 # param_4 = obj.getMin()
+
+
+Java Version:
+class MinStack {
+
+    /** initialize your data structure here. */
+    Stack<int[]> s = new Stack<>();                         # Must be here !
+    public MinStack() {
+    }
+    
+    public void push(int x) {
+        int currMin;
+        if (s.size() == 0) {
+            currMin = x;
+        } else {
+            if (s.peek()[1] > x) {
+                currMin = x;
+            } else {
+                currMin = s.peek()[1];
+            }
+        }
+        s.add(new int[] {x, currMin});
+    }
+    
+    public void pop() {
+        s.pop();
+    }
+    
+    public int top() {
+        return s.peek()[0];
+    }
+    
+    public int getMin() {
+        return s.peek()[1];
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
