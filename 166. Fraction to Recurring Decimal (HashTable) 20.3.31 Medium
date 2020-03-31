@@ -62,3 +62,7 @@ class Solution(object):
         if (num < 0 and deno > 0) or (num > 0 and deno < 0):  # Handle negative cases
             res = '-' + res
         return res
+
+
+Java Version, 
+this question is stupid and meaningless, just remember to detect duplicate remainder using Hash since it indicates infinite.
