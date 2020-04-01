@@ -67,3 +67,21 @@ class Solution(object):
         AFTER / 26 => 1×26^2＋2×26＋3 (everything that is not a muliple of 26 is eliminated
                                        as for everything that is a muliple of 26, its 26^ will be reduced by 1)
         '''
+
+
+Java Version:
+class Solution {
+    public String convertToTitle(int n) {
+        if (n <= 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        while (n != 0) {
+            n --;
+            sb.append((char)('A' + n % 26));
+            n /= 26;
+        }
+        sb.reverse();
+        return sb.toString();
+    }
+}
