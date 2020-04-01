@@ -55,3 +55,56 @@ class Solution(object):
         return candidate if nums.count(candidate) > len(nums) / 2 else None       # Remember to check the condition:
                                                                                   # "The majority element is the element that appears 
                                                                                   # more than ⌊ n/2 ⌋ times" in the end
+
+
+Java Version no.1:
+class Solution {
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums.length / 2];
+    }
+}
+
+
+
+Java Version no.2:
+class Solution {
+    public int majorityElement(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        int n = nums.length;
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            if (map.get(num) > n / 2) {
+                return num;
+            }
+        }
+        return -1;
+    }
+}
+
+
+
+Java Version no.3:
+class Solution {
+    public int majorityElement(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int currMax = nums[0], count = 1;
+        for (int i = 1; i < nums.length; i ++) {
+            if (nums[i] == currMax) {
+                count ++;
+            } else {
+                count --;
+            }
+            if (count == 0) {
+                currMax = nums[i];
+                count = 1;
+            }
+        }
+        return currMax;
+    }
+}
