@@ -112,3 +112,194 @@ class Solution(object):
                 nums[povit], nums[povit - 1] = nums[povit - 1], nums[povit]
                 povit - 1
         return povit
+
+
+
+Java Version: Bubble Sort
+class Solution {
+    public String largestNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return "";
+        }
+        if (nums.length == 1) {
+            return Integer.toString(nums[0]);
+        }
+        for (int end = nums.length - 2; end >= 0; end --) {
+            for (int i = 0; i <= end; i ++) {
+                if (swapOrNot(nums[i], nums[i + 1])) {
+                    int temp = nums[i];
+                    nums[i] = nums[i + 1];
+                    nums[i + 1] = temp;
+                }
+            }
+        }
+        if (nums[0] == 0) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int item : nums) {
+            sb.append(item);
+        }
+        return sb.toString();
+    }
+    
+    public boolean swapOrNot(int num1, int num2) {
+        String s1 = Integer.toString(num1);
+        String s2 = Integer.toString(num2);
+        String comb1 = s1 + s2;
+        String comb2 = s2 + s1;
+        if (Long.parseLong(comb1) > Long.parseLong(comb2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+
+Java Version: Merge Sort
+class Solution {
+    public String largestNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return "";
+        }
+        if (nums.length == 1) {
+            return Integer.toString(nums[0]);
+        }
+        int[] newNums = split(nums, 0, nums.length - 1);
+        if (newNums[0] == 0) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int item : newNums) {
+            sb.append(item);
+        }
+        return sb.toString();
+    }
+    
+    public int[] split(int[] nums, int left, int right) {
+        if (left > right) {
+            return new int[]{};
+        }
+        if (left == right) {
+            return new int[] {nums[left]};
+        }
+        int mid = left + (right - left) / 2;
+        return merge(split(nums, left, mid), split(nums, mid + 1, right));
+    }
+    
+    public int[] merge(int[] array1, int[] array2) {
+        int index1 = 0, index2 = 0;
+        List<Integer> currRes = new ArrayList<>();
+        while (index1 < array1.length && index2 < array2.length) {
+            int currNum1 = array1[index1], currNum2 = array2[index2];
+            if (firstIsBigger(currNum1, currNum2)) {
+                currRes.add(currNum1);
+                index1 ++;
+            } else {
+                currRes.add(currNum2);
+                index2 ++;
+            }
+        }
+        if (index1 < array1.length) {
+            for (int i = index1; i < array1.length; i ++) {
+                currRes.add(array1[i]);
+            }
+        }
+        if (index2 < array2.length) {
+            for (int i = index2; i < array2.length; i ++) {
+                currRes.add(array2[i]);
+            }
+        }
+        return currRes.stream().mapToInt(i->i).toArray();
+    }
+    
+    public boolean firstIsBigger(int num1, int num2) {
+        String s1 = Integer.toString(num1);
+        String s2 = Integer.toString(num2);
+        String comb1 = s1 + s2;
+        String comb2 = s2 + s1;
+        if (Long.parseLong(comb1) > Long.parseLong(comb2)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
+Java Version: Quick Sort
+class Solution {
+    public String largestNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return "";
+        }
+        if (nums.length == 1) {
+            return Integer.toString(nums[0]);
+        }
+        int[] newNums = quick(nums);
+        if (newNums[0] == 0) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int item : newNums) {
+            sb.append(item);
+        }
+        return sb.toString();
+    }
+    
+    public int[] quick(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return new int[]{};
+        }
+        if (nums.length == 1) {
+            return nums;
+        }
+        int povit = findPovit(nums, 0, nums.length - 1);
+        int[] leftNums = quick(Arrays.copyOfRange(nums, 0, povit));
+        int[] rightNums = quick(Arrays.copyOfRange(nums, povit + 1, nums.length));
+        int[] currRes = new int[nums.length];
+        int currPos = 0;
+        for (int item : leftNums) {
+            currRes[currPos] = item;
+            currPos ++;
+        }
+        currRes[currPos] = nums[povit];
+        currPos ++;
+        for (int item: rightNums) {
+            currRes[currPos] = item;
+            currPos ++;
+        }
+        return currRes;
+    }
+    
+    
+    public int findPovit(int[] nums, int l, int povit) {
+        while (l < povit && povit > 0) {
+            if (swapOrNot(nums[l], nums[povit])) {
+                int temp = nums[povit - 1];
+                nums[povit - 1] = nums[l];
+                nums[l] = temp;
+                int temp2 = nums[povit];
+                nums[povit] = nums[povit - 1];
+                nums[povit - 1] = temp2;
+                povit --;
+            } else {
+                l ++;
+            }
+        }
+        return povit;
+    }
+    
+    public boolean swapOrNot(int num1, int num2) {
+        String s1 = Integer.toString(num1);
+        String s2 = Integer.toString(num2);
+        String comb1 = s1 + s2;
+        String comb2 = s2 + s1;
+        if (Long.parseLong(comb1) > Long.parseLong(comb2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
