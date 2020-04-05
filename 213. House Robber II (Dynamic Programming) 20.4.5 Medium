@@ -56,3 +56,30 @@ class Solution(object):
         :rtype: int
         """
   
+  
+Java Version:
+class Solution {
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        int[] r_rf = new int[nums.length];
+        int[] nr_rf = new int[nums.length];
+        int[] r_nrf = new int[nums.length];
+        int[] nr_nrf = new int[nums.length];
+        r_rf[0] = nums[0]; 
+        nr_rf[0] = 0; 
+        r_nrf[0] = 0;
+        nr_nrf[0] = 0;
+        for (int i = 1; i < nums.length; i ++) {
+            r_rf[i] = nr_rf[i - 1] + nums[i];
+            nr_rf[i] = Math.max(r_rf[i - 1], nr_rf[i - 1]);
+            r_nrf[i] = nr_nrf[i - 1] + nums[i];
+            nr_nrf[i] = Math.max(r_nrf[i - 1], nr_nrf[i - 1]);
+        }
+        return Math.max(Math.max(r_nrf[nums.length - 1], nr_nrf[nums.length - 1]), nr_rf[nums.length - 1]);
+    }
+}
