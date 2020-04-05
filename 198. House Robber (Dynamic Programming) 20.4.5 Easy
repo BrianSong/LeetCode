@@ -67,3 +67,39 @@ class Solution(object):
         for i in range(1, len(nums)):
             r, nr = nr + nums[i], max(r, nr)          # Assignment like this, the r, nr in the right will always be the unupdated ones
         return max(r, nr)
+
+
+Java Version:
+class Solution {
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int[] r = new int[nums.length];
+        int[] nr = new int[nums.length];
+        r[0] = nums[0];
+        nr[0] = 0;
+        for (int i = 1; i < nums.length; i ++) {
+            r[i] = nr[i - 1] + nums[i];
+            nr[i] = Math.max(r[i - 1], nr[i - 1]);
+        }
+        return Math.max(r[nums.length - 1], nr[nums.length - 1]);
+    }
+}
+
+
+Java Version O(1) S:
+class Solution {
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int r = nums[0], nr = 0;
+        for (int i = 1; i < nums.length; i ++) {
+            int temp = r;
+            r = nr + nums[i];
+            nr = Math.max(temp, nr);
+        }
+        return Math.max(r, nr);
+    }
+}
