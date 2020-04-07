@@ -55,3 +55,48 @@ class Solution(object):
         return sum(indegree) == 0                  # Step no.4: Check the result
         
 # 解题思路照片在文件传输助手 2019.05.17
+
+
+
+Java Version:
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        if (prerequisites == null || prerequisites.length == 0) {
+            return true;
+        }
+        Map<Integer, List<Integer>> preToCourses = new HashMap<>();
+        int[] courseStatus = new int[numCourses];
+        for (int [] pre : prerequisites) {
+            List<Integer> currList = preToCourses.getOrDefault(pre[1], new ArrayList<Integer>());
+            currList.add(pre[0]);
+            preToCourses.put(pre[1], currList);
+            courseStatus[pre[0]] ++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < courseStatus.length; i ++) {
+            if (courseStatus[i] == 0) {
+                q.offer(i);
+            }
+        }
+        
+        while (q.size() != 0) {
+            int popElement = q.poll();
+            List<Integer> coursesToChange = preToCourses.get(popElement);
+            for (int i = 0; coursesToChange != null && i < coursesToChange.size(); i ++) {
+                courseStatus[coursesToChange.get(i)] --;
+                if (courseStatus[coursesToChange.get(i)] == 0) {
+                    q.offer(coursesToChange.get(i));
+                }
+            }
+        }
+        
+        boolean res = true;
+        for (int i = 0; i < courseStatus.length; i ++) {
+            if (courseStatus[i] != 0) {
+                res = false;
+                break;
+            }
+        }
+        return res;
+    }
+}
