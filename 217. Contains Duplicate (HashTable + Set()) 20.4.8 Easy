@@ -39,3 +39,38 @@ class Solution(object):
         :type nums: List[int]
         :rtype: bool
         """
+
+
+Java Version no.1:
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+        Set<Integer> s = new HashSet<>();
+        for (int num : nums) {
+            if (s.contains(num)) {
+                return true;
+            }
+            s.add(num);
+        }
+        return false;
+    }
+}
+
+
+Java Version no.2:
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 1; i ++) {
+            if (nums[i] == nums[i + 1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
