@@ -65,3 +65,22 @@ class Solution(object):
                 nums[povit], nums[povit - 1] = nums[povit - 1], nums[povit]
                 povit -= 1
         return povit
+
+
+
+Java Version:
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        if (nums == null || nums.length < k) {
+            return -1;
+        }
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>((n1, n2) -> n1 - n2);
+        for (int num : nums) {
+            minHeap.add(num);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        return minHeap.peek();
+    }
+}
