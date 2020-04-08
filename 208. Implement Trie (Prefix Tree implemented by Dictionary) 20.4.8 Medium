@@ -87,3 +87,69 @@ class Trie(object):
 # obj.insert(word)
 # param_2 = obj.search(word)
 # param_3 = obj.startsWith(prefix)
+
+
+
+Java Version:
+class TrieNode {
+    public Map<Character, TrieNode> children = new HashMap<>();
+    public boolean isEnd = false;
+}
+
+class Trie {
+    private TrieNode root;
+
+    /** Initialize your data structure here. */
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        TrieNode currNode = root;
+        for (char c : word.toCharArray()) {
+            if (currNode.children.containsKey(c)) {
+                currNode = currNode.children.get(c);
+            } else {
+                TrieNode newNode = new TrieNode();
+                currNode.children.put(c, newNode);
+                currNode = newNode;
+            }
+        }
+        currNode.isEnd = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        TrieNode currNode = root;
+        for (char c : word.toCharArray()) {
+            if (currNode.children.containsKey(c)) {
+                currNode = currNode.children.get(c);
+            } else {
+                return false;
+            }
+        }
+        return currNode.isEnd;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        TrieNode currNode = root;
+        for (char c : prefix.toCharArray()) {
+            if (currNode.children.containsKey(c)) {
+                currNode = currNode.children.get(c);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
