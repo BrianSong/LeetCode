@@ -50,3 +50,39 @@ class Solution(object):
                     stack.append(int(stack.pop() / float(num)))     # int(stack.pop() / float(num)) is because python 2's division setin
                 preOp, num = s[i], 0                        # Now, we update preOp to s[i]
         return sum(stack)
+
+
+Java Version:
+class Solution {
+    public int calculate(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        s = s + "+";
+        char prevSign = '+';
+        int num = 0;
+        Stack<Integer> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                num = num * 10 + Character.getNumericValue(c);
+            } else if (!Character.isSpace(c)) {
+                if (prevSign == '+') {
+                    stack.add(num);
+                } else if (prevSign == '-') {
+                    stack.add(-1 * num);
+                } else if (prevSign == '*') {
+                    stack.add(stack.pop() * num);
+                } else if (prevSign == '/') {
+                    stack.add(stack.pop() / num);
+                }
+                num = 0;
+                prevSign = c;
+            }
+        }
+        int res = 0;
+        for (int i = 0; i < stack.size(); i ++) {
+            res += stack.get(i);
+        }
+        return res;
+    }
+}
