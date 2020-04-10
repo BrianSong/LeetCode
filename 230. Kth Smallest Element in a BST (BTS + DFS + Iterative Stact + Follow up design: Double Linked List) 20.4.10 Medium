@@ -150,3 +150,43 @@ Time complexity for insert/delete + search of kth smallest: O(H+k), where H is a
 O(logN+k) in the average case, O(N+k) in the worst case.
 
 Space complexity : O(N) to keep the linked list.
+
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        if (root == null || k <= 0) {
+            return -1;
+        }
+        TreeNode currNode = root;
+        Stack<TreeNode> s = new Stack<>();
+        s.add(currNode);
+        while (s.size() != 0) {
+            while (currNode.left != null) {
+                s.add(currNode.left);
+                currNode = currNode.left;
+            }
+            TreeNode popNode = s.pop();
+            k -= 1;
+            if (k == 0) {
+                return popNode.val;
+            }
+            if (popNode.right != null) {
+                s.add(popNode.right);
+                currNode = popNode.right;
+                
+            }
+        }
+        return -1;
+    }
+}
