@@ -80,3 +80,43 @@ class Solution(object):
                                                        # because in this way, if none of left, right, mid is True,
                                                        # we are returning None instead of False here, and False cannot be "+"
                                                        # must add "else: return False"
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private TreeNode res;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return null;
+        }
+        findLCA(root, p, q);
+        return res;
+    }
+    private boolean findLCA(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return false;
+        }
+        int mid = 0;
+        if (root == p || root == q) {
+            mid = 1;
+        }
+        int left = findLCA(root.left, p, q) ? 1 : 0;
+        int right = findLCA(root.right, p, q) ? 1 : 0;
+        if (mid + left + right >= 2) {
+            res = root;
+        }
+        if (mid + left + right > 0) {
+            return true;
+        }
+        return false;
+    }
+}
