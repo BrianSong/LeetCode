@@ -57,3 +57,38 @@ Use a hash table instead of a fixed size list.
 Imagine allocating a large size array to fit the entire range of unicode characters, 
 which could go up to more than 1 million (1,114,112 possible characters). 
 A hash table is a more generic solution and could adapt to any range of characters.
+
+
+
+Java Version:
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() == 0 && t.length() == 0) {
+            return true;
+        }
+        if (s.length() == 0 || t.length() == 0 || s.length() != t.length()) {
+            return false;
+        }
+        
+        int[] dic = new int[26];
+        
+        for (char c : s.toCharArray()) {
+            dic[c - 'a'] += 1;
+        }
+        
+        for (char c: t.toCharArray()) {
+            dic[c - 'a'] -= 1;
+            if (dic[c - 'a'] < 0) {
+                return false;
+            }
+        }
+        
+        for (int i = 0; i < dic.length; i ++) {
+            if (dic[i] > 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
