@@ -63,3 +63,54 @@ class Solution(object):
             p1 = nums[p1]
             p2 = nums[p2]
         return p1
+
+
+Java Version no.1: Binary Search
+class Solution {
+    public int findDuplicate(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int low = 1, high = nums.length - 1;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            int count = 0;
+            for (int num : nums) {
+                if (num <= mid) {
+                    count ++;
+                }
+            }
+            if (count <= mid) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        return low;
+    }
+}
+
+
+
+Java Version no.2:
+class Solution {
+    public int findDuplicate(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int slow = nums[0], fast = nums[0];
+        while (true) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if (slow == fast) {
+                break;
+            }
+        }
+        int head = nums[0];
+        while (head != slow) {
+            head = nums[head];
+            slow = nums[slow];
+        }
+        return slow;
+    }
+}
