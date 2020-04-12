@@ -47,3 +47,33 @@ class Solution(object):
 
 
 # O(nlogn) Binary Search maybe followed up in the future, today is very busy, must finish my review before 12:00 pm
+
+
+
+Java Version:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        int res = 1;
+        for (int i = 1; i < dp.length; i ++) {
+            int currRes = 1;
+            for (int j = i - 1; j >= 0; j --) {
+                if (nums[j] < nums[i]) {
+                    int currValue = dp[j] + 1;
+                    if (currValue > currRes) {
+                        currRes = currValue;
+                    }
+                }
+            }
+            dp[i] = currRes;
+            if (currRes > res) {
+                res = currRes;
+            }
+        }
+        return res;
+    }
+}
