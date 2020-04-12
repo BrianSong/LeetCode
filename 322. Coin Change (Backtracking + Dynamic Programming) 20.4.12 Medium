@@ -64,3 +64,25 @@ class Solution(object):
                                                             # is bigger than the total amount
                     dp[i] = min(dp[i], dp[i - c] + 1)       # Find the minimum number of previous possible combination and add 1
         return dp[-1] if dp[-1] != float('inf') else -1     # MUST CHECK !!!!!!!!!!!!!!!!!!!!!!!!! using if... else ... !!!!!!!!!!!!!!!!
+
+
+
+Java Version:
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        if (coins == null || coins.length == 0 || amount < 0) {
+            return -1;
+        }
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        dp[0] = 0;
+        for (int i = 1; i < dp.length; i ++) {
+            for (int coin : coins) {
+                if (i >= coin) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        return (dp[dp.length - 1] == Integer.MAX_VALUE - 1) ? -1 : dp[dp.length - 1];
+    }
+}
