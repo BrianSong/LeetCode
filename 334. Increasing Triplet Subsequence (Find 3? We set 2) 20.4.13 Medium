@@ -35,3 +35,25 @@ class Solution(object):
             else:                                           # else the increasing triplet subsequence has been found
                 return True
         return False
+        
+        
+        
+Java Version:
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+        int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
+        for (int num : nums) {
+            if (num <= first) {
+                first = num;
+            } else if (num <= second) {
+                second = num;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+}
