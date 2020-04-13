@@ -49,3 +49,39 @@ class Solution(object):
         odd.next = evenhead                                     # Then link the evenList to the tail of the oddList.
  
         return head
+
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode oddHead = head, evenHead = head.next;
+        ListNode evenHeadForConnect = evenHead;
+        while (evenHead.next != null && evenHead.next.next != null) {
+            ListNode currOddNode = evenHead.next;
+            ListNode currEvenNode = evenHead.next.next;
+            oddHead.next = currOddNode;
+            evenHead.next = currEvenNode;
+            oddHead = currOddNode;
+            evenHead = currEvenNode;
+        }
+        if (evenHead.next != null) {
+            oddHead.next = evenHead.next;
+            oddHead = oddHead.next;
+        }
+        evenHead.next = null;
+        oddHead.next = evenHeadForConnect;
+        return head;
+    }
+}
