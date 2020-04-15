@@ -67,3 +67,31 @@ class Solution(object):
                                                          # The equal sign guarantees there exists and only exists 
                                                          # one number in range satisfying this condition. 
                                                          # So low must be the only element satisfying this element in the matrix.
+
+
+Java Version:
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return -1;
+        }
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        minHeap.add(new int[] {matrix[0][0], 0, 0});
+        Set<List<Integer>> visited = new HashSet<>();
+        visited.add(Arrays.asList(0, 0));
+        while (k > 1) {
+            int[] popComb = minHeap.poll();
+            int currR = popComb[1], currC = popComb[2];
+            if ((currR + 1 < matrix.length) && !(visited.contains(Arrays.asList(currR + 1, currC)))) {
+                minHeap.add(new int[] {matrix[currR + 1][currC], currR + 1, currC});
+                visited.add(Arrays.asList(currR + 1, currC));
+            }
+            if ((currC + 1 < matrix[0].length) && !(visited.contains(Arrays.asList(currR, currC + 1)))) {
+                minHeap.add(new int[] {matrix[currR][currC + 1], currR, currC + 1});
+                visited.add(Arrays.asList(currR, currC + 1));
+            }
+            k --;
+        }
+        return minHeap.poll()[0];
+    }
+}
