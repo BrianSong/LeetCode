@@ -103,3 +103,30 @@ then read 2 elements from each array at a time in memory, record intersections.
 You can read even 1 element from each array at a time, compare them, if they are equal, record intersection, 
 if they are not, remove the smaller one and read the new element from that array. 
 But this will create too much disk I/O, so the best way is to read as much as elements into memory once.
+
+
+
+Java Version:
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int num : nums1) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+        }
+        List<Integer> res = new ArrayList<>();
+        for (int num : nums2) {
+            if (freq.containsKey(num)) {
+                res.add(num);
+                freq.put(num, freq.get(num) - 1);
+                if (freq.get(num) == 0) {
+                    freq.remove(num);
+                }
+            }
+        }
+        int[] resArray = new int[res.size()];
+        for (int i = 0; i < res.size(); i ++) {
+            resArray[i] = res.get(i);
+        }
+        return resArray;
+    }
+}
