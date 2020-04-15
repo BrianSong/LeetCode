@@ -82,3 +82,30 @@ class Solution(object):
         for item in pq:
             res.append(item[1])
         return res
+
+
+
+Java Version:
+class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        List<Integer> res = new ArrayList<>();
+        if (nums == null || nums.length == 0 || k > nums.length) {
+            return res;
+        }
+        Map<Integer, Integer> frequence = new HashMap<>();
+        for (int num : nums) {
+            frequence.put(num, frequence.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        for (int num : frequence.keySet()) {
+            heap.add(new int[] {num, frequence.get(num)});
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+        for (int[] item : heap) {
+            res.add(item[0]);
+        }
+        return res;
+    }
+}
