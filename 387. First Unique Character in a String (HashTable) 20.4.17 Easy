@@ -48,3 +48,44 @@ class Solution(object):
             if HashTable[s[i]] == 1:                     # since we are traversing the string from start to end
                 return i                                 # the first s[i] we find to be unique must be the first non-repeating character
         return -1
+
+
+
+Java Version:
+class Solution {
+    public int firstUniqChar(String s) {
+        if (s == null || s.length() == 0) {
+            return -1;
+        }
+        Map<Character, Integer> counter = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            counter.put(c, counter.getOrDefault(c, 0) + 1);
+        }
+        for (int i = 0; i < s.length(); i ++) {
+            if (counter.containsKey(s.charAt(i)) && counter.get(s.charAt(i)) == 1) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+
+
+Java Version: Faster, over 100% submission
+class Solution {
+    public int firstUniqChar(String s) {
+        if (s == null || s.length() == 0) {
+            return -1;
+        }
+        int index;
+        int minIndex = s.length();
+        for (char c = 'a'; c <= 'z'; c++) {
+            index = s.indexOf(c);
+            if (index >= 0 && index == s.lastIndexOf(c)) {
+                minIndex = Math.min(minIndex, index);
+            }
+        }
+        return minIndex == s.length() ? -1 : minIndex;
+    }
+}
