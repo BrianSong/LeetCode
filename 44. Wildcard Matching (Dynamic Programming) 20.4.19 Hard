@@ -71,3 +71,34 @@ class Solution(object):
                                                                                   # Because 就算斜上方是True, 在前一个i循环，
                                                                                   # 斜上方的T已经被pass到正上方的True了，不会MISS
         return match[-1][-1]                                                      # Step no.4: return
+
+
+
+Java Version:
+class Solution {
+    public boolean isMatch(String s, String p) {
+        if (s == null || p == null) {
+            return false;
+        }
+        if (s.length() == 0 && p.length() == 0) {
+            return true;
+        }
+        boolean[][] dp = new boolean[p.length() + 1][s.length() + 1];
+        dp[0][0] = true;
+        for (int i = 1; i < dp.length; i ++) {
+            if (p.charAt(i - 1) == '*') {
+                dp[i][0] = dp[i - 1][0];
+            }
+        }
+        for (int i = 1; i < dp.length; i ++) {
+            for (int j = 1; j < dp[0].length; j ++) {
+                if (p.charAt(i - 1) == s.charAt(j - 1) || p.charAt(i - 1) == '?') {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else if (p.charAt(i - 1) == '*') {
+                    dp[i][j] = (dp[i - 1][j] || dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[dp.length - 1][dp[0].length - 1];
+    }
+}
