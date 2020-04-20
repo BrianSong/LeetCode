@@ -66,3 +66,51 @@ class Solution(object):
                         res.append(",".join(items[i]))       # Instead of checking if the current ",".join(items[i]) is in res everytime
                         res.append(",".join(items[j]))      
         return set(res)                                      # We should just use set() when we return
+
+
+
+Java Version:
+class Solution {
+    public List<String> invalidTransactions(String[] transactions) {
+        List<String> res = new ArrayList<>();
+        Set<String> contain = new HashSet<>();
+        if (transactions == null || transactions.length == 0) {
+            return res;
+        }
+        Map<String, List<String[]>> map = new HashMap<>();
+        for (String transaction : transactions) {
+            String[] l = transaction.split(",");
+            List<String[]> currList;
+            if (map.containsKey(l[0])) {
+                 currList = map.get(l[0]);
+            } else {
+                 currList = new ArrayList<>();
+            }
+            currList.add(l);
+            map.put(l[0], currList);
+        }
+        for (String name : map.keySet()) {
+            List<String[]> currList = map.get(name);
+            Collections.sort(currList, (o1, o2) -> Integer.valueOf(o1[1]) - Integer.valueOf(o2[1]));
+            for (int i = 0; i < currList.size(); i ++) {
+                if (Integer.valueOf(currList.get(i)[2]) > 1000 && ! contain.contains(String.join(",", currList.get(i)))) {
+                    res.add(String.join(",", currList.get(i)));
+                    contain.add(String.join(",", currList.get(i)));
+                }
+                for (int j = i + 1; j < currList.size(); j ++) {
+                    if (Integer.valueOf(currList.get(j)[1]) - Integer.valueOf(currList.get(i)[1]) <= 60 && ! currList.get(i)[3].equals(currList.get(j)[3])) {
+                        if (! contain.contains(String.join(",", currList.get(i)))) {
+                            res.add(String.join(",", currList.get(i)));
+                            contain.add(String.join(",", currList.get(i)));
+                        }
+                        if (! contain.contains(String.join(",", currList.get(j)))) {
+                            res.add(String.join(",", currList.get(j)));
+                            contain.add(String.join(",", currList.get(j)));
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
