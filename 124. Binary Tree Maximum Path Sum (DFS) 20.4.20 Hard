@@ -59,3 +59,37 @@ class Solution(object):
         return currnode.val + max(leftsum, rightsum)     # However, for passing the value to upper recursion,
                                                          # we can only take the larger one of the left or right substree value
                                                          # because the sub-闭环 cannot be a part of a bigger path
+
+
+
+Java Version:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int maxSum = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        dfs(root);
+        return maxSum;
+    }
+    
+    public int dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftSum = Math.max(0, dfs(root.left));
+        int rightSum = Math.max(0, dfs(root.right));
+        int currSum = root.val + leftSum + rightSum;
+        maxSum = Math.max(maxSum, currSum);
+        return Math.max(root.val + leftSum, root.val + rightSum);
+    }
+}
