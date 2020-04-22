@@ -63,3 +63,34 @@ class Solution(object):
                     num += 1
                 res = max(currres, res)                  # Update the res everytime we finish one possible consecutive sequence
         return res
+
+
+
+Java Version:
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        
+        int maxLength = Integer.MIN_VALUE;
+        Set<Integer> numsSet = new HashSet<>();
+        
+        for (int num : nums) {
+            numsSet.add(num);
+        }
+        
+        for (int num : numsSet) {
+            if (! numsSet.contains(num - 1)) {
+                int currLength = 1;
+                while (numsSet.contains(num + 1)) {
+                    num ++;
+                    currLength ++;
+                }
+                maxLength = Math.max(maxLength, currLength);
+            }
+        }
+        
+        return maxLength;
+    }
+}
