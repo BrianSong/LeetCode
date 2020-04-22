@@ -95,3 +95,32 @@ class Solution(object):
         return s                                   # As long as sum(gas) > sum(cost), there will be an answer
   
   
+
+Java Version:
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        if (gas == null || gas.length == 0 || cost == null || cost.length == 0) {
+            return -1;
+        }
+        int gasSum = 0, costSum = 0;
+        for (int g : gas) {
+            gasSum += g;
+        }
+        for (int c : cost) {
+            costSum += c;
+        }
+        if (costSum > gasSum) {
+            return -1;
+        }
+        int startIndex = 0, remain = 0;
+        for (int i = 0; i < gas.length; i ++) {
+            if (gas[i] + remain >= cost[i]) {
+                remain = gas[i] + remain - cost[i];
+            } else {
+                startIndex = i + 1;
+                remain = 0;
+            }
+        }
+        return startIndex;
+    }
+}
