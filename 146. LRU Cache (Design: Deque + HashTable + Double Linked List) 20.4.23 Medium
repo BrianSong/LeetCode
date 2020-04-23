@@ -163,3 +163,115 @@ class LRUCache(object):
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
+
+
+
+Java Version:
+class DLLNode {
+    int key;
+    int val;
+    DLLNode prev;
+    DLLNode next;
+    
+    public DLLNode(int key, int val) {
+        this.key = key;
+        this.val = val;
+        this.prev = null;
+        this.next = null;
+    }
+    
+    public DLLNode() {
+        this.key = 0;
+        this.val = 0;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+class DLL {
+    DLLNode head;
+    DLLNode tail;
+    
+    public DLL() {
+        head = new DLLNode();
+        tail = new DLLNode();
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public void addNewNode(DLLNode node) {
+        DLLNode nextNode = head.next;
+        head.next = node;
+        node.prev = head;
+        node.next = nextNode;
+        nextNode.prev = node;
+    }
+    
+    public void removeNode(DLLNode node) {
+        DLLNode nextNode = node.next;
+        DLLNode prevNode = node.prev;
+        prevNode.next = nextNode;
+        nextNode.prev = prevNode;
+    }
+    
+    public void moveExistedToHead(DLLNode node) {
+        removeNode(node);
+        addNewNode(node);
+    }
+    
+    public DLLNode popLRUNode() {
+        DLLNode popNode = tail.prev;
+        removeNode(popNode);
+        return popNode;
+    }
+}
+
+class LRUCache {
+    
+    DLL DLL;
+    Map<Integer, DLLNode> map;
+    int size;
+    int capacity;
+    
+    public LRUCache(int capacity) {
+        DLL = new DLL();
+        map = new HashMap<>();
+        this.size = 0;
+        this.capacity = capacity;
+    }
+    
+    public int get(int key) {
+        if (! map.containsKey(key)) {
+            return -1;
+        } else {
+            DLLNode currNode = map.get(key);
+            DLL.moveExistedToHead(currNode);
+            return currNode.val;
+        }
+    }
+    
+    public void put(int key, int value) {
+        if (! map.containsKey(key)) {
+            DLLNode newNode = new DLLNode(key, value);
+            if (size >= capacity) {
+                DLLNode popNode = DLL.popLRUNode();
+                map.remove(popNode.key);
+                size --;
+            }
+            map.put(key, newNode);
+            DLL.addNewNode(newNode);
+            size ++;
+        } else {
+            DLLNode currNode = map.get(key);
+            currNode.val = value;
+            DLL.moveExistedToHead(currNode);
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
