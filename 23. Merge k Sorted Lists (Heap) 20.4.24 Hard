@@ -47,3 +47,39 @@ class Solution(object):
             if currnode.next:
                 heapq.heappush(heap, (currnode.next.val, currnode.next))
         return dummynode.next
+
+
+
+Java Version:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        PriorityQueue<ListNode> heap = new PriorityQueue<>(lists.length, (o1, o2) -> o1.val - o2.val);
+        for (ListNode start : lists) {
+            if (start != null) {
+                heap.offer(start);
+            }
+        }
+        ListNode dummyNode = new ListNode();
+        ListNode currNode = dummyNode;
+        while (heap.size() != 0) {
+            ListNode popNode = heap.poll();
+            currNode.next = popNode;
+            currNode = popNode;
+            if (popNode.next != null) {
+                heap.offer(popNode.next);
+            }
+        }
+        return dummyNode.next;
+    }
+}
