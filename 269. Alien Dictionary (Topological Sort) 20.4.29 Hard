@@ -90,3 +90,73 @@ class Solution(object):
         visited.add(node)                                                   # Now, all paths derived from node has been traversed
         res.append(node)                                                    # we can append node to the visited and res
         return True                                     
+
+
+
+Java Version:
+class Solution {
+    public String alienOrder(String[] words) {
+        if (words == null || words.length == 0) {
+            return "";
+        }
+        Map<Character, Set<Character>> childGraph = buildGraph(words);
+        if (childGraph == null) {
+            return "";
+        }
+        List<Character> res = new ArrayList<>();
+        Set<Character> visited = new HashSet<>();
+        for (char c : childGraph.keySet()) {
+            if (! visited.contains(c)) {
+                if (! dfs(childGraph, c, new HashSet<Character>(), visited, res)) {
+                    return "";
+                };
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = res.size() - 1; i >= 0; i --) {
+            sb.append(res.get(i));
+        }
+        return sb.toString();
+    }
+    
+    public boolean dfs(Map<Character, Set<Character>> graph, char c, Set<Character> seen, Set<Character> visited, List<Character> res) {
+        if (seen.contains(c)) {
+            return false;
+        }
+        seen.add(c);
+        for (char child : graph.get(c)) {
+            if (! visited.contains(child)) {
+                if (! dfs(graph, child, seen, visited, res)) {
+                    return false;
+                }
+            }
+        }
+        visited.add(c);
+        res.add(c);
+        return true;
+    }
+    
+    public Map<Character, Set<Character>> buildGraph(String[] words) {
+        Map<Character, Set<Character>> graph = new HashMap<>();
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                graph.put(c, new HashSet<>());
+            }
+        }
+        for (int i = 1; i < words.length; i ++) {
+            String prevWord = words[i - 1];
+            String currWord = words[i];
+            for (int j = 0; j < Math.min(prevWord.length(), currWord.length()); j ++) {
+                if (prevWord.charAt(j) != currWord.charAt(j)) {
+                    Set<Character> set = graph.get(prevWord.charAt(j));
+                    set.add(currWord.charAt(j));
+                    break;
+                } else if (prevWord.charAt(j) == currWord.charAt(j) && j + 1 == currWord.length() && prevWord.length() > currWord.length()) {
+                    return null;
+                }
+            }
+        }
+        return graph;
+    }
+    
+}
