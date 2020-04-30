@@ -112,3 +112,70 @@ class Solution(object):
                             queue.append((next_word, path + [next_word], dist + 1))
                             visited[next_word] = dist
         return res
+
+
+
+Java Version:
+class Tuple {
+    String currWord;
+    List<String> path;
+    int currLength;
+    public Tuple(String currWord, List<String> path, int currLength) {
+        this.currWord = currWord;
+        this.path = path;
+        this.currLength = currLength;
+    }
+}
+
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String word : wordList) {
+            for (int i = 0; i < word.length(); i ++) {
+                String StarWord = word.substring(0, i) + "*" + word.substring(i + 1, word.length());
+                List<String> currList = map.getOrDefault(StarWord, new ArrayList<>());
+                currList.add(word);
+                map.put(StarWord, currList);
+            }
+        }
+        Queue<Tuple> queue = new LinkedList<>();
+        List<String> currPath = new ArrayList<>();
+        currPath.add(beginWord);
+        queue.offer(new Tuple(beginWord, currPath, 1));
+        Map<String, Integer> visited = new HashMap<>();
+        visited.put(beginWord, 1);
+        boolean Find = false;
+        List<List<String>> res = new ArrayList<>();
+        while (queue.size() != 0) {
+            if (Find) {
+                break;
+            }
+            int currSize = queue.size();
+            for (int i = 0; i < currSize; i ++) {
+                Tuple popTuple = queue.poll();
+                String currWord = popTuple.currWord;
+                List<String> path = popTuple.path;
+                int length = popTuple.currLength;
+                for (int j = 0; j < currWord.length(); j ++) {
+                    String transformWord = currWord.substring(0, j) + "*" + currWord.substring(j + 1, currWord.length());
+                    if (map.containsKey(transformWord)) {
+                        for (String nextWord : map.get(transformWord)) {
+                            if (nextWord.equals(endWord)) {
+                                List<String> newPath = new ArrayList<>(path);
+                                newPath.add(nextWord);
+                                res.add(newPath);
+                                Find = true;
+                            } else if (! visited.containsKey(nextWord) || visited.get(nextWord) >= length) {
+                                List<String> newPath = new ArrayList<>(path);
+                                newPath.add(nextWord);
+                                queue.offer(new Tuple(nextWord, newPath, length + 1));
+                                visited.put(nextWord, length);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
