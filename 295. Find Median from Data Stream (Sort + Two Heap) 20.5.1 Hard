@@ -139,3 +139,43 @@ class MedianFinder(object):
 
 
 The two follow up questions may be finished in the future, so busy with homework in computer integrated surgery these days.
+
+
+
+Java Version:
+class MedianFinder {
+    PriorityQueue<Integer> small;
+    PriorityQueue<Integer> large;
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        small = new PriorityQueue<>((a, b) -> b - a);
+        large = new PriorityQueue<>((a, b) -> a - b);
+    }
+    
+    public void addNum(int num) {
+        if (small.size() == large.size()) {
+            small.offer(num);
+            int largestInSmall = small.poll();
+            large.offer(largestInSmall);
+        } else {
+            large.offer(num);
+            int smallestInLarge = large.poll();
+            small.offer(smallestInLarge);
+        }
+    }
+    
+    public double findMedian() {
+        if (small.size() == large.size()) {
+            return (small.peek() + large.peek()) / (double) (2);
+        } else {
+            return large.peek();
+        }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
