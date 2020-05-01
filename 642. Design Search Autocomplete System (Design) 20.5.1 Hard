@@ -110,3 +110,88 @@ class AutocompleteSystem(object):
 # Your AutocompleteSystem object will be instantiated and called as such:
 # obj = AutocompleteSystem(sentences, times)
 # param_1 = obj.input(c)
+
+
+
+Java Version:
+class TrieNode {
+    Map<Character, TrieNode> children;
+    Map<String, Integer> count;
+    boolean isEnd;
+    public TrieNode() {
+        this.children = new HashMap<>();
+        this.count = new HashMap<>();
+        this.isEnd = false;
+    }
+}
+
+class Pair {
+    String s;
+    int count;
+    public Pair(String s, int count) {
+        this.s = s;
+        this.count = count;
+    }
+}
+
+class AutocompleteSystem {
+    
+    TrieNode root;
+    String prefix;
+    
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        root = new TrieNode();
+        prefix = "";
+        for (int i = 0; i < sentences.length; i ++) {
+            add(sentences[i], times[i]);
+        }
+        
+    }
+    
+    public void add(String s, int count) {
+        TrieNode currNode = root;
+        for (char c : s.toCharArray()) {
+            TrieNode nextNode = currNode.children.get(c);
+            if (nextNode == null) {
+                nextNode = new TrieNode();
+                currNode.children.put(c, nextNode);
+            }
+            currNode = nextNode;
+            currNode.count.put(s, currNode.count.getOrDefault(s, 0) + count);
+        }
+        currNode.isEnd = true;
+    }
+    
+    public List<String> input(char c) {
+        if (c == '#') {
+            add(prefix, 1);
+            prefix = "";
+            return new ArrayList<String>();
+        }
+        prefix = prefix + Character.toString(c);
+        TrieNode currNode = root;
+        for (char currC : prefix.toCharArray()) {
+            TrieNode nextNode = currNode.children.get(currC);
+            if (nextNode == null) {
+                return new ArrayList<String>();
+            }
+            currNode = nextNode;
+        }
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> (a.count == b.count ? a.s.compareTo(b.s) : b.count - a.count));
+        for (String key : currNode.count.keySet()) {
+            Pair currPair = new Pair(key, currNode.count.get(key));
+            pq.offer(currPair);
+        }
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < 3 && pq.size() != 0; i ++) {
+            res.add(pq.poll().s);
+        }
+        return res;
+    }
+}
+
+/**
+ * Your AutocompleteSystem object will be instantiated and called as such:
+ * AutocompleteSystem obj = new AutocompleteSystem(sentences, times);
+ * List<String> param_1 = obj.input(c);
+ */
