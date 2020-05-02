@@ -187,6 +187,7 @@ class DLL {
     public DLLNode pop() {
         DLLNode popNode = tail.prev;
         remove(popNode);
+        // size --;                                                           There is no size -- here!!
         return popNode;
     }
 }
