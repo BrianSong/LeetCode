@@ -240,6 +240,7 @@ class LFUCache {
         } else {
             if (size >= cap) {
                 DLLNode popNode = freqToDLL.get(minFreq).pop();
+                // 不需要担心一直pop会不会让freqToDLL.get(minFreq) 指向null，因为每次pop都跟随着一次addNew
                 keyToNode.remove(popNode.key);
                 size --;
             }
