@@ -134,3 +134,128 @@ class LFUCache(object):
 # obj = LFUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
+
+
+
+Java Version:
+class DLLNode {
+    int key;
+    int val;
+    int freq;
+    DLLNode prev;
+    DLLNode next;
+    
+    public DLLNode(int key, int val) {
+        this.key = key;
+        this.val = val;
+        freq = 1;
+        prev = null;
+        next = null;
+    }
+}
+
+class DLL {
+    DLLNode head;
+    DLLNode tail;
+    int size;
+    
+    public DLL() {
+        head = new DLLNode(0, 0);
+        tail = new DLLNode(0, 0);
+        head.next = tail;
+        tail.prev = head;
+        size = 0;
+    }
+    
+    public void addNew(DLLNode node) {
+        DLLNode nextNode = head.next;
+        head.next = node;
+        node.prev = head;
+        nextNode.prev = node;
+        node.next = nextNode;
+        size ++;
+    }
+    
+    public void remove(DLLNode node) {
+        DLLNode prevNode = node.prev;
+        DLLNode nextNode = node.next;
+        prevNode.next = nextNode;
+        nextNode.prev = prevNode;
+        size --;
+    }
+    
+    public DLLNode pop() {
+        DLLNode popNode = tail.prev;
+        remove(popNode);
+        return popNode;
+    }
+}
+
+class LFUCache {
+    Map<Integer, DLLNode> keyToNode;
+    Map<Integer, DLL> freqToDLL;
+    int size;
+    int minFreq;
+    int cap;
+    
+    public LFUCache(int capacity) {
+        keyToNode = new HashMap<>();
+        freqToDLL = new HashMap<>();
+        size = 0;
+        minFreq = 0;
+        cap = capacity;
+    }
+    
+    public void update(DLLNode node) {
+        int freq = node.freq;
+        freqToDLL.get(freq).remove(node);
+        if (node.freq == minFreq && freqToDLL.get(freq).size == 0) {
+            minFreq ++;
+        }
+        node.freq ++;
+        DLL increaseFDLL = freqToDLL.getOrDefault(node.freq, new DLL());
+        increaseFDLL.addNew(node);
+        freqToDLL.put(node.freq, increaseFDLL);
+    }
+    
+    public int get(int key) {
+        if (keyToNode.containsKey(key)) {
+            DLLNode currNode = keyToNode.get(key);
+            update(currNode);
+            return currNode.val;
+        } else {
+            return -1;
+        }
+    }
+    
+    public void put(int key, int value) {
+        if (cap == 0) {
+            return;
+        }
+        if (keyToNode.containsKey(key)) {
+            DLLNode currNode = keyToNode.get(key);
+            update(currNode);
+            currNode.val = value;
+        } else {
+            if (size >= cap) {
+                DLLNode popNode = freqToDLL.get(minFreq).pop();
+                keyToNode.remove(popNode.key);
+                size --;
+            }
+            DLLNode newNode = new DLLNode(key, value);
+            keyToNode.put(key, newNode);
+            DLL oneFreqDLL = freqToDLL.getOrDefault(1, new DLL());
+            oneFreqDLL.addNew(newNode);
+            freqToDLL.put(1, oneFreqDLL);
+            minFreq = 1;
+            size ++;
+        }
+    }
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
