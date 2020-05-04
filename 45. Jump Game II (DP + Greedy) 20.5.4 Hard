@@ -59,3 +59,48 @@ class Solution(object):
                 jump += 1
                 curr_end = curr_farest
         return jump
+
+
+
+Java Version no.1: DP
+class Solution {
+    public int jump(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i = 1; i < nums.length; i ++) {
+            for (int j = i - 1; j >= 0; j --) {
+                if (i - j <= nums[j]) {
+                    dp[i] = Math.min(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        return dp[dp.length - 1];
+    }
+}
+
+
+
+Java Version no.2: Greedy
+class Solution {
+    public int jump(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int jump = 0, currEnd = 0, currFarthest = 0;
+        for (int i = 0; i < nums.length; i ++) {
+            currFarthest = Math.max(currFarthest, i + nums[i]);
+            if (i == nums.length - 1) {
+                break;
+            }
+            if (i == currEnd) {
+                jump ++;
+                currEnd = currFarthest;
+            }
+        }
+        return jump;
+    }
+}
