@@ -109,3 +109,28 @@ class Solution(object):
                                                                                          # nlargest with (counter[word], word)) ???
                                                                                          # because we also want the word to be
                                                                                          # order in alphabetical from lower to higher
+
+
+
+Java Version:
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        Map<String, Integer> freqMap = new HashMap<>();
+        for (String word : words) {
+            freqMap.put(word, freqMap.getOrDefault(word, 0) + 1);
+        }
+        PriorityQueue<String> pq = new PriorityQueue<>(k + 1, (s1, s2) -> freqMap.get(s1) == freqMap.get(s2) ? s2.compareTo(s1) : freqMap.get(s1) - freqMap.get(s2));
+        for (String key : freqMap.keySet()) {
+            pq.offer(key);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+        List<String> res = new ArrayList<>();
+        while (pq.size() != 0) {
+            res.add(pq.poll());
+        }
+        Collections.reverse(res);
+        return res;
+    }
+}
