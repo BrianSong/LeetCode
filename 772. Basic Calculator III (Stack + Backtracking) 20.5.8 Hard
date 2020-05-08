@@ -61,3 +61,61 @@ class Solution(object):
             else:                                                   # Also remember to update i here (space cases)
                 i += 1
         return sum(stack)
+
+
+
+Java Version:
+class Solution {
+    public int calculate(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        s += "+";
+        int num = 0;
+        char prevOperator = '+';
+        int i = 0;
+        Stack<Integer> stack = new Stack<>();
+        while (i < s.length()) {
+            if (Character.isDigit(s.charAt(i))) {
+                num = num * 10 + Character.getNumericValue(s.charAt(i));
+                i ++;
+            } else if (s.charAt(i) == '(') {
+                int j = i + 1;
+                int left = 1;
+                while (left > 0) {
+                    if (s.charAt(j) == '(') {
+                        left ++;
+                    } else if (s.charAt(j) == ')') {
+                        left --;
+                    }
+                    j ++;
+                }
+                int subRes = calculate(s.substring(i + 1, j - 1));
+                num = subRes;
+                i = j;
+            } else if (! Character.isSpace(s.charAt(i))) {
+                if (prevOperator == '+') {
+                    stack.add(num);
+                } else if (prevOperator == '-') {
+                    stack.add( -1 * num);
+                } else if (prevOperator == '*') {
+                    int popNum = stack.pop();
+                    stack.add(popNum * num);
+                } else {
+                    int popNum = stack.pop();
+                    stack.add(popNum / num);
+                }
+                prevOperator = s.charAt(i);
+                num = 0;
+                i ++;
+            } else {
+                i ++;
+            }
+        }
+        int res = 0;
+        for (int item : stack) {
+            res += item;
+        }
+        return res;
+    }
+}
