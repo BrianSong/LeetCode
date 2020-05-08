@@ -95,3 +95,98 @@ class Solution(object):
 # Your Solution object will be instantiated and called as such:
 # obj = Solution(head)
 # param_1 = obj.getRandom()
+
+
+Java Version no.1:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+
+    /** @param head The linked list's head.
+        Note that the head is guaranteed to be not null, so it contains at least one node. */
+    int length;
+    Random rand;
+    ListNode head;
+    public Solution(ListNode head) {
+        length = 0;
+        rand = new Random();
+        this.head = head;
+        ListNode currNode = head;
+        while (currNode != null) {
+            length ++;
+            currNode = currNode.next;
+        }
+    }
+    
+    /** Returns a random node's value. */
+    public int getRandom() {
+        int randomInt = rand.nextInt(length);
+        ListNode currNode = head;
+        ListNode returnNode = currNode;
+        while (randomInt >= 0) {
+            returnNode = currNode;
+            currNode = currNode.next;
+            randomInt --;
+        }
+        return returnNode.val;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(head);
+ * int param_1 = obj.getRandom();
+ */
+ 
+ 
+ Java Version no.2:
+ /**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+
+    /** @param head The linked list's head.
+        Note that the head is guaranteed to be not null, so it contains at least one node. */
+    ListNode head;
+    Random rand;
+    public Solution(ListNode head) {
+        this.head = head;
+        rand = new Random();
+    }
+    
+    /** Returns a random node's value. */
+    public int getRandom() {
+        int res = 0, count = 0;
+        ListNode currNode = head;
+        while (currNode != null) {
+            count ++;
+            int currGuess = rand.nextInt(count) + 1;
+            if (count == currGuess) {
+                res = currNode.val;
+            }
+            currNode = currNode.next;
+        }
+        return res;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(head);
+ * int param_1 = obj.getRandom();
+ */
