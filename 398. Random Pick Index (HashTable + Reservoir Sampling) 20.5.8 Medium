@@ -93,3 +93,36 @@ class Solution(object):
 # Your Solution object will be instantiated and called as such:
 # obj = Solution(nums)
 # param_1 = obj.pick(target)
+
+
+
+Java Version:
+class Solution {
+    int[] nums;
+    Random rand;
+    public Solution(int[] nums) {
+        this.nums = nums;
+        rand = new Random();
+    }
+    
+    public int pick(int target) {
+        int res = 0, count = 0;
+        for (int i = 0; i < nums.length; i ++) {
+            int num = nums[i];
+            if (num == target) {
+                count ++;
+                int currGuess = rand.nextInt(count) + 1;
+                if (currGuess == count) {
+                    res = i;
+                }
+            }
+        }
+        return res;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int param_1 = obj.pick(target);
+ */
