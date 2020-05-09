@@ -108,3 +108,43 @@ class Solution(object):
                 return True
         self.memo[word] = False
         return False
+
+
+Update Python Solution:
+class Solution(object):
+    def findAllConcatenatedWordsInADict(self, words):
+        """
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        s = set(words)
+        res = []
+        self.memo = {}
+        for word in words:
+            if self.dfs(word, s):
+                res.append(word)
+        return res
+    
+    def dfs(self, word, s):
+        if not word or len(word) <= 1:
+            return False
+        if word in self.memo:
+            return self.memo[word]
+        for i in range(1, len(word)):
+            prefix = word[:i]
+            postfix = word[i:]
+            if prefix in s and postfix in s:
+                self.memo[word] = True
+                return True
+            if prefix in s and self.dfs(postfix, s):
+                self.memo[word] = True
+                return True
+            # if postfix in s and self.dfs(prefix, s):
+            #     self.memo[word] = True
+            #     return True
+        self.memo[word] = False
+        return False
+        
+        
+
+C++ Version will be followed up in the future.
