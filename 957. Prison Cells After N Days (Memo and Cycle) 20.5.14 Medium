@@ -98,3 +98,54 @@ class Solution(object):
                                                                                # So finally we can mod the current N with that value 
                                                                                # to not repeat the same steps.
         return prev
+
+
+Updated Python Version no.1:
+class Solution(object):
+    def prisonAfterNDays(self, cells, N):
+        """
+        :type cells: List[int]
+        :type N: int
+        :rtype: List[int]
+        """
+        prev = cells
+        for i in range(N):
+            curr = list(prev)
+            curr[0], curr[-1] = 0, 0
+            for j in range(1, len(cells) - 1):
+                if (prev[j - 1] == 0 and prev[j + 1] == 0) or (prev[j - 1] == 1 and prev[j + 1] == 1):
+                    curr[j] = 1
+                else:
+                    curr[j] = 0
+            prev = curr
+        return curr
+        
+        
+Update Python Version no.2:
+class Solution(object):
+    def prisonAfterNDays(self, cells, N):
+        """
+        :type cells: List[int]
+        :type N: int
+        :rtype: List[int]
+        """
+        if not cells or len(cells) == 0:
+            return None
+        prev = list(cells)
+        seen = {}
+        while N:
+            seen[str(cells)] = N
+            N -= 1
+            cells[0], cells[-1] = 0, 0
+            for j in range(1, len(cells) - 1):
+                if prev[j - 1] == prev[j + 1]:
+                    cells[j] = 1
+                else:
+                    cells[j] = 0
+            if str(cells) in seen:
+                N %= seen[str(cells)] - N
+            prev = list(cells)
+        return prev
+        
+        
+C++ Version will be updated later.
