@@ -85,7 +85,7 @@ class Solution(object):
         """
         if not grid or len(grid) == 0 or len(grid[0]) == 0:
             return 0
-        queue = []
+        queue = collections.deque()
         total = 0
         for i in range(len(grid)):
             for j in range(len(grid[0])):
@@ -100,7 +100,7 @@ class Solution(object):
         while len(queue) != 0:
             curr_size = len(queue)
             for _ in range(curr_size):
-                pop_coordinate = queue.pop(0)
+                pop_coordinate = queue.popleft()
                 rotten_num += 1
                 for coord in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
                     new_coord_x = pop_coordinate[0] + coord[0]
