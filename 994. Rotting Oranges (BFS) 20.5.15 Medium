@@ -73,3 +73,43 @@ class Solution(object):
                         queue.append((new_r, new_c))
             step += 1
         return step - 1 if rotted == number_of_orange else -1
+
+
+
+Updated Python Version without set:
+class Solution(object):
+    def orangesRotting(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or len(grid) == 0 or len(grid[0]) == 0:
+            return 0
+        queue = []
+        total = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 2:
+                    queue.append([i, j])
+                if grid[i][j] != 0:
+                    total += 1
+        if total == 0:
+            return 0
+        rotten_num = 0
+        step = 0
+        while len(queue) != 0:
+            curr_size = len(queue)
+            for _ in range(curr_size):
+                pop_coordinate = queue.pop(0)
+                rotten_num += 1
+                for coord in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+                    new_coord_x = pop_coordinate[0] + coord[0]
+                    new_coord_y = pop_coordinate[1] + coord[1]
+                    if 0 <= new_coord_x < len(grid) and 0 <= new_coord_y < len(grid[0]) and grid[new_coord_x][new_coord_y] == 1:
+                        grid[new_coord_x][new_coord_y] = 2
+                        queue.append([new_coord_x, new_coord_y])
+            step += 1
+        return step - 1 if rotten_num == total else -1
+        
+        
+C++ Version will be updated later
