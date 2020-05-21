@@ -71,3 +71,73 @@ class Solution(object):
                     seen_to_step[next] = seen_to_step[curr] + 1
                     queue.append(next)
         return -1
+
+
+Updated Python:
+class Solution(object):
+    def snakesAndLadders(self, board):
+        """
+        :type board: List[List[int]]
+        :rtype: int
+        """
+        queue = collections.deque([1])
+        seen_to_step = {1: 0}
+        n = len(board[0])
+        while queue:
+            curr_pos = queue.popleft()
+            for next_pos in range(curr_pos + 1, curr_pos + 7):
+                r, c = (next_pos - 1) / n, (next_pos - 1) % n
+                next_jump = board[~r][c if r % 2 == 0 else ~c]
+                if next_jump != -1:
+                    next_pos = next_jump
+                if next_pos == n * n:
+                    return seen_to_step[curr_pos] + 1
+                if not next_pos in seen_to_step:
+                    seen_to_step[next_pos] = seen_to_step[curr_pos] + 1
+                    queue.append(next_pos)
+        return -1
+        
+        
+        
+C++ Version:
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        queue<int> q;
+        q.push(1);
+        map<int, int> seen_to_step {{1, 0}};
+        int n = board.size();
+        while (q.size() != 0) {
+            int curr_pos = q.front();
+            q.pop();
+            for (int i = 1; i <= 6; ++i) {
+                int next_pos = curr_pos + i;
+                int r = (next_pos - 1) / n;
+                int c = (next_pos - 1) % n;
+                int next_jump = cal(board, n, r, c);
+                if (next_jump != -1) {
+                    next_pos = next_jump;
+                }
+                if (next_pos >= n * n) {
+                    return seen_to_step[curr_pos] + 1;
+                }
+                if (seen_to_step.find(next_pos) == seen_to_step.end()) {
+                    seen_to_step[next_pos] = seen_to_step[curr_pos] + 1;
+                    q.push(next_pos);
+                }
+            }
+        }
+        return -1;
+    }
+    
+    int cal(vector<vector<int>>& board, int n, int r, int c) {
+        int real_r = n - r - 1;
+        int real_c {};
+        if (r % 2 == 0) {
+            real_c = c;
+        } else {
+            real_c = n - c - 1;
+        }
+        return board[real_r][real_c];
+    }
+};
