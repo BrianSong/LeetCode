@@ -75,3 +75,82 @@ class Solution(object):
                 self.dfs(grid, next_r, next_c, visited, curr_count + 1, count)
                 visited.remove((next_r, next_c))                              # visited.remove() takes O(1) T, so I prefer this way
                                                                               # compared to modify the original input to indicate visit
+
+
+
+Updated Python:
+class Solution(object):
+    def uniquePathsIII(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        visited = set()
+        count = 0
+        start_r, start_c = 0, 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 0:
+                    count += 1
+                if grid[i][j] == 1:
+                    start_r, start_c = i, j
+        self.res = 0
+        visited.add((start_r, start_c))
+        self.dfs(grid, start_r, start_c, visited, 0, count)
+        return self.res
+    
+    def dfs(self, grid, r, c, visited, curr_count, count):
+        if curr_count == count + 1 and grid[r][c] == 2:
+            self.res += 1
+            return
+        for dir in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+            next_r, next_c = r + dir[0], c + dir[1]
+            if  not (next_r, next_c) in visited and 0 <= next_r < len(grid) and 0 <= next_c < len(grid[0]) 
+            \ and grid[next_r][next_c] != -1:
+                visited.add((next_r, next_c))
+                self.dfs(grid, next_r, next_c, visited, curr_count + 1, count)
+                visited.remove((next_r, next_c))
+                
+                
+                
+C++ Version:
+class Solution {
+public:
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int start_r {}, start_c {};
+        int count {};
+        int res {};
+        for (int i = 0; i < grid.size(); ++i) {
+            for (int j = 0; j < grid[0].size(); ++j) {
+                if (grid[i][j] == 0) {
+                    count += 1;
+                }
+                if (grid[i][j] == 1) {
+                    start_r = i;
+                    start_c = j;
+                }
+            }
+        }
+        set<array<int, 2>> visited {};
+        visited.insert({start_r, start_c});
+        dfs(grid, start_r, start_c, visited, 0, count, res);
+        return res;
+    }
+    
+    void dfs(const vector<vector<int>>& grid, int r, int c, set<array<int, 2>>& visited, int curr_count, int count, int& res) {
+        if (curr_count == count + 1 && grid[r][c] == 2) {
+            res += 1;
+            return;
+        }
+        for (vector<int> dir : vector<vector<int>> {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+            int next_r = r + dir[0];
+            int next_c = c + dir[1];
+            if (0 <= next_r && next_r < grid.size() && 0 <= next_c && next_c < grid[0].size()  \
+            && visited.find({next_r, next_c}) == visited.end() && grid[next_r][next_c] != -1) {
+                visited.insert({next_r, next_c});
+                dfs(grid, next_r, next_c, visited, curr_count + 1, count, res);
+                visited.erase({next_r, next_c});
+            }
+        }
+    }
+};
