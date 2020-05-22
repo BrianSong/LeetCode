@@ -29,3 +29,25 @@ class Solution(object):
             res += merge_1 + merge_2
             heapq.heappush(sticks, merge_1 + merge_2)
         return res
+
+
+
+C++ Version:
+class Solution {
+public:
+    int connectSticks(vector<int>& sticks) {
+        priority_queue<int, vector<int>, greater<int>> pq (sticks.begin(), sticks.end());
+        int x {};
+        int y {};
+        int cost {};
+        while (pq.size() >= 2) {
+            x = pq.top(); 
+            pq.pop();
+            y = pq.top(); 
+            pq.pop();
+            cost += x + y;
+            pq.push(x + y);
+        }
+        return cost;
+    }
+};
