@@ -58,3 +58,41 @@ class Solution(object):
                 res[stack.pop()] = nums[i]
             stack.append(i)
         return res
+
+
+Update Python Version:
+class Solution(object):
+    def nextGreaterElements(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        if not nums or len(nums) == 0:
+            return []
+        stack, res = [], [-1] * len(nums)
+        for i in range(len(nums)) * 2:
+            curr_num = nums[i]
+            while stack and nums[stack[-1]] < curr_num:
+                res[stack.pop()] = curr_num
+            stack.append(i)
+        return res
+        
+        
+        
+C++ Version:
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        int n = nums.size();
+        stack<int> s {};
+        vector<int> res (n, -1);
+        for (int i = 0; i < nums.size() * 2; ++i) {
+            while (s.size() && nums[s.top()] < nums[i % n]) {
+                res[s.top()] = nums[i % n];
+                s.pop();
+            }
+            s.push(i % n);
+        }
+        return res;
+    }
+};
