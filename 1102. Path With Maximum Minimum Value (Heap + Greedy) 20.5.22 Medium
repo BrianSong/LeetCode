@@ -89,3 +89,34 @@ class Solution(object):
                     visited.add((new_r, new_c))
                     heapq.heappush(pq, ( - A[new_r][new_c], (new_r, new_c)))
         return mini
+
+
+
+c++ Version:
+class Solution {
+public:
+    int maximumMinimumPath(vector<vector<int>>& A) {
+        const int DIRS[][2] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int m = A.size(), n = A[0].size();
+        priority_queue<tuple<int,int,int>> pq {};
+        pq.emplace(A[0][0], 0, 0);
+        int mini = min(A[0][0], A[m - 1][n - 1]);
+        A[0][0] = -1;
+        while (!pq.empty()) {
+            auto [curr_min, r, c] = pq.top();
+            pq.pop();
+            if (r == m - 1 && c == n - 1) {
+                break;
+            }
+            mini = min(mini, curr_min);
+            for (const auto& dir : DIRS) {
+                int next_r {r + dir[0]}, next_c {c + dir[1]};
+                if (0 <= next_r && next_r < m && 0 <= next_c && next_c < n && A[next_r][next_c] != -1) {
+                    pq.emplace(A[next_r][next_c], next_r, next_c);
+                    A[next_r][next_c] = -1;
+                }
+            }
+        }
+        return mini;
+    }
+};
