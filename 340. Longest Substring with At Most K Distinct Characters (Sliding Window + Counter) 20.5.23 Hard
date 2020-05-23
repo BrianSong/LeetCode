@@ -49,7 +49,7 @@ public:
             return 0;
         }
         int start {0}, max_length {INT_MIN};
-        map<char, int> counter {};
+        unordered_map<char, int> counter {};
         for (int i = 0; i < s.size(); ++i) {
             if (counter.find(s[i]) == counter.end()) {
                 counter[s[i]] = 1;
