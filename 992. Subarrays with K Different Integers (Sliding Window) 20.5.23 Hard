@@ -55,3 +55,42 @@ class Solution(object):
                                                              # the increased number of subarray all end at this new valid character
                                                              # and there are (j - start + 1) kinds of new start
         return res
+
+
+
+C++ Version:
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& A, int K) {
+        return at_most_K(A, K) - at_most_K(A, K - 1);
+    }
+    
+    int at_most_K(vector<int>& s, int k) {
+        if (s.size() <= 0 || k <= 0) {
+            return 0;
+        }
+        int start {0};
+        int count {0};
+        unordered_map<int, int> counter {};
+        for (int i = 0; i < s.size(); ++i) {
+            if (counter.find(s[i]) == counter.end()) {
+                counter[s[i]] = 1;
+            } else {
+                counter[s[i]] += 1;
+            }
+            if (counter[s[i]] == 1) {
+                k -= 1;
+            }
+            while (k < 0) {
+                counter[s[start]] -= 1;
+                if (counter[s[start]] == 0) {
+                    counter.erase(s[start]);
+                    k += 1;
+                }
+                start += 1;
+            }
+            count += i - start + 1;
+        }
+        return count;
+    }
+};
