@@ -37,3 +37,37 @@ class Solution(object):
                 start += 1
             res = max(res, i - start + 1)
         return res
+
+
+
+C++ Version:
+class Solution {
+public:
+    int lengthOfLongestSubstringTwoDistinct(string s) {
+        if (s.size() <= 0) {
+            return 0;
+        }
+        int start {0}, max_length {INT_MIN}, k {2};
+        unordered_map<char, int> counter {};
+        for (int i = 0; i < s.size(); ++i) {
+            if (counter.find(s[i]) == counter.end()) {
+                counter[s[i]] = 1;
+            } else {
+                counter[s[i]] += 1;
+            }
+            if (counter[s[i]] == 1) {
+                k -= 1;
+            }
+            while (k < 0) {
+                counter[s[start]] -= 1;
+                if (counter[s[start]] == 0) {
+                    counter.erase(s[start]);
+                    k += 1;
+                }
+                start += 1;
+            }
+            max_length = max(max_length, i - start + 1);
+        }
+        return max_length;
+    }
+};
