@@ -51,3 +51,28 @@ class Solution(object):
             curr_sum -= nums[slow]
             slow += 1
         return max_length if max_length != float('-inf') else 0
+
+
+
+C++ Version:
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        if (s <= 0 || nums.size() <= 0 || accumulate(nums.begin(), nums.end(), 0) < s) {
+            return 0;
+        }
+        int curr_sum {};
+        int slow {}, fast {};
+        int min_length {INT_MAX};
+        while (fast < nums.size()) {
+            curr_sum += nums[fast];
+            while (slow < nums.size() && curr_sum >= s) {
+                min_length = min(min_length, fast - slow + 1);
+                curr_sum -= nums[slow];
+                slow += 1;
+            }
+            fast += 1;
+        }
+        return min_length;
+    }
+};
