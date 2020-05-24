@@ -63,3 +63,43 @@ class Solution(object):
             i = i_fast                                                        
             j = j_fast
         return i == m and j == n
+
+
+
+C++ Version:
+class Solution {
+public:
+    int expressiveWords(string S, vector<string>& words) {
+        if (S.size() == 0 or words.size() == 0) {
+            return 0;
+        }
+        int res{};
+        for (string word : words) {
+            if (check(S, word)) {
+                res += 1;
+            }
+        }
+        return res;
+    }
+    
+    bool check(const string& S, const string& word) {
+        int i{}, i_fast{}, j{}, j_fast{};
+        while (i < S.size() && j < word.size()) {
+            if (S[i] != word[j]) {
+                return false;
+            }
+            while (i_fast < S.size() && S[i_fast] == S[i]) {
+                i_fast += 1;
+            }
+            while (j_fast < word.size() && word[j_fast] == word[j]) {
+                j_fast += 1;
+            }
+            if ((i_fast - i != j_fast - j) && i_fast - i < max(3, j_fast- j)) {
+                return false;
+            }
+            i = i_fast;
+            j = j_fast;
+        }
+        return i == S.size() && j == word.size();
+    }
+};
