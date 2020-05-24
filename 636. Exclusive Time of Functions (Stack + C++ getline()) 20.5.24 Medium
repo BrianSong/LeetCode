@@ -67,3 +67,37 @@ class Solution(object):
                                                                       # due to the setting of this question
                 prev_time = curr_time + 1
         return res
+
+
+
+C++ Version:
+class Solution {
+public:
+    vector<int> exclusiveTime(int n, vector<string>& logs) {
+        stack<int> s {};
+        vector<int> res (n, 0);
+        int prev_time {};
+        for (string log : logs) {
+            stringstream ss(log);
+            string curr_id_s, curr_type, curr_time_s;
+            getline(ss, curr_id_s, ':');                        # istream& getline (istream& is, string& str, char delim);
+            getline(ss, curr_type, ':');
+            getline(ss, curr_time_s, ':');
+            int curr_id = stoi(curr_id_s);
+            int curr_time = stoi(curr_time_s);
+            if (curr_type == "start") {
+                if (s.size() != 0) {
+                    res[s.top()] += curr_time - prev_time;
+                }
+                prev_time = curr_time;
+                s.push(curr_id);
+            } else {
+                int pop_id = s.top();
+                s.pop();
+                res[pop_id] += curr_time - prev_time + 1;
+                prev_time = curr_time + 1;
+            }
+        }
+        return res;
+    }
+};
