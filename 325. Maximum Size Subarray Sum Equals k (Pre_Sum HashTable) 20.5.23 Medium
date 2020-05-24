@@ -37,3 +37,26 @@ class Solution(object):
                                                                       # because the previous means longer length of current substring
                 pre_sum[currsum] = i
         return res
+
+
+C++ Version:
+class Solution {
+public:
+    int maxSubArrayLen(vector<int>& nums, int k) {
+        if (nums.size() == 0) {
+            return 0;
+        }
+        map<int, int> pre_sum {{0, -1}};
+        int curr_sum {}, max_length {};
+        for (int i = 0; i < nums.size(); ++i) {
+            curr_sum += nums[i];
+            if (pre_sum.find(curr_sum - k) != pre_sum.end()) {
+                max_length = max(max_length, i - pre_sum[curr_sum - k]);
+            }
+            if (pre_sum.find(curr_sum) == pre_sum.end()) {
+                pre_sum[curr_sum] = i;
+            }
+        }
+        return max_length;
+    }
+};
