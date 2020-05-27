@@ -1,0 +1,145 @@
+Design and implement an iterator to flatten a 2d vector. It should support the following operations: next and hasNext.
+
+ 
+
+Example:
+
+Vector2D iterator = new Vector2D([[1,2],[3],[4]]);
+
+iterator.next(); // return 1
+iterator.next(); // return 2
+iterator.next(); // return 3
+iterator.hasNext(); // return true
+iterator.hasNext(); // return true
+iterator.next(); // return 4
+iterator.hasNext(); // return false
+ 
+
+Notes:
+
+Please remember to RESET your class variables declared in Vector2D, as static/class variables are persisted across multiple test cases. 
+Please see here for more details.
+You may assume that next() call will always be valid, that is, 
+there will be at least a next element in the 2d vector when next() is called.
+ 
+
+Follow up:
+
+As an added challenge, try to code it using only iterators in C++ or iterators in Java.
+
+
+
+Solution no.1: Deque O(n) T and S --- TO MUCH SPACE
+class Vector2D(object):
+
+    def __init__(self, v):
+        """
+        :type v: List[List[int]]
+        """
+        self.flatten_vector = collections.deque()
+        for l in v:
+            for item in l:
+                self.flatten_vector.append(item)
+        
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        return self.flatten_vector.popleft()
+        
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return self.flatten_vector
+        
+        
+Solution no.2: Two Pointer O(1) S
+class Vector2D(object):
+
+    def __init__(self, v):
+        """
+        :type v: List[List[int]]
+        """
+        self.v = v
+        self.inner = 0
+        self.outer = 0
+        
+    def advance_to_next_valid(self):
+        while self.outer < len(self.v) and self.inner == len(self.v[self.outer]):
+            self.outer += 1
+            self.inner = 0
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        self.advance_to_next_valid()
+        result = self.v[self.outer][self.inner]
+        self.inner += 1
+        return result
+        
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        self.advance_to_next_valid()
+        return self.outer != len(self.v)
+
+
+# Your Vector2D object will be instantiated and called as such:
+# obj = Vector2D(v)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()
+
+
+
+C++ Version:
+class Vector2D {
+private:
+    vector<vector<int>>::iterator outer, outer_end;
+    vector<int>::iterator inner;
+public:
+    Vector2D(vector<vector<int>>& v) {
+        outer = v.begin();
+        outer_end = v.end();
+        while (outer != outer_end && outer->size() == 0) {
+            outer ++;
+        }
+        if (outer == outer_end) {
+            return;
+        }
+        inner = outer->begin();
+    }
+    
+    void advance_to_next_valid() {
+        while (outer != outer_end && inner == (*outer).end()) {
+            outer ++;
+            if (outer != outer_end) {
+                inner = outer->begin();   
+            }
+        }
+    }
+    
+    int next() {
+        advance_to_next_valid();
+        int result = *inner;
+        inner ++;
+        return result;
+    }
+    
+    bool hasNext() {
+        advance_to_next_valid();
+        return outer != outer_end;
+    }
+};
+
+/**
+ * Your Vector2D object will be instantiated and called as such:
+ * Vector2D* obj = new Vector2D(v);
+ * int param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
