@@ -33,10 +33,10 @@ class Solution {
 public:
     vector<string> findMissingRanges(vector<int>& nums, int lower, int upper) { # Need to consider the case when upper+ 1 overflow
                                                                                 # or lower - 1 underflow       
-        long int prev = (long) lower - 1;
+        long prev = (long) lower - 1;
         vector<string> res {};
         for (int i = 0; i <= nums.size(); ++i) {
-            long int curr = i == nums.size() ? (long) upper + 1 : (long) nums[i];
+            long curr = i == nums.size() ? (long) upper + 1 : (long) nums[i];
             if (curr - prev == 2) {
                 res.push_back(to_string(prev + 1));
             } else if (curr - prev > 2) {
