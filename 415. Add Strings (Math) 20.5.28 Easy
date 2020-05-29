@@ -1,0 +1,55 @@
+Given two non-negative integers num1 and num2 represented as string, return the sum of num1 and num2.
+
+Note:
+
+The length of both num1 and num2 is < 5100.
+Both num1 and num2 contains only digits 0-9.
+Both num1 and num2 does not contain any leading zero.
+You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+
+Solution: O(n) T and S
+class Solution(object):
+    def addStrings(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        l1, l2 = list(num1), list(num2)
+        carry = 0
+        res = []
+        while l1 or l2:
+            v1 = ord(l1.pop()) - ord('0') if l1 else 0
+            v2 = ord(l2.pop()) - ord('0') if l2 else 0
+            curr_sum = v1 + v2 + carry
+            res.append(curr_sum % 10)
+            carry = curr_sum / 10
+        if carry:
+            res.append(carry)
+        return "".join([str(num) for num in res[::-1]])
+        
+        
+        
+C++ Version:
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        int i = num1.size() - 1;
+        int j = num2.size() - 1;
+        int carry = 0;
+        string res = "";
+        while (i >= 0 || j >= 0) {
+            int v1 = i >= 0 ? num1[i--] - '0' : 0;
+            int v2 = j >= 0 ? num2[j--] - '0' : 0;
+            int curr_sum = v1 + v2 + carry;
+            res += to_string(curr_sum % 10);
+            carry = curr_sum / 10;
+        }
+        if (carry != 0) {
+            res += to_string(carry);
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
