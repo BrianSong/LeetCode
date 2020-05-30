@@ -1,0 +1,58 @@
+Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
+
+Example 1:
+Input: "aba"
+Output: True
+Example 2:
+Input: "abca"
+Output: True
+Explanation: You could delete the character 'c'.
+Note:
+The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
+
+
+Solution: O(n) T and O(1) S
+class Solution(object):
+    def check(self, s, left, right):
+        return all(s[k] == s[right - k + left] for k in range(left, right + 1))
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        if not s:
+            return False
+        for i in range(len(s) / 2):
+            j = len(s) - i - 1
+            if s[i] != s[j]:
+                return self.check(s, i + 1, j) or self.check(s, i, j - 1)
+        return True
+        
+        
+        
+C++ Version:
+class Solution {
+public:
+    
+    bool check(string s, int left, int right) {
+        for (int k = left; k <= right; ++k) {
+            if (s[k] != s[right - k + left]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    bool validPalindrome(string s) {
+        if (s.size() == 0) {
+            return false;
+        }
+        for (int i = 0; i < s.size() / 2; ++i) {
+            int j = s.size() - i - 1;
+            if (s[i] != s[j]) {
+                return check(s, i + 1, j) || check(s, i, j - 1);
+            }
+        }
+        return true;
+    }
+};
