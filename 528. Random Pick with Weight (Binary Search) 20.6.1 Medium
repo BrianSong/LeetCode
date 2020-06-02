@@ -1,0 +1,97 @@
+Given an array w of positive integers, where w[i] describes the weight of index i, write a function pickIndex which randomly picks an index in proportion to its weight.
+
+Note:
+
+1 <= w.length <= 10000
+1 <= w[i] <= 10^5
+pickIndex will be called at most 10000 times.
+Example 1:
+
+Input: 
+["Solution","pickIndex"]
+[[[1]],[]]
+Output: [null,0]
+Example 2:
+
+Input: 
+["Solution","pickIndex","pickIndex","pickIndex","pickIndex","pickIndex"]
+[[[1,3]],[],[],[],[],[]]
+Output: [null,0,1,1,1,0]
+Explanation of Input Syntax:
+
+The input is two lists: the subroutines called and their arguments. Solution's constructor has one argument, 
+the array w. pickIndex has no arguments. Arguments are always wrapped with a list, even if there aren't any.
+
+
+Solution: o(logn) T for pickIndex and O(n) S
+class Solution(object):
+
+    def __init__(self, w):
+        """
+        :type w: List[int]
+        """
+        self.prefix_sums = []
+        prefix_sum = 0
+        for weight in w:
+            prefix_sum += weight
+            self.prefix_sums.append(prefix_sum)
+        self.total = prefix_sum
+            
+        
+
+    def pickIndex(self):
+        """
+        :rtype: int
+        """
+        target = self.total * random.random()
+        low, high = 0, len(self.prefix_sums) - 1
+        while low <= high:
+            mid = low + (high - low) / 2
+            if target > self.prefix_sums[mid]:
+                low = mid + 1
+            else:
+                high = mid - 1
+        return low
+        
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
+
+
+
+C++ Version:
+class Solution {
+public:
+    vector<int> prefix_sums {};
+    int total {};
+    Solution(vector<int>& w) {
+        int prefix_sum {};
+        for (auto weight : w) {
+            prefix_sum += weight;
+            prefix_sums.push_back(prefix_sum);
+        }
+        total = prefix_sum;
+    } 
+    
+    int pickIndex() {
+        double target = total * ((double) rand() / (RAND_MAX));
+        int low = 0, high = prefix_sums.size() - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (target > prefix_sums[mid]) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return low;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(w);
+ * int param_1 = obj->pickIndex();
+ */
