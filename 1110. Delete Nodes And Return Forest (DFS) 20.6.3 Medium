@@ -1,0 +1,97 @@
+Given the root of a binary tree, each node in the tree has a distinct value.
+
+After deleting all nodes with a value in to_delete, we are left with a forest (a disjoint union of trees).
+
+Return the roots of the trees in the remaining forest.  You may return the result in any order.
+
+ 
+
+Example 1:
+
+
+
+Input: root = [1,2,3,4,5,6,7], to_delete = [3,5]
+Output: [[1,2,null,4],[6],[7]]
+ 
+
+Constraints:
+
+The number of nodes in the given tree is at most 1000.
+Each node has a distinct value between 1 and 1000.
+to_delete.length <= 1000
+to_delete contains distinct values between 1 and 1000.
+
+
+Solution: O(n) T and S
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        """
+        :type root: TreeNode
+        :type to_delete: List[int]
+        :rtype: List[TreeNode]
+        """
+        res = set()
+        res.add(root)
+        to_delete = set(to_delete)
+        if root.val in to_delete:
+            res = set()
+        self.dfs(root, to_delete, res)
+        return list(res)
+    
+    def dfs(self, curr_node, to_delete, res):
+        if not curr_node:
+            return
+        if curr_node.val in to_delete:
+            if curr_node in res:
+                res.remove(curr_node)
+            if curr_node.left or curr_node.right:
+                if curr_node.left:
+                    res.add(curr_node.left)
+                if curr_node.right:
+                    res.add(curr_node.right)
+        left_node = curr_node.left
+        right_node = curr_node.right
+        if left_node and left_node.val in to_delete:
+            curr_node.left = None
+        if right_node and right_node.val in to_delete:
+            curr_node.right = None
+        self.dfs(left_node, to_delete, res)
+        self.dfs(right_node, to_delete, res)
+        
+        
+Solution no.2: Much more concise version O(n) T and S           # If a node is root (has no parent) and isn't deleted,
+                                                                # then we add it to the result.
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        """
+        :type root: TreeNode
+        :type to_delete: List[int]
+        :rtype: List[TreeNode]
+        """
+        to_delete_set = set(to_delete)
+        res = []
+        
+        def helper(root, is_root):
+            if not root:
+                return
+            is_delete = root.val in to_delete_set
+            if is_root and not is_delete:
+                res.append(root)
+            root.left = helper(root.left, is_delete)
+            root.right = helper(root.right, is_delete)
+            return None if is_delete else root
+        
+        helper(root, True)
+        return res
