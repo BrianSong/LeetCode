@@ -95,3 +95,46 @@ class Solution(object):
         
         helper(root, True)
         return res
+
+
+C++ Version:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> res;
+    set<int> to_delete_set;
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        for (auto item : to_delete) {
+            to_delete_set.insert(item);
+        }
+        helper(root, true);
+        return res;
+    }
+    
+    TreeNode* helper(TreeNode* node, bool is_root) {
+        if (node == NULL) {
+            return NULL;
+        }
+        bool is_delete = to_delete_set.find(node->val) != to_delete_set.end();
+        if (is_root && !is_delete) {
+            res.push_back(node);
+        }
+        node->left = helper(node->left, is_delete);
+        node->right = helper(node->right, is_delete);
+        if (is_delete) {
+            return NULL;
+        } else {
+            return node;
+        }
+    } 
+};
