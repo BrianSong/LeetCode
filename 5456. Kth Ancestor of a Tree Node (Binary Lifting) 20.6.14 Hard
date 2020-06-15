@@ -1,0 +1,116 @@
+You are given a tree with n nodes numbered from 0 to n-1 in the form of a parent array where parent[i] is the parent of node i.
+The root of the tree is node 0.
+
+Implement the function getKthAncestor(int node, int k) to return the k-th ancestor of the given node. 
+If there is no such ancestor, return -1.
+
+The k-th ancestor of a tree node is the k-th node in the path from that node to the root.
+
+ 
+
+Example:
+
+
+
+Input:
+["TreeAncestor","getKthAncestor","getKthAncestor","getKthAncestor"]
+[[7,[-1,0,0,1,1,2,2]],[3,1],[5,2],[6,3]]
+
+Output:
+[null,1,0,-1]
+
+Explanation:
+TreeAncestor treeAncestor = new TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2]);
+
+treeAncestor.getKthAncestor(3, 1);  // returns 1 which is the parent of 3
+treeAncestor.getKthAncestor(5, 2);  // returns 0 which is the grandparent of 5
+treeAncestor.getKthAncestor(6, 3);  // returns -1 because there is no such ancestor
+ 
+
+Constraints:
+
+1 <= k <= n <= 5*10^4
+parent[0] == -1 indicating that 0 is the root node.
+0 <= parent[i] < n for all 0 < i < n
+0 <= node < n
+There will be at most 5*10^4 queries.
+
+
+Solution no.1: My own - Cached Recursion by TLE 9/10 testcases pass
+class TreeAncestor(object):
+
+    def __init__(self, n, parent):
+        """
+        :type n: int
+        :type parent: List[int]
+        """
+        self.cache = {}
+        self.parent = parent
+        
+
+    def getKthAncestor(self, node, k):
+        """
+        :type node: int
+        :type k: int
+        :rtype: int
+        """
+        if (node, k) in self.cache:
+            return self.cache[(node, k)]
+        if k == 0 or node == -1:
+            return node
+        self.cache[(node, k)] = self.getKthAncestor(self.parent[node], k - 1)
+        return self.cache[(node, k)]
+        
+
+
+# Your TreeAncestor object will be instantiated and called as such:
+# obj = TreeAncestor(n, parent)
+# param_1 = obj.getKthAncestor(node,k)
+
+
+
+Solution no.2: Binary Lifting - DP
+'''
+For node 0, 1, ..., n-1, we define a matrix self.dp[][] whose i, jth element indicates the ith node's 2^j parent. 
+Here, i = 0, 1, ..., n-1 and j = 0, 1, ..., int(log2(n)). An important recursive relationship is that
+
+self.dp[i][j] = self.dp[self.dp[i][j-1]][j-1].
+
+In other words, ith node's 2^j parent is ith node's 2^(j-1) parent's 2^(j-1) parent. 
+In this way, lookup is guarenteed to complete in O(logN) time. Note that it takes O(NlogN) to build self.dp.
+
+Time complexity O(NlogN) to pre-processing the tree and O(logN) for each equery thereafter.
+'''
+import numpy as np 
+class TreeAncestor(object):
+
+    def __init__(self, n, parent):
+        """
+        :type n: int
+        :type parent: List[int]
+        """
+        m = 1 + int(np.log2(n))
+        self.dp = [[-1 for j in range(m)] for i in range(n)]
+        for i in range(n):
+            self.dp[i][0] = parent[i]
+            for j in range(1, m):
+                if self.dp[i][j - 1] != -1:
+                    self.dp[i][j] = self.dp[self.dp[i][j - 1]][j - 1]
+
+    def getKthAncestor(self, node, k):
+        """
+        :type node: int
+        :type k: int
+        :rtype: int
+        """
+        while (k > 0 and node != -1):
+            j = int(np.log2(k))
+            node = self.dp[node][j]
+            k -= pow(2, j)
+        return node
+        
+
+
+# Your TreeAncestor object will be instantiated and called as such:
+# obj = TreeAncestor(n, parent)
+# param_1 = obj.getKthAncestor(node,k)
