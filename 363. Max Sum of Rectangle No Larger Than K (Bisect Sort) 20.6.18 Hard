@@ -41,8 +41,8 @@ class Solution(object):
         pre_sum_arr = [float('inf')]
         curr_pre_sum = 0
         for x in arr:
-            bisect.insort(pre_sum_arr, curr_pre_sum)                             # O(1) T
+            bisect.insort(pre_sum_arr, curr_pre_sum)                             # O(n) T
             curr_pre_sum += x
-            i = bisect.bisect_left(pre_sum_arr, curr_pre_sum - k)                # O(1) T
+            i = bisect.bisect_left(pre_sum_arr, curr_pre_sum - k)                # O(logn) T
             curr_max_sum = max(curr_max_sum, curr_pre_sum - pre_sum_arr[i])
         return curr_max_sum
