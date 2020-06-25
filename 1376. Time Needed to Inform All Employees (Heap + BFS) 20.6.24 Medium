@@ -64,7 +64,7 @@ informTime[i] == 0 if employee i has no subordinates.
 It is guaranteed that all the employees can be informed.
 
 
-Solution: O(nlogn) T and O(n) S
+Solution no.1: O(nlogn) T and O(n) S
 class Solution(object):
     def numOfMinutes(self, n, headID, manager, informTime):
         """
@@ -88,4 +88,32 @@ class Solution(object):
             res = curr_time
             for sub in head_to_sub[curr_leader]:
                 heapq.heappush(pq, (informTime[curr_leader] + curr_time, sub))
+        return res
+
+
+Solution no.2: O(n) T and S
+class Solution(object):
+    def numOfMinutes(self, n, headID, manager, informTime):
+        """
+        :type n: int
+        :type headID: int
+        :type manager: List[int]
+        :type informTime: List[int]
+        :rtype: int
+        """
+        curr_leader = -1
+        head_to_sub = collections.defaultdict(list)
+        for sub, head in enumerate(manager):
+            if head == -1:
+                curr_leader = sub
+                continue
+            head_to_sub[head].append(sub)
+        queue = collections.deque([(0, curr_leader)])
+        res = 0
+        while queue:
+            (curr_time, curr_leader) = queue.popleft()                     # Since each node can only be reached by one path
+                                                                           # we can use queue instead of heapq
+            res = max(res, curr_time)                                      # use max() here
+            for sub in head_to_sub[curr_leader]:
+                queue.append((informTime[curr_leader] + curr_time, sub))
         return res
