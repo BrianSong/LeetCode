@@ -64,7 +64,7 @@ informTime[i] == 0 if employee i has no subordinates.
 It is guaranteed that all the employees can be informed.
 
 
-Solution: O(n) T and S
+Solution: O(nlogn) T and O(n) S
 class Solution(object):
     def numOfMinutes(self, n, headID, manager, informTime):
         """
