@@ -1,0 +1,61 @@
+Given a list of non-negative numbers and a target integer k, 
+write a function to check if the array has a continuous subarray of size at least 2 that sums up to a multiple of k, 
+that is, sums up to n*k where n is also an integer.
+
+ 
+
+Example 1:
+
+Input: [23, 2, 4, 6, 7],  k=6
+Output: True
+Explanation: Because [2, 4] is a continuous subarray of size 2 and sums up to 6.
+Example 2:
+
+Input: [23, 2, 6, 4, 7],  k=6
+Output: True
+Explanation: Because [23, 2, 6, 4, 7] is an continuous subarray of size 5 and sums up to 42.
+ 
+
+Constraints:
+
+The length of the array won't exceed 10,000.
+You may assume the sum of all the numbers is in the range of a signed 32-bit integer.
+
+
+Solution no.1: O(n^2) T and O(1) S
+class Solution(object):
+    def checkSubarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        for i in range(len(nums)):
+            curr_sum = nums[i]
+            for j in range(i + 1, len(nums)):
+                curr_sum += nums[j]
+                if curr_sum == k or (k != 0 and curr_sum % k == 0):             # curr_sum == k? => for cases like [0, 0], 0
+                                                                                # Also, cannot % 0 !!
+                    return True
+        return False
+        
+        
+Solution no.2: O(n) T and S ------------------------------ Subarray Sum ================ Prefix Sum !!!!!!!!!!
+class Solution(object):
+    def checkSubarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        if k == 0:
+            return any(nums[i] == 0 and nums[i + 1] == 0 for i in range(len(nums) - 1))
+        modSum_to_index = {0 : -1}
+        curr_modSum = 0
+        for i, num in enumerate(nums):
+            curr_modSum = (curr_modSum + num) % k
+            if curr_modSum in modSum_to_index and i - modSum_to_index[curr_modSum] > 1:
+                return True
+            if not curr_modSum in modSum_to_index:
+                modSum_to_index[curr_modSum] = i
+        return False
