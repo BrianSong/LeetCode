@@ -36,3 +36,32 @@ class Solution(object):
             return 2 * count + 1
         else:
             return 2 * count
+
+
+Solution: O(n) T and S
+class Solution:
+    """
+    @param s: a string which consists of lowercase or uppercase letters
+    @return: the length of the longest palindromes that can be built
+    """
+    def longestPalindrome(self, s):
+        # write your code here
+        if not s:
+            return 0
+        
+        counter = collections.Counter(s)
+        max_odd_freq = 0
+        res = 0
+        print counter
+        
+        for freq in counter.values():
+            if freq % 2 == 0:
+                res += freq
+            else:
+                if freq > max_odd_freq:
+                    res += (max_odd_freq / 2) * 2
+                    max_odd_freq = freq
+                else:
+                    res += (freq / 2) * 2                      # for 3, 5, 7, we can also take 2, 4, 6
+
+        return res + max_odd_freq
