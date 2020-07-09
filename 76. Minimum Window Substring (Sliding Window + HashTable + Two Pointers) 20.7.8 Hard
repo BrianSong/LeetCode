@@ -56,3 +56,37 @@ class Solution(object):
         while i < len(s) and not s[i] in t:
             i += 1
         return i
+
+
+
+Solution no.2: Two Pointer Sliding Window O(n) T and S
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        if not s or not t:
+            return ""
+        
+        t_count = collections.Counter(t)
+        window_count = collections.defaultdict(int)
+        formed = 0
+        required = len(t_count)
+        res = (float('inf'), 0, 0)
+        left, right = 0, 0
+        
+        while right < len(s):                                                                   # Keep explore the right pointer
+            window_count[s[right]] += 1
+            if s[right] in t_count and t_count[s[right]] == window_count[s[right]]:
+                formed += 1
+            while left <= right and formed == required:                                         # And contract the left pointer
+                res = min(res, (right - left + 1, left, right))
+                window_count[s[left]] -= 1
+                if s[left] in t_count and window_count[s[left]] < t_count[s[left]]:
+                    formed -= 1
+                left += 1
+            right += 1
+        
+        return "" if res[0] == float('inf') else s[res[1] : res[2] + 1]
