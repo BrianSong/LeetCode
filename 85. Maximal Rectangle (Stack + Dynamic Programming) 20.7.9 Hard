@@ -61,3 +61,55 @@ class Solution(object):
                 left = -1
             res = max(res, (right - left - 1) * heights[height])
         return res
+
+
+Updated Version:
+class Solution(object):
+    def maximalRectangle(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
+            return 0
+        
+        res, heights = 0, [0] * len(matrix[0])
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == '1':
+                    heights[j] += 1
+                else:
+                    heights[j] = 0
+            res = max(res, self.largestRectangleArea(heights))
+        return res
+    
+    def largestRectangleArea(self, heights):
+        """
+        :type heights: List[int]
+        :rtype: int
+        """
+        if not heights or len(heights) == 0:
+            return 0
+        
+        res, stack, curr_index = 0, [], 0
+        
+        while curr_index < len(heights):
+            if not stack or heights[stack[-1]] <= heights[curr_index]:
+                stack.append(curr_index)
+                curr_index += 1
+            else:
+                height_index, right_index = stack.pop(), curr_index
+                while stack and heights[height_index] == heights[stack[-1]]:
+                    stack.pop()
+                left_index = stack[-1] if stack else -1
+                res = max(res, heights[height_index] * (right_index - left_index - 1))
+        
+        if stack:
+            right_index = stack[-1] + 1
+        
+        while stack:
+            height_index = stack.pop()
+            left_index = stack[-1] if stack else -1
+            res = max(res, heights[height_index] * (right_index - left_index - 1))
+        
+        return res
