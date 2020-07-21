@@ -72,3 +72,24 @@ class Solution {
         return res * x;
     }
 }
+
+
+Update Python Version:
+def myPow(self, x, n):
+        # write your code here
+        if n < 0:
+            x = 1 / x 
+            n *= -1 
+        
+        res = 1 
+        curr_product = x 
+        
+        while n > 0:
+            if n % 2 == 1:
+                res *= curr_product
+                n -= 1 
+            else:
+                curr_product *= curr_product
+                n /= 2 
+        
+        return res
