@@ -1,0 +1,66 @@
+Given a sorted array arr, two integers k and x, find the k closest elements to x in the array. 
+The result should also be sorted in ascending order. If there is a tie, the smaller elements are always preferred.
+
+ 
+
+Example 1:
+
+Input: arr = [1,2,3,4,5], k = 4, x = 3
+Output: [1,2,3,4]
+Example 2:
+
+Input: arr = [1,2,3,4,5], k = 4, x = -1
+Output: [1,2,3,4]
+ 
+
+Constraints:
+
+1 <= k <= arr.length
+1 <= arr.length <= 10^4
+Absolute value of elements in the array and x will not exceed 104
+
+
+Solution: O(logn + klogk) T and O(1) S
+class Solution(object):
+    def findClosestElements(self, A, k, target):
+        # write your code here
+        if not A or len(A) == 0:
+            return []
+        
+        find_seq_closest = self.find(A, target, 0, len(A) - 1)
+        p1, p2 = find_seq_closest, find_seq_closest + 1
+        res = []
+        while k > 0:
+            if p2 >= len(A):
+                res.append(A[p1])
+                p1 -= 1 
+            elif p1 < 0:
+                res.append(A[p2])
+                p2 += 1 
+            elif abs(A[p1] - target) > abs(A[p2] - target):
+                res.append(A[p2])
+                p2 += 1 
+            else:
+                res.append(A[p1])
+                p1 -= 1
+            k -= 1 
+        
+        return sorted(res)
+        
+    
+    def find(self, A, target, left, right):
+        while left + 1 < right:
+            mid = (left + right) / 2 
+            if A[mid] > target:
+                right = mid 
+            elif A[mid] < target:
+                left = mid 
+            else:
+                left = mid 
+        
+        if A[right] <= target:
+            return right
+        if A[left] > target:
+            return left - 1 
+        if A[left] <= target:
+            return left
