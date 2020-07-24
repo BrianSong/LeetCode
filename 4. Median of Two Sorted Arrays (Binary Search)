@@ -68,3 +68,37 @@ class Solution(object):
                 else:                                     
                     min_of_right = min(A[i], B[j])
                 return (max_of_left + min_of_right) / 2.0       # Otherwise, for even cases, take (max_of_left + min_of_right) / 2.0
+
+
+
+Solution no.2: Divide and Conquer O(log K) T and S
+class Solution:
+    """
+    @param: A: An integer array
+    @param: B: An integer array
+    @return: a double whose format is *.5 or *.0
+    """
+    def findMedianSortedArrays(self, A, B):
+        # write your code here
+        n = len(A) + len(B)
+        if n % 2 == 1:
+            return self.find_kth_number(A, 0, B, 0, n / 2 + 1)
+        else:
+            small = self.find_kth_number(A, 0, B, 0, n / 2)
+            large = self.find_kth_number(A, 0, B, 0, n / 2 + 1)
+            return (small + large) / 2.0
+    
+    def find_kth_number(self, A, pA, B, pB, k):
+        if pA == len(A):
+            return B[pB + k - 1]
+        if pB == len(B):
+            return A[pA + k - 1]
+        if k == 1:
+            return min(A[pA], B[pB])
+        
+        a = A[pA + k / 2 - 1] if pA + k / 2 - 1 < len(A) else None
+        b = B[pB + k / 2 - 1] if pB + k / 2 - 1 < len(B) else None
+        
+        if b is None or (not a is None and b > a):
+            return self.find_kth_number(A, pA + k / 2, B, pB, k - k / 2)
+        return self.find_kth_number(A, pA, B, pB + k / 2, k - k / 2)
