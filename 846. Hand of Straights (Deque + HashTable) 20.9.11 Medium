@@ -52,7 +52,8 @@ class Solution(object):
         return True
         
         
-Solution no.2: ------------- Simpler O(MlogM + N) T
+Solution no.2: ------------- Simpler O(MlogM + N) T 
+# not every unique start will lead you into the loop of W steps. And at most N loops can be done before exhausting.
 class Solution(object):
     def isNStraightHand(self, hand, W):
         """
