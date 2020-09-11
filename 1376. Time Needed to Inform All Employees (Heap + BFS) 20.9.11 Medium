@@ -117,3 +117,28 @@ class Solution(object):
             for sub in head_to_sub[curr_leader]:
                 queue.append((informTime[curr_leader] + curr_time, sub))
         return res
+        
+        
+Solution no.3: DFS O(n) T and S
+class Solution(object):
+    def numOfMinutes(self, n, headID, manager, informTime):
+        """
+        :type n: int
+        :type headID: int
+        :type manager: List[int]
+        :type informTime: List[int]
+        :rtype: int
+        """
+        m_to_e = collections.defaultdict(list)
+        for e, m in enumerate(manager):
+            m_to_e[m].append(e)
+        return self.dfs(headID, m_to_e, informTime)
+    
+    def dfs(self, curr_id, m_to_e, informTime):
+        if not curr_id in m_to_e:
+            return 0
+        curr_max_time = float('-inf')
+        for e in m_to_e[curr_id]:
+            curr_max_time = max(curr_max_time, self.dfs(e, m_to_e, informTime) + informTime[curr_id])
+        
+        return curr_max_time
