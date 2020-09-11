@@ -25,7 +25,7 @@ Constraints:
 1 <= W <= hand.length
 
 
-Solution: my own O(MlogM + N) T and O(N) S
+Solution: my own O(MlogM + MW) T and O(N) S where M is the number of different cards
 class Solution(object):
     def isNStraightHand(self, hand, W):
         """
@@ -41,7 +41,7 @@ class Solution(object):
         deque = collections.deque(l)
         while deque:
             start = deque[0][0]
-            for i in range(W):
+            for i in range(W):                                        # If W is very large, this code will TLE.
                 curr = start + i
                 if i >= len(deque) or deque[i][0] != curr:
                     return False
@@ -50,3 +50,31 @@ class Solution(object):
             while deque and deque[0][1] == 0:
                 deque.popleft()
         return True
+        
+        
+Solution no.2: ------------- Simpler O(MlogM + MW) T
+class Solution(object):
+    def isNStraightHand(self, hand, W):
+        """
+        :type hand: List[int]
+        :type W: int
+        :rtype: bool
+        """
+        if len(hand) % W != 0:
+            return False
+        c = collections.Counter(hand)
+        for i in sorted(c):
+            if c[i] > 0:
+                curr_reduce = c[i]
+                for j in range(W):
+                    c[i + j] -= curr_reduce
+                    if c[i + j] < 0:
+                        return False
+        
+        return True
+        
+'''
+What if W is huge, should we cut off card on by one?
+'''
+Solution no.3: 
+# May follow up in the future.
