@@ -52,7 +52,7 @@ class Solution(object):
         return True
         
         
-Solution no.2: ------------- Simpler O(MlogM + MW) T
+Solution no.2: ------------- Simpler O(MlogM + N) T
 class Solution(object):
     def isNStraightHand(self, hand, W):
         """
@@ -72,9 +72,3 @@ class Solution(object):
                         return False
         
         return True
-        
-'''
-What if W is huge, should we cut off card on by one?
-'''
-Solution no.3: 
-# May follow up in the future.
