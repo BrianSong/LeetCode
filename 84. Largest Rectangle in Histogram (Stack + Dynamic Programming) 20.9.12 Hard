@@ -120,3 +120,29 @@ class Solution(object):
             res = max(res, heights[height_index] * (right_index - left_index - 1))
         
         return res
+
+
+Concise Version:
+class Solution(object):
+    def largestRectangleArea(self, heights):
+        """
+        :type heights: List[int]
+        :rtype: int
+        """
+        if not heights or len(heights) == 0:
+            return 0
+        
+        stack = []
+        stack.append(-1)
+        max_area = 0
+        for i in range(len(heights)):
+            # i 此刻为右边界
+            while stack[-1] != -1 and heights[stack[-1]] > heights[i]:
+                # stack[-1] 此刻为左边界
+                max_area = max(max_area, heights[stack.pop()] * (i - stack[-1] - 1))
+            stack.append(i)
+        
+        while stack[-1] != -1:
+            max_area = max(max_area, heights[stack.pop()] * (len(heights) - stack[-1] -1))
+        
+        return max_area
