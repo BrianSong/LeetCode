@@ -11,6 +11,29 @@ Input:
 ]
 Output: 6
 
+Native Version: O(N^2M) T and O(NM) S
+class Solution(object):
+    def maximalRectangle(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
+            return 0
+        n, m = len(matrix), len(matrix[0])
+        max_area = 0
+        dp = [[0] * m for _ in range(n)]
+        for i in range(n):
+            for j in range(m):
+                if matrix[i][j] == '0':
+                    continue
+                max_width = dp[i][j] = dp[i][j - 1] + 1 if j else 1
+                for k in range(i, - 1, -1):
+                    max_width = min(max_width, dp[k][j])
+                    max_area = max(max_area, max_width * (i - k + 1))
+        
+        return max_area
+
 
 Solution: -------------------------------- Stack + Dynamic Programming ------------------ https://www.youtube.com/watch?v=2Yk3Avrzauk
 ------------------------------------------ Basically the same as 84. Largest Rectangle in Histogram
@@ -73,15 +96,17 @@ class Solution(object):
         if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
             return 0
         
-        res, heights = 0, [0] * len(matrix[0])
+        heights = [0] * len(matrix[0])
+        max_area = 0
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 if matrix[i][j] == '1':
-                    heights[j] += 1
+                    heights[j] += 1 
                 else:
                     heights[j] = 0
-            res = max(res, self.largestRectangleArea(heights))
-        return res
+            max_area = max(max_area, self.largestRectangleArea(heights))
+        
+        return max_area
     
     def largestRectangleArea(self, heights):
         """
@@ -91,25 +116,17 @@ class Solution(object):
         if not heights or len(heights) == 0:
             return 0
         
-        res, stack, curr_index = 0, [], 0
+        stack = []
+        stack.append(-1)
+        max_area = 0
+        for i in range(len(heights)):
+            # i 此刻为右边界
+            while stack[-1] != -1 and heights[stack[-1]] > heights[i]:
+                # stack[-1] 此刻为左边界
+                max_area = max(max_area, heights[stack.pop()] * (i - stack[-1] - 1))
+            stack.append(i)
         
-        while curr_index < len(heights):
-            if not stack or heights[stack[-1]] <= heights[curr_index]:
-                stack.append(curr_index)
-                curr_index += 1
-            else:
-                height_index, right_index = stack.pop(), curr_index
-                while stack and heights[height_index] == heights[stack[-1]]:
-                    stack.pop()
-                left_index = stack[-1] if stack else -1
-                res = max(res, heights[height_index] * (right_index - left_index - 1))
+        while stack[-1] != -1:
+            max_area = max(max_area, heights[stack.pop()] * (len(heights) - stack[-1] -1))
         
-        if stack:
-            right_index = stack[-1] + 1
-        
-        while stack:
-            height_index = stack.pop()
-            left_index = stack[-1] if stack else -1
-            res = max(res, heights[height_index] * (right_index - left_index - 1))
-        
-        return res
+        return max_area
