@@ -1,0 +1,65 @@
+Given an array of n distinct non-empty strings, you need to generate minimal possible abbreviations for every word following rules below.
+
+Begin with the first character and then the number of characters abbreviated, which followed by the last character.
+If there are any conflict, that is more than one words share the same abbreviation, 
+a longer prefix is used instead of only the first character until making the map from word to abbreviation become unique. 
+In other words, a final abbreviation cannot map to more than one original words.
+If the abbreviation doesn't make the word shorter, then keep it as original.
+Example:
+Input: ["like", "god", "internal", "me", "internet", "interval", "intension", "face", "intrusion"]
+Output: ["l2e","god","internal","me","i6t","interval","inte4n","f2e","intr4n"]
+Note:
+Both n and the length of each word will not exceed 400.
+The length of each word is greater than 1.
+The words consist of lowercase English letters only.
+The return answers should be in the same order as the original array.
+Accepted
+16,724
+Submissions
+30,518
+
+
+Solution: O(nlogn) T
+'''
+https://leetcode.com/problems/word-abbreviation/discuss/99781/Python-Straightforward-with-Explanation
+'''
+class Solution(object):
+    def wordsAbbreviation(self, A):
+        """
+        :type dict: List[str]
+        :rtype: List[str]
+        """
+        res = [""] * len(A)
+        groups = collections.defaultdict(list)
+        for i, w in enumerate(A):
+            groups[(len(w), w[0], w[-1])].append((w, i))
+        
+        for (size, start_c, end_c), words in groups.items():
+            words.sort()
+            lcp = [0] * len(words)
+            for i in range(1, len(words)):
+                curr_word, _ = words[i]
+                prev_word, _ = words[i - 1]
+                curr_lcp = self.calculate_longest_common_prefix(curr_word, prev_word)
+                lcp[i] = max(lcp[i], curr_lcp)
+                lcp[i - 1] = max(lcp[i - 1], curr_lcp)
+            
+            for (word, index), curr_lcp in zip(words, lcp):
+                delta = len(word) - 2 - curr_lcp
+                if delta <= 0 or delta <= len(str(delta)):
+                    res[index] = word
+                else:
+                    res[index] = word[:curr_lcp + 1] + str(delta) + end_c
+                    
+        return res
+    
+    
+    def calculate_longest_common_prefix(self, word1, word2):
+        i, j = 0, 0
+        res = 0
+        while i < len(word1) and j < len(word2) and word1[i] == word2[j]:
+            res += 1
+            i += 1
+            j += 1 
+        
+        return res
