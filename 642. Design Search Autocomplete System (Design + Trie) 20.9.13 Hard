@@ -195,3 +195,66 @@ class AutocompleteSystem {
  * AutocompleteSystem obj = new AutocompleteSystem(sentences, times);
  * List<String> param_1 = obj.input(c);
  */
+ 
+ 
+ 
+ Solution no.2: Trie
+ class TrieNode:
+    def __init__(self):
+        self.childrens = collections.defaultdict(TrieNode)
+        self.words = set()
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, w):
+        node = self.root
+        for c in w:
+            node = node.childrens[c]
+            node.words.add(w)
+    
+    def find(self, w):
+        node = self.root
+        for c in w:
+            node = node.childrens[c]
+        
+        return node.words
+
+class AutocompleteSystem(object):
+
+    def __init__(self, sentences, times):
+        """
+        :type sentences: List[str]
+        :type times: List[int]
+        """
+        self.counter = collections.defaultdict(int)
+        for s, t in zip(sentences, times):
+            self.counter[s] = t
+        self.trie = Trie()
+        for s in sentences:
+            self.trie.insert(s)
+        self.curr = ""
+
+    def input(self, c):
+        """
+        :type c: str
+        :rtype: List[str]
+        """
+        if c != '#':
+            self.curr += c
+            words = self.trie.find(self.curr)
+            hot_list = [(-self.counter[w], w) for w in words]
+            hot_list.sort()
+            return [w for _, w in hot_list[:3]]
+        else:
+            self.trie.insert(self.curr)
+            self.counter[self.curr] += 1
+            self.curr = ""
+            return []
+        
+
+
+# Your AutocompleteSystem object will be instantiated and called as such:
+# obj = AutocompleteSystem(sentences, times)
+# param_1 = obj.input(c)
