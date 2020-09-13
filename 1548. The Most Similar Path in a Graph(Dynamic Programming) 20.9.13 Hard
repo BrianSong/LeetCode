@@ -70,7 +70,7 @@ class Solution(object):
             graph[r[1]].append(r[0])
         
         m = len(targetPath)
-        dp = [[m for _ in range(n)] for _ in range(m)]
+        dp = [[m for _ in range(n)] for _ in range(m)]      # dp[i][j] means the minimum edit distance for targetPath[:i+1] ending with city j.
         prev = [[0 for _ in range(n)] for _ in range(m)]
         
         for j in range(n):
