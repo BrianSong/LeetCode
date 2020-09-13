@@ -121,3 +121,60 @@ class SnapshotArray(object):
 # obj.set(index,val)
 # param_2 = obj.snap()
 # param_3 = obj.get(index,snap_id)
+
+
+Update Version:
+class SnapshotArray(object):
+
+    def __init__(self, length):
+        """
+        :type length: int
+        """
+        self.index_to_snapshot = [[[0, 0]] for _ in range(length)]
+        self.snapshot_id = 0
+        
+        
+
+    def set(self, index, val):
+        """
+        :type index: int
+        :type val: int
+        :rtype: None
+        """
+        self.index_to_snapshot[index].append([val, self.snapshot_id])
+        
+
+    def snap(self):
+        """
+        :rtype: int
+        """
+        self.snapshot_id += 1 
+        return self.snapshot_id - 1
+        
+
+    def get(self, index, snap_id):
+        """
+        :type index: int
+        :type snap_id: int
+        :rtype: int
+        """
+        history = self.index_to_snapshot[index]
+        left, right = 0, len(history) - 1
+        while left + 1 < right:
+            mid = (left + right) / 2
+            if history[mid][1] > snap_id:
+                right = mid
+            else:
+                left = mid 
+
+        if history[right][1] > snap_id:
+            return history[left][0]
+        return history[right][0]
+        
+
+
+# Your SnapshotArray object will be instantiated and called as such:
+# obj = SnapshotArray(length)
+# obj.set(index,val)
+# param_2 = obj.snap()
+# param_3 = obj.get(index,snap_id)
