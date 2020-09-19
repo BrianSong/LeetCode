@@ -59,3 +59,31 @@ class Solution(object):
             else:
                 stack.append(c)
         return ''.join(stack)
+
+
+Updated Version: O(N^2) T and O(N)S
+class Solution(object):
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if not s or len(s) == 0:
+            return ""
+        stack, curr_num, curr_string = [], 0, ""
+        for c in s:
+            if c == '[':
+                stack.append(curr_num)                                    # Store the previous variables
+                stack.append(curr_string)
+                curr_num = 0
+                curr_string = ""
+            elif c == ']':
+                prev_string = stack.pop()
+                prev_num = stack.pop()
+                curr_string = prev_string + prev_num * curr_string        # Here, prev_string is the previous curr_string
+            elif c.isdigit():
+                curr_num = curr_num * 10 + int(c)
+            else:
+                curr_string += c
+        
+        return curr_string
