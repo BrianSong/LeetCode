@@ -118,3 +118,53 @@ class Solution(object):
                                                          # we cannot simply append the item, rememeber to add word as well !!!!!!!!
         memo[s] = currres
         return currres
+
+
+
+My own: O(n^2) T and S
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        if not s or not wordDict:
+            return []
+        
+        poss_length = self.find_poss_length(wordDict)
+        wordDict = set(wordDict)
+        res = []
+        res_list = self.dfs(s, 0, poss_length, wordDict, {})
+        for l in res_list:
+            res.append(" ".join(l[::-1]))
+            
+        return res
+    
+    def dfs(self, s, index, poss_length, wordDict, memo):
+        if index == len(s):
+            return [[]]
+        
+        if index in memo:
+            return memo[index]
+        
+        curr_res = []
+        for l in poss_length:
+            if index + l <= len(s) and s[index : index + l] in wordDict:
+                prev_res = self.dfs(s, index + l, poss_length, wordDict, memo)
+                for prev_list in prev_res:
+                    prev = list(prev_list)
+                    prev.append(s[index : index + l])
+                    curr_res.append(prev)
+        
+        memo[index] = list(curr_res)
+        return curr_res
+        
+    
+    def find_poss_length(self, wordDict):
+        poss_length = set()
+        for w in wordDict:
+            if not len(w) in poss_length:
+                poss_length.add(len(w))
+                
+        return list(poss_length)
