@@ -1,0 +1,70 @@
+Given a non-empty 2D array grid of 0's and 1's, 
+an island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) 
+You may assume all four edges of the grid are surrounded by water.
+
+Count the number of distinct islands. 
+An island is considered to be the same as another if and only if one island can be translated (and not rotated or reflected) to equal the other.
+
+Example 1:
+11000
+11000
+00011
+00011
+Given the above grid map, return 1.
+Example 2:
+11011
+10000
+00001
+11011
+Given the above grid map, return 3.
+
+Notice that:
+11
+1
+and
+ 1
+11
+are considered different island shapes, because we do not consider reflection / rotation.
+Note: The length of each dimension in the given grid does not exceed 50.
+
+
+Solution: O(n * m) T and S
+class Solution(object):
+    def numDistinctIslands(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or len(grid) == 0 or len(grid[0]) == 0:
+            return 0
+        
+        n, m = len(grid), len(grid[0])
+        seen_matrix = set()
+        visited = set()
+        res = 0
+        DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        for i in range(n):
+            for j in range(m):
+                if not (i, j) in visited and grid[i][j] == 1:
+                    visited.add((i, j))
+                    path = []
+                    self.dfs(i, j, grid, i, j, visited, path, DIRS)
+                    if not tuple(path) in seen_matrix:
+                        seen_matrix.add(tuple(path))
+                        res += 1 
+        
+        return res
+    
+    def dfs(self, start_i, start_j, grid, i, j, visited, path, DIRS):
+        for d in DIRS:
+            new_i, new_j = i + d[0], j + d[1]
+            if self.valid(grid, new_i, new_j, visited):
+                visited.add((new_i, new_j))
+                path.append(new_i - start_i)                                               # The `path` here ensure uniqueness
+                path.append(new_j - start_j)
+                self.dfs(start_i, start_j, grid, new_i, new_j, visited, path, DIRS)
+    
+    def valid(self, grid, i, j, visited):
+        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]) or grid[i][j] == 0:
+            return False
+        return not (i, j) in visited
