@@ -43,19 +43,12 @@ class Solution(object):
         :type s: str
         :rtype: str
         """
-        if not s:
+        if not s or len(s) == 0:
             return ""
-        res = ""
-        HashTable = collections.defaultdict(int)
-        for w in s:
-            HashTable[w] +=1
-        l = []
-        for c, f in HashTable.items():
-            l.append((f, c))
-        l.sort()
-        for f, c in l:
-            res += f*c
-        return res[::-1]
+        
+        counter = collections.Counter(s)
+        l = sorted(counter.keys(), key = lambda x: -counter[x])
+        return "".join([c * counter[c] for c in l])
         
         
 Solution no.2: --------------------------------------------- Very clever, do it without sort(): O(n) T and S
