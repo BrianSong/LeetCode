@@ -1,0 +1,151 @@
+On a 3x3 board, there are 8 tiles represented by the integers 1 through 8, and an empty square represented by 0.
+
+A move consists of choosing 0 and a 4-directionally adjacent number and swapping it.
+
+Given an initial state of the puzzle board and final state, return the least number of moves required so that the initial state to final state.
+
+If it is impossible to move from initial state to final state, return -1.
+
+Example
+Example 1:
+
+Input:
+[
+ [2,8,3],
+ [1,0,4],
+ [7,6,5]
+]
+[
+ [1,2,3],
+ [8,0,4],
+ [7,6,5]
+]
+Output:
+4
+
+Explanation:
+[                 [
+ [2,8,3],          [2,0,3],
+ [1,0,4],   -->    [1,8,4],
+ [7,6,5]           [7,6,5]
+]                 ]
+
+[                 [
+ [2,0,3],          [0,2,3],
+ [1,8,4],   -->    [1,8,4],
+ [7,6,5]           [7,6,5]
+]                 ]
+
+[                 [
+ [0,2,3],          [1,2,3],
+ [1,8,4],   -->    [0,8,4],
+ [7,6,5]           [7,6,5]
+]                 ]
+
+[                 [
+ [1,2,3],          [1,2,3],
+ [0,8,4],   -->    [8,0,4],
+ [7,6,5]           [7,6,5]
+]                 ]
+Example 2：
+
+Input:
+[[2,3,8],[7,0,5],[1,6,4]]
+[[1,2,3],[8,0,4],[7,6,5]]
+Output:
+-1
+Challenge
+How to optimize the memory?
+Can you solve it with A* algorithm?
+
+#include <boost/functional/hash.hpp>
+
+class Solution {
+public:
+    /**
+     * @param init_state: the initial state of chessboard
+     * @param final_state: the final state of chessboard
+     * @return: return an integer, denote the number of minimum moving
+     */
+    int minMoveStep(vector<vector<int>> &init_state, vector<vector<int>> &final_state) {
+        // # write your code here
+        if (init_state == final_state) {
+            return 0;
+        }
+        
+        queue<vector<vector<int>>> forward_queue;
+        unordered_set<vector<vector<int>>, boost::hash<vector<vector<int>>>> forward_set {init_state};
+        queue<vector<vector<int>>> backward_queue;
+        unordered_set<vector<vector<int>>, boost::hash<vector<vector<int>>>> backward_set {final_state};
+        forward_queue.push(init_state);
+        backward_queue.push(final_state);
+        int distance = 0;
+        
+        while (forward_queue.size() > 0 && backward_queue.size() > 0) {
+            distance += 1;
+            if (extend_queue(forward_queue, forward_set, backward_set)) {
+                return distance;
+            }
+            
+            distance += 1;
+            if (extend_queue(backward_queue, backward_set, forward_set)) {
+                return distance;
+            }
+        }
+        
+        return -1;
+    }
+
+private:
+    const vector<vector<int>> DIRS {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    
+    vector<int> find_zero(const vector<vector<int>>& board) {
+        for (int i = 0; i < board.size(); ++i) {
+            for (int j = 0; j < board[0].size(); ++j) {
+                if (board[i][j] == 0) {
+                    return vector<int> {i, j};
+                }
+            }
+        }
+    }
+    
+    vector<vector<vector<int>>> swap_with_zero(const vector<vector<int>>& curr, const vector<int>& zero_pos) {
+        vector<vector<vector<int>>> nexts;
+        for (const auto& d : DIRS) {
+            int next_i = zero_pos[0] + d[0];
+            int next_j = zero_pos[1] + d[1];
+            if (next_i < 0 || next_i >= curr.size() || next_j < 0 || next_j >= curr[0].size()) {
+                continue;
+            }
+            vector<vector<int>> next = curr;
+            int temp = next[next_i][next_j];
+            next[next_i][next_j] = next[zero_pos[0]][zero_pos[1]];
+            next[zero_pos[0]][zero_pos[1]] = temp;
+            nexts.push_back(next);
+        }
+        return nexts;
+    }
+    
+    bool extend_queue(queue<vector<vector<int>>>& q, unordered_set<vector<vector<int>>, boost::hash<vector<vector<int>>>>& s, unordered_set<vector<vector<int>>, boost::hash<vector<vector<int>>>>& s_other) {
+        int curr_size = q.size();
+        for (int i = 0; i < curr_size; ++i) {
+            vector<vector<int>> curr = q.front();
+            q.pop();
+            vector<int> zero_pos = find_zero(curr);
+            vector<vector<vector<int>>> nexts = swap_with_zero(curr, zero_pos);
+            for (const auto& next : nexts) {
+                if (s.find(next) != s.end()) {
+                    continue;
+                }
+                if (s_other.find(next) != s_other.end()) {
+                    return true;
+                }
+                q.push(next);
+                s.insert(next);
+            }
+        }
+        
+        return false;
+    }
+
+};
