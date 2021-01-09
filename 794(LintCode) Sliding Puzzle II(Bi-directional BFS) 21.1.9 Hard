@@ -74,7 +74,8 @@ public:
         }
         
         queue<vector<vector<int>>> forward_queue;
-        unordered_set<vector<vector<int>>, boost::hash<vector<vector<int>>>> forward_set {init_state};
+        unordered_set<vector<vector<int>>, boost::hash<vector<vector<int>>>> forward_set {init_state};    # Use boost library to provide the hash function here,
+                                                                                                          # another option is to turn the state into a string.
         queue<vector<vector<int>>> backward_queue;
         unordered_set<vector<vector<int>>, boost::hash<vector<vector<int>>>> backward_set {final_state};
         forward_queue.push(init_state);
