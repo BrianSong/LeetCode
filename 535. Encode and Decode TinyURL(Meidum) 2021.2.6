@@ -1,0 +1,77 @@
+Note: This is a companion problem to the System Design problem: Design TinyURL.
+TinyURL is a URL shortening service where you enter a URL such as 
+https://leetcode.com/problems/design-tinyurl and it returns a short URL such as http://tinyurl.com/4e9iAk.
+
+Design the encode and decode methods for the TinyURL service. There is no restriction on how your encode/decode algorithm should work. 
+You just need to ensure that a URL can be encoded to a tiny URL and the tiny URL can be decoded to the original URL.
+
+记录这道题是因为它有进制成转换的思想可以参考
+
+class Solution {
+public:
+
+    // Encodes a URL to a shortened URL.
+    string encode(string url) {
+        // write your code here
+        if (long_to_id.find(url) != long_to_id.end()) {
+            return TINYURL + to_base62(long_to_id[url]);
+        }
+        string short_url = TINYURL + to_base62(seq_id);
+        id_to_long[seq_id] = url;
+        long_to_id[url] = seq_id;
+        seq_id++;
+        
+        return short_url;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    string decode(string url) {
+        string short_url = url.substr(TINYURL.size());
+        int id = from_base62(short_url);
+        return id_to_long[id];
+    }
+
+private:
+    int seq_id = 0;
+    const string TINYURL = "http://tiny.url/";
+    unordered_map<int, string> id_to_long;
+    unordered_map<string, int> long_to_id;
+    
+    string to_base62(int id) {
+        string source = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        string short_url;
+        while (id) {
+            short_url = source[id % 62] + short_url;
+            id /= 62;
+        }
+        while (short_url.size() < 6) {
+            short_url = "0" + short_url;
+        }
+        
+        return short_url;
+    }
+    
+    int from_base62(string short_url) {
+        int id = 0;
+        for (int i = 0; i < 6; ++i) {
+            id = id * 62 + helper(short_url[i]);
+        }
+        
+        return id;
+    }
+    
+    int helper(char c) {
+        if (c >= '0' && c <= '9') {
+            return c - '0';
+        }
+        if (c >= 'a' && c <= 'z') {
+            return c - 'a' + 10;
+        }
+        return c - 'Z' + 36;
+        
+    }
+};
+
+// Your Solution object will be instantiated and called as such:
+// Solution solution;
+// solution.decode(solution.encode(url));
